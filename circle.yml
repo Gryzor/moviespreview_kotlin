@@ -43,6 +43,6 @@
      - ./gradlew app:connectedAndroidTest
 
      # copy test results
-     - cp -r build/reports/tests/testDebugUnitTest/ $CIRCLE_TEST_REPORTS/AppUnitTests
-     - cp -r build/test-results/testDebugUnitTest/ $CIRCLE_TEST_REPORTS/ComponentTests
-     - cp -r build/reports/androidTests/connected $CIRCLE_TEST_REPORTS/AndroidTests
+     - cp -r app/build/reports/tests/testDebugUnitTest/ $CIRCLE_TEST_REPORTS/AppUnitTests
+     - cp -r app/build/test-results/testDebugUnitTest/ $CIRCLE_TEST_REPORTS/ComponentTests
+     - cp -r app/build/reports/androidTests/connected $CIRCLE_TEST_REPORTS/AndroidTests
