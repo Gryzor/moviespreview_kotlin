@@ -1,5 +1,9 @@
 package com.jpp.moviespreview.app.ui.splash.di
 
+import com.jpp.moviespreview.app.domain.MoviesConfiguration
+import com.jpp.moviespreview.app.domain.UseCase
+import com.jpp.moviespreview.app.domain.configuration.ConfigurationDataMapper
+import com.jpp.moviespreview.app.domain.configuration.RetrieveConfigurationUseCase
 import com.jpp.moviespreview.app.ui.splash.SplashPresenter
 import com.jpp.moviespreview.app.ui.splash.SplashPresenterImpl
 import dagger.Module
@@ -11,11 +15,13 @@ import dagger.Provides
  * Created by jpp on 10/4/17.
  */
 @Module
-class SplashModule() {
+class SplashModule {
 
     @Provides
     @SplashScope
-    fun providesSplashPresenter(): SplashPresenter = SplashPresenterImpl()
+    fun providesSplashPresenter(useCase: UseCase<Any, MoviesConfiguration>): SplashPresenter = SplashPresenterImpl(useCase)
 
-
+    @Provides
+    @SplashScope
+    fun provideRetrieveConfigurationUseCase(): UseCase<Any, MoviesConfiguration> = RetrieveConfigurationUseCase(ConfigurationDataMapper())
 }
