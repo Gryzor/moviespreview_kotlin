@@ -20,6 +20,15 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', 'API_ENDPOINT', '"https://api.themoviedb.org/3/"'
+            buildConfigField 'String', 'API_KEY', '"eddf6980a6d7dadd72386f55f94ab571"'
+        }
+
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', 'API_ENDPOINT', '"https://api.themoviedb.org/3/"'
+            buildConfigField 'String', 'API_KEY', '"eddf6980a6d7dadd72386f55f94ab571"'
         }
     }
 }
@@ -36,9 +45,16 @@ dependencies {
     // Anko
     compile "org.jetbrains.anko:anko-common:$anko_version"
 
-    //Dagger
+    // Dagger
     compile "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+
+    // Retrofit
+    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
 
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'

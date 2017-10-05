@@ -26,6 +26,7 @@ class SplashActivity : AppCompatActivity(), SplashView {
         super.onCreate(savedInstanceState)
         component.inject(this)
         splashPresenter.linkView(this)
+        splashPresenter.retrieveConfig()
     }
 
     override fun continueToHome() {

@@ -1,8 +1,10 @@
 package com.jpp.moviespreview.app.domain.configuration
 
-import android.util.Log
+import com.jpp.moviespreview.BuildConfig
+import com.jpp.moviespreview.app.data.server.MoviesPreviewApi
 import com.jpp.moviespreview.app.domain.MoviesConfiguration
 import com.jpp.moviespreview.app.domain.UseCase
+import com.jpp.moviespreview.app.ui.extentions.unwrapCall
 
 /**
  * TODO 1 - Verify if cache data is valid
@@ -13,9 +15,12 @@ import com.jpp.moviespreview.app.domain.UseCase
  * TODO 6 - Return mapped UI data
  * Created by jpp on 10/5/17.
  */
-class RetrieveConfigurationUseCase(private val mapper: ConfigurationDataMapper) : UseCase<Any, MoviesConfiguration> {
+class RetrieveConfigurationUseCase(private val mapper: ConfigurationDataMapper,
+                                   private val api: MoviesPreviewApi) : UseCase<Any, MoviesConfiguration> {
+
     override fun execute(param: Any?): MoviesConfiguration? {
-        Log.d("PRESENTER", "RETRIEVE CONFIG")
-        return null
+        return api.getLastConfiguration(BuildConfig.API_KEY).unwrapCall {
+            mapper.convertMoviesConfigurationFromDataModel(it)
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.jpp.moviespreview.app
 
 import android.app.Application
+import com.jpp.moviespreview.app.data.DataModule
 
 /**
  * Application class that injects the initial application scope graph
@@ -13,13 +14,13 @@ class MoviesPreviewApp : Application() {
         DaggerAppComponent
                 .builder()
                 .appModule(AppModule(this))
+                .dataModule(DataModule())
                 .build()
     }
 
 
     override fun onCreate() {
         super.onCreate()
-        appComponent.inject(this)
     }
 
     fun appComponent(): AppComponent = appComponent
