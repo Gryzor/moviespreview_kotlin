@@ -1,18 +1,21 @@
 package com.jpp.moviespreview.app.ui.splash
 
-import javax.inject.Inject
+import android.util.Log
 
 /**
  * Created by jpp on 10/4/17.
  */
 class SplashPresenterImpl : SplashPresenter {
 
-    @Inject
-    lateinit var splashView : SplashView
+    private lateinit var splashView: SplashView
 
+
+    override fun linkView(splashView: SplashView) {
+        this.splashView = splashView
+    }
 
     override fun retrieveConfig() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Log.d("PRESENTER", "RETRIEVE CONFIG")
     }
 
 }

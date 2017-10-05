@@ -9,7 +9,7 @@ import android.app.Application
  */
 class MoviesPreviewApp : Application() {
 
-    val appComponent by lazy {
+    private val appComponent by lazy {
         DaggerAppComponent
                 .builder()
                 .appModule(AppModule(this))
@@ -23,4 +23,5 @@ class MoviesPreviewApp : Application() {
     }
 
     fun appComponent(): AppComponent = appComponent
+
 }

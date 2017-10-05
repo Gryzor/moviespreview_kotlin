@@ -1,5 +1,7 @@
 package com.jpp.moviespreview.app
 
+import com.jpp.moviespreview.app.ui.splash.di.SplashComponent
+import com.jpp.moviespreview.app.ui.splash.di.SplashModule
 import dagger.Component
 import javax.inject.Singleton
 
@@ -11,7 +13,6 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = arrayOf(AppModule::class))
 interface AppComponent {
-
     fun inject(app: MoviesPreviewApp)
-
+    fun plus(splashModule: SplashModule) : SplashComponent
 }
