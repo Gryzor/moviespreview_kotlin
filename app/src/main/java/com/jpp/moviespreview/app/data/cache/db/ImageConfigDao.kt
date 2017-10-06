@@ -20,4 +20,7 @@ interface ImageConfigDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllImageSize(sizes: List<ImageSize>)
+
+    @Query("select * from image_size where id_image_config = :imageConfigId")
+    fun getImageSizesForConfig(imageConfigId: Long): List<ImageSize>?
 }

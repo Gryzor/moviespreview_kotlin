@@ -1,8 +1,9 @@
 package com.jpp.moviespreview.app.data.cache
 
+import com.jpp.moviespreview.app.data.ImagesConfiguration
 import com.jpp.moviespreview.app.data.MoviesConfiguration
 import com.jpp.moviespreview.app.data.cache.db.ImageConfig as CacheImageConfiguration
-import com.jpp.moviespreview.app.data.cache.db.ImageSize as DataImageSize
+import com.jpp.moviespreview.app.data.cache.db.ImageSize as CacheImageSize
 
 class CacheDataMapper {
 
@@ -17,10 +18,21 @@ class CacheDataMapper {
     }
 
 
-    private fun convertImageSizes(parentId: Long, imageSizes: List<String>): List<DataImageSize> {
-        val dataImageSizes = ArrayList<DataImageSize>()
-        imageSizes.mapTo(dataImageSizes) { DataImageSize(it, parentId) }
+    private fun convertImageSizes(parentId: Long, imageSizes: List<String>): List<CacheImageSize> {
+        val dataImageSizes = ArrayList<CacheImageSize>()
+        imageSizes.mapTo(dataImageSizes) { CacheImageSize(it, parentId) }
         return dataImageSizes
+    }
+
+
+    fun convertCacheImageConfigurationToDataMoviesConfiguration(cacheImageConfig: CacheImageConfiguration, cacheImageSizes: List<CacheImageSize>): MoviesConfiguration =
+            MoviesConfiguration(convertCacheImageSizeToImageDataConfiguration(cacheImageConfig.baseUrl, cacheImageSizes))
+
+
+    private fun convertCacheImageSizeToImageDataConfiguration(baseUrl: String, cacheImageSizes: List<CacheImageSize>): ImagesConfiguration {
+        val posterSizes = ArrayList<String>()
+        cacheImageSizes.mapTo(posterSizes) { it.size }
+        return ImagesConfiguration(baseUrl, posterSizes)
     }
 
 }

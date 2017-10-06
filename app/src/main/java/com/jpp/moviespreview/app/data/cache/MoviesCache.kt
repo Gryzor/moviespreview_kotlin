@@ -4,6 +4,7 @@ import com.jpp.moviespreview.app.data.MoviesConfiguration
 import com.jpp.moviespreview.app.data.cache.db.MoviesDataBase
 import com.jpp.moviespreview.app.data.cache.db.Timestamp
 import com.jpp.moviespreview.app.extentions.isOlderThan
+import kotlin.system.exitProcess
 
 /**
  * Defines the contract of the Cache used by the application. It uses Room to store, update, delete
@@ -21,11 +22,26 @@ interface MoviesCache {
      * Determinate if the last movies configuration stored is older than the provided value.
      */
     fun isLastConfigOlderThan(timeStamp: Long): Boolean
+
+
+    fun getLastMovieConfiguration(): MoviesConfiguration?
 }
 
 
 class MoviesCacheImpl(private val cacheDataMapper: CacheDataMapper,
                       private val database: MoviesDataBase) : MoviesCache {
+
+    override fun getLastMovieConfiguration(): MoviesConfiguration? {
+        val lastImageConfig = database.imageConfigDao().getLastImageConfig()
+        if (lastImageConfig == null) {
+            //TODO fail
+        }
+        val listImageConfigs = database.imageConfigDao().getImageSizesForConfig(lastImageConfig!!.id)
+        if (listImageConfigs == null) {
+            //TODO fail
+        }
+        return cacheDataMapper.convertCacheImageConfigurationToDataMoviesConfiguration(lastImageConfig, listImageConfigs!!)
+    }
 
 
     companion object {

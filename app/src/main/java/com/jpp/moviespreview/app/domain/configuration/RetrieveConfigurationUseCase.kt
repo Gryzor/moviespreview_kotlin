@@ -29,8 +29,11 @@ class RetrieveConfigurationUseCase(private val mapper: ConfigurationDataMapper,
                 mapper.convertMoviesConfigurationFromDataModel(it)
             }
         } else {
-            // TODO here return the cached data
-            null
+            val lastConfig = cache.getLastMovieConfiguration()
+            if (lastConfig == null) {
+                //TODO fail
+            }
+            mapper.convertMoviesConfigurationFromDataModel(lastConfig!!)
         }
     }
 }
