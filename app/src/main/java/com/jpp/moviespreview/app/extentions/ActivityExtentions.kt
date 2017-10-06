@@ -1,4 +1,4 @@
-package com.jpp.moviespreview.app.ui.extentions
+package com.jpp.moviespreview.app.extentions
 
 import android.app.Activity
 import com.jpp.moviespreview.app.MoviesPreviewApp

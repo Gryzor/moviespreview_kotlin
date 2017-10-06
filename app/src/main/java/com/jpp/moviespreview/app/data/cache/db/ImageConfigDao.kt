@@ -16,8 +16,7 @@ interface ImageConfigDao {
     fun updateImageConfig(imageConfig: ImageConfig)
 
     @Query("select * from image_configuration where last_update >= (select MAX(i.last_update) from image_configuration i)")
-    fun getLastImageConfig(): ImageConfig
-
+    fun getLastImageConfig(): ImageConfig?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllImageSize(sizes: List<ImageSize>)

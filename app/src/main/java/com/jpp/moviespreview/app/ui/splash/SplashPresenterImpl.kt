@@ -22,7 +22,11 @@ class SplashPresenterImpl(private val useCase: UseCase<Any, MoviesConfiguration>
         doAsync {
             val result = useCase.execute(null)
             uiThread {
-                Log.d("PRESENTER", "Result data " + result!!.imagesConfiguration.baseUrl)
+                if (result != null) {
+                    Log.d("PRESENTER", "Result data " + result.imagesConfiguration.baseUrl)
+                } else {
+                    Log.d("PRESENTER", "NOTHING MEN")
+                }
             }
         }
     }

@@ -5,7 +5,8 @@ import com.jpp.moviespreview.app.data.cache.MoviesCache
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApi
 import com.jpp.moviespreview.app.domain.MoviesConfiguration
 import com.jpp.moviespreview.app.domain.UseCase
-import com.jpp.moviespreview.app.ui.extentions.unwrapCall
+import com.jpp.moviespreview.app.extentions.unwrapCall
+import java.util.concurrent.TimeUnit
 
 /**
  * TODO 1 - Verify if cache data is valid
@@ -21,10 +22,15 @@ class RetrieveConfigurationUseCase(private val mapper: ConfigurationDataMapper,
                                    private val cache: MoviesCache) : UseCase<Any, MoviesConfiguration> {
 
     override fun execute(param: Any?): MoviesConfiguration? {
-        return api.getLastConfiguration(BuildConfig.API_KEY).unwrapCall {
-            val timeStamp = System.currentTimeMillis()
-            cache.saveMoviesConfig(it, timeStamp)
-            mapper.convertMoviesConfigurationFromDataModel(it)
+        return if (cache.isLastConfigOlderThan(TimeUnit.MINUTES.toMillis(30))) {
+            api.getLastConfiguration(BuildConfig.API_KEY).unwrapCall {
+                val timeStamp = System.currentTimeMillis()
+                cache.saveMoviesConfig(it, timeStamp)
+                mapper.convertMoviesConfigurationFromDataModel(it)
+            }
+        } else {
+            // TODO here return the cached data
+            null
         }
     }
 }

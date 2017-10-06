@@ -1,4 +1,4 @@
-package com.jpp.moviespreview.app.ui.extentions
+package com.jpp.moviespreview.app.extentions
 
 import retrofit2.Call
 
