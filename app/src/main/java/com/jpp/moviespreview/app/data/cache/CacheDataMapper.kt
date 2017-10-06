@@ -7,8 +7,8 @@ import com.jpp.moviespreview.app.data.cache.db.ImageSize as DataImageSize
 class CacheDataMapper {
 
 
-    fun convertMoviesConfigurationToCacheModel(moviesConfiguration: MoviesConfiguration, lastUpdate: Long) = with(moviesConfiguration) {
-        CacheImageConfiguration(images.base_url, lastUpdate)
+    fun convertMoviesConfigurationToCacheModel(moviesConfiguration: MoviesConfiguration) = with(moviesConfiguration) {
+        CacheImageConfiguration(images.base_url)
     }
 
 

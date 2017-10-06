@@ -5,13 +5,19 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.ForeignKey
 import android.arch.persistence.room.PrimaryKey
 
+
+@Entity(tableName = "timestamps")
+data class Timestamp(@PrimaryKey @ColumnInfo(name = "timestamp_id") var id: Long) {
+    @ColumnInfo(name = "last_update")
+    var lastUpdate: Long = 0
+}
+
 /**
  * Represents the ImagesConfiguration data model class.
  * lastUpdate -> the date indicating the last time this value was updated
  */
 @Entity(tableName = "image_configuration")
-data class ImageConfig(@ColumnInfo(name = "base_url") var baseUrl: String,
-                       @ColumnInfo(name = "last_update") var lastUpdate: Long = 0) {
+data class ImageConfig(@ColumnInfo(name = "base_url") var baseUrl: String) {
     @ColumnInfo(name = "_id")
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0

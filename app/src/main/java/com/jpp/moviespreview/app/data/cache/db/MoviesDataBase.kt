@@ -8,8 +8,11 @@ import android.arch.persistence.room.RoomDatabase
  *
  * Created by jpp on 10/6/17.
  */
-@Database(entities = arrayOf(ImageConfig::class, ImageSize::class), version = 1)
+@Database(entities = arrayOf(ImageConfig::class,
+        ImageSize::class,
+        Timestamp::class)
+        , version = 1)
 abstract class MoviesDataBase : RoomDatabase() {
-
     abstract fun imageConfigDao(): ImageConfigDao
+    abstract fun timestampDao(): TimestampDao
 }
