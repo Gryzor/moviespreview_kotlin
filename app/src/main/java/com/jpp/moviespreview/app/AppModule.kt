@@ -1,5 +1,6 @@
 package com.jpp.moviespreview.app
 
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 
@@ -13,4 +14,7 @@ class AppModule(val app: MoviesPreviewApp) {
 
     @Provides
     fun provideApp(): MoviesPreviewApp = app
+
+    @Provides
+    fun providesContext(): Context = app.applicationContext
 }

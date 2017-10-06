@@ -1,6 +1,7 @@
 package com.jpp.moviespreview.app.domain.configuration
 
 import com.jpp.moviespreview.BuildConfig
+import com.jpp.moviespreview.app.data.cache.MoviesCache
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApi
 import com.jpp.moviespreview.app.domain.MoviesConfiguration
 import com.jpp.moviespreview.app.domain.UseCase
@@ -16,10 +17,13 @@ import com.jpp.moviespreview.app.ui.extentions.unwrapCall
  * Created by jpp on 10/5/17.
  */
 class RetrieveConfigurationUseCase(private val mapper: ConfigurationDataMapper,
-                                   private val api: MoviesPreviewApi) : UseCase<Any, MoviesConfiguration> {
+                                   private val api: MoviesPreviewApi,
+                                   private val cache: MoviesCache) : UseCase<Any, MoviesConfiguration> {
 
     override fun execute(param: Any?): MoviesConfiguration? {
         return api.getLastConfiguration(BuildConfig.API_KEY).unwrapCall {
+            val timeStamp = System.currentTimeMillis()
+            cache.saveMoviesConfig(it, timeStamp)
             mapper.convertMoviesConfigurationFromDataModel(it)
         }
     }

@@ -16,11 +16,11 @@ class ConfigurationDataMapper {
      * Converts the MoviesConfiguration from data to model class.
      */
     fun convertMoviesConfigurationFromDataModel(dataMoviesConfiguration: DataMoviesConfiguration) = with(dataMoviesConfiguration) {
-        MoviesConfiguration(convertImagesConfigurationFromDataModel(dataMoviesConfiguration.imagesConfiguration))
+        MoviesConfiguration(convertImagesConfigurationFromDataModel(dataMoviesConfiguration.images))
     }
 
     private fun convertImagesConfigurationFromDataModel(imagesConfiguration: DataImagesConfiguration) = with(imagesConfiguration) {
-        ImagesConfiguration(baseUrl, sizes)
+        ImagesConfiguration(base_url, poster_sizes)
     }
 
 }

@@ -1,5 +1,6 @@
 package com.jpp.moviespreview.app.ui.splash.di
 
+import com.jpp.moviespreview.app.data.cache.MoviesCache
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApi
 import com.jpp.moviespreview.app.domain.MoviesConfiguration
 import com.jpp.moviespreview.app.domain.UseCase
@@ -24,5 +25,6 @@ class SplashModule {
 
     @Provides
     @SplashScope
-    fun provideRetrieveConfigurationUseCase(apiInstance: MoviesPreviewApi): UseCase<Any, MoviesConfiguration> = RetrieveConfigurationUseCase(ConfigurationDataMapper(), apiInstance)
+    fun provideRetrieveConfigurationUseCase(apiInstance: MoviesPreviewApi, cache: MoviesCache): UseCase<Any, MoviesConfiguration>
+            = RetrieveConfigurationUseCase(ConfigurationDataMapper(), apiInstance, cache)
 }

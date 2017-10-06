@@ -1,6 +1,12 @@
 package com.jpp.moviespreview.app.data
 
+import android.arch.persistence.room.Room
+import android.content.Context
 import com.jpp.moviespreview.BuildConfig
+import com.jpp.moviespreview.app.data.cache.CacheDataMapper
+import com.jpp.moviespreview.app.data.cache.MoviesCache
+import com.jpp.moviespreview.app.data.cache.MoviesCacheImpl
+import com.jpp.moviespreview.app.data.cache.db.MoviesDataBase
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApi
 import dagger.Module
 import dagger.Provides
@@ -37,5 +43,21 @@ class DataModule {
     @Provides
     @Singleton
     fun providesServerApi(): MoviesPreviewApi = API
+
+    @Provides
+    @Singleton
+    fun providesMovieDatabase(context: Context): MoviesDataBase =
+            Room.databaseBuilder(context, MoviesDataBase::class.java, "movies-db")
+                    .allowMainThreadQueries()
+                    .build()
+    @Provides
+    @Singleton
+    fun providesCacheDataMapper() = CacheDataMapper()
+
+    @Provides
+    @Singleton
+    fun providesMoviesCache(cacheDataMapper: CacheDataMapper, moviesDataBase: MoviesDataBase): MoviesCache {
+        return MoviesCacheImpl(cacheDataMapper, moviesDataBase)
+    }
 
 }
