@@ -3,13 +3,15 @@ package com.jpp.moviespreview.app.ui.splash
 import android.util.Log
 import com.jpp.moviespreview.app.domain.MoviesConfiguration
 import com.jpp.moviespreview.app.domain.UseCase
+import com.jpp.moviespreview.app.ui.background.BackgroundInteractor
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
 /**
  * Created by jpp on 10/4/17.
  */
-class SplashPresenterImpl(private val useCase: UseCase<Any, MoviesConfiguration>) : SplashPresenter {
+class SplashPresenterImpl(private val useCase: UseCase<Any, MoviesConfiguration>,
+                          private val backgroundInteractor: BackgroundInteractor) : SplashPresenter {
 
     private lateinit var splashView: SplashView
 
@@ -19,16 +21,23 @@ class SplashPresenterImpl(private val useCase: UseCase<Any, MoviesConfiguration>
     }
 
     override fun retrieveConfig() {
-        doAsync {
-            val result = useCase.execute(null)
-            uiThread {
-                if (result != null) {
-                    Log.d("PRESENTER", "Result data " + result.imagesConfiguration.baseUrl)
-                } else {
-                    Log.d("PRESENTER", "NOTHING MEN")
-                }
-            }
+        backgroundInteractor
+                .executeBackgroundJob({ useCase.execute() },
+                        { processMoviesConfig(it) },
+                        { processMoviesConfigError(it) })
+    }
+
+
+    private fun processMoviesConfig(moviesConfiguration: MoviesConfiguration?) {
+        if (moviesConfiguration != null) {
+            Log.d("PRESENTER", "Result data " + moviesConfiguration.imagesConfiguration.baseUrl)
+        } else {
+            Log.d("PRESENTER", "NOTHING MEN")
         }
+    }
+
+    private fun processMoviesConfigError(error: Throwable) {
+        Log.e("PRESENTER", "ERROR")
     }
 
 }

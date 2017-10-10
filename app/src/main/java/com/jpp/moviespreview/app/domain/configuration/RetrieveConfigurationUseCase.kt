@@ -24,16 +24,13 @@ class RetrieveConfigurationUseCase(private val mapper: ConfigurationDataMapper,
     override fun execute(param: Any?): MoviesConfiguration? {
         return if (cache.isLastConfigOlderThan(TimeUnit.MINUTES.toMillis(30))) {
             api.getLastConfiguration(BuildConfig.API_KEY).unwrapCall {
-                val timeStamp = System.currentTimeMillis()
-                cache.saveMoviesConfig(it, timeStamp)
+                cache.saveMoviesConfig(it, System.currentTimeMillis())
                 mapper.convertMoviesConfigurationFromDataModel(it)
             }
         } else {
-            val lastConfig = cache.getLastMovieConfiguration()
-            if (lastConfig == null) {
-                //TODO fail
+            cache.getLastMovieConfiguration()?.let {
+                mapper.convertMoviesConfigurationFromDataModel(it)
             }
-            mapper.convertMoviesConfigurationFromDataModel(lastConfig!!)
         }
     }
 }

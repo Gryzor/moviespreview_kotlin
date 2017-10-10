@@ -6,6 +6,7 @@ import com.jpp.moviespreview.app.domain.MoviesConfiguration
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.domain.configuration.ConfigurationDataMapper
 import com.jpp.moviespreview.app.domain.configuration.RetrieveConfigurationUseCase
+import com.jpp.moviespreview.app.ui.background.BackgroundInteractor
 import com.jpp.moviespreview.app.ui.splash.SplashPresenter
 import com.jpp.moviespreview.app.ui.splash.SplashPresenterImpl
 import dagger.Module
@@ -21,7 +22,8 @@ class SplashModule {
 
     @Provides
     @SplashScope
-    fun providesSplashPresenter(useCase: UseCase<Any, MoviesConfiguration>): SplashPresenter = SplashPresenterImpl(useCase)
+    fun providesSplashPresenter(useCase: UseCase<Any, MoviesConfiguration>, backgroundInteractor: BackgroundInteractor): SplashPresenter
+            = SplashPresenterImpl(useCase, backgroundInteractor)
 
     @Provides
     @SplashScope

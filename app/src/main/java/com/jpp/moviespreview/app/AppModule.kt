@@ -1,6 +1,8 @@
 package com.jpp.moviespreview.app
 
 import android.content.Context
+import com.jpp.moviespreview.app.ui.background.BackgroundInteractor
+import com.jpp.moviespreview.app.ui.background.BackgroundInteractorImpl
 import dagger.Module
 import dagger.Provides
 
@@ -17,4 +19,7 @@ class AppModule(val app: MoviesPreviewApp) {
 
     @Provides
     fun providesContext(): Context = app.applicationContext
+
+    @Provides
+    fun providesBackgroundInteractor(): BackgroundInteractor = BackgroundInteractorImpl()
 }

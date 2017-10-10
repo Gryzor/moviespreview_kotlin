@@ -12,5 +12,5 @@ interface UseCase<Param, Response> {
      * with that param (or not) returning a Response that can be null (representing
      * an error)
      */
-    fun execute(param: Param?): Response?
+    fun execute(param: Param? = null): Response?
 }

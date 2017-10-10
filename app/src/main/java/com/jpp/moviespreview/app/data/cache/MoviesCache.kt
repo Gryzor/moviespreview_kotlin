@@ -32,15 +32,16 @@ class MoviesCacheImpl(private val cacheDataMapper: CacheDataMapper,
                       private val database: MoviesDataBase) : MoviesCache {
 
     override fun getLastMovieConfiguration(): MoviesConfiguration? {
-        val lastImageConfig = database.imageConfigDao().getLastImageConfig()
-        if (lastImageConfig == null) {
-            //TODO fail
+        var config: MoviesConfiguration? = null
+        with(database.imageConfigDao()) {
+            getLastImageConfig()?.let {
+                val imageSizes = getImageSizesForConfig(it.id)
+                if (imageSizes != null) {
+                    config = cacheDataMapper.convertCacheImageConfigurationToDataMoviesConfiguration(it, imageSizes)
+                }
+            }
         }
-        val listImageConfigs = database.imageConfigDao().getImageSizesForConfig(lastImageConfig!!.id)
-        if (listImageConfigs == null) {
-            //TODO fail
-        }
-        return cacheDataMapper.convertCacheImageConfigurationToDataMoviesConfiguration(lastImageConfig, listImageConfigs!!)
+        return config
     }
 
 
