@@ -1,17 +1,22 @@
 package com.jpp.moviespreview.app.ui.splash
 
-import android.util.Log
 import com.jpp.moviespreview.app.domain.MoviesConfiguration
 import com.jpp.moviespreview.app.domain.UseCase
+import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
+import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.background.BackgroundInteractor
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 
 /**
+ * Presenter for the splash screen.
+ *
+ * Responsibility: retrieve the movies initial configuration and place it in the UI context.
+ *
  * Created by jpp on 10/4/17.
  */
 class SplashPresenterImpl(private val useCase: UseCase<Any, MoviesConfiguration>,
-                          private val backgroundInteractor: BackgroundInteractor) : SplashPresenter {
+                          private val backgroundInteractor: BackgroundInteractor,
+                          private val moviesContext: MoviesContext,
+                          private val mapper: DomainToUiDataMapper) : SplashPresenter {
 
     private lateinit var splashView: SplashView
 
@@ -21,23 +26,29 @@ class SplashPresenterImpl(private val useCase: UseCase<Any, MoviesConfiguration>
     }
 
     override fun retrieveConfig() {
-        backgroundInteractor
-                .executeBackgroundJob({ useCase.execute() },
-                        { processMoviesConfig(it) },
-                        { processMoviesConfigError(it) })
+        if (moviesContext.imageConfig == null) {
+            backgroundInteractor
+                    .executeBackgroundJob({ useCase.execute() },
+                            { processMoviesConfig(it) },
+                            { processMoviesConfigError(it) })
+        } else {
+            splashView.continueToHome()
+        }
     }
 
 
     private fun processMoviesConfig(moviesConfiguration: MoviesConfiguration?) {
         if (moviesConfiguration != null) {
-            Log.d("PRESENTER", "Result data " + moviesConfiguration.imagesConfiguration.baseUrl)
+            moviesContext.imageConfig = mapper.convertConfigurationToImagesConfiguration(moviesConfiguration)
+            splashView.continueToHome()
         } else {
-            Log.d("PRESENTER", "NOTHING MEN")
+            splashView.showError()
         }
     }
 
     private fun processMoviesConfigError(error: Throwable) {
-        Log.e("PRESENTER", "ERROR")
+        //TODO log the error to crashlytics
+        splashView.showError()
     }
 
 }

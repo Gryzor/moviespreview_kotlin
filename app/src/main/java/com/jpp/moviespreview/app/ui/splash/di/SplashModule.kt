@@ -7,6 +7,8 @@ import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.domain.configuration.ConfigurationDataMapper
 import com.jpp.moviespreview.app.domain.configuration.RetrieveConfigurationUseCase
 import com.jpp.moviespreview.app.extentions.TimeUtils
+import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
+import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.background.BackgroundInteractor
 import com.jpp.moviespreview.app.ui.splash.SplashPresenter
 import com.jpp.moviespreview.app.ui.splash.SplashPresenterImpl
@@ -23,8 +25,11 @@ class SplashModule {
 
     @Provides
     @SplashScope
-    fun providesSplashPresenter(useCase: UseCase<Any, MoviesConfiguration>, backgroundInteractor: BackgroundInteractor): SplashPresenter
-            = SplashPresenterImpl(useCase, backgroundInteractor)
+    fun providesSplashPresenter(useCase: UseCase<Any, MoviesConfiguration>,
+                                backgroundInteractor: BackgroundInteractor,
+                                moviesContext: MoviesContext,
+                                domainToUiDataMapper: DomainToUiDataMapper): SplashPresenter
+            = SplashPresenterImpl(useCase, backgroundInteractor, moviesContext, domainToUiDataMapper)
 
     @Provides
     @SplashScope

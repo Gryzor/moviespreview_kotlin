@@ -2,10 +2,13 @@ package com.jpp.moviespreview.app
 
 import android.content.Context
 import com.jpp.moviespreview.app.extentions.TimeUtils
+import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
+import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.background.BackgroundInteractor
 import com.jpp.moviespreview.app.ui.background.BackgroundInteractorImpl
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 /**
  * Application scope module
@@ -15,15 +18,17 @@ import dagger.Provides
 @Module
 class AppModule(val app: MoviesPreviewApp) {
 
+
+    @Singleton
     @Provides
     fun provideApp(): MoviesPreviewApp = app
 
+    @Singleton
     @Provides
     fun providesContext(): Context = app.applicationContext
 
-    @Provides
-    fun providesBackgroundInteractor(): BackgroundInteractor = BackgroundInteractorImpl()
-
+    @Singleton
     @Provides
     fun providesTimeUtils() = TimeUtils()
+
 }
