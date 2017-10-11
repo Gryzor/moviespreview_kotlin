@@ -3,6 +3,7 @@ package com.jpp.moviespreview.app.data.cache
 import com.jpp.moviespreview.app.data.MoviesConfiguration
 import com.jpp.moviespreview.app.data.cache.db.MoviesDataBase
 import com.jpp.moviespreview.app.data.cache.db.Timestamp
+import com.jpp.moviespreview.app.extentions.TimeUtils
 import com.jpp.moviespreview.app.extentions.isOlderThan
 import kotlin.system.exitProcess
 
@@ -21,7 +22,7 @@ interface MoviesCache {
     /**
      * Determinate if the last movies configuration stored is older than the provided value.
      */
-    fun isLastConfigOlderThan(timeStamp: Long): Boolean
+    fun isLastConfigOlderThan(timeStamp: Long, timeUtils: TimeUtils): Boolean
 
 
     fun getLastMovieConfiguration(): MoviesConfiguration?
@@ -31,39 +32,35 @@ interface MoviesCache {
 class MoviesCacheImpl(private val cacheDataMapper: CacheDataMapper,
                       private val database: MoviesDataBase) : MoviesCache {
 
-    override fun getLastMovieConfiguration(): MoviesConfiguration? {
-        var config: MoviesConfiguration? = null
-        with(database.imageConfigDao()) {
-            getLastImageConfig()?.let {
-                val imageSizes = getImageSizesForConfig(it.id)
-                if (imageSizes != null) {
-                    config = cacheDataMapper.convertCacheImageConfigurationToDataMoviesConfiguration(it, imageSizes)
-                }
-            }
-        }
-        return config
-    }
-
-
     companion object {
         val MOVIES_CONFIGURATION_TIMESTAMP = Timestamp(1)
     }
 
 
-    override fun isLastConfigOlderThan(timeStamp: Long): Boolean {
+    override fun getLastMovieConfiguration(): MoviesConfiguration? {
+        return database.imageConfigDao().getLastImageConfig()?.let {
+            val imageSizes = database.imageConfigDao().getImageSizesForConfig(it.id)
+            cacheDataMapper.convertCacheImageConfigurationToDataMoviesConfiguration(it, imageSizes!!)
+        }
+    }
+
+
+    override fun isLastConfigOlderThan(timeStamp: Long, timeUtils: TimeUtils): Boolean {
         val lastConfig = database.timestampDao().getTimestamp(MOVIES_CONFIGURATION_TIMESTAMP.id)
-        return lastConfig == null || lastConfig.lastUpdate.isOlderThan(timeStamp)
+        return lastConfig == null || timeUtils.isOlderThan(lastConfig.lastUpdate, timeStamp)
     }
 
 
     override fun saveMoviesConfig(moviesConfig: MoviesConfiguration, updateDate: Long) {
-        // 1 - insert
+        // 1 -> insert timestamp
         MOVIES_CONFIGURATION_TIMESTAMP.lastUpdate = updateDate
         database.timestampDao().insertTimestamp(MOVIES_CONFIGURATION_TIMESTAMP)
 
+        // 2 -> insert images configuration
         val cacheImageConfig = cacheDataMapper.convertMoviesConfigurationToCacheModel(moviesConfig)
         val parentId = database.imageConfigDao().insertImageConfig(cacheImageConfig)
 
+        // 3 -> insert image sizes
         val imageSizes = cacheDataMapper.convertImagesConfigurationToCacheModel(parentId, moviesConfig)
         database.imageConfigDao().insertAllImageSize(imageSizes)
     }

@@ -8,6 +8,7 @@ import com.jpp.moviespreview.app.data.cache.MoviesCache
 import com.jpp.moviespreview.app.data.cache.MoviesCacheImpl
 import com.jpp.moviespreview.app.data.cache.db.MoviesDataBase
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApi
+import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -42,22 +43,22 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun providesServerApi(): MoviesPreviewApi = API
-
-    @Provides
-    @Singleton
     fun providesMovieDatabase(context: Context): MoviesDataBase =
             Room.databaseBuilder(context, MoviesDataBase::class.java, "movies-db")
                     .allowMainThreadQueries()
                     .build()
+
     @Provides
     @Singleton
     fun providesCacheDataMapper() = CacheDataMapper()
 
     @Provides
     @Singleton
-    fun providesMoviesCache(cacheDataMapper: CacheDataMapper, moviesDataBase: MoviesDataBase): MoviesCache {
-        return MoviesCacheImpl(cacheDataMapper, moviesDataBase)
-    }
+    fun providesMoviesCache(cacheDataMapper: CacheDataMapper, moviesDataBase: MoviesDataBase): MoviesCache = MoviesCacheImpl(cacheDataMapper, moviesDataBase)
+
+
+    @Provides
+    @Singleton
+    fun providesServerApi(): MoviesPreviewApiWrapper = MoviesPreviewApiWrapper(API)
 
 }
