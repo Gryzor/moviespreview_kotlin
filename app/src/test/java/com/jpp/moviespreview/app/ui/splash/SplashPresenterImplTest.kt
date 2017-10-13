@@ -4,11 +4,12 @@ package com.jpp.moviespreview.app.ui.splash
 import com.jpp.moviespreview.app.domain.MoviesConfiguration
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.mock
+
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.ImageConfiguration
 import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.background.BackgroundInteractor
-import com.jpp.moviespreview.app.ui.background.BackgroundInteractorForTesting
+import com.jpp.moviespreview.app.BackgroundInteractorForTesting
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
