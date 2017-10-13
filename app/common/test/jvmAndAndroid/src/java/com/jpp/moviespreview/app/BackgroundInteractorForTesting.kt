@@ -12,11 +12,10 @@ class BackgroundInteractorForTesting : BackgroundInteractor {
     var throwException: Boolean = false
 
     override fun <T> executeBackgroundJob(backgroundJob: () -> T?,
-                                          uiJob: (T?) -> Unit?,
-                                          exceptionHandler: (Throwable) -> Unit) {
+                                          uiJob: (T?) -> Unit?) {
         val result = backgroundJob()
         if (throwException) {
-            exceptionHandler(Exception())
+            uiJob(null)
         } else {
             uiJob(result)
         }

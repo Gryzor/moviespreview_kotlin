@@ -52,6 +52,7 @@ dependencies {
 
     // Google libs
     compile "com.android.support:appcompat-v7:$support_version"
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     // Kotlin libs
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

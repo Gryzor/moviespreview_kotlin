@@ -3,7 +3,11 @@ package com.jpp.moviespreview.app.ui.splash
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.jpp.moviespreview.app.extentions.app
-import com.jpp.moviespreview.app.ui.splash.di.SplashModule
+import com.jpp.moviespreview.app.extentions.notConnectedToNetwork
+import com.jpp.moviespreview.app.extentions.showNoNetworkConnectionAlert
+import com.jpp.moviespreview.app.extentions.showUnexpectedError
+import com.jpp.moviespreview.app.ui.main.MainActivity
+import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 
 /**
@@ -17,7 +21,7 @@ import javax.inject.Inject
  */
 class SplashActivity : AppCompatActivity(), SplashView {
 
-    private val component by lazy { app.appComponent().plus(SplashModule()) }
+    private val component by lazy { app.splashComponent() }
 
     @Inject
     lateinit var splashPresenter: SplashPresenter
@@ -25,16 +29,23 @@ class SplashActivity : AppCompatActivity(), SplashView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         component.inject(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
         splashPresenter.linkView(this)
         splashPresenter.retrieveConfig()
     }
 
     override fun continueToHome() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        startActivity<MainActivity>()
     }
 
     override fun showError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        notConnectedToNetwork(
+                { showNoNetworkConnectionAlert() },
+                { showUnexpectedError { finish() } }
+        )
     }
 
 }

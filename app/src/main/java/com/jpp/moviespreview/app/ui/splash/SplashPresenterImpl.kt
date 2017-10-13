@@ -29,8 +29,7 @@ class SplashPresenterImpl(private val useCase: UseCase<Any, MoviesConfiguration>
         if (moviesContext.imageConfig == null) {
             backgroundInteractor
                     .executeBackgroundJob({ useCase.execute() },
-                            { processMoviesConfig(it) },
-                            { processMoviesConfigError(it) })
+                            { processMoviesConfig(it) })
         } else {
             splashView.continueToHome()
         }
@@ -45,10 +44,4 @@ class SplashPresenterImpl(private val useCase: UseCase<Any, MoviesConfiguration>
             splashView.showError()
         }
     }
-
-    private fun processMoviesConfigError(error: Throwable) {
-        //TODO log the error to crashlytics
-        splashView.showError()
-    }
-
 }
