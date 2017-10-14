@@ -1,6 +1,6 @@
 package com.jpp.moviespreview.app
 
-import com.jpp.moviespreview.app.ui.background.BackgroundInteractor
+import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
 
 /**
  * BackgroundInteractor implementation for testing purposes.

@@ -3,7 +3,6 @@ package com.jpp.moviespreview.app.ui.splash
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.jpp.moviespreview.app.extentions.app
-import com.jpp.moviespreview.app.extentions.notConnectedToNetwork
 import com.jpp.moviespreview.app.extentions.showNoNetworkConnectionAlert
 import com.jpp.moviespreview.app.extentions.showUnexpectedError
 import com.jpp.moviespreview.app.ui.main.MainActivity
@@ -20,6 +19,7 @@ import javax.inject.Inject
  * Created by jpp on 10/4/17.
  */
 class SplashActivity : AppCompatActivity(), SplashView {
+
 
     private val component by lazy { app.splashComponent() }
 
@@ -42,11 +42,12 @@ class SplashActivity : AppCompatActivity(), SplashView {
         finish()
     }
 
-    override fun showError() {
-        notConnectedToNetwork(
-                { showNoNetworkConnectionAlert() },
-                { showUnexpectedError { finish() } }
-        )
+    override fun showUnexpectedError() {
+        showUnexpectedError { finish() }
+    }
+
+    override fun showNotConnectedToNetwork() {
+        showNoNetworkConnectionAlert()
     }
 
 }

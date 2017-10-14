@@ -4,7 +4,8 @@ import com.jpp.moviespreview.app.domain.MoviesConfiguration
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.MoviesContext
-import com.jpp.moviespreview.app.ui.background.BackgroundInteractor
+import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
+import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 
 /**
  * Presenter for the splash screen.
@@ -16,7 +17,8 @@ import com.jpp.moviespreview.app.ui.background.BackgroundInteractor
 class SplashPresenterImpl(private val useCase: UseCase<Any, MoviesConfiguration>,
                           private val backgroundInteractor: BackgroundInteractor,
                           private val moviesContext: MoviesContext,
-                          private val mapper: DomainToUiDataMapper) : SplashPresenter {
+                          private val mapper: DomainToUiDataMapper,
+                          private val connectivityInteractor: ConnectivityInteractor) : SplashPresenter {
 
     private lateinit var splashView: SplashView
 
@@ -41,7 +43,20 @@ class SplashPresenterImpl(private val useCase: UseCase<Any, MoviesConfiguration>
             moviesContext.imageConfig = mapper.convertConfigurationToImagesConfiguration(moviesConfiguration)
             splashView.continueToHome()
         } else {
-            splashView.showError()
+            processError(
+                    { splashView.showNotConnectedToNetwork() },
+                    { splashView.showUnexpectedError() })
+        }
+    }
+
+
+    private fun processError(notConnectedToNetwork: () -> Unit?,
+                             connectedToNetwork: () -> Unit?) {
+
+        if (connectivityInteractor.isConnectedToNetwork()) {
+            connectedToNetwork()
+        } else {
+            notConnectedToNetwork()
         }
     }
 }

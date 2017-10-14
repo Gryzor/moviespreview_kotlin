@@ -1,8 +1,7 @@
 package com.jpp.moviespreview.app.ui
 
 import com.jpp.moviespreview.app.BackgroundInteractorForTesting
-import com.jpp.moviespreview.app.mock
-import com.jpp.moviespreview.app.ui.background.BackgroundInteractor
+import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

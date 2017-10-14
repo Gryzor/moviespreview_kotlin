@@ -85,4 +85,10 @@ class SplashActivityEspressoTest {
     }
 
 
+    @Test
+    fun test_appShowsConnectivityError() {
+
+
+
+    }
 }

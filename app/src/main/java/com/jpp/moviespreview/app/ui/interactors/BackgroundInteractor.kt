@@ -1,4 +1,4 @@
-package com.jpp.moviespreview.app.ui.background
+package com.jpp.moviespreview.app.ui.interactors
 
 import android.os.Handler
 import android.os.Looper

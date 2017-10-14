@@ -8,7 +8,8 @@ package com.jpp.moviespreview.app.ui.splash
  */
 interface SplashView {
     fun continueToHome()
-    fun showError()
+    fun showUnexpectedError()
+    fun showNotConnectedToNetwork()
 }
 
 

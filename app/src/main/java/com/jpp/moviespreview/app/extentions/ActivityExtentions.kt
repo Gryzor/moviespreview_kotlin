@@ -17,29 +17,6 @@ val Activity.app: MoviesPreviewApp
 
 
 /**
- * Verifies if the device is connected to a network.
- */
-fun Activity.isConnectedToNetwork(): Boolean {
-    val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    val networkInfo = connectivityManager.activeNetworkInfo
-    return networkInfo?.isConnectedOrConnecting ?: false
-}
-
-
-/**
- * Verifies if the device is connected to a network or not. If it is connected
- * to a network, it executes [connectedToNetwork]. If not, executes [notConnectedToNetwork]
- */
-fun Activity.notConnectedToNetwork(notConnectedToNetwork: () -> Unit?,
-                                   connectedToNetwork: () -> Unit?) {
-    if (isConnectedToNetwork()) {
-        connectedToNetwork()
-    } else {
-        notConnectedToNetwork()
-    }
-}
-
-/**
  * Shows a no network connection alert dialog and closes the application
  * when the user preses the OK button.
  */

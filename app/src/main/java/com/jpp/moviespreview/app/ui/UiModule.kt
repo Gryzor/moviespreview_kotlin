@@ -1,7 +1,10 @@
 package com.jpp.moviespreview.app.ui
 
-import com.jpp.moviespreview.app.ui.background.BackgroundInteractor
-import com.jpp.moviespreview.app.ui.background.BackgroundInteractorImpl
+import android.content.Context
+import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
+import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractorImpl
+import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
+import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractorImpl
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -25,4 +28,8 @@ class UiModule {
     @Singleton
     @Provides
     fun providesDomainToUiDataMapper() = DomainToUiDataMapper()
+
+    @Singleton
+    @Provides
+    fun providesConnectivityInteractor(context: Context) : ConnectivityInteractor = ConnectivityInteractorImpl(context)
 }

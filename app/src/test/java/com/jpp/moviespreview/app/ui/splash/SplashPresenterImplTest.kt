@@ -8,8 +8,9 @@ import com.jpp.moviespreview.app.mock
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.ImageConfiguration
 import com.jpp.moviespreview.app.ui.MoviesContext
-import com.jpp.moviespreview.app.ui.background.BackgroundInteractor
+import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
 import com.jpp.moviespreview.app.BackgroundInteractorForTesting
+import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -27,6 +28,7 @@ class SplashPresenterImplTest {
     private lateinit var mapper: DomainToUiDataMapper
     private lateinit var splashView: SplashView
     private lateinit var subject: SplashPresenterImpl
+    private lateinit var connectivityInteractor: ConnectivityInteractor
 
 
     @Before
@@ -36,8 +38,9 @@ class SplashPresenterImplTest {
         mapper = mock()
         useCase = mock()
         splashView = mock()
+        connectivityInteractor = mock()
 
-        subject = SplashPresenterImpl(useCase, backgroundInteractor, moviesContext, mapper)
+        subject = SplashPresenterImpl(useCase, backgroundInteractor, moviesContext, mapper, connectivityInteractor)
         subject.linkView(splashView)
     }
 
@@ -68,20 +71,32 @@ class SplashPresenterImplTest {
     @Test
     fun retrieveConfig_whenNoImageConfig_andUseCaseReturnsNull_callsOnShowError() {
         Mockito.`when`(useCase.execute()).thenReturn(null)
+        Mockito.`when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(true)
 
         subject.retrieveConfig()
 
-        Mockito.verify(splashView).showError()
+        Mockito.verify(splashView).showUnexpectedError()
     }
 
     @Test
     fun retrieveConfig_whenNoImageConfig_andUseCaseThrowsException_callsOnShowError() {
         Mockito.`when`(useCase.execute()).thenReturn(null)
         (backgroundInteractor as BackgroundInteractorForTesting).throwException = true
+        Mockito.`when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(true)
 
         subject.retrieveConfig()
 
-        Mockito.verify(splashView).showError()
+        Mockito.verify(splashView).showUnexpectedError()
+    }
+
+    @Test
+    fun retrieveConfig_whenNoImageConfig_andNoInternetConnection_callsOnShowNoInternetConnection() {
+        Mockito.`when`(useCase.execute()).thenReturn(null)
+        Mockito.`when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(false)
+
+        subject.retrieveConfig()
+
+        Mockito.verify(splashView).showNotConnectedToNetwork()
     }
 
     @Test
