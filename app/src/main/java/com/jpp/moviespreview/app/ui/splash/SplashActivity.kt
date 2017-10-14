@@ -39,6 +39,7 @@ class SplashActivity : AppCompatActivity(), SplashView {
 
     override fun continueToHome() {
         startActivity<MainActivity>()
+        finish()
     }
 
     override fun showError() {

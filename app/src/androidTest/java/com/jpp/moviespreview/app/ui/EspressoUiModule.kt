@@ -17,7 +17,7 @@ class EspressoUiModule {
 
     @Singleton
     @Provides
-    fun providesMoviesContext(): MoviesContext = mock()
+    fun providesMoviesContext() = MoviesContext()
 
     @Singleton
     @Provides
