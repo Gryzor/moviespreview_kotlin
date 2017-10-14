@@ -3,6 +3,7 @@ package com.jpp.moviespreview.app.data.cache
 import com.jpp.moviespreview.app.data.MoviesConfiguration
 import com.jpp.moviespreview.app.data.cache.db.MoviesDataBase
 import com.jpp.moviespreview.app.data.cache.db.Timestamp
+import com.jpp.moviespreview.app.extentions.AllOpen
 import com.jpp.moviespreview.app.extentions.TimeUtils
 import com.jpp.moviespreview.app.extentions.isOlderThan
 import kotlin.system.exitProcess
@@ -13,6 +14,7 @@ import kotlin.system.exitProcess
  *
  * Created by jpp on 10/6/17.
  */
+@AllOpen
 interface MoviesCache {
     /**
      * Saves the provided movie configuration, using the provided updateDate as timestamp for it.

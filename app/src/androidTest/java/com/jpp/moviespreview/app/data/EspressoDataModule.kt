@@ -23,7 +23,7 @@ class EspressoDataModule {
 
     @Provides
     @Singleton
-    fun providesCacheDataMapper(): CacheDataMapper = mock()
+    fun providesCacheDataMapper(): CacheDataMapper = CacheDataMapper()
 
     @Provides
     @Singleton

@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 //Kotlin Annotation Processing (KAPT) plugin
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-allopen'
 
 android {
     compileSdkVersion 25
@@ -82,8 +83,13 @@ dependencies {
 
     androidTestCompile 'org.mockito:mockito-android:2.8.9'
     androidTestCompile 'org.mockito:mockito-core:2.8.9'
+
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.8.9'
     testCompile 'org.mockito:mockito-inline:2.8.9' // to mock final classes
     kaptAndroidTest "com.google.dagger:dagger-compiler:$daggerVersion"
+}
+
+allOpen {
+    annotation("com.jpp.moviespreview.app.extentions.AllOpen")
 }

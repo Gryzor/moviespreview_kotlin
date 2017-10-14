@@ -13,8 +13,12 @@ import com.jpp.moviespreview.app.ui.splash.di.SplashModule
  */
 open class MoviesPreviewApp : Application() {
 
-    private val appComponent by lazy {
-        DaggerAppComponent
+    lateinit var appComponent: AppComponent
+
+
+    override fun onCreate() {
+        super.onCreate()
+        appComponent = DaggerAppComponent
                 .builder()
                 .appModule(AppModule(this))
                 .dataModule(DataModule())
@@ -22,13 +26,6 @@ open class MoviesPreviewApp : Application() {
                 .build()
     }
 
-
-    override fun onCreate() {
-        super.onCreate()
-    }
-
-    open fun appComponent(): AppComponent = appComponent
-
-    open fun splashComponent() : SplashComponent = appComponent.plus(SplashModule())
+    open fun splashComponent(): SplashComponent = appComponent.plus(SplashModule())
 
 }
