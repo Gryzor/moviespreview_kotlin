@@ -1,26 +1,28 @@
 package com.jpp.moviespreview.app.ui.splash
 
 import android.support.test.rule.ActivityTestRule
+import android.support.test.runner.AndroidJUnit4
 import android.util.Log
-import com.jpp.moviespreview.app.EspressoAppComponent
 import com.jpp.moviespreview.app.TestComponentRule
-import com.jpp.moviespreview.app.data.server.MoviesPreviewApi
-import com.jpp.moviespreview.app.mock
 import com.jpp.moviespreview.app.ui.MoviesContext
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import javax.inject.Inject
 
 /**
  * Created by jpp on 10/13/17.
  */
+@RunWith(AndroidJUnit4::class)
 class SplashActivityEspressoTest {
 
 
-    @get:Rule val activityRule = ActivityTestRule(SplashActivity::class.java)
-    @get:Rule val testComponentRule = TestComponentRule()
+    @get:Rule @JvmField
+    val activityRule = ActivityTestRule(SplashActivity::class.java)
+    @get:Rule
+    val testComponentRule = TestComponentRule()
 
 
     @Inject
