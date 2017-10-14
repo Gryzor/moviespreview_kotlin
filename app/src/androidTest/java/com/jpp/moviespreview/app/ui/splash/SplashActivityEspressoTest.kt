@@ -1,12 +1,10 @@
 package com.jpp.moviespreview.app.ui.splash
 
-import android.content.ComponentName
+import android.annotation.TargetApi
 import android.content.Intent
-import android.support.test.InstrumentationRegistry
-import android.support.test.espresso.Espresso
+import android.os.Build
 import android.support.test.espresso.intent.Intents
 import android.support.test.espresso.intent.matcher.IntentMatchers
-import android.support.test.espresso.intent.rule.IntentsTestRule
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import com.jpp.moviespreview.app.TestComponentRule
@@ -16,6 +14,7 @@ import com.jpp.moviespreview.app.data.cache.MoviesCache
 import com.jpp.moviespreview.app.extentions.TimeUtils
 import com.jpp.moviespreview.app.extentions.WaitActivityIsResumedIdlingResource
 import com.jpp.moviespreview.app.extentions.launch
+import com.jpp.moviespreview.app.extentions.waitToFinish
 import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.main.MainActivity
 import org.junit.Assert
@@ -61,6 +60,7 @@ class SplashActivityEspressoTest {
         testComponentRule.testComponent?.inject(this)
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Test
     fun test_appContinuesToHome_whenConfigurationRestoredFromCache() {
         Intents.init()
@@ -74,11 +74,15 @@ class SplashActivityEspressoTest {
 
         val name = MainActivity::class.java.name
         val idlingResource = WaitActivityIsResumedIdlingResource(name)
-        Espresso.registerIdlingResources(idlingResource)
+        // Espresso.registerIdlingResources(idlingResource)
 
+        activityRule.waitToFinish()
         Assert.assertNotNull(moviesContext.imageConfig)
         Intents.intended(IntentMatchers.hasComponent(name))
-        Espresso.unregisterIdlingResources(idlingResource)
+        Assert.assertTrue(activityRule.activity.isDestroyed)
+        // Espresso.unregisterIdlingResources(idlingResource)
         Intents.release()
     }
+
+
 }
