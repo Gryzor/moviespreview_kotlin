@@ -38,6 +38,9 @@
 
      # ensure that the emulator is ready to use
      - circle-android wait-for-boot
+     # unlock the emulator screen
+     - sleep 30
+     - adb shell input keyevent 82
 
      # Execute Device Tests
      - ./gradlew app:connectedAndroidTest
