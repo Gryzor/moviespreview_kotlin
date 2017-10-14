@@ -1,7 +1,10 @@
 package com.jpp.moviespreview.app.ui
 
+import android.content.Context
 import com.jpp.moviespreview.app.BackgroundInteractorForTesting
+import com.jpp.moviespreview.app.mock
 import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
+import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -25,4 +28,8 @@ class EspressoUiModule {
     @Singleton
     @Provides
     fun providesDomainToUiDataMapper() = DomainToUiDataMapper()
+
+    @Singleton
+    @Provides
+    fun providesConnectivityInteractor(context: Context) : ConnectivityInteractor = mock()
 }
