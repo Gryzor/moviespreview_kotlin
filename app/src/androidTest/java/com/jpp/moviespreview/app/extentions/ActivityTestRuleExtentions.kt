@@ -6,7 +6,6 @@ import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.lifecycle.ActivityLifecycleCallback
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import android.support.test.runner.lifecycle.Stage
-import com.jpp.moviespreview.app.ui.SetupScreen
 import java.util.concurrent.CountDownLatch
 
 /**
@@ -14,11 +13,10 @@ import java.util.concurrent.CountDownLatch
  */
 fun <T : Activity> ActivityTestRule<T>.launch(intent: Intent? = null) {
     launchActivity(intent)
-    SetupScreen.setupScreen(activity)
 }
 
 
-fun <T: Activity> ActivityTestRule<T>.waitToFinish() {
+fun <T : Activity> ActivityTestRule<T>.waitToFinish() {
     val waitForFinished = WaitForFinished()
     runOnUiThread {
         waitForFinished.register()
