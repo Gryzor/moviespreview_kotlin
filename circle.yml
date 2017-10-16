@@ -23,7 +23,7 @@
  test:
    pre:
     # start the emulator
-    - emulator -avd circleci-android24 -no-boot-anim:
+    - emulator -avd circleci-android22 -no-boot-anim:
         background: true
         parallel: true
     # ensure that the emulator is ready to use
