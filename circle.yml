@@ -44,7 +44,7 @@
      - adb shell screencap -p | perl -pe 's/\x0D\x0A/\x0A/g' > $CIRCLE_ARTIFACTS/screen-$(date +"%T").png
 
      # Execute Device Tests
-     - ./gradlew app:connectedAndroidTest
+     - ./gradlew app:connectedAndroidTest -PdisablePreDex
 
      # copy test results
      - cp -r app/build/reports/tests/testDebugUnitTest/ $CIRCLE_TEST_REPORTS/AppUnitTests
