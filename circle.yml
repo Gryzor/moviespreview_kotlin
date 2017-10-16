@@ -4,6 +4,8 @@
      _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
      ANDROID_HOME: /usr/local/android-sdk-linux
      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
+     TERM: "dumb"
+     ADB_INSTALL_TIMEOUT: "10"
 
  dependencies:
    pre:
@@ -21,12 +23,6 @@
      - ANDROID_HOME=/usr/local/android-sdk-linux ./gradlew dependencies || true
 
  test:
-   pre:
-    # start the emulator
-    - emulator -avd circleci-android24 -no-boot-anim:
-        background: true
-        parallel: true
-    - circle-android wait-for-boot
 
    override:
 
@@ -35,6 +31,11 @@
 
      # Execute Unit Tests
      - ./gradlew app:test
+
+     # start the emulator
+     - emulator -avd circleci-android24 -no-audio -no-window:
+          background: true
+          parallel: true
 
      # ensure that the emulator is ready to use
      - circle-android wait-for-boot
