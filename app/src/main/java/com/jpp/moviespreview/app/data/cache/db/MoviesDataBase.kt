@@ -12,9 +12,11 @@ import com.jpp.moviespreview.app.extentions.AllOpen
 @AllOpen
 @Database(entities = arrayOf(ImageConfig::class,
         ImageSize::class,
-        Timestamp::class)
+        Timestamp::class,
+        Genre::class)
         , version = 1)
 abstract class MoviesDataBase : RoomDatabase() {
     abstract fun imageConfigDao(): ImageConfigDao
     abstract fun timestampDao(): TimestampDao
+    abstract fun genresDao(): GenresDao
 }

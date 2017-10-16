@@ -39,3 +39,8 @@ data class ImageSize(@ColumnInfo(name = "size") val size: String,
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0
 }
+
+
+@Entity(tableName = "genres")
+data class Genre(@PrimaryKey @ColumnInfo(name = "_id") var id: Int,
+                 @ColumnInfo(name = "name") var name: String)

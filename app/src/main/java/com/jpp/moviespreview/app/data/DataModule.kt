@@ -3,9 +3,9 @@ package com.jpp.moviespreview.app.data
 import android.arch.persistence.room.Room
 import android.content.Context
 import com.jpp.moviespreview.BuildConfig
-import com.jpp.moviespreview.app.data.cache.CacheDataMapper
-import com.jpp.moviespreview.app.data.cache.MoviesCache
-import com.jpp.moviespreview.app.data.cache.MoviesCacheImpl
+import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCacheDataMapper
+import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCache
+import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCacheImpl
 import com.jpp.moviespreview.app.data.cache.db.MoviesDataBase
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApi
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
@@ -50,11 +50,12 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun providesCacheDataMapper() = CacheDataMapper()
+    fun providesMoviesConfigurationCacheDataMapper() = MoviesConfigurationCacheDataMapper()
 
     @Provides
     @Singleton
-    fun providesMoviesCache(cacheDataMapper: CacheDataMapper, moviesDataBase: MoviesDataBase): MoviesCache = MoviesCacheImpl(cacheDataMapper, moviesDataBase)
+    fun providesMoviesConfigurationCache(cacheDataMapper: MoviesConfigurationCacheDataMapper,
+                                         moviesDataBase: MoviesDataBase): MoviesConfigurationCache = MoviesConfigurationCacheImpl(cacheDataMapper, moviesDataBase)
 
 
     @Provides

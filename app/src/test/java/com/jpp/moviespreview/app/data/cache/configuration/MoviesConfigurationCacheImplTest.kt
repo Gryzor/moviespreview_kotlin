@@ -1,4 +1,4 @@
-package com.jpp.moviespreview.app.data.cache
+package com.jpp.moviespreview.app.data.cache.configuration
 
 import com.jpp.moviespreview.app.data.cache.db.*
 import com.jpp.moviespreview.app.extentions.TimeUtils
@@ -8,10 +8,10 @@ import org.junit.Test
 import org.mockito.Mockito.*
 import java.util.concurrent.TimeUnit
 
-class MoviesCacheImplTest {
+class MoviesConfigurationCacheImplTest {
 
-    private lateinit var subject: MoviesCacheImpl
-    private lateinit var mapper: CacheDataMapper
+    private lateinit var subject: MoviesConfigurationCacheImpl
+    private lateinit var mapper: MoviesConfigurationCacheDataMapper
     private lateinit var database: MoviesDataBase
     private lateinit var timestampDao: TimestampDao
     private lateinit var imageConfigDao: ImageConfigDao
@@ -20,9 +20,9 @@ class MoviesCacheImplTest {
 
     @Before
     fun setUp() {
-        mapper = mock(CacheDataMapper::class.java)
+        mapper = mock(MoviesConfigurationCacheDataMapper::class.java)
         database = mock(MoviesDataBase::class.java)
-        subject = MoviesCacheImpl(mapper, database)
+        subject = MoviesConfigurationCacheImpl(mapper, database)
 
         timestampDao = mock(TimestampDao::class.java)
         `when`(database.timestampDao()).thenReturn(timestampDao)
@@ -34,7 +34,7 @@ class MoviesCacheImplTest {
     @Test
     fun isLastConfigOlderThan_aDay_whenDifferenceIsTwoHours() {
         val timestamp = mock(Timestamp::class.java)
-        `when`(timestampDao.getTimestamp(MoviesCacheImpl.MOVIES_CONFIGURATION_TIMESTAMP.id)).thenReturn(timestamp)
+        `when`(timestampDao.getTimestamp(MoviesConfigurationCacheImpl.MOVIES_CONFIGURATION_TIMESTAMP.id)).thenReturn(timestamp)
         `when`(timestamp.lastUpdate).thenReturn(System.currentTimeMillis() - TimeUnit.HOURS.toMillis(2))
         val result = subject.isLastConfigOlderThan(TimeUnit.DAYS.toMillis(1), timeUtils)
         assertFalse(result)
@@ -43,7 +43,7 @@ class MoviesCacheImplTest {
     @Test
     fun isLastConfigOlderThan_aDay_whenDifferenceIsAWeek() {
         val timestamp = mock(Timestamp::class.java)
-        `when`(timestampDao.getTimestamp(MoviesCacheImpl.MOVIES_CONFIGURATION_TIMESTAMP.id)).thenReturn(timestamp)
+        `when`(timestampDao.getTimestamp(MoviesConfigurationCacheImpl.MOVIES_CONFIGURATION_TIMESTAMP.id)).thenReturn(timestamp)
         `when`(timestamp.lastUpdate).thenReturn(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(7))
         val result = subject.isLastConfigOlderThan(TimeUnit.DAYS.toMillis(1), timeUtils)
         assertTrue(result)
@@ -51,7 +51,7 @@ class MoviesCacheImplTest {
 
     @Test
     fun isLastConfigOlderThan_aDay_whenIsFirstTime() {
-        `when`(timestampDao.getTimestamp(MoviesCacheImpl.MOVIES_CONFIGURATION_TIMESTAMP.id)).thenReturn(null)
+        `when`(timestampDao.getTimestamp(MoviesConfigurationCacheImpl.MOVIES_CONFIGURATION_TIMESTAMP.id)).thenReturn(null)
         val result = subject.isLastConfigOlderThan(TimeUnit.DAYS.toMillis(1), timeUtils)
         assertTrue(result)
     }

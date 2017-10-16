@@ -1,11 +1,12 @@
-package com.jpp.moviespreview.app.data.cache
+package com.jpp.moviespreview.app.data.cache.configuration
 
 import com.jpp.moviespreview.app.data.ImagesConfiguration
 import com.jpp.moviespreview.app.data.MoviesConfiguration
+import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCacheDataMapper
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class CacheDataMapperTest {
+class MoviesConfigurationCacheDataMapperTest {
 
 
     @Test
@@ -14,7 +15,7 @@ class CacheDataMapperTest {
         val imagesConfiguration = ImagesConfiguration("baseUrl", posterSizes)
         val moviesConfiguration = MoviesConfiguration(imagesConfiguration)
 
-        val dataImageSizes = CacheDataMapper().convertImagesConfigurationToCacheModel(16L, moviesConfiguration)
+        val dataImageSizes = MoviesConfigurationCacheDataMapper().convertImagesConfigurationToCacheModel(16L, moviesConfiguration)
         assertEquals(3, dataImageSizes.size)
 
         assertEquals(16L, dataImageSizes[0].imageConfig)
@@ -33,7 +34,7 @@ class CacheDataMapperTest {
         val imagesConfiguration = ImagesConfiguration("baseUrl", posterSizes)
         val moviesConfiguration = MoviesConfiguration(imagesConfiguration)
 
-        val cacheImageConfig = CacheDataMapper().convertMoviesConfigurationToCacheModel(moviesConfiguration)
+        val cacheImageConfig = MoviesConfigurationCacheDataMapper().convertMoviesConfigurationToCacheModel(moviesConfiguration)
 
         assertEquals("baseUrl", cacheImageConfig.baseUrl)
     }

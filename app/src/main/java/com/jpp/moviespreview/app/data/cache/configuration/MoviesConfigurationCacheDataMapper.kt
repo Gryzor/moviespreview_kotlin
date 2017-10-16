@@ -1,11 +1,11 @@
-package com.jpp.moviespreview.app.data.cache
+package com.jpp.moviespreview.app.data.cache.configuration
 
 import com.jpp.moviespreview.app.data.ImagesConfiguration
 import com.jpp.moviespreview.app.data.MoviesConfiguration
 import com.jpp.moviespreview.app.data.cache.db.ImageConfig as CacheImageConfiguration
 import com.jpp.moviespreview.app.data.cache.db.ImageSize as CacheImageSize
 
-class CacheDataMapper {
+class MoviesConfigurationCacheDataMapper {
 
 
     fun convertMoviesConfigurationToCacheModel(moviesConfiguration: MoviesConfiguration) = with(moviesConfiguration) {
