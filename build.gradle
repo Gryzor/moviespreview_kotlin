@@ -3,7 +3,8 @@
 buildscript {
     ext.support_version = '25.3.1'
     ext.kotlin_version = '1.1.4-3'
-    ext.anko_version = '0.9'
+    ext.anko_version = '0.10.1'
+    ext.daggerVersion = '2.11'
 
     repositories {
         jcenter()
@@ -11,6 +12,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -20,6 +22,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven { url 'https://maven.google.com' }
     }
 }
 
