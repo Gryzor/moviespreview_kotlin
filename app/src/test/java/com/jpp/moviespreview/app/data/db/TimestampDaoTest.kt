@@ -1,8 +1,9 @@
 package com.jpp.moviespreview.app.data.db
 
-import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCacheDataMapper
-import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCacheImpl
-import com.jpp.moviespreview.app.data.cache.db.*
+import com.jpp.moviespreview.app.data.cache.db.MoviesDataBase
+import com.jpp.moviespreview.app.data.cache.db.Timestamp
+import com.jpp.moviespreview.app.data.cache.db.TimestampDao
+import com.jpp.moviespreview.app.data.cache.db.isTimestampOlderThan
 import com.jpp.moviespreview.app.util.TimeUtils
 import org.junit.Assert
 import org.junit.Before
@@ -20,6 +21,10 @@ class TimestampDaoTest {
 
     private var timeUtils = TimeUtils()
 
+    companion object {
+        val TIMESTAMP = Timestamp(12)
+    }
+
     @Before
     fun setUp() {
         database = Mockito.mock(MoviesDataBase::class.java)
@@ -31,25 +36,25 @@ class TimestampDaoTest {
     @Test
     fun isLastConfigOlderThan_aDay_whenDifferenceIsTwoHours() {
         val timestamp = Mockito.mock(Timestamp::class.java)
-        Mockito.`when`(timestampDao.getTimestamp(MoviesConfigurationCacheImpl.MOVIES_CONFIGURATION_TIMESTAMP.id)).thenReturn(timestamp)
+        Mockito.`when`(timestampDao.getTimestamp(TIMESTAMP.id)).thenReturn(timestamp)
         Mockito.`when`(timestamp.lastUpdate).thenReturn(System.currentTimeMillis() - TimeUnit.HOURS.toMillis(2))
-        val result = database.timestampDao().isTimestampOlderThan(MoviesConfigurationCacheImpl.MOVIES_CONFIGURATION_TIMESTAMP, TimeUnit.DAYS.toMillis(1), timeUtils)
+        val result = database.timestampDao().isTimestampOlderThan(TIMESTAMP, TimeUnit.DAYS.toMillis(1), timeUtils)
         Assert.assertFalse(result)
     }
 
     @Test
     fun isLastConfigOlderThan_aDay_whenDifferenceIsAWeek() {
         val timestamp = Mockito.mock(Timestamp::class.java)
-        Mockito.`when`(timestampDao.getTimestamp(MoviesConfigurationCacheImpl.MOVIES_CONFIGURATION_TIMESTAMP.id)).thenReturn(timestamp)
+        Mockito.`when`(timestampDao.getTimestamp(TIMESTAMP.id)).thenReturn(timestamp)
         Mockito.`when`(timestamp.lastUpdate).thenReturn(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(7))
-        val result = database.timestampDao().isTimestampOlderThan(MoviesConfigurationCacheImpl.MOVIES_CONFIGURATION_TIMESTAMP, TimeUnit.DAYS.toMillis(1), timeUtils)
+        val result = database.timestampDao().isTimestampOlderThan(TIMESTAMP, TimeUnit.DAYS.toMillis(1), timeUtils)
         Assert.assertTrue(result)
     }
 
     @Test
     fun isLastConfigOlderThan_aDay_whenIsFirstTime() {
-        Mockito.`when`(timestampDao.getTimestamp(MoviesConfigurationCacheImpl.MOVIES_CONFIGURATION_TIMESTAMP.id)).thenReturn(null)
-        val result = database.timestampDao().isTimestampOlderThan(MoviesConfigurationCacheImpl.MOVIES_CONFIGURATION_TIMESTAMP, TimeUnit.DAYS.toMillis(1), timeUtils)
+        Mockito.`when`(timestampDao.getTimestamp(TIMESTAMP.id)).thenReturn(null)
+        val result = database.timestampDao().isTimestampOlderThan(TIMESTAMP, TimeUnit.DAYS.toMillis(1), timeUtils)
         Assert.assertTrue(result)
     }
 }

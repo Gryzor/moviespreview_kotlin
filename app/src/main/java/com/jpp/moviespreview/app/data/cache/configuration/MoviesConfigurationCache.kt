@@ -8,8 +8,8 @@ import com.jpp.moviespreview.app.util.AllOpen
 import com.jpp.moviespreview.app.util.TimeUtils
 
 /**
- * Defines the contract of the Cache used by the application. It uses Room to store, update, delete
- * and retrieve data.
+ * Defines the contract of the Cache used by the application to store movies configurations.
+ * It uses Room to store, update, delete and retrieve data.
  *
  * Created by jpp on 10/6/17.
  */
@@ -46,9 +46,9 @@ class MoviesConfigurationCacheImpl(private val cacheDataMapper: MoviesConfigurat
     }
 
 
-    override fun isLastConfigOlderThan(timeStamp: Long, timeUtils: TimeUtils): Boolean {
-        return database.timestampDao().isTimestampOlderThan(MOVIES_CONFIGURATION_TIMESTAMP, timeStamp, timeUtils)
-    }
+    override fun isLastConfigOlderThan(timeStamp: Long, timeUtils: TimeUtils) =
+         database.timestampDao().isTimestampOlderThan(MOVIES_CONFIGURATION_TIMESTAMP, timeStamp, timeUtils)
+
 
 
     override fun saveMoviesConfig(moviesConfig: MoviesConfiguration, updateDate: Long) {
