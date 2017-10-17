@@ -6,13 +6,13 @@ import com.jpp.moviespreview.app.domain.MoviesConfiguration
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.domain.configuration.ConfigurationDataMapper
 import com.jpp.moviespreview.app.domain.configuration.RetrieveConfigurationUseCase
-import com.jpp.moviespreview.app.extentions.TimeUtils
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 import com.jpp.moviespreview.app.ui.splash.SplashPresenter
 import com.jpp.moviespreview.app.ui.splash.SplashPresenterImpl
+import com.jpp.moviespreview.app.util.TimeUtils
 import dagger.Module
 import dagger.Provides
 

@@ -1,4 +1,6 @@
-package com.jpp.moviespreview.app.extentions
+package com.jpp.moviespreview.app.util
+
+import com.jpp.moviespreview.app.util.extentions.isOlderThan
 
 /**
  * Created by jpp on 10/11/17.

@@ -1,7 +1,7 @@
 package com.jpp.moviespreview.app
 
 import android.content.Context
-import com.jpp.moviespreview.app.extentions.TimeUtils
+import com.jpp.moviespreview.app.util.TimeUtils
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

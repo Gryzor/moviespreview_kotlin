@@ -128,5 +128,5 @@ dependencies {
 
 // used to be able to mock not-open classes in kotlin
 allOpen {
-    annotation("com.jpp.moviespreview.app.extentions.AllOpen")
+    annotation("com.jpp.moviespreview.app.util.AllOpen")
 }

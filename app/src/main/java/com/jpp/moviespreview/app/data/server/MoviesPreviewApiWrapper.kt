@@ -3,7 +3,7 @@ package com.jpp.moviespreview.app.data.server
 import com.jpp.moviespreview.BuildConfig
 import com.jpp.moviespreview.app.data.Genres
 import com.jpp.moviespreview.app.data.MoviesConfiguration
-import com.jpp.moviespreview.app.extentions.AllOpen
+import com.jpp.moviespreview.app.util.AllOpen
 
 /**
  * Wrapper created around the Retrofit implementation of the API interface.

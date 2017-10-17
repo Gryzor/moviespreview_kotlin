@@ -2,10 +2,10 @@ package com.jpp.moviespreview.app.ui.splash
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.jpp.moviespreview.app.extentions.app
-import com.jpp.moviespreview.app.extentions.showNoNetworkConnectionAlert
-import com.jpp.moviespreview.app.extentions.showUnexpectedError
 import com.jpp.moviespreview.app.ui.main.MainActivity
+import com.jpp.moviespreview.app.util.extentions.app
+import com.jpp.moviespreview.app.util.extentions.showNoNetworkConnectionAlert
+import com.jpp.moviespreview.app.util.extentions.showUnexpectedError
 import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 

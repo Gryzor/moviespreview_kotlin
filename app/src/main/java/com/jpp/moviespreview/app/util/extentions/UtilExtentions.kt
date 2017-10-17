@@ -1,4 +1,4 @@
-package com.jpp.moviespreview.app.extentions
+package com.jpp.moviespreview.app.util.extentions
 
 /**
  * Created by jpp on 10/6/17.

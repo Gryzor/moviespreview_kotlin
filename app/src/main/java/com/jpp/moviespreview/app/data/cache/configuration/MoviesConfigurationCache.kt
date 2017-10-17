@@ -3,8 +3,9 @@ package com.jpp.moviespreview.app.data.cache.configuration
 import com.jpp.moviespreview.app.data.MoviesConfiguration
 import com.jpp.moviespreview.app.data.cache.db.MoviesDataBase
 import com.jpp.moviespreview.app.data.cache.db.Timestamp
-import com.jpp.moviespreview.app.extentions.AllOpen
-import com.jpp.moviespreview.app.extentions.TimeUtils
+import com.jpp.moviespreview.app.data.cache.db.isTimestampOlderThan
+import com.jpp.moviespreview.app.util.AllOpen
+import com.jpp.moviespreview.app.util.TimeUtils
 
 /**
  * Defines the contract of the Cache used by the application. It uses Room to store, update, delete
@@ -46,8 +47,7 @@ class MoviesConfigurationCacheImpl(private val cacheDataMapper: MoviesConfigurat
 
 
     override fun isLastConfigOlderThan(timeStamp: Long, timeUtils: TimeUtils): Boolean {
-        val lastConfig = database.timestampDao().getTimestamp(MOVIES_CONFIGURATION_TIMESTAMP.id)
-        return lastConfig == null || timeUtils.isOlderThan(lastConfig.lastUpdate, timeStamp)
+        return database.timestampDao().isTimestampOlderThan(MOVIES_CONFIGURATION_TIMESTAMP, timeStamp, timeUtils)
     }
 
 

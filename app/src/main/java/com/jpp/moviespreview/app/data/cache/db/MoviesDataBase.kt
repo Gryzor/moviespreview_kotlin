@@ -2,7 +2,7 @@ package com.jpp.moviespreview.app.data.cache.db
 
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.RoomDatabase
-import com.jpp.moviespreview.app.extentions.AllOpen
+import com.jpp.moviespreview.app.util.AllOpen
 
 /**
  * ROOM database definition.

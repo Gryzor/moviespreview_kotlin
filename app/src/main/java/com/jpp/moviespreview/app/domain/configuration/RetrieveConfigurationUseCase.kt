@@ -4,7 +4,7 @@ import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCac
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
 import com.jpp.moviespreview.app.domain.MoviesConfiguration
 import com.jpp.moviespreview.app.domain.UseCase
-import com.jpp.moviespreview.app.extentions.TimeUtils
+import com.jpp.moviespreview.app.util.TimeUtils
 import java.util.concurrent.TimeUnit
 
 /**

@@ -1,7 +1,7 @@
 package com.jpp.moviespreview.app.ui.interactors
 
 import android.content.Context
-import com.jpp.moviespreview.app.extentions.isConnectedToNetwork
+import com.jpp.moviespreview.app.util.extentions.isConnectedToNetwork
 
 /**
  * Created by jpp on 10/14/17.

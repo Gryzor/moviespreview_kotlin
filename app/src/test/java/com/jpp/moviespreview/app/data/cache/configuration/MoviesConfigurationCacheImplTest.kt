@@ -1,12 +1,10 @@
 package com.jpp.moviespreview.app.data.cache.configuration
 
 import com.jpp.moviespreview.app.data.cache.db.*
-import com.jpp.moviespreview.app.extentions.TimeUtils
-import org.junit.Assert.*
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.*
-import java.util.concurrent.TimeUnit
 
 class MoviesConfigurationCacheImplTest {
 
@@ -15,8 +13,6 @@ class MoviesConfigurationCacheImplTest {
     private lateinit var database: MoviesDataBase
     private lateinit var timestampDao: TimestampDao
     private lateinit var imageConfigDao: ImageConfigDao
-
-    private var timeUtils = TimeUtils()
 
     @Before
     fun setUp() {
@@ -31,30 +27,6 @@ class MoviesConfigurationCacheImplTest {
         `when`(database.imageConfigDao()).thenReturn(imageConfigDao)
     }
 
-    @Test
-    fun isLastConfigOlderThan_aDay_whenDifferenceIsTwoHours() {
-        val timestamp = mock(Timestamp::class.java)
-        `when`(timestampDao.getTimestamp(MoviesConfigurationCacheImpl.MOVIES_CONFIGURATION_TIMESTAMP.id)).thenReturn(timestamp)
-        `when`(timestamp.lastUpdate).thenReturn(System.currentTimeMillis() - TimeUnit.HOURS.toMillis(2))
-        val result = subject.isLastConfigOlderThan(TimeUnit.DAYS.toMillis(1), timeUtils)
-        assertFalse(result)
-    }
-
-    @Test
-    fun isLastConfigOlderThan_aDay_whenDifferenceIsAWeek() {
-        val timestamp = mock(Timestamp::class.java)
-        `when`(timestampDao.getTimestamp(MoviesConfigurationCacheImpl.MOVIES_CONFIGURATION_TIMESTAMP.id)).thenReturn(timestamp)
-        `when`(timestamp.lastUpdate).thenReturn(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(7))
-        val result = subject.isLastConfigOlderThan(TimeUnit.DAYS.toMillis(1), timeUtils)
-        assertTrue(result)
-    }
-
-    @Test
-    fun isLastConfigOlderThan_aDay_whenIsFirstTime() {
-        `when`(timestampDao.getTimestamp(MoviesConfigurationCacheImpl.MOVIES_CONFIGURATION_TIMESTAMP.id)).thenReturn(null)
-        val result = subject.isLastConfigOlderThan(TimeUnit.DAYS.toMillis(1), timeUtils)
-        assertTrue(result)
-    }
 
     @Test
     fun getLastMovieConfiguration_whenLastImageConfigIsNull_returnsNull() {
