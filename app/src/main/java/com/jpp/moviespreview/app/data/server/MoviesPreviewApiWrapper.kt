@@ -10,7 +10,7 @@ import com.jpp.moviespreview.app.extentions.AllOpen
 @AllOpen
 class MoviesPreviewApiWrapper(private val apiInstance: MoviesPreviewApi) {
 
-    fun getLastMovieConfiguration(): MoviesConfiguration = apiInstance.getLastConfiguration(BuildConfig.API_KEY).execute().body()
+    fun getLastMovieConfiguration(): MoviesConfiguration? = apiInstance.getLastConfiguration(BuildConfig.API_KEY).execute().body()
 
 
 }
