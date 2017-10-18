@@ -75,10 +75,13 @@ class SplashPresenterImplTest {
     fun linkView_whenContextNotCompleted_retrievesConfigAndGenres_setsContext_andContinuesToHome() {
         // -- prepare
         val movieConfigRetrieved: MoviesConfiguration = mock()
-        val sizes = ImagesConfiguration("randomUrl", ArrayList())
+        val rawSizes = ArrayList<String>()
+        rawSizes.add("1")
+        val sizes = ImagesConfiguration("randomUrl", rawSizes)
         Mockito.`when`(movieConfigRetrieved.imagesConfiguration).thenReturn(sizes)
         Mockito.`when`(moviesConfigurationUseCase.execute()).thenReturn(movieConfigRetrieved)
         val genreList = ArrayList<Genre>()
+        genreList.add(Genre(12, "Random"))
         Mockito.`when`(moviesGenresUseCase.execute()).thenReturn(genreList)
 
         // -- execute

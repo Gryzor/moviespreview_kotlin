@@ -1,8 +1,10 @@
 package com.jpp.moviespreview.app.data
 
-import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCacheDataMapper
 import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCache
+import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCacheDataMapper
 import com.jpp.moviespreview.app.data.cache.db.MoviesDataBase
+import com.jpp.moviespreview.app.data.cache.genre.MoviesGenreCache
+import com.jpp.moviespreview.app.data.cache.genre.MoviesGenreCacheDataMapper
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
 import com.jpp.moviespreview.app.mock
 import dagger.Module
@@ -23,6 +25,10 @@ class EspressoDataModule {
 
     @Provides
     @Singleton
+    fun providesServerApi(): MoviesPreviewApiWrapper = mock()
+
+    @Provides
+    @Singleton
     fun providesCacheDataMapper(): MoviesConfigurationCacheDataMapper = MoviesConfigurationCacheDataMapper()
 
     @Provides
@@ -31,5 +37,12 @@ class EspressoDataModule {
 
     @Provides
     @Singleton
-    fun providesServerApi(): MoviesPreviewApiWrapper = mock()
+    fun providesMoviesGenresCacheDataMapper() = MoviesGenreCacheDataMapper()
+
+
+    @Provides
+    @Singleton
+    fun providesMoviesGenreCache(): MoviesGenreCache = mock()
+
+
 }
