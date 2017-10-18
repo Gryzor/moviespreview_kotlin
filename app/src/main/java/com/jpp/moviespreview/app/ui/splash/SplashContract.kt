@@ -15,5 +15,4 @@ interface SplashView {
 
 interface SplashPresenter {
     fun linkView(splashView: SplashView)
-    fun retrieveConfig()
 }

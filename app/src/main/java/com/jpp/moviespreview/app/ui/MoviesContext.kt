@@ -7,5 +7,9 @@ class MoviesContext {
 
 
     var imageConfig: ImageConfiguration? = null
+    var movieGenres: List<MovieGenre>? = null
+
+
+    fun isConfigCompleted() = imageConfig != null && movieGenres != null
 
 }

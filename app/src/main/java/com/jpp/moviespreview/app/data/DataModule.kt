@@ -7,6 +7,9 @@ import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCac
 import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCache
 import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCacheImpl
 import com.jpp.moviespreview.app.data.cache.db.MoviesDataBase
+import com.jpp.moviespreview.app.data.cache.genre.MoviesGenreCache
+import com.jpp.moviespreview.app.data.cache.genre.MoviesGenreCacheDataMapper
+import com.jpp.moviespreview.app.data.cache.genre.MoviesGenreCacheImpl
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApi
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
 import dagger.Module
@@ -50,6 +53,11 @@ class DataModule {
 
     @Provides
     @Singleton
+    fun providesServerApi(): MoviesPreviewApiWrapper = MoviesPreviewApiWrapper(API)
+
+
+    @Provides
+    @Singleton
     fun providesMoviesConfigurationCacheDataMapper() = MoviesConfigurationCacheDataMapper()
 
     @Provides
@@ -60,6 +68,13 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun providesServerApi(): MoviesPreviewApiWrapper = MoviesPreviewApiWrapper(API)
+    fun providesMoviesGenresCacheDataMapper() = MoviesGenreCacheDataMapper()
+
+
+    @Provides
+    @Singleton
+    fun providesMoviesGenreCache(cacheDataMapper: MoviesGenreCacheDataMapper,
+                                 moviesDataBase: MoviesDataBase): MoviesGenreCache = MoviesGenreCacheImpl(cacheDataMapper, moviesDataBase)
+
 
 }

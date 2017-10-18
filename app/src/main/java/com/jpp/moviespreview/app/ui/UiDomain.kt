@@ -7,3 +7,10 @@ package com.jpp.moviespreview.app.ui
  * that take care of finding the proper size)
  */
 data class ImageConfiguration(val baseUrl: String, val sizes: List<String>)
+
+
+/**
+ * Represents a Movie Genre
+ */
+data class MovieGenre(val id: Int,
+                 val name: String)

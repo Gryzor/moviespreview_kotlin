@@ -23,6 +23,6 @@ interface MoviesPreviewApi {
     /**
      * Retrieves the list of genres
      */
-    @GET("/genre/movie/list")
+    @GET("genre/movie/list")
     fun getRenges(@Query("api_key") api_key: String): Call<Genres>
 }

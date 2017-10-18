@@ -34,7 +34,6 @@ class SplashActivity : AppCompatActivity(), SplashView {
     override fun onResume() {
         super.onResume()
         splashPresenter.linkView(this)
-        splashPresenter.retrieveConfig()
     }
 
     override fun continueToHome() {
