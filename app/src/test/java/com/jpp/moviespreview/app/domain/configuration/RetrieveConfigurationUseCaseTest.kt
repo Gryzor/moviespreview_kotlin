@@ -34,7 +34,8 @@ class RetrieveConfigurationUseCaseTest {
 
     @Test
     fun execute_whenLastConfigIsOld_retrievesDataFromApi_andSavesNewConfig() {
-        `when`(mConfigurationCache.isLastConfigOlderThan(TimeUnit.MINUTES.toMillis(30), timeUtils)).thenReturn(true)
+        `when`(timeUtils.cacheConfigurationRefreshTime()).thenReturn(30)
+        `when`(mConfigurationCache.isLastConfigOlderThan(30, timeUtils)).thenReturn(true)
         val moviesConfiguration = mock(MoviesConfiguration::class.java)
         `when`(api.getLastMovieConfiguration()).thenReturn(moviesConfiguration)
         val timestamp = 2000L
@@ -49,7 +50,8 @@ class RetrieveConfigurationUseCaseTest {
 
     @Test
     fun execute_whenLastConfigIsStillValid_retrievesDataFromCache() {
-        `when`(mConfigurationCache.isLastConfigOlderThan(TimeUnit.MINUTES.toMillis(30), timeUtils)).thenReturn(false)
+        `when`(timeUtils.cacheConfigurationRefreshTime()).thenReturn(30)
+        `when`(mConfigurationCache.isLastConfigOlderThan(30, timeUtils)).thenReturn(false)
         val moviesConfiguration = mock(MoviesConfiguration::class.java)
         `when`(mConfigurationCache.getLastMovieConfiguration()).thenReturn(moviesConfiguration)
 

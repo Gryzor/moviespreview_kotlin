@@ -5,6 +5,7 @@ import com.jpp.moviespreview.app.data.cache.db.Timestamp
 import com.jpp.moviespreview.app.data.cache.db.TimestampDao
 import com.jpp.moviespreview.app.data.cache.db.isTimestampOlderThan
 import com.jpp.moviespreview.app.util.TimeUtils
+import com.jpp.moviespreview.app.util.TimeUtilsDelegate
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -19,7 +20,7 @@ class TimestampDaoTest {
     private lateinit var database: MoviesDataBase
     private lateinit var timestampDao: TimestampDao
 
-    private var timeUtils = TimeUtils()
+    private var timeUtils = TimeUtils(TimeUtilsDelegate())
 
     companion object {
         val TIMESTAMP = Timestamp(12)

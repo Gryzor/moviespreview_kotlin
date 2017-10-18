@@ -21,7 +21,7 @@ class RetrieveConfigurationUseCase(private val mapper: ConfigurationDataMapper,
                                    private val timeUtils: TimeUtils) : UseCase<Any, MoviesConfiguration> {
 
     override fun execute(param: Any?): MoviesConfiguration? {
-        return if (configurationCache.isLastConfigOlderThan(TimeUnit.MINUTES.toMillis(30), timeUtils)) {
+        return if (configurationCache.isLastConfigOlderThan(timeUtils.cacheConfigurationRefreshTime(), timeUtils)) {
             api.getLastMovieConfiguration()?.let {
                 configurationCache.saveMoviesConfig(it, timeUtils.currentTimeInMillis())
                 mapper.convertMoviesConfigurationFromDataModel(it)
