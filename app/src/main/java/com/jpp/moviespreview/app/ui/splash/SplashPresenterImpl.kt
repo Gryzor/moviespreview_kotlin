@@ -1,6 +1,5 @@
 package com.jpp.moviespreview.app.ui.splash
 
-import android.support.annotation.VisibleForTesting
 import com.jpp.moviespreview.app.domain.Genre
 import com.jpp.moviespreview.app.domain.MoviesConfiguration
 import com.jpp.moviespreview.app.domain.UseCase
@@ -38,8 +37,7 @@ class SplashPresenterImpl(private val moviesConfigurationUseCase: UseCase<Any, M
         }
     }
 
-    @VisibleForTesting
-    fun retrieveConfig() {
+    private fun retrieveConfig() {
         backgroundInteractor
                 .executeBackgroundJob({ moviesConfigurationUseCase.execute() },
                         { processMoviesConfig(it) })
@@ -78,9 +76,9 @@ class SplashPresenterImpl(private val moviesConfigurationUseCase: UseCase<Any, M
 
     private fun processError() {
         if (connectivityInteractor.isConnectedToNetwork()) {
-            splashView.showNotConnectedToNetwork()
-        } else {
             splashView.showUnexpectedError()
+        } else {
+            splashView.showNotConnectedToNetwork()
         }
     }
 }
