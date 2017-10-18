@@ -3,9 +3,17 @@ package com.jpp.moviespreview.app.domain
 /**
  * Represents the configuration of the images tha the data layer can provide.
  */
-data class ImagesConfiguration(val baseUrl: String, val sizes: List<String>)
+data class ImagesConfiguration(val baseUrl: String,
+                               val sizes: List<String>)
 
 /**
  * Represents the general configuration of the movies
  */
 data class MoviesConfiguration(val imagesConfiguration: ImagesConfiguration)
+
+
+/**
+ * Represents a Genre
+ */
+data class Genre(val id: Int,
+                 val name: String)

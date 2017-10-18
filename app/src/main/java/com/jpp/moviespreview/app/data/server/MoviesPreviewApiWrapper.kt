@@ -23,5 +23,5 @@ class MoviesPreviewApiWrapper(private val apiInstance: MoviesPreviewApi) {
     /**
      * Retrieves the list of Genre available in the server.
      */
-    fun getRenges(): Genres? = apiInstance.getRenges(BuildConfig.API_KEY).execute().body()
+    fun getGenres(): Genres? = apiInstance.getRenges(BuildConfig.API_KEY).execute().body()
 }
