@@ -9,8 +9,8 @@ import com.jpp.moviespreview.app.data.cache.CacheTimestampUtils
 import com.jpp.moviespreview.app.data.cache.MoviesConfigurationCache
 import com.jpp.moviespreview.app.data.cache.MoviesConfigurationCacheImpl
 import com.jpp.moviespreview.app.data.cache.db.MoviesDataBase
-import com.jpp.moviespreview.app.data.cache.genre.MoviesGenreCache
-import com.jpp.moviespreview.app.data.cache.genre.MoviesGenreCacheImpl
+import com.jpp.moviespreview.app.data.cache.MoviesGenreCache
+import com.jpp.moviespreview.app.data.cache.MoviesGenreCacheImpl
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApi
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
 import dagger.Module

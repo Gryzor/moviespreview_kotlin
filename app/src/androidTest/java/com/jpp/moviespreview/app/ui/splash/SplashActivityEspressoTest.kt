@@ -16,7 +16,7 @@ import com.jpp.moviespreview.app.data.Genre
 import com.jpp.moviespreview.app.data.ImagesConfiguration
 import com.jpp.moviespreview.app.data.MoviesConfiguration
 import com.jpp.moviespreview.app.data.cache.MoviesConfigurationCache
-import com.jpp.moviespreview.app.data.cache.genre.MoviesGenreCache
+import com.jpp.moviespreview.app.data.cache.MoviesGenreCache
 import com.jpp.moviespreview.app.extentions.launch
 import com.jpp.moviespreview.app.extentions.waitToFinish
 import com.jpp.moviespreview.app.ui.MoviesContext
