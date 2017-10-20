@@ -1,6 +1,9 @@
 package com.jpp.moviespreview.app.data.cache.configuration
 
+import com.jpp.moviespreview.app.data.MoviesConfiguration
+import com.jpp.moviespreview.app.data.cache.CacheTimestampUtils
 import com.jpp.moviespreview.app.data.cache.db.*
+import com.jpp.moviespreview.app.mock
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
@@ -13,17 +16,19 @@ class MoviesConfigurationCacheImplTest {
     private lateinit var database: MoviesDataBase
     private lateinit var timestampDao: TimestampDao
     private lateinit var imageConfigDao: ImageConfigDao
+    private lateinit var cacheTimestampUtils: CacheTimestampUtils
 
     @Before
     fun setUp() {
-        mapper = mock(MoviesConfigurationCacheDataMapper::class.java)
-        database = mock(MoviesDataBase::class.java)
-        subject = MoviesConfigurationCacheImpl(mapper, database)
+        mapper = mock()
+        database = mock()
+        cacheTimestampUtils = mock()
+        subject = MoviesConfigurationCacheImpl(mapper, database, cacheTimestampUtils)
 
-        timestampDao = mock(TimestampDao::class.java)
+        timestampDao = mock()
         `when`(database.timestampDao()).thenReturn(timestampDao)
 
-        imageConfigDao = mock(ImageConfigDao::class.java)
+        imageConfigDao = mock()
         `when`(database.imageConfigDao()).thenReturn(imageConfigDao)
     }
 
@@ -37,7 +42,7 @@ class MoviesConfigurationCacheImplTest {
 
     @Test(expected = NullPointerException::class)
     fun getLastMovieConfiguration_whenImageSizesIsNull_throwsException() {
-        val lastImageConfig = mock(ImageConfig::class.java)
+        val lastImageConfig: ImageConfig = mock()
         `when`(imageConfigDao.getLastImageConfig()).thenReturn(lastImageConfig)
         val id = 12L
         `when`(lastImageConfig.id).thenReturn(id)
@@ -47,19 +52,50 @@ class MoviesConfigurationCacheImplTest {
 
     @Test
     fun getLastMovieConfiguration_returnsLastConfig() {
-        val lastImageConfig = mock(ImageConfig::class.java)
+        val lastImageConfig: ImageConfig = mock()
         `when`(imageConfigDao.getLastImageConfig()).thenReturn(lastImageConfig)
         val id = 12L
         `when`(lastImageConfig.id).thenReturn(id)
 
         val imagesConfig = ArrayList<ImageSize>()
-        imagesConfig.add(mock(ImageSize::class.java))
-        imagesConfig.add(mock(ImageSize::class.java))
-        imagesConfig.add(mock(ImageSize::class.java))
+        imagesConfig.add(mock())
+        imagesConfig.add(mock())
+        imagesConfig.add(mock())
         `when`(imageConfigDao.getImageSizesForConfig(id)).thenReturn(imagesConfig)
 
         subject.getLastMovieConfiguration()
 
         verify(mapper).convertCacheImageConfigurationToDataMoviesConfiguration(lastImageConfig, imagesConfig)
+    }
+
+
+    @Test
+    fun saveMoviesConfig_insertsTimestamp_thenInsertsImageConfg_andSizes() {
+        val moviesConfig: MoviesConfiguration = mock()
+        val currentTimestamp: Timestamp = mock()
+        `when`(cacheTimestampUtils.createMoviesConfigurationTimestamp()).thenReturn(currentTimestamp)
+
+        subject.saveMoviesConfig(moviesConfig)
+
+        verify(timestampDao).insertTimestamp(currentTimestamp)
+    }
+
+
+    @Test
+    fun saveMoviesConfig_insertsImageConfg_andSizes() {
+        val moviesConfig: MoviesConfiguration = mock()
+        val cacheMovieConfig: ImageConfig = mock()
+        `when`(mapper.convertMoviesConfigurationToCacheModel(moviesConfig)).thenReturn(cacheMovieConfig)
+
+        val parentId = 12L
+        `when`(imageConfigDao.insertImageConfig(cacheMovieConfig)).thenReturn(parentId)
+
+        val cacheImageSizes = ArrayList<ImageSize>()
+        `when`(mapper.convertImagesConfigurationToCacheModel(parentId, moviesConfig)).thenReturn(cacheImageSizes)
+
+        subject.saveMoviesConfig(moviesConfig)
+
+        verify(imageConfigDao).insertImageConfig(cacheMovieConfig)
+        verify(imageConfigDao).insertAllImageSize(cacheImageSizes)
     }
 }

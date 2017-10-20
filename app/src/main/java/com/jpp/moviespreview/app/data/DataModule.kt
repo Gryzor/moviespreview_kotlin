@@ -3,6 +3,8 @@ package com.jpp.moviespreview.app.data
 import android.arch.persistence.room.Room
 import android.content.Context
 import com.jpp.moviespreview.BuildConfig
+import com.jpp.moviespreview.app.data.cache.CacheTimestampUtils
+import com.jpp.moviespreview.app.data.cache.CacheTimeUtilsHelper
 import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCacheDataMapper
 import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCache
 import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCacheImpl
@@ -58,12 +60,18 @@ class DataModule {
 
     @Provides
     @Singleton
+    fun providesCacheTimeUtils() = CacheTimestampUtils(CacheTimeUtilsHelper())
+
+
+    @Provides
+    @Singleton
     fun providesMoviesConfigurationCacheDataMapper() = MoviesConfigurationCacheDataMapper()
 
     @Provides
     @Singleton
     fun providesMoviesConfigurationCache(cacheDataMapper: MoviesConfigurationCacheDataMapper,
-                                         moviesDataBase: MoviesDataBase): MoviesConfigurationCache = MoviesConfigurationCacheImpl(cacheDataMapper, moviesDataBase)
+                                         moviesDataBase: MoviesDataBase,
+                                         cacheTimestampUtils: CacheTimestampUtils): MoviesConfigurationCache = MoviesConfigurationCacheImpl(cacheDataMapper, moviesDataBase, cacheTimestampUtils)
 
 
     @Provides
@@ -74,7 +82,8 @@ class DataModule {
     @Provides
     @Singleton
     fun providesMoviesGenreCache(cacheDataMapper: MoviesGenreCacheDataMapper,
-                                 moviesDataBase: MoviesDataBase): MoviesGenreCache = MoviesGenreCacheImpl(cacheDataMapper, moviesDataBase)
+                                 moviesDataBase: MoviesDataBase,
+                                 cacheTimestampUtils: CacheTimestampUtils): MoviesGenreCache = MoviesGenreCacheImpl(cacheDataMapper, moviesDataBase, cacheTimestampUtils)
 
 
 }

@@ -3,11 +3,12 @@ package com.jpp.moviespreview.app.domain.configuration
 import com.jpp.moviespreview.app.data.MoviesConfiguration
 import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCache
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
-import com.jpp.moviespreview.app.util.TimeUtils
+import com.jpp.moviespreview.app.mock
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.*
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 
 /**
  * Created by jpp on 10/11/17.
@@ -18,40 +19,35 @@ class RetrieveConfigurationUseCaseTest {
     private lateinit var mapper: ConfigurationDataMapper
     private lateinit var api: MoviesPreviewApiWrapper
     private lateinit var mConfigurationCache: MoviesConfigurationCache
-    private lateinit var timeUtils: TimeUtils
 
 
     @Before
     fun setUp() {
-        mapper = mock(ConfigurationDataMapper::class.java)
-        api = mock(MoviesPreviewApiWrapper::class.java)
-        mConfigurationCache = mock(MoviesConfigurationCache::class.java)
-        timeUtils = mock(TimeUtils::class.java)
+        mapper = mock()
+        api = mock()
+        mConfigurationCache = mock()
 
-        subject = RetrieveConfigurationUseCase(mapper, api, mConfigurationCache, timeUtils)
+        subject = RetrieveConfigurationUseCase(mapper, api, mConfigurationCache)
     }
 
 
     @Test
     fun execute_whenLastConfigIsOld_retrievesDataFromApi_andSavesNewConfig() {
-        `when`(timeUtils.cacheConfigurationRefreshTime()).thenReturn(30)
-        `when`(mConfigurationCache.isLastConfigOlderThan(30, timeUtils)).thenReturn(true)
-        val moviesConfiguration = mock(MoviesConfiguration::class.java)
+        `when`(mConfigurationCache.isMoviesConfigurationOutOfDate()).thenReturn(true)
+        val moviesConfiguration: MoviesConfiguration = mock()
         `when`(api.getLastMovieConfiguration()).thenReturn(moviesConfiguration)
         val timestamp = 2000L
-        `when`(timeUtils.currentTimeInMillis()).thenReturn(timestamp)
 
         subject.execute()
 
-        verify(mConfigurationCache).saveMoviesConfig(moviesConfiguration, timestamp)
+        verify(mConfigurationCache).saveMoviesConfig(moviesConfiguration)
         verify(mapper).convertMoviesConfigurationFromDataModel(moviesConfiguration)
     }
 
 
     @Test
     fun execute_whenLastConfigIsOld_andDataRetrievedFromApiIsNull_returnsNull() {
-        `when`(timeUtils.cacheConfigurationRefreshTime()).thenReturn(30)
-        `when`(mConfigurationCache.isLastConfigOlderThan(30, timeUtils)).thenReturn(true)
+        `when`(mConfigurationCache.isMoviesConfigurationOutOfDate()).thenReturn(true)
         `when`(api.getLastMovieConfiguration()).thenReturn(null)
 
         val result = subject.execute()
@@ -62,9 +58,8 @@ class RetrieveConfigurationUseCaseTest {
 
     @Test
     fun execute_whenLastConfigIsStillValid_retrievesDataFromCache() {
-        `when`(timeUtils.cacheConfigurationRefreshTime()).thenReturn(30)
-        `when`(mConfigurationCache.isLastConfigOlderThan(30, timeUtils)).thenReturn(false)
-        val moviesConfiguration = mock(MoviesConfiguration::class.java)
+        `when`(mConfigurationCache.isMoviesConfigurationOutOfDate()).thenReturn(false)
+        val moviesConfiguration: MoviesConfiguration = mock()
         `when`(mConfigurationCache.getLastMovieConfiguration()).thenReturn(moviesConfiguration)
 
         subject.execute()
@@ -74,8 +69,7 @@ class RetrieveConfigurationUseCaseTest {
 
     @Test
     fun execute_whenLastConfigIsStillValid_andDataRetievedFromCacheIsNull() {
-        `when`(timeUtils.cacheConfigurationRefreshTime()).thenReturn(30)
-        `when`(mConfigurationCache.isLastConfigOlderThan(30, timeUtils)).thenReturn(false)
+        `when`(mConfigurationCache.isMoviesConfigurationOutOfDate()).thenReturn(false)
         `when`(mConfigurationCache.getLastMovieConfiguration()).thenReturn(null)
 
         val result = subject.execute()

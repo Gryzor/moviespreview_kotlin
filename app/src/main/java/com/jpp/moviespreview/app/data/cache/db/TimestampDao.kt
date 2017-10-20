@@ -4,7 +4,6 @@ import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
-import com.jpp.moviespreview.app.util.TimeUtils
 
 /**
  * DAO definition for the Timestamps
@@ -18,10 +17,4 @@ interface TimestampDao {
 
     @Query("select * from timestamps where timestamp_id = :timestampId")
     fun getTimestamp(timestampId: Long): Timestamp?
-}
-
-
-fun TimestampDao.isTimestampOlderThan(timestamp: Timestamp, toCompare: Long, timeUtils: TimeUtils): Boolean {
-    val lastTimestamp = getTimestamp(timestamp.id)
-    return lastTimestamp == null || timeUtils.isOlderThan(lastTimestamp.lastUpdate, toCompare)
 }

@@ -4,8 +4,6 @@ import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCac
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
 import com.jpp.moviespreview.app.domain.MoviesConfiguration
 import com.jpp.moviespreview.app.domain.UseCase
-import com.jpp.moviespreview.app.util.TimeUtils
-import java.util.concurrent.TimeUnit
 
 /**
  * Use case executed to retrieve the last available configuration:
@@ -17,13 +15,12 @@ import java.util.concurrent.TimeUnit
  */
 class RetrieveConfigurationUseCase(private val mapper: ConfigurationDataMapper,
                                    private val api: MoviesPreviewApiWrapper,
-                                   private val configurationCache: MoviesConfigurationCache,
-                                   private val timeUtils: TimeUtils) : UseCase<Any, MoviesConfiguration> {
+                                   private val configurationCache: MoviesConfigurationCache) : UseCase<Any, MoviesConfiguration> {
 
     override fun execute(param: Any?): MoviesConfiguration? {
-        return if (configurationCache.isLastConfigOlderThan(timeUtils.cacheConfigurationRefreshTime(), timeUtils)) {
+        return if (configurationCache.isMoviesConfigurationOutOfDate()) {
             api.getLastMovieConfiguration()?.let {
-                configurationCache.saveMoviesConfig(it, timeUtils.currentTimeInMillis())
+                configurationCache.saveMoviesConfig(it)
                 mapper.convertMoviesConfigurationFromDataModel(it)
             }
         } else {

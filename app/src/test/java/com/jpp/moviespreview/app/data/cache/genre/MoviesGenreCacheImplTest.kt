@@ -1,13 +1,15 @@
 package com.jpp.moviespreview.app.data.cache.genre
 
+import com.jpp.moviespreview.app.data.cache.CacheTimestampUtils
 import com.jpp.moviespreview.app.data.cache.db.Genre
 import com.jpp.moviespreview.app.data.cache.db.GenresDao
 import com.jpp.moviespreview.app.data.cache.db.MoviesDataBase
 import com.jpp.moviespreview.app.data.cache.db.TimestampDao
+import com.jpp.moviespreview.app.mock
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 
 
 class MoviesGenreCacheImplTest {
@@ -17,24 +19,26 @@ class MoviesGenreCacheImplTest {
     private lateinit var database: MoviesDataBase
     private lateinit var subject: MoviesGenreCacheImpl
     private lateinit var timestampDao: TimestampDao
+    private lateinit var cacheTimestampUtils: CacheTimestampUtils
 
     @Before
     fun setUp() {
-        database = Mockito.mock(MoviesDataBase::class.java)
-        cacheDataMapper = Mockito.mock(MoviesGenreCacheDataMapper::class.java)
-        subject = MoviesGenreCacheImpl(cacheDataMapper, database)
+        database = mock()
+        cacheDataMapper = mock()
+        cacheTimestampUtils = mock()
+        subject = MoviesGenreCacheImpl(cacheDataMapper, database, cacheTimestampUtils)
 
-        genresDao = Mockito.mock(GenresDao::class.java)
-        Mockito.`when`(database.genresDao()).thenReturn(genresDao)
+        genresDao = mock()
+        `when`(database.genresDao()).thenReturn(genresDao)
 
-        timestampDao = Mockito.mock(TimestampDao::class.java)
-        Mockito.`when`(database.timestampDao()).thenReturn(timestampDao)
+        timestampDao = mock()
+        `when`(database.timestampDao()).thenReturn(timestampDao)
     }
 
 
     @Test
     fun getLastGenreList_whenNoGenresInDb_returnsNull() {
-        Mockito.`when`(genresDao.getAllGenres()).thenReturn(null)
+        `when`(genresDao.getAllGenres()).thenReturn(null)
         val lastGenres = subject.getLastGenreList()
         Assert.assertNull(lastGenres)
     }
@@ -43,7 +47,7 @@ class MoviesGenreCacheImplTest {
     @Test
     fun getLastGenreList_returnLastGenresStored() {
         val expected = ArrayList<Genre>()
-        Mockito.`when`(genresDao.getAllGenres()).thenReturn(expected)
+        `when`(genresDao.getAllGenres()).thenReturn(expected)
         val actual = subject.getLastGenreList()
         Assert.assertEquals(expected, actual)
     }

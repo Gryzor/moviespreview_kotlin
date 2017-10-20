@@ -74,7 +74,7 @@ class SplashActivityEspressoTest {
         val moviesConfiguration = MoviesConfiguration(imagesConfiguration)
 
         Mockito.`when`(timeUtils.cacheConfigurationRefreshTime()).thenReturn(30)
-        Mockito.`when`(mMoviesConfigurationCache.isLastConfigOlderThan(30, timeUtils)).thenReturn(false)
+        Mockito.`when`(mMoviesConfigurationCache.isMoviesConfigurationOutOfDate(30, timeUtils)).thenReturn(false)
         Mockito.`when`(mMoviesConfigurationCache.getLastMovieConfiguration()).thenReturn(moviesConfiguration)
 
         activityRule.launch(Intent())
@@ -92,7 +92,7 @@ class SplashActivityEspressoTest {
     @Test
     fun test_appShowsConnectivityError() {
         Mockito.`when`(timeUtils.cacheConfigurationRefreshTime()).thenReturn(30)
-        Mockito.`when`(mMoviesConfigurationCache.isLastConfigOlderThan(30, timeUtils)).thenReturn(false)
+        Mockito.`when`(mMoviesConfigurationCache.isMoviesConfigurationOutOfDate(30, timeUtils)).thenReturn(false)
         Mockito.`when`(mMoviesConfigurationCache.getLastMovieConfiguration()).thenReturn(null)
         Mockito.`when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(false)
 
@@ -105,7 +105,7 @@ class SplashActivityEspressoTest {
     @Test
     fun test_appShowsUnexpectedError() {
         Mockito.`when`(timeUtils.cacheConfigurationRefreshTime()).thenReturn(30)
-        Mockito.`when`(mMoviesConfigurationCache.isLastConfigOlderThan(30, timeUtils)).thenReturn(false)
+        Mockito.`when`(mMoviesConfigurationCache.isMoviesConfigurationOutOfDate(30, timeUtils)).thenReturn(false)
         Mockito.`when`(mMoviesConfigurationCache.getLastMovieConfiguration()).thenReturn(null)
         Mockito.`when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(true)
 

@@ -1,10 +1,8 @@
 package com.jpp.moviespreview.app.data.cache.genre
 
 import com.jpp.moviespreview.app.data.Genre
+import com.jpp.moviespreview.app.data.cache.CacheTimestampUtils
 import com.jpp.moviespreview.app.data.cache.db.MoviesDataBase
-import com.jpp.moviespreview.app.data.cache.db.Timestamp
-import com.jpp.moviespreview.app.data.cache.db.isTimestampOlderThan
-import com.jpp.moviespreview.app.util.TimeUtils
 
 /**
  * Defines the contract of the Cache used by the application to store movies genres.
@@ -17,12 +15,12 @@ interface MoviesGenreCache {
     /**
      * Stores the provided [genres] into the local cache.
      */
-    fun saveGenreList(genres: List<Genre>, updateDate: Long)
+    fun saveGenreList(genres: List<Genre>)
 
     /**
-     * Determinate if the last genres list is older than the provided [timeStamp]
+     * Determinate if the stored genres list are out of date.
      */
-    fun isLastGenreListOlderThan(timeStamp: Long, timeUtils: TimeUtils): Boolean
+    fun isMoviesGenresOutOfDate(): Boolean
 
 
     /**
@@ -33,14 +31,12 @@ interface MoviesGenreCache {
 
 
 class MoviesGenreCacheImpl(private val cacheDataMapper: MoviesGenreCacheDataMapper,
-                           private val database: MoviesDataBase) : MoviesGenreCache {
+                           private val database: MoviesDataBase,
+                           private val cacheTimestampUtils: CacheTimestampUtils) : MoviesGenreCache {
 
-    companion object {
-        val GENRES_TIMESTAMP = Timestamp(2)
-    }
 
-    override fun isLastGenreListOlderThan(timeStamp: Long, timeUtils: TimeUtils) =
-            database.timestampDao().isTimestampOlderThan(GENRES_TIMESTAMP, timeStamp, timeUtils)
+    override fun isMoviesGenresOutOfDate() =
+            cacheTimestampUtils.isMoviesGenreTimestampOutdated(database.timestampDao())
 
     override fun getLastGenreList(): List<Genre>? {
         return database.genresDao().getAllGenres()?.let {
@@ -48,9 +44,9 @@ class MoviesGenreCacheImpl(private val cacheDataMapper: MoviesGenreCacheDataMapp
         }
     }
 
-    override fun saveGenreList(genres: List<Genre>, updateDate: Long) {
-        GENRES_TIMESTAMP.lastUpdate = updateDate
-        database.timestampDao().insertTimestamp(GENRES_TIMESTAMP)
+    override fun saveGenreList(genres: List<Genre>) {
+        val genresTimestamp = cacheTimestampUtils.createMovieGenresTimestamp()
+        database.timestampDao().insertTimestamp(genresTimestamp)
 
         database.genresDao().insertAllGenres(cacheDataMapper.convertDataGenresIntoCacheGenres(genres))
     }

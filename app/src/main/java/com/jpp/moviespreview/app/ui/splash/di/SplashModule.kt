@@ -16,7 +16,6 @@ import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 import com.jpp.moviespreview.app.ui.splash.SplashPresenter
 import com.jpp.moviespreview.app.ui.splash.SplashPresenterImpl
-import com.jpp.moviespreview.app.util.TimeUtils
 import dagger.Module
 import dagger.Provides
 
@@ -40,12 +39,12 @@ class SplashModule {
 
     @Provides
     @SplashScope
-    fun provideRetrieveConfigurationUseCase(apiInstance: MoviesPreviewApiWrapper, configurationCache: MoviesConfigurationCache, timeUtils: TimeUtils): UseCase<Any, MoviesConfiguration>
-            = RetrieveConfigurationUseCase(ConfigurationDataMapper(), apiInstance, configurationCache, timeUtils)
+    fun provideRetrieveConfigurationUseCase(apiInstance: MoviesPreviewApiWrapper, configurationCache: MoviesConfigurationCache): UseCase<Any, MoviesConfiguration>
+            = RetrieveConfigurationUseCase(ConfigurationDataMapper(), apiInstance, configurationCache)
 
 
     @Provides
     @SplashScope
-    fun provideRetrieveMovieGenresUseCase(apiInstance: MoviesPreviewApiWrapper, genresCache: MoviesGenreCache, timeUtils: TimeUtils): UseCase<Any, List<Genre>>
-            = RetrieveGenresUseCase(GenreDataMapper(), apiInstance, genresCache, timeUtils)
+    fun provideRetrieveMovieGenresUseCase(apiInstance: MoviesPreviewApiWrapper, genresCache: MoviesGenreCache): UseCase<Any, List<Genre>>
+            = RetrieveGenresUseCase(GenreDataMapper(), apiInstance, genresCache)
 }
