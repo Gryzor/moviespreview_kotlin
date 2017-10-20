@@ -23,6 +23,11 @@ to map data models between each layer.
 
 <b>TODO</b>
 
+## Build status
+This repo is builided and controlled using BuddyBuild
+
+[![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=59e4d08e2673890001eabb63&branch=develop&build=latest)](https://dashboard.buddybuild.com/apps/59e4d08e2673890001eabb63/build/latest?branch=develop)
+
 ## Versioning
 
 <b>TODO</b>
