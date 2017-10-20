@@ -1,8 +1,6 @@
 package com.jpp.moviespreview.app
 
 import android.content.Context
-import com.jpp.moviespreview.app.util.TimeUtils
-import com.jpp.moviespreview.app.util.TimeUtilsDelegate
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -23,9 +21,4 @@ class AppModule(val app: MoviesPreviewApp) {
     @Singleton
     @Provides
     fun providesContext(): Context = app.applicationContext
-
-    @Singleton
-    @Provides
-    fun providesTimeUtils() = TimeUtils(TimeUtilsDelegate())
-
 }
