@@ -3,10 +3,15 @@ package com.jpp.moviespreview.app.data
 import android.arch.persistence.room.Room
 import android.content.Context
 import com.jpp.moviespreview.BuildConfig
-import com.jpp.moviespreview.app.data.cache.CacheDataMapper
-import com.jpp.moviespreview.app.data.cache.MoviesCache
-import com.jpp.moviespreview.app.data.cache.MoviesCacheImpl
+import com.jpp.moviespreview.app.data.cache.CacheTimestampUtils
+import com.jpp.moviespreview.app.data.cache.CacheTimeUtilsHelper
+import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCacheDataMapper
+import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCache
+import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCacheImpl
 import com.jpp.moviespreview.app.data.cache.db.MoviesDataBase
+import com.jpp.moviespreview.app.data.cache.genre.MoviesGenreCache
+import com.jpp.moviespreview.app.data.cache.genre.MoviesGenreCacheDataMapper
+import com.jpp.moviespreview.app.data.cache.genre.MoviesGenreCacheImpl
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApi
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
 import dagger.Module
@@ -50,15 +55,35 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun providesCacheDataMapper() = CacheDataMapper()
-
-    @Provides
-    @Singleton
-    fun providesMoviesCache(cacheDataMapper: CacheDataMapper, moviesDataBase: MoviesDataBase): MoviesCache = MoviesCacheImpl(cacheDataMapper, moviesDataBase)
-
-
-    @Provides
-    @Singleton
     fun providesServerApi(): MoviesPreviewApiWrapper = MoviesPreviewApiWrapper(API)
+
+
+    @Provides
+    @Singleton
+    fun providesCacheTimeUtils() = CacheTimestampUtils(CacheTimeUtilsHelper())
+
+
+    @Provides
+    @Singleton
+    fun providesMoviesConfigurationCacheDataMapper() = MoviesConfigurationCacheDataMapper()
+
+    @Provides
+    @Singleton
+    fun providesMoviesConfigurationCache(cacheDataMapper: MoviesConfigurationCacheDataMapper,
+                                         moviesDataBase: MoviesDataBase,
+                                         cacheTimestampUtils: CacheTimestampUtils): MoviesConfigurationCache = MoviesConfigurationCacheImpl(cacheDataMapper, moviesDataBase, cacheTimestampUtils)
+
+
+    @Provides
+    @Singleton
+    fun providesMoviesGenresCacheDataMapper() = MoviesGenreCacheDataMapper()
+
+
+    @Provides
+    @Singleton
+    fun providesMoviesGenreCache(cacheDataMapper: MoviesGenreCacheDataMapper,
+                                 moviesDataBase: MoviesDataBase,
+                                 cacheTimestampUtils: CacheTimestampUtils): MoviesGenreCache = MoviesGenreCacheImpl(cacheDataMapper, moviesDataBase, cacheTimestampUtils)
+
 
 }

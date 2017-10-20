@@ -1,4 +1,4 @@
-package com.jpp.moviespreview.app.extentions
+package com.jpp.moviespreview.app.util.extentions
 
 import android.content.Context
 import android.net.ConnectivityManager

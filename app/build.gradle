@@ -7,6 +7,14 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-allopen'
 
 android {
+    signingConfigs {
+        config_release {
+            keyAlias 'movies_preview_alias'
+            keyPassword 'juancito311'
+            storeFile file('/Users/jpp/Development/Repositories/JppRepos/moviespreview_kotlin/key/movies_preview_key.jks')
+            storePassword 'juancito311'
+        }
+    }
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
     defaultConfig {
@@ -24,8 +32,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'API_ENDPOINT', '"https://api.themoviedb.org/3/"'
             buildConfigField 'String', 'API_KEY', '"eddf6980a6d7dadd72386f55f94ab571"'
+            signingConfig signingConfigs.config_release
         }
-
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -33,20 +41,17 @@ android {
             buildConfigField 'String', 'API_KEY', '"eddf6980a6d7dadd72386f55f94ab571"'
         }
     }
-
     // add common sources for android instrumented tests
     sourceSets.androidTest {
         java.srcDirs += getCommonAndroidTestSources()
     }
-
     // add common sources for jvm tests
     sourceSets.test {
         java.srcDirs += getCommonAndroidTestSources()
     }
-
     // disable animations while testing
     testOptions {
-        animationsDisabled=true
+        animationsDisabled = true
     }
 }
 
@@ -67,8 +72,7 @@ dependencies {
     final retrofit_version = '2.3.0'
     final room_version = '1.0.0-beta2'
     final mockito_version = '2.10.0'
-
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
 
     // Google libs
     compile "com.android.support:appcompat-v7:$support_version"
@@ -94,12 +98,11 @@ dependencies {
     // Room
     compile "android.arch.persistence.room:runtime:$room_version"
     kapt "android.arch.persistence.room:compiler:$room_version"
-
-
     androidTestCompile "com.android.support:support-annotations:$support_version"
     androidTestCompile 'com.android.support.test:runner:1.0.1'
     androidTestCompile "com.android.support.test.espresso:espresso-core:$espresso_version"
     androidTestCompile "com.android.support.test.espresso:espresso-intents:$espresso_version"
+
     /**
      * AccessibilityChecks
      * CountingIdlingResource
@@ -116,17 +119,17 @@ dependencies {
         exclude module: 'support-annotations'
         exclude module: 'recyclerview-v7'
     }
-
     androidTestCompile "org.mockito:mockito-android:$mockito_version"
     androidTestCompile "org.mockito:mockito-core:$mockito_version"
     kaptAndroidTest "com.google.dagger:dagger-compiler:$daggerVersion"
-
     testCompile 'junit:junit:4.12'
     testCompile "org.mockito:mockito-core:$mockito_version"
-    testCompile "org.mockito:mockito-inline:$mockito_version" // to mock final classes only in jvm tests
+    testCompile "org.mockito:mockito-inline:$mockito_version"
+
+    // to mock final classes only in jvm tests
 }
 
 // used to be able to mock not-open classes in kotlin
 allOpen {
-    annotation("com.jpp.moviespreview.app.extentions.AllOpen")
+    annotation("com.jpp.moviespreview.app.util.AllOpen")
 }

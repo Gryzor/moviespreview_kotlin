@@ -6,6 +6,8 @@ import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 
 /**
+ * DAO definition for the Timestamps
+ *
  * Created by jpp on 10/6/17.
  */
 @Dao
@@ -14,5 +16,5 @@ interface TimestampDao {
     fun insertTimestamp(timestamp: Timestamp)
 
     @Query("select * from timestamps where timestamp_id = :timestampId")
-    fun getTimestamp(timestampId: Long) : Timestamp?
+    fun getTimestamp(timestampId: Long): Timestamp?
 }

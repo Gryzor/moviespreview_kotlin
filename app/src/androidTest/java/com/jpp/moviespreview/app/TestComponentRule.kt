@@ -18,7 +18,7 @@ class TestComponentRule : TestRule {
         val application = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as MoviesPreviewApp
         testComponent = DaggerEspressoAppComponent
                 .builder()
-                .appModule(AppModule(application))
+                .espressoAppModule(EspressoAppModule(application))
                 .espressoDataModule(EspressoDataModule())
                 .espressoUiModule(EspressoUiModule())
                 .build()

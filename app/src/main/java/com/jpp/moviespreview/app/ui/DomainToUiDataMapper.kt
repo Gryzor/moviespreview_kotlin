@@ -1,6 +1,7 @@
 package com.jpp.moviespreview.app.ui
 
 import com.jpp.moviespreview.app.domain.MoviesConfiguration as DomainMovieConfiguration
+import com.jpp.moviespreview.app.domain.Genre as DomainGenre
 
 /**
  * Maps domain model to UI model
@@ -12,4 +13,12 @@ class DomainToUiDataMapper {
     fun convertConfigurationToImagesConfiguration(domainMoviesConfiguration: DomainMovieConfiguration) = with(domainMoviesConfiguration) {
         ImageConfiguration(imagesConfiguration.baseUrl, imagesConfiguration.sizes)
     }
+
+
+    fun convertDomainGenres(domainGenres: List<DomainGenre>): List<MovieGenre> {
+        return domainGenres.mapTo(ArrayList()) {
+            MovieGenre(it.id, it.name)
+        }
+    }
+
 }

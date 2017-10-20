@@ -7,10 +7,8 @@ import android.arch.persistence.room.PrimaryKey
 
 
 @Entity(tableName = "timestamps")
-data class Timestamp(@PrimaryKey @ColumnInfo(name = "timestamp_id") var id: Long) {
-    @ColumnInfo(name = "last_update")
-    var lastUpdate: Long = 0
-}
+data class Timestamp(@PrimaryKey @ColumnInfo(name = "timestamp_id") var id: Long,
+                     @ColumnInfo(name = "last_update") var lastUpdate: Long = 0)
 
 /**
  * Represents the ImagesConfiguration data model class.
@@ -39,3 +37,8 @@ data class ImageSize(@ColumnInfo(name = "size") val size: String,
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0
 }
+
+
+@Entity(tableName = "genres")
+data class Genre(@PrimaryKey @ColumnInfo(name = "_id") var id: Int,
+                 @ColumnInfo(name = "name") var name: String)
