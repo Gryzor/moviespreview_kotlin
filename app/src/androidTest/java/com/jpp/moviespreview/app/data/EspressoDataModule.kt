@@ -1,5 +1,6 @@
 package com.jpp.moviespreview.app.data
 
+import com.jpp.moviespreview.app.data.cache.CacheTimestampUtils
 import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCache
 import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCacheDataMapper
 import com.jpp.moviespreview.app.data.cache.db.MoviesDataBase
@@ -29,11 +30,15 @@ class EspressoDataModule {
 
     @Provides
     @Singleton
-    fun providesCacheDataMapper(): MoviesConfigurationCacheDataMapper = MoviesConfigurationCacheDataMapper()
+    fun providesCacheTimeUtils(): CacheTimestampUtils = mock()
 
     @Provides
     @Singleton
-    fun providesMoviesCache(): MoviesConfigurationCache = mock()
+    fun providesMoviesConfigurationCacheDataMapper(): MoviesConfigurationCacheDataMapper = MoviesConfigurationCacheDataMapper()
+
+    @Provides
+    @Singleton
+    fun providesMoviesConfigurationCache(): MoviesConfigurationCache = mock()
 
     @Provides
     @Singleton
