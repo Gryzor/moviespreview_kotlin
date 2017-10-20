@@ -1,6 +1,5 @@
 package com.jpp.moviespreview.app.data.server
 
-import com.jpp.moviespreview.BuildConfig
 import com.jpp.moviespreview.app.data.Genres
 import com.jpp.moviespreview.app.data.MoviesConfiguration
 import com.jpp.moviespreview.app.util.AllOpen
@@ -18,10 +17,16 @@ class MoviesPreviewApiWrapper(private val apiInstance: MoviesPreviewApi) {
     /**
      * Retrieves the last available configuration in the server.
      */
-    fun getLastMovieConfiguration(): MoviesConfiguration? = apiInstance.getLastConfiguration(BuildConfig.API_KEY).execute().body()
+    fun getLastMovieConfiguration(): MoviesConfiguration? = apiInstance.getLastConfiguration().execute().body()
 
     /**
      * Retrieves the list of Genre available in the server.
      */
-    fun getGenres(): Genres? = apiInstance.getRenges(BuildConfig.API_KEY).execute().body()
+    fun getGenres(): Genres? = apiInstance.getGenres().execute().body()
+
+
+    /**
+     * Retrieves the provided [page] of movies currently playing on theaters.
+     */
+    fun getNowPlaying(page: Int) = apiInstance.getNowPlaying(page).execute().body()
 }
