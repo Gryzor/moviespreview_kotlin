@@ -1,6 +1,6 @@
 package com.jpp.moviespreview.app.domain.configuration
 
-import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCache
+import com.jpp.moviespreview.app.data.cache.MoviesConfigurationCache
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
 import com.jpp.moviespreview.app.domain.MoviesConfiguration
 import com.jpp.moviespreview.app.domain.UseCase

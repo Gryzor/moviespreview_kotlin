@@ -1,8 +1,9 @@
-package com.jpp.moviespreview.app.data.cache.configuration
+package com.jpp.moviespreview.app.data.cache
 
 import com.jpp.moviespreview.app.data.MoviesConfiguration
 import com.jpp.moviespreview.app.data.cache.CacheDataMapper
 import com.jpp.moviespreview.app.data.cache.CacheTimestampUtils
+import com.jpp.moviespreview.app.data.cache.MoviesConfigurationCacheImpl
 import com.jpp.moviespreview.app.data.cache.db.*
 import com.jpp.moviespreview.app.mock
 import org.junit.Assert.assertNull
