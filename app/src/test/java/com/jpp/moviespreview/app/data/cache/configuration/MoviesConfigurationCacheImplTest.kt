@@ -1,18 +1,20 @@
 package com.jpp.moviespreview.app.data.cache.configuration
 
 import com.jpp.moviespreview.app.data.MoviesConfiguration
+import com.jpp.moviespreview.app.data.cache.CacheDataMapper
 import com.jpp.moviespreview.app.data.cache.CacheTimestampUtils
 import com.jpp.moviespreview.app.data.cache.db.*
 import com.jpp.moviespreview.app.mock
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.*
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 
 class MoviesConfigurationCacheImplTest {
 
     private lateinit var subject: MoviesConfigurationCacheImpl
-    private lateinit var mapper: MoviesConfigurationCacheDataMapper
+    private lateinit var mapper: CacheDataMapper
     private lateinit var database: MoviesDataBase
     private lateinit var timestampDao: TimestampDao
     private lateinit var imageConfigDao: ImageConfigDao

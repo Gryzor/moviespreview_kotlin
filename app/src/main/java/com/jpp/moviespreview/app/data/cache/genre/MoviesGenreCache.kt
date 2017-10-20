@@ -1,6 +1,7 @@
 package com.jpp.moviespreview.app.data.cache.genre
 
 import com.jpp.moviespreview.app.data.Genre
+import com.jpp.moviespreview.app.data.cache.CacheDataMapper
 import com.jpp.moviespreview.app.data.cache.CacheTimestampUtils
 import com.jpp.moviespreview.app.data.cache.db.MoviesDataBase
 
@@ -30,7 +31,7 @@ interface MoviesGenreCache {
 }
 
 
-class MoviesGenreCacheImpl(private val cacheDataMapper: MoviesGenreCacheDataMapper,
+class MoviesGenreCacheImpl(private val mapper: CacheDataMapper,
                            private val database: MoviesDataBase,
                            private val cacheTimestampUtils: CacheTimestampUtils) : MoviesGenreCache {
 
@@ -40,7 +41,7 @@ class MoviesGenreCacheImpl(private val cacheDataMapper: MoviesGenreCacheDataMapp
 
     override fun getLastGenreList(): List<Genre>? {
         return database.genresDao().getAllGenres()?.let {
-            cacheDataMapper.convertCacheGenresIntoDataGenres(it)
+            mapper.convertCacheGenresIntoDataGenres(it)
         }
     }
 
@@ -48,6 +49,6 @@ class MoviesGenreCacheImpl(private val cacheDataMapper: MoviesGenreCacheDataMapp
         val genresTimestamp = cacheTimestampUtils.createMovieGenresTimestamp()
         database.timestampDao().insertTimestamp(genresTimestamp)
 
-        database.genresDao().insertAllGenres(cacheDataMapper.convertDataGenresIntoCacheGenres(genres))
+        database.genresDao().insertAllGenres(mapper.convertDataGenresIntoCacheGenres(genres))
     }
 }

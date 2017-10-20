@@ -1,5 +1,6 @@
 package com.jpp.moviespreview.app.data.cache.genre
 
+import com.jpp.moviespreview.app.data.cache.CacheDataMapper
 import com.jpp.moviespreview.app.data.cache.CacheTimestampUtils
 import com.jpp.moviespreview.app.data.cache.db.Genre
 import com.jpp.moviespreview.app.data.cache.db.GenresDao
@@ -15,7 +16,7 @@ import org.mockito.Mockito.`when`
 class MoviesGenreCacheImplTest {
 
     private lateinit var genresDao: GenresDao
-    private lateinit var cacheDataMapper: MoviesGenreCacheDataMapper
+    private lateinit var cacheDataMapper: CacheDataMapper
     private lateinit var database: MoviesDataBase
     private lateinit var subject: MoviesGenreCacheImpl
     private lateinit var timestampDao: TimestampDao

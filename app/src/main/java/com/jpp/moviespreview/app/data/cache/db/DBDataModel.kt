@@ -8,10 +8,13 @@ import android.arch.persistence.room.PrimaryKey
 /**
  * Represents the Timestamps that are used to determinate if the stored data
  * is still valid or not.
+ * [secondaryId] represents a secondary identifier, in case that the timestamp id is not enough
+ * to identify an entity.
  */
 @Entity(tableName = "timestamps")
 data class Timestamp(@PrimaryKey @ColumnInfo(name = "timestamp_id") var id: Long,
-                     @ColumnInfo(name = "last_update") var lastUpdate: Long = 0)
+                     @ColumnInfo(name = "last_update") var lastUpdate: Long = 0,
+                     @ColumnInfo(name = "secondary_id") var secondaryId: Int = 0)
 
 /**
  * Represents the ImagesConfiguration data model class.
