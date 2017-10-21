@@ -2,10 +2,10 @@ package com.jpp.moviespreview.app.data.cache
 
 import com.jpp.moviespreview.app.data.ImagesConfiguration
 import com.jpp.moviespreview.app.data.MoviesConfiguration
-import com.jpp.moviespreview.app.data.cache.db.ImageConfig
-import com.jpp.moviespreview.app.data.cache.db.ImageSize
-import com.jpp.moviespreview.app.data.cache.db.Genre
+import com.jpp.moviespreview.app.data.cache.db.*
 import com.jpp.moviespreview.app.data.Genre as DataGenre
+import com.jpp.moviespreview.app.data.Movie as DataMovie
+import com.jpp.moviespreview.app.data.MoviePage as DataMoviePage
 
 
 /**
@@ -64,9 +64,9 @@ class CacheDataMapper {
     }
 
 
-    /*****************************************************
-     ********** MOVIES CONFIGURATION SECTION *************
-     *****************************************************/
+    /*********************************************
+     ********** MOVIES GENRE SECTION *************
+     *********************************************/
 
 
     /**
@@ -87,4 +87,84 @@ class CacheDataMapper {
         }
     }
 
+
+    /***************************************
+     ********** MOVIES SECTION *************
+     ***************************************/
+
+
+    /**
+     * Converts a [MoviePage] into a [DataMoviePage]
+     */
+    fun convertCacheMoviePageInDataMoviePage(cacheMoviePage: MoviePage, dataMovies: List<DataMovie>) = with(cacheMoviePage) {
+        DataMoviePage(page,
+                dataMovies,
+                totalPages,
+                totalResults)
+    }
+
+
+    /**
+     * Converts a cache [Movie] into a [DataMovie]
+     */
+    fun convertCacheMovieInDataMovie(cacheMovie: Movie, cacheGenres: List<GenresByMovies>?) = with(cacheMovie) {
+        if (cacheGenres == null) {
+            null
+        } else {
+            DataMovie(id,
+                    title,
+                    originalTile,
+                    overview,
+                    releaseDate,
+                    originalLanguage,
+                    posterPath,
+                    backdropPath,
+                    getGenreIdsFromDataGenres(cacheGenres),
+                    voteCount,
+                    voteAverage,
+                    popularity)
+        }
+    }
+
+
+    /**
+     * Converts a list of [GenresByMovies] into the list of Int that represents each one of them
+     */
+    private fun getGenreIdsFromDataGenres(cacheGenres: List<GenresByMovies>): List<Int> {
+        val genresId = ArrayList<Int>()
+        cacheGenres.mapTo(genresId) { it.genreId }
+        return genresId
+    }
+
+
+    /**
+     * Converts a [DataMoviePage] into a [MoviePage]
+     */
+    fun convertDataMoviesPageIntoCacheMoviePage(dataMoviePage: DataMoviePage) = with(dataMoviePage) {
+        MoviePage(page, total_pages, total_results)
+    }
+
+
+    /**
+     * Converts from [DataMovie] into [Movie]
+     */
+    fun convertDataMoviesIntoCacheMovie(dataMovies: List<DataMovie>, dataMoviePage: DataMoviePage): List<Movie> {
+        val dbMovies = ArrayList<Movie>()
+        dataMovies.mapTo(dbMovies) {
+            Movie(it.id,
+                    it.title,
+                    it.original_title,
+                    it.overview,
+                    it.release_date,
+                    it.original_language,
+                    it.poster_path,
+                    it.backdrop_path,
+                    it.vote_count,
+                    it.vote_average,
+                    it.popularity,
+                    dataMoviePage.page
+            )
+        }
+        return dbMovies
+    }
 }

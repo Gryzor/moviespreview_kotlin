@@ -11,8 +11,9 @@ import android.arch.persistence.room.PrimaryKey
  * [secondaryId] represents a secondary identifier, in case that the timestamp id is not enough
  * to identify an entity.
  */
-@Entity(tableName = "timestamps")
-data class Timestamp(@PrimaryKey @ColumnInfo(name = "timestamp_id") var id: Long,
+@Entity(tableName = "timestamps",
+        primaryKeys = arrayOf("timestamp_id", "secondary_id"))
+data class Timestamp(@ColumnInfo(name = "timestamp_id") var id: Long,
                      @ColumnInfo(name = "last_update") var lastUpdate: Long = 0,
                      @ColumnInfo(name = "secondary_id") var secondaryId: Int = 0)
 
