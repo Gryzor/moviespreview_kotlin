@@ -40,5 +40,5 @@ interface MoviesPreviewApi {
     fun getNowPlaying(@Query("page") page: Int,
                       @Query("api_key") api_key: String = BuildConfig.API_KEY,
                       @Query("language") language: String? = null,
-                      @Query("region") region: String? = null): Call<List<MoviePage>>
+                      @Query("region") region: String? = null): Call<MoviePage>
 }

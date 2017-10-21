@@ -3,14 +3,8 @@ package com.jpp.moviespreview.app.data
 import android.arch.persistence.room.Room
 import android.content.Context
 import com.jpp.moviespreview.BuildConfig
-import com.jpp.moviespreview.app.data.cache.CacheDataMapper
-import com.jpp.moviespreview.app.data.cache.CacheTimeUtilsHelper
-import com.jpp.moviespreview.app.data.cache.CacheTimestampUtils
-import com.jpp.moviespreview.app.data.cache.MoviesConfigurationCache
-import com.jpp.moviespreview.app.data.cache.MoviesConfigurationCacheImpl
+import com.jpp.moviespreview.app.data.cache.*
 import com.jpp.moviespreview.app.data.cache.db.MoviesDataBase
-import com.jpp.moviespreview.app.data.cache.MoviesGenreCache
-import com.jpp.moviespreview.app.data.cache.MoviesGenreCacheImpl
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApi
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
 import dagger.Module
@@ -80,4 +74,9 @@ class DataModule {
                                  cacheTimestampUtils: CacheTimestampUtils): MoviesGenreCache = MoviesGenreCacheImpl(mapper, moviesDataBase, cacheTimestampUtils)
 
 
+    @Provides
+    @Singleton
+    fun providesMoviesCache(mapper: CacheDataMapper,
+                            moviesDataBase: MoviesDataBase,
+                            cacheTimestampUtils: CacheTimestampUtils): MoviesCache = MoviesCacheImpl(mapper, moviesDataBase, cacheTimestampUtils)
 }

@@ -59,8 +59,8 @@ data class Genre(@PrimaryKey @ColumnInfo(name = "_id") var id: Int,
  */
 @Entity(tableName = "movie_pages")
 data class MoviePage(@PrimaryKey @ColumnInfo(name = "_id") var page: Int,
-                     @ColumnInfo(name = "total_pages") var totalPages: Int,
-                     @ColumnInfo(name = "total_results") var totalResults: Int,
+                     @ColumnInfo(name = "totalPages") var totalPages: Int,
+                     @ColumnInfo(name = "totalResults") var totalResults: Int,
                      @ColumnInfo(name = "section_id") var sectionId: Int = 1)
 
 

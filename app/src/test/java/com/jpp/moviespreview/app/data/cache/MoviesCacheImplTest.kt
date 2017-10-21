@@ -75,7 +75,7 @@ class MoviesCacheImplTest {
         assertNull(result)
     }
 
-    
+
     private fun mockDbMovies(pageId: Int): List<DBMovie> {
         return listOf(
                 DBMovie(1.toDouble(),
