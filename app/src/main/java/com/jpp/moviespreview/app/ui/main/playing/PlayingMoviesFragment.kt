@@ -16,6 +16,9 @@ import javax.inject.Inject
  * Created by jpp on 10/23/17.
  */
 class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
+    override fun backToSplashScreen() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
 
     companion object {

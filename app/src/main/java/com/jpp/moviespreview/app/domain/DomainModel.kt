@@ -25,12 +25,12 @@ data class Genre(val id: Int,
  * gets from the API since the idea is that the API returns the date formatted according to
  * the provided locale.
  */
-data class Movie(var id: Double,
-                 var title: String,
-                 var originalTitle: String,
-                 var overview: String,
-                 var releaseDate: String,
-                 var originalLanguage: String,
+data class Movie(val id: Double,
+                 val title: String,
+                 val originalTitle: String,
+                 val overview: String,
+                 val releaseDate: String,
+                 val originalLanguage: String,
                  val posterPath: String,
                  val backdropPath: String,
                  val genres: List<Genre>,

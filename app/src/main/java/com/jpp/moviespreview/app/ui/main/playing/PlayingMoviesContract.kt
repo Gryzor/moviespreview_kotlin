@@ -8,6 +8,8 @@ package com.jpp.moviespreview.app.ui.main.playing
 
 interface PlayingMoviesView {
 
+    fun backToSplashScreen()
+
 }
 
 

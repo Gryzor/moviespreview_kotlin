@@ -1,5 +1,15 @@
 package com.jpp.moviespreview.app.ui.main.playing.di
 
+import com.jpp.moviespreview.app.data.cache.MoviesCache
+import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
+import com.jpp.moviespreview.app.domain.MoviePage
+import com.jpp.moviespreview.app.domain.MoviesInTheaterInputParam
+import com.jpp.moviespreview.app.domain.UseCase
+import com.jpp.moviespreview.app.domain.movie.MovieDataMapper
+import com.jpp.moviespreview.app.domain.movie.RetrieveMoviesInTheaterUseCase
+import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
+import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
 import com.jpp.moviespreview.app.ui.main.di.MainScreenScope
 import com.jpp.moviespreview.app.ui.main.playing.PlayingMoviesPresenter
 import com.jpp.moviespreview.app.ui.main.playing.PlayingMoviesPresenterImpl
@@ -17,6 +27,17 @@ class PlayingMoviesModule {
 
     @Provides
     @MainScreenScope
-    fun providesPlayingMoviesPresenter(): PlayingMoviesPresenter = PlayingMoviesPresenterImpl()
+    fun providesPlayingMoviesPresenter(moviesContext: MoviesContext,
+                                       backgroundInteractor: BackgroundInteractor,
+                                       playingMoviesUseCase: UseCase<MoviesInTheaterInputParam, MoviePage>,
+                                       mapper: DomainToUiDataMapper): PlayingMoviesPresenter
+            = PlayingMoviesPresenterImpl(moviesContext, backgroundInteractor, playingMoviesUseCase, mapper)
+
+
+    @Provides
+    @MainScreenScope
+    fun providesRetrieveMoviesInTheaterUseCase(api: MoviesPreviewApiWrapper, moviesCache: MoviesCache): UseCase<MoviesInTheaterInputParam, MoviePage>
+            = RetrieveMoviesInTheaterUseCase(MovieDataMapper(), api, moviesCache)
+
 
 }

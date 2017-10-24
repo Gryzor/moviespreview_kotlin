@@ -29,13 +29,13 @@ class SplashModule {
 
     @Provides
     @SplashScope
-    fun providesSplashPresenter(useCase: UseCase<Any, MoviesConfiguration>,
-                                genresUseCase: UseCase<Any, List<Genre>>,
+    fun providesSplashPresenter(moviesContext: MoviesContext,
                                 backgroundInteractor: BackgroundInteractor,
-                                moviesContext: MoviesContext,
                                 domainToUiDataMapper: DomainToUiDataMapper,
-                                connectivityInteractor: ConnectivityInteractor): SplashPresenter
-            = SplashPresenterImpl(useCase, genresUseCase, backgroundInteractor, moviesContext, domainToUiDataMapper, connectivityInteractor)
+                                connectivityInteractor: ConnectivityInteractor,
+                                configurationUseCase: UseCase<Any, MoviesConfiguration>,
+                                genresUseCase: UseCase<Any, List<Genre>>): SplashPresenter
+            = SplashPresenterImpl(moviesContext, backgroundInteractor, domainToUiDataMapper, connectivityInteractor, configurationUseCase, genresUseCase)
 
     @Provides
     @SplashScope

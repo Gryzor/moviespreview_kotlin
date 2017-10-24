@@ -45,7 +45,7 @@ class SplashPresenterImplTest {
         splashView = mock()
         connectivityInteractor = mock()
 
-        subject = SplashPresenterImpl(moviesConfigurationUseCase, moviesGenresUseCase, backgroundInteractor, moviesContext, mapper, connectivityInteractor)
+        subject = SplashPresenterImpl(moviesContext,backgroundInteractor, mapper, connectivityInteractor, moviesConfigurationUseCase, moviesGenresUseCase)
     }
 
     @Test

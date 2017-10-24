@@ -9,16 +9,14 @@ package com.jpp.moviespreview.app.ui
 class MoviesContext {
 
 
-    var imageConfig: ImageConfiguration? = null
+    var imageConfig: List<ImageConfiguration>? = null
     var movieGenres: List<MovieGenre>? = null
 
 
     fun isConfigCompleted(): Boolean {
         var completed = false
         if (imageConfig != null) {
-            (imageConfig?.baseUrl != null
-                    && imageConfig?.sizes?.isNotEmpty()!!)
-
+            (imageConfig?.isNotEmpty())
             completed = if (movieGenres != null) {
                 movieGenres?.isNotEmpty()!!
             } else {
@@ -27,7 +25,6 @@ class MoviesContext {
 
         }
         return completed
-
     }
 
 }
