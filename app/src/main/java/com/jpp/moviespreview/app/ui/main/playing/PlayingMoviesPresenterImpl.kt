@@ -15,7 +15,7 @@ import com.jpp.moviespreview.app.domain.Genre as DomainGenre
  * //TODO 2 - retrieve movies
  * //TODO 3 - error
  * //TODO 4 - paging
- *
+ * //TODO 5 - select proper image config
  *
  * Created by jpp on 10/23/17.
  */
@@ -36,7 +36,7 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
         if (moviesContext.isConfigCompleted()) {
             backgroundInteractor.executeBackgroundJob(
                     {
-                        val param = createNextUseCaseParam(0, mapper.convertUiGenresToDomainGenres(moviesContext.movieGenres!!))
+                        val param = createNextUseCaseParam(1, mapper.convertUiGenresToDomainGenres(moviesContext.movieGenres!!))
                         playingMoviesUseCase.execute(param)
                     },
                     { processMoviesPage(it) })
@@ -52,8 +52,11 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
 
     private fun processMoviesPage(moviePage: MoviePage?) {
         if (moviePage != null) {
-            //add to context
-            //show
+            //TODO select properly
+            val selectedImageConfig = moviesContext.imageConfig!![0]
+            val convertedMoviePage = mapper.convertDomainMoviePageToUiMoviePage(moviePage, selectedImageConfig, moviesContext.movieGenres!!)
+            moviesContext.addMoviePage(convertedMoviePage)
+            playingMoviesView.showMoviePage(convertedMoviePage)
         } else {
             //show error
         }

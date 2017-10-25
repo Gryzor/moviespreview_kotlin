@@ -11,6 +11,7 @@ class MoviesContext {
 
     var imageConfig: List<ImageConfiguration>? = null
     var movieGenres: List<MovieGenre>? = null
+    private var moviePages = ArrayList<MoviePage>()
 
 
     fun isConfigCompleted(): Boolean {
@@ -25,6 +26,14 @@ class MoviesContext {
 
         }
         return completed
+    }
+
+
+    fun addMoviePage(moviePage: MoviePage) {
+        if (moviePages.contains(moviePage)) {
+            throw IllegalStateException("Wrong! Your're trying to add an existing page")
+        }
+        moviePages.add(moviePage)
     }
 
 }

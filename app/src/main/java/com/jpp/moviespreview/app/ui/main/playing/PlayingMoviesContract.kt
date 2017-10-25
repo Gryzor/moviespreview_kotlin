@@ -1,5 +1,7 @@
 package com.jpp.moviespreview.app.ui.main.playing
 
+import com.jpp.moviespreview.app.ui.MoviePage
+
 /**
  * Contains the MVP contract for the movies in theater (currently playing) section
  *
@@ -9,12 +11,13 @@ package com.jpp.moviespreview.app.ui.main.playing
 interface PlayingMoviesView {
 
     fun backToSplashScreen()
-
+    fun showMoviePage(moviePage: MoviePage)
 }
 
 
 interface PlayingMoviesPresenter {
 
     fun linkView(view: PlayingMoviesView)
+
 
 }
