@@ -25,6 +25,7 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
                                  private val mapper: DomainToUiDataMapper) : PlayingMoviesPresenter {
 
     private lateinit var playingMoviesView: PlayingMoviesView
+    private var targetScreenWidth: Int? = null
 
     override fun linkView(view: PlayingMoviesView) {
         playingMoviesView = view
@@ -50,16 +51,29 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
     private fun createNextUseCaseParam(page: Int, genres: List<DomainGenre>) = MoviesInTheaterInputParam(page, genres)
 
 
+    /**
+     * If the provided [moviePage] is not null, then this method takes care of
+     * converting the domain classes to ui classes, set the new page in the context (if possible) and
+     * ask to the view to show the new page.
+     * If [moviePage] is null, then it asks to the view to show the error.
+     */
     private fun processMoviesPage(moviePage: MoviePage?) {
         if (moviePage != null) {
-            //TODO select properly
-            val selectedImageConfig = moviesContext.imageConfig!![0]
+            val selectedImageConfig = moviesContext.getImageConfigForScreenWidth(getImagesWidthObjective())
             val convertedMoviePage = mapper.convertDomainMoviePageToUiMoviePage(moviePage, selectedImageConfig, moviesContext.movieGenres!!)
             moviesContext.addMoviePage(convertedMoviePage)
             playingMoviesView.showMoviePage(convertedMoviePage)
         } else {
-            //show error
+            //TODO JPP show error
         }
+    }
+
+
+    private fun getImagesWidthObjective(): Int {
+        if (targetScreenWidth == null) {
+            targetScreenWidth = playingMoviesView.getScreenWidth()
+        }
+        return targetScreenWidth!!
     }
 
 }

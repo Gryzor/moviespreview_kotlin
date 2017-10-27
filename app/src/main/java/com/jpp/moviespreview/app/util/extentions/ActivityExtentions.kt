@@ -2,6 +2,7 @@ package com.jpp.moviespreview.app.util.extentions
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Point
 import android.net.ConnectivityManager
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.MoviesPreviewApp
@@ -36,4 +37,16 @@ fun Activity.showUnexpectedError(actionOnOkButton: () -> Unit?) {
         title = getString(R.string.app_name)
         yesButton { actionOnOkButton() }
     }.show()
+}
+
+
+/**
+ * Returns a [Point] in which the x value represents the width of the screen in pixels
+ * and the y values represents the height of the screen in pixels.
+ */
+fun Activity.getScreenSizeInPixels(): Point {
+    val display = windowManager.defaultDisplay
+    val size = Point()
+    display.getSize(size)
+    return size
 }

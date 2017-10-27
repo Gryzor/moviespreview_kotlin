@@ -5,12 +5,12 @@ import java.util.*
 /**
  * Transforms a String into it's integer representation by removing all
  * existing letters.
- * If the string does not contains Ints, the [defaultValue] is returned.
+ * If the string does not contains Ints, null is returned.
  */
-fun String.transformToInt(defaultValue: Int = -1): Int {
+fun String.transformToInt(): Int? {
     if (!this.matches(".*\\d.*".toRegex())) {
         // string does not has numbers
-        return defaultValue
+        return null
     }
 
     // extract integer part

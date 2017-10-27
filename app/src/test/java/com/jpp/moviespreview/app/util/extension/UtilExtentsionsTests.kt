@@ -35,8 +35,7 @@ class UtilExtentsionsTests {
         actual = "w780".transformToInt()
         Assert.assertEquals(expected, actual)
 
-        expected = -1
         actual = "original".transformToInt()
-        Assert.assertEquals(expected, actual)
+        Assert.assertNull(actual)
     }
 }

@@ -6,9 +6,11 @@ package com.jpp.moviespreview.app.ui
  * A list of possible sizes to retrieve (the presenters and views are the ones
  * that take care of finding the proper size)
  */
-data class ImageConfiguration(val baseUrl: String, val size: String, val realSize: Int) {
+data class ImageConfiguration(private val baseUrl: String,
+                              val size: String,
+                              val realSize: Int?) {
 
-    fun prepareImageUrl(path: String) = "$baseUrl/$size/$path"
+    fun prepareImageUrl(path: String) = "$baseUrl$size$path"
 
 }
 

@@ -12,6 +12,7 @@ import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.MoviePage
 import com.jpp.moviespreview.app.util.extentions.app
 import com.jpp.moviespreview.app.util.extentions.ctx
+import com.jpp.moviespreview.app.util.extentions.getScreenSizeInPixels
 import kotlinx.android.synthetic.main.playing_movies_fragment.*
 import javax.inject.Inject
 
@@ -67,4 +68,6 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
     override fun backToSplashScreen() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
+    override fun getScreenWidth(): Int = activity.getScreenSizeInPixels().x
 }

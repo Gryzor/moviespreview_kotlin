@@ -12,6 +12,7 @@ interface PlayingMoviesView {
 
     fun backToSplashScreen()
     fun showMoviePage(moviePage: MoviePage)
+    fun getScreenWidth(): Int
 }
 
 
