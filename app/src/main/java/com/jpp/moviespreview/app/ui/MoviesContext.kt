@@ -44,6 +44,18 @@ class MoviesContext {
 
 
     /**
+     * Determinate if the context has movies loaded currently or not.
+     */
+    fun hasMoviePages() = moviePages.size > 0
+
+
+    /**
+     * Returns the immutable list of [MoviePage]
+     */
+    fun getAllMoviePages(): List<MoviePage> = moviePages
+
+
+    /**
      * Retrieves the [ImageConfiguration] that bests suits with the provided [width]
      */
     fun getImageConfigForScreenWidth(width: Int): ImageConfiguration {

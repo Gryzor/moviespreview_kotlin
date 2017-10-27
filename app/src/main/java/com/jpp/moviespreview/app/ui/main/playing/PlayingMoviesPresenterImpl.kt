@@ -14,7 +14,6 @@ import com.jpp.moviespreview.app.domain.Genre as DomainGenre
  * //TODO 1 - verify if context is ready and go back to splash if not
  * //TODO 3 - error
  * //TODO 4 - paging
- * //TODO handle rotation
  *
  * Created by jpp on 10/23/17.
  */
@@ -28,7 +27,22 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
 
     override fun linkView(view: PlayingMoviesView) {
         playingMoviesView = view
-        retrievePlayingMoviesIfPossible()
+        loadOrRetrieveMovies()
+    }
+
+
+    /**
+     * Verifies if there are pages loaded into the context. If there are, loads those
+     * pages into the screen. If not, it attempts to retrieve the new pages.
+     */
+    private fun loadOrRetrieveMovies() {
+        if (moviesContext.hasMoviePages()) {
+            for (page in moviesContext.getAllMoviePages()) {
+                playingMoviesView.showMoviePage(page)
+            }
+        } else {
+            retrievePlayingMoviesIfPossible()
+        }
     }
 
 
