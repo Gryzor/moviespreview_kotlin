@@ -7,13 +7,14 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.MoviePage
+import com.jpp.moviespreview.app.ui.splash.SplashActivity
 import com.jpp.moviespreview.app.util.extentions.app
 import com.jpp.moviespreview.app.util.extentions.ctx
 import com.jpp.moviespreview.app.util.extentions.getScreenSizeInPixels
 import kotlinx.android.synthetic.main.playing_movies_fragment.*
+import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 
 
@@ -61,12 +62,12 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
     }
 
     override fun showMoviePage(moviePage: MoviePage) {
-        Toast.makeText(activity, "Size ${moviePage.results.size}", Toast.LENGTH_LONG).show()
         adapter.appendMovies(moviePage.results)
     }
 
     override fun backToSplashScreen() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        activity.startActivity<SplashActivity>()
+        activity.finish()
     }
 
     override fun getScreenWidth(): Int = activity.getScreenSizeInPixels().x

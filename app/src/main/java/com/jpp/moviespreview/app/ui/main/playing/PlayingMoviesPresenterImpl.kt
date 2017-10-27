@@ -11,7 +11,6 @@ import com.jpp.moviespreview.app.domain.Genre as DomainGenre
 /**
  * Presenter implementation for the playing movies in theater section
  *
- * //TODO 1 - verify if context is ready and go back to splash if not
  * //TODO 3 - error
  * //TODO 4 - paging
  *
@@ -46,6 +45,11 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
     }
 
 
+    /**
+     * Retrieves the list of movies if the [moviesContext] is completed (the initial configuration
+     * is completed). If not, takes the flow back to the splash screen in order to refresh the
+     * initial configuration.
+     */
     private fun retrievePlayingMoviesIfPossible() {
         if (moviesContext.isConfigCompleted()) {
             backgroundInteractor.executeBackgroundJob(
