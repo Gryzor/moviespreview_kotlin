@@ -12,10 +12,9 @@ import com.jpp.moviespreview.app.domain.Genre as DomainGenre
  * Presenter implementation for the playing movies in theater section
  *
  * //TODO 1 - verify if context is ready and go back to splash if not
- * //TODO 2 - retrieve movies
  * //TODO 3 - error
  * //TODO 4 - paging
- * //TODO 5 - select proper image config
+ * //TODO handle rotation
  *
  * Created by jpp on 10/23/17.
  */
