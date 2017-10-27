@@ -17,8 +17,8 @@ class ConfigurationDataMapperTest {
 
         val domainMoviesConfiguration = ConfigurationDataMapper().convertMoviesConfigurationFromDataModel(dataMoviesConfiguration)
 
-        assertEquals(3, domainMoviesConfiguration.imagesConfiguration.sizes.size)
-        assertEquals("baseUrl", domainMoviesConfiguration.imagesConfiguration.baseUrl)
+        assertEquals(3, domainMoviesConfiguration.posterImagesConfiguration.sizes.size)
+        assertEquals("baseUrl", domainMoviesConfiguration.posterImagesConfiguration.baseUrl)
     }
 
 }

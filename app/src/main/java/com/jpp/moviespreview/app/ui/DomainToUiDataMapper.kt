@@ -1,6 +1,7 @@
 package com.jpp.moviespreview.app.ui
 
 import com.jpp.moviespreview.app.util.extentions.filterInList
+import com.jpp.moviespreview.app.util.extentions.transformToInt
 import com.jpp.moviespreview.app.domain.Genre as DomainGenre
 import com.jpp.moviespreview.app.domain.Movie as DomainMovie
 import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
@@ -21,8 +22,8 @@ class DomainToUiDataMapper {
      * by the [domainMoviesConfiguration].
      */
     fun convertConfigurationToImagesConfiguration(domainMoviesConfiguration: DomainMovieConfiguration): List<ImageConfiguration> {
-        return domainMoviesConfiguration.imagesConfiguration.sizes.map {
-            ImageConfiguration(domainMoviesConfiguration.imagesConfiguration.baseUrl, it)
+        return domainMoviesConfiguration.posterImagesConfiguration.sizes.map {
+            ImageConfiguration(domainMoviesConfiguration.posterImagesConfiguration.baseUrl, it, it.transformToInt())
         }
     }
 
