@@ -2,6 +2,8 @@ package com.jpp.moviespreview.app.ui.main.playing
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +11,8 @@ import android.widget.Toast
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.MoviePage
 import com.jpp.moviespreview.app.util.extentions.app
+import com.jpp.moviespreview.app.util.extentions.ctx
+import kotlinx.android.synthetic.main.playing_movies_fragment.*
 import javax.inject.Inject
 
 
@@ -19,6 +23,11 @@ import javax.inject.Inject
  */
 class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
 
+    private val adapter by lazy {
+        PlayingMoviesAdapter({
+            //TODO implement me -> go to detail
+        })
+    }
 
     companion object {
         val TAG = "PlayingMoviesFragment"
@@ -38,14 +47,21 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
     }
 
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater!!.inflate(R.layout.playing_movies_fragment, container, false)
-        return view
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
+            = inflater.inflate(R.layout.playing_movies_fragment, container, false)
 
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val layoutManager = LinearLayoutManager(view.ctx)
+        rv_playing_movies.layoutManager = layoutManager
+        rv_playing_movies.addItemDecoration(DividerItemDecoration(view.ctx, layoutManager.orientation))
+        rv_playing_movies.adapter = adapter
+    }
 
     override fun showMoviePage(moviePage: MoviePage) {
         Toast.makeText(activity, "Size ${moviePage.results.size}", Toast.LENGTH_LONG).show()
+        adapter.appendMovies(moviePage.results)
     }
 
     override fun backToSplashScreen() {

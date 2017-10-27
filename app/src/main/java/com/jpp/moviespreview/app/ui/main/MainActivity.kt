@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     private fun addMainFragment() {
         //TODO refactor this to support full screen capabilities
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(PlayingMoviesFragment.newInstance(), PlayingMoviesFragment.TAG)
+        transaction.add(R.id.main_content, PlayingMoviesFragment.newInstance(), PlayingMoviesFragment.TAG)
         transaction.commit()
     }
 }
