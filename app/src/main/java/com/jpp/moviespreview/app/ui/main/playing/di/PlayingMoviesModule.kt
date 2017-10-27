@@ -10,6 +10,7 @@ import com.jpp.moviespreview.app.domain.movie.RetrieveMoviesInTheaterUseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
+import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 import com.jpp.moviespreview.app.ui.main.di.MainScreenScope
 import com.jpp.moviespreview.app.ui.main.playing.PlayingMoviesPresenter
 import com.jpp.moviespreview.app.ui.main.playing.PlayingMoviesPresenterImpl
@@ -29,9 +30,10 @@ class PlayingMoviesModule {
     @MainScreenScope
     fun providesPlayingMoviesPresenter(moviesContext: MoviesContext,
                                        backgroundInteractor: BackgroundInteractor,
+                                       connectivityInteractor: ConnectivityInteractor,
                                        playingMoviesUseCase: UseCase<MoviesInTheaterInputParam, MoviePage>,
                                        mapper: DomainToUiDataMapper): PlayingMoviesPresenter
-            = PlayingMoviesPresenterImpl(moviesContext, backgroundInteractor, playingMoviesUseCase, mapper)
+            = PlayingMoviesPresenterImpl(moviesContext, backgroundInteractor, connectivityInteractor, playingMoviesUseCase, mapper)
 
 
     @Provides

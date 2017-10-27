@@ -9,10 +9,11 @@ import com.jpp.moviespreview.app.ui.MoviePage
  */
 
 interface PlayingMoviesView {
-
     fun backToSplashScreen()
     fun showMoviePage(moviePage: MoviePage)
     fun getScreenWidth(): Int
+    fun showUnexpectedError()
+    fun showNotConnectedToNetwork()
 }
 
 

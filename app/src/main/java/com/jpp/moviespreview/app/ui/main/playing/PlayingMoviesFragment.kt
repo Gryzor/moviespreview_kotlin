@@ -10,9 +10,7 @@ import android.view.ViewGroup
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.MoviePage
 import com.jpp.moviespreview.app.ui.splash.SplashActivity
-import com.jpp.moviespreview.app.util.extentions.app
-import com.jpp.moviespreview.app.util.extentions.ctx
-import com.jpp.moviespreview.app.util.extentions.getScreenSizeInPixels
+import com.jpp.moviespreview.app.util.extentions.*
 import kotlinx.android.synthetic.main.playing_movies_fragment.*
 import org.jetbrains.anko.startActivity
 import javax.inject.Inject
@@ -71,4 +69,12 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
     }
 
     override fun getScreenWidth(): Int = activity.getScreenSizeInPixels().x
+
+    override fun showUnexpectedError() {
+        activity.showUnexpectedError { activity.finish() }
+    }
+
+    override fun showNotConnectedToNetwork() {
+        activity.showNoNetworkConnectionAlert()
+    }
 }

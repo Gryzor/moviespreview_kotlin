@@ -4,8 +4,10 @@ import com.jpp.moviespreview.app.domain.MoviePage
 import com.jpp.moviespreview.app.domain.MoviesInTheaterInputParam
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
+import com.jpp.moviespreview.app.ui.ImageConfiguration
 import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
+import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 import com.jpp.moviespreview.app.domain.Genre as DomainGenre
 
 /**
@@ -13,11 +15,13 @@ import com.jpp.moviespreview.app.domain.Genre as DomainGenre
  *
  * //TODO 3 - error
  * //TODO 4 - paging
+ * //TODO clear DB when close ?
  *
  * Created by jpp on 10/23/17.
  */
 class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
                                  private val backgroundInteractor: BackgroundInteractor,
+                                 private val connectivityInteractor: ConnectivityInteractor,
                                  private val playingMoviesUseCase: UseCase<MoviesInTheaterInputParam, MoviePage>,
                                  private val mapper: DomainToUiDataMapper) : PlayingMoviesPresenter {
 
@@ -81,11 +85,27 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
             moviesContext.addMoviePage(convertedMoviePage)
             playingMoviesView.showMoviePage(convertedMoviePage)
         } else {
-            //TODO JPP show error
+            processError()
         }
     }
 
 
+    /**
+     * Process the detected error by showing an internet connection error
+     * or a unexpected error message.
+     */
+    private fun processError() {
+        if (connectivityInteractor.isConnectedToNetwork()) {
+            playingMoviesView.showUnexpectedError()
+        } else {
+            playingMoviesView.showNotConnectedToNetwork()
+        }
+    }
+
+
+    /**
+     * Finds the proper width for the [ImageConfiguration] to be used by the presenter.
+     */
     private fun getImagesWidthObjective(): Int {
         if (targetScreenWidth == null) {
             targetScreenWidth = playingMoviesView.getScreenWidth()
