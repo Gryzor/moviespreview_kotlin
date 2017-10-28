@@ -12,6 +12,8 @@ import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 import com.jpp.moviespreview.app.ui.main.di.MainScreenScope
+import com.jpp.moviespreview.app.ui.main.playing.PlayingMoviesInteractorDelegate
+import com.jpp.moviespreview.app.ui.main.playing.PlayingMoviesInteractorDelegateImpl
 import com.jpp.moviespreview.app.ui.main.playing.PlayingMoviesPresenter
 import com.jpp.moviespreview.app.ui.main.playing.PlayingMoviesPresenterImpl
 import dagger.Module
@@ -26,14 +28,15 @@ import dagger.Provides
 class PlayingMoviesModule {
 
 
+    //TODO these should be fragment scoped
+
     @Provides
     @MainScreenScope
     fun providesPlayingMoviesPresenter(moviesContext: MoviesContext,
-                                       backgroundInteractor: BackgroundInteractor,
-                                       connectivityInteractor: ConnectivityInteractor,
+                                       playingMoviesInteractorDelegate: PlayingMoviesInteractorDelegate,
                                        playingMoviesUseCase: UseCase<MoviesInTheaterInputParam, MoviePage>,
                                        mapper: DomainToUiDataMapper): PlayingMoviesPresenter
-            = PlayingMoviesPresenterImpl(moviesContext, backgroundInteractor, connectivityInteractor, playingMoviesUseCase, mapper)
+            = PlayingMoviesPresenterImpl(moviesContext, playingMoviesInteractorDelegate, playingMoviesUseCase, mapper)
 
 
     @Provides
@@ -41,5 +44,10 @@ class PlayingMoviesModule {
     fun providesRetrieveMoviesInTheaterUseCase(api: MoviesPreviewApiWrapper, moviesCache: MoviesCache): UseCase<MoviesInTheaterInputParam, MoviePage>
             = RetrieveMoviesInTheaterUseCase(MovieDataMapper(), api, moviesCache)
 
+    @Provides
+    @MainScreenScope
+    fun providesPlayingMoviesInteractorDelegate(backgroundInteractor: BackgroundInteractor,
+                                                connectivityInteractor: ConnectivityInteractor): PlayingMoviesInteractorDelegate
+            = PlayingMoviesInteractorDelegateImpl(backgroundInteractor, connectivityInteractor)
 
 }

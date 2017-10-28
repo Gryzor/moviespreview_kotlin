@@ -6,22 +6,19 @@ import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.ImageConfiguration
 import com.jpp.moviespreview.app.ui.MoviesContext
-import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
-import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 import com.jpp.moviespreview.app.domain.Genre as DomainGenre
 
 /**
  * Presenter implementation for the playing movies in theater section
  *
- * //TODO 3 - error
  * //TODO 4 - paging
  * //TODO clear DB when close ?
+ * //TODO loading
  *
  * Created by jpp on 10/23/17.
  */
 class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
-                                 private val backgroundInteractor: BackgroundInteractor,
-                                 private val connectivityInteractor: ConnectivityInteractor,
+                                 private val interactorDelegate: PlayingMoviesInteractorDelegate,
                                  private val playingMoviesUseCase: UseCase<MoviesInTheaterInputParam, MoviePage>,
                                  private val mapper: DomainToUiDataMapper) : PlayingMoviesPresenter {
 
@@ -56,7 +53,7 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
      */
     private fun retrievePlayingMoviesIfPossible() {
         if (moviesContext.isConfigCompleted()) {
-            backgroundInteractor.executeBackgroundJob(
+            interactorDelegate.executeBackgroundJob(
                     {
                         val param = createNextUseCaseParam(1, mapper.convertUiGenresToDomainGenres(moviesContext.movieGenres!!))
                         playingMoviesUseCase.execute(param)
@@ -95,7 +92,7 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
      * or a unexpected error message.
      */
     private fun processError() {
-        if (connectivityInteractor.isConnectedToNetwork()) {
+        if (interactorDelegate.isConnectedToNetwork()) {
             playingMoviesView.showUnexpectedError()
         } else {
             playingMoviesView.showNotConnectedToNetwork()
