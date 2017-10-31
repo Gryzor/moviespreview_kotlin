@@ -108,6 +108,12 @@ dependencies {
     androidTestCompile "com.android.support.test.espresso:espresso-core:$espresso_version"
     androidTestCompile "com.android.support.test.espresso:espresso-intents:$espresso_version"
 
+    /*
+     * Loading views library
+     * https://github.com/81813780/AVLoadingIndicatorView
+     */
+    compile 'com.wang.avi:library:2.1.3'
+
     /**
      * AccessibilityChecks
      * CountingIdlingResource
