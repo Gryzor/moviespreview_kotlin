@@ -80,16 +80,18 @@ class DomainToUiDataMapper {
 
 
     /**
-     * Converts a list of [MovieGenre] (UI model) into a list of [DomainGenre]
+     * Converts a list of [MovieGenre] (UI model) into a list of [DomainGenre].
+     * Will hold in memory the last list of [DomainGenre] created in order to avoid
+     * overhead. If it detects that the provided [uiGenres] list is different that the one
+     * in memory, it will convert to the new one.
      */
     fun convertUiGenresToDomainGenres(uiGenres: List<MovieGenre>): List<DomainGenre> {
-        if (domainGenres?.size == uiGenres.size) {
-            return domainGenres as List<DomainGenre>
+        if (domainGenres == null || domainGenres?.size == uiGenres.size) {
+            domainGenres = uiGenres.map {
+                DomainGenre(it.id, it.name)
+            }
         }
-
-        return uiGenres.map {
-            DomainGenre(it.id, it.name)
-        }
+        return domainGenres as List<DomainGenre>
     }
 
 

@@ -1,17 +1,17 @@
 package com.jpp.moviespreview.app.ui.main.playing
 
-import com.jpp.moviespreview.app.domain.MoviePage
 import com.jpp.moviespreview.app.domain.MoviesInTheaterInputParam
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.ImageConfiguration
+import com.jpp.moviespreview.app.ui.MoviePage
 import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.domain.Genre as DomainGenre
+import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
 
 /**
  * Presenter implementation for the playing movies in theater section
  *
- * //TODO 4 - paging
  * //TODO clear DB when close ?
  * //TODO loading
  *
@@ -19,11 +19,13 @@ import com.jpp.moviespreview.app.domain.Genre as DomainGenre
  */
 class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
                                  private val interactorDelegate: PlayingMoviesInteractorDelegate,
-                                 private val playingMoviesUseCase: UseCase<MoviesInTheaterInputParam, MoviePage>,
+                                 private val playingMoviesUseCase: UseCase<MoviesInTheaterInputParam, DomainMoviePage>,
                                  private val mapper: DomainToUiDataMapper) : PlayingMoviesPresenter {
+
 
     private lateinit var playingMoviesView: PlayingMoviesView
     private var targetScreenWidth: Int? = null
+    private var canRetrieveMovies = true
 
     override fun linkView(view: PlayingMoviesView) {
         playingMoviesView = view
@@ -52,21 +54,34 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
      * initial configuration.
      */
     private fun retrievePlayingMoviesIfPossible() {
-        if (moviesContext.isConfigCompleted()) {
-            interactorDelegate.executeBackgroundJob(
-                    {
-                        val param = createNextUseCaseParam(1, mapper.convertUiGenresToDomainGenres(moviesContext.movieGenres!!))
-                        playingMoviesUseCase.execute(param)
-                    },
-                    { processMoviesPage(it) })
-
-        } else {
-            playingMoviesView.backToSplashScreen()
-        }
+        getNextMoviePage()
     }
 
 
-    private fun createNextUseCaseParam(page: Int, genres: List<DomainGenre>) = MoviesInTheaterInputParam(page, genres)
+    private fun createNextUseCaseParam(): MoviesInTheaterInputParam {
+        var lastMoviePageIndex = 0 // by default, always get the first page
+        var lastMoviePage: MoviePage? = null
+
+        if (!moviesContext.getAllMoviePages().isEmpty()) {
+            lastMoviePage = moviesContext.getAllMoviePages().last()
+            lastMoviePageIndex = lastMoviePage.page
+        }
+
+        val genres = moviesContext.movieGenres
+
+        if (genres == null) {
+            playingMoviesView.showUnexpectedError()
+        }
+
+        val nextPage = lastMoviePageIndex + 1
+
+        if (lastMoviePage != null && nextPage > lastMoviePage.totalPages) {
+            playingMoviesView.showEndOfPaging()
+        }
+
+
+        return MoviesInTheaterInputParam(nextPage, mapper.convertUiGenresToDomainGenres(moviesContext.movieGenres!!))
+    }
 
 
     /**
@@ -75,7 +90,7 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
      * ask to the view to show the new page.
      * If [moviePage] is null, then it asks to the view to show the error.
      */
-    private fun processMoviesPage(moviePage: MoviePage?) {
+    private fun processMoviesPage(moviePage: DomainMoviePage?) {
         if (moviePage != null) {
             val selectedImageConfig = moviesContext.getImageConfigForScreenWidth(getImagesWidthObjective())
             val convertedMoviePage = mapper.convertDomainMoviePageToUiMoviePage(moviePage, selectedImageConfig, moviesContext.movieGenres!!)
@@ -108,6 +123,27 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
             targetScreenWidth = playingMoviesView.getScreenWidth()
         }
         return targetScreenWidth!!
+    }
+
+
+    override fun getNextMoviePage() {
+        if (moviesContext.isConfigCompleted()) {
+            if (canRetrieveMovies) {
+                canRetrieveMovies = false
+                interactorDelegate.executeBackgroundJob(
+                        {
+                            val param = createNextUseCaseParam()
+                            playingMoviesUseCase.execute(param)
+                        },
+                        {
+                            canRetrieveMovies = true
+                            processMoviesPage(it)
+                        }
+                )
+            }
+        } else {
+            playingMoviesView.backToSplashScreen()
+        }
     }
 
 }

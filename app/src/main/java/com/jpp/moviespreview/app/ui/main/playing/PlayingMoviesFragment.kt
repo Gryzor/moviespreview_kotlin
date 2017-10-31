@@ -23,6 +23,7 @@ import javax.inject.Inject
  */
 class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
 
+
     private val adapter by lazy {
         PlayingMoviesAdapter({
             //TODO implement me -> go to detail
@@ -57,6 +58,7 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
         rv_playing_movies.layoutManager = layoutManager
         rv_playing_movies.addItemDecoration(DividerItemDecoration(view.ctx, layoutManager.orientation))
         rv_playing_movies.adapter = adapter
+        rv_playing_movies.endlessScrolling({ playingMoviesPresenter.getNextMoviePage() })
     }
 
     override fun showMoviePage(moviePage: MoviePage) {
@@ -76,5 +78,9 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
 
     override fun showNotConnectedToNetwork() {
         activity.showNoNetworkConnectionAlert()
+    }
+
+    override fun showEndOfPaging() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

@@ -34,8 +34,8 @@ class MovieDataMapper {
                     it.overview,
                     it.release_date,
                     it.original_language,
-                    it.poster_path,
-                    it.backdrop_path,
+                    it.poster_path ?: "empty", // might be null, assign empty as default value
+                    it.backdrop_path ?: "empty", // might be null, assign empty as default value
                     mapGenresIdToDomainGenres(it.genre_ids, genres),
                     it.vote_count,
                     it.vote_average,

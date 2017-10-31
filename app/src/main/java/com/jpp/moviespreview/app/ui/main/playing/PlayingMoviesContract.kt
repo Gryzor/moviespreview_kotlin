@@ -14,12 +14,11 @@ interface PlayingMoviesView {
     fun getScreenWidth(): Int
     fun showUnexpectedError()
     fun showNotConnectedToNetwork()
+    fun showEndOfPaging()
 }
 
 
 interface PlayingMoviesPresenter {
-
     fun linkView(view: PlayingMoviesView)
-
-
+    fun getNextMoviePage()
 }
