@@ -58,7 +58,12 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
     }
 
 
-    private fun createNextUseCaseParam(): MoviesInTheaterInputParam {
+    /**
+     * Creates the [MoviesInTheaterInputParam] that is going to be used for the next
+     * use case execution. If the scrolling has reached the last possible position,
+     * it asks the view to show the end of page and returns null.
+     */
+    private fun createNextUseCaseParam(): MoviesInTheaterInputParam? {
         var lastMoviePageIndex = 0 // by default, always get the first page
         var lastMoviePage: MoviePage? = null
 
@@ -71,12 +76,14 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
 
         if (genres == null) {
             playingMoviesView.showUnexpectedError()
+            return null
         }
 
         val nextPage = lastMoviePageIndex + 1
 
         if (lastMoviePage != null && nextPage > lastMoviePage.totalPages) {
             playingMoviesView.showEndOfPaging()
+            return null
         }
 
 
@@ -129,20 +136,36 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
     override fun getNextMoviePage() {
         if (moviesContext.isConfigCompleted()) {
             if (canRetrieveMovies) {
-                canRetrieveMovies = false
-                interactorDelegate.executeBackgroundJob(
-                        {
-                            val param = createNextUseCaseParam()
-                            playingMoviesUseCase.execute(param)
-                        },
-                        {
-                            canRetrieveMovies = true
-                            processMoviesPage(it)
-                        }
-                )
+                val param = createNextUseCaseParam()
+                if (param != null) {
+                    executeUseCase(param)
+                }
             }
         } else {
             playingMoviesView.backToSplashScreen()
+        }
+    }
+
+    private fun executeUseCase(param: MoviesInTheaterInputParam) {
+        canRetrieveMovies = false
+        interactorDelegate.executeBackgroundJob(
+                {
+                    showLoadingIfNeeded()
+                    playingMoviesUseCase.execute(param)
+                },
+                {
+                    canRetrieveMovies = true
+                    processMoviesPage(it)
+                }
+        )
+    }
+
+    /**
+     * Asks the view to show the initial loading view if it's the initial load.
+     */
+    private fun showLoadingIfNeeded() {
+        if (moviesContext.getAllMoviePages().isEmpty()) {
+            playingMoviesView.showInitialLoading()
         }
     }
 

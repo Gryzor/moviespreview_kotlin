@@ -15,6 +15,7 @@ interface PlayingMoviesView {
     fun showUnexpectedError()
     fun showNotConnectedToNetwork()
     fun showEndOfPaging()
+    fun showInitialLoading()
 }
 
 

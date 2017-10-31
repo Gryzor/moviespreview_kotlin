@@ -23,7 +23,6 @@ import javax.inject.Inject
  */
 class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
 
-
     private val adapter by lazy {
         PlayingMoviesAdapter({
             //TODO implement me -> go to detail
@@ -82,5 +81,9 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
 
     override fun showEndOfPaging() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showInitialLoading() {
+        //TODO
     }
 }
