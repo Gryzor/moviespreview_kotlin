@@ -12,9 +12,6 @@ import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
 /**
  * Presenter implementation for the playing movies in theater section
  *
- * //TODO clear DB when close ?
- * //TODO loading
- *
  * Created by jpp on 10/23/17.
  */
 class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,

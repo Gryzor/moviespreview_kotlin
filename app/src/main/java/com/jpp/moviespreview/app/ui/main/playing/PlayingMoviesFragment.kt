@@ -81,7 +81,7 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
     }
 
     override fun showEndOfPaging() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        // do nothing for the moment
     }
 
     override fun showInitialLoading() {
