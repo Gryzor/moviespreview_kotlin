@@ -25,6 +25,11 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
     private lateinit var playingMoviesView: PlayingMoviesView
     private var targetScreenWidth: Int? = null
 
+    private val assignTarget = { value: Int ->
+        targetScreenWidth = value
+        targetScreenWidth!!
+    }
+
     override fun linkView(view: PlayingMoviesView) {
         playingMoviesView = view
         loadOrRetrieveMovies()
@@ -36,27 +41,31 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
      * pages into the screen. If not, it attempts to retrieve the new pages.
      */
     private fun loadOrRetrieveMovies() {
-        if (moviesContext.hasMoviePages()) {
-            for (page in moviesContext.getAllMoviePages()) {
-                playingMoviesView.showMoviePage(page)
+        with(moviesContext) {
+            if (hasMoviePages()) {
+                getAllMoviePages().forEach({
+                    playingMoviesView.showMoviePage(it)
+                })
+            } else {
+                getNextMoviePage()
             }
-        } else {
-            getNextMoviePage()
         }
     }
 
 
     @SuppressLint("VisibleForTests")
     override fun getNextMoviePage() {
-        if (moviesContext.isConfigCompleted()) {
-            if (interactorDelegate.isIdle()) {
-                val param = createNextUseCaseParam()
-                if (param != null) {
-                    executeUseCase(param)
+        with(moviesContext) {
+            if (isConfigCompleted()) {
+                if (interactorDelegate.isIdle()) {
+                    val param = createNextUseCaseParam()
+                    if (param != null) {
+                        executeUseCase(param)
+                    }
                 }
+            } else {
+                playingMoviesView.backToSplashScreen()
             }
-        } else {
-            playingMoviesView.backToSplashScreen()
         }
     }
 
@@ -68,30 +77,24 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
      */
     @VisibleForTesting
     fun createNextUseCaseParam(): MoviesInTheaterInputParam? {
-        var lastMoviePageIndex = 0 // by default, always get the first page
-        var lastMoviePage: MoviePage? = null
+        with(moviesContext) {
+            var lastMoviePageIndex = 0 // by default, always get the first page
+            var lastMoviePage: MoviePage? = null
 
-        if (!moviesContext.getAllMoviePages().isEmpty()) {
-            lastMoviePage = moviesContext.getAllMoviePages().last()
-            lastMoviePageIndex = lastMoviePage.page
+            if (getAllMoviePages().isNotEmpty()) {
+                lastMoviePage = getAllMoviePages().last()
+                lastMoviePageIndex = lastMoviePage.page
+            }
+
+            val nextPage = lastMoviePageIndex + 1
+
+            if (lastMoviePage != null && nextPage > lastMoviePage.totalPages) {
+                playingMoviesView.showEndOfPaging()
+                return null
+            }
+
+            return MoviesInTheaterInputParam(nextPage, mapper.convertUiGenresToDomainGenres(movieGenres!!))
         }
-
-        val genres = moviesContext.movieGenres
-
-        if (genres == null) {
-            playingMoviesView.showUnexpectedError()
-            return null
-        }
-
-        val nextPage = lastMoviePageIndex + 1
-
-        if (lastMoviePage != null && nextPage > lastMoviePage.totalPages) {
-            playingMoviesView.showEndOfPaging()
-            return null
-        }
-
-
-        return MoviesInTheaterInputParam(nextPage, mapper.convertUiGenresToDomainGenres(genres))
     }
 
 
@@ -102,14 +105,12 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
      * If [moviePage] is null, then it asks to the view to show the error.
      */
     private fun processMoviesPage(moviePage: DomainMoviePage?) {
-        if (moviePage != null) {
+        moviePage?.let {
             val selectedImageConfig = moviesContext.getImageConfigForScreenWidth(getImagesWidthObjective())
-            val convertedMoviePage = mapper.convertDomainMoviePageToUiMoviePage(moviePage, selectedImageConfig, moviesContext.movieGenres!!)
+            val convertedMoviePage = mapper.convertDomainMoviePageToUiMoviePage(it, selectedImageConfig, moviesContext.movieGenres!!)
             moviesContext.addMoviePage(convertedMoviePage)
             playingMoviesView.showMoviePage(convertedMoviePage)
-        } else {
-            processError()
-        }
+        } ?: processError()
     }
 
 
@@ -118,10 +119,12 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
      * or a unexpected error message.
      */
     private fun processError() {
-        if (interactorDelegate.isConnectedToNetwork()) {
-            playingMoviesView.showUnexpectedError()
-        } else {
-            playingMoviesView.showNotConnectedToNetwork()
+        with(interactorDelegate) {
+            if (isConnectedToNetwork()) {
+                playingMoviesView.showUnexpectedError()
+            } else {
+                playingMoviesView.showNotConnectedToNetwork()
+            }
         }
     }
 
@@ -130,12 +133,9 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
      * Finds the proper width for the [ImageConfiguration] to be used by the presenter.
      */
     private fun getImagesWidthObjective(): Int {
-        if (targetScreenWidth == null) {
-            targetScreenWidth = playingMoviesView.getScreenWidth()
-        }
-        return targetScreenWidth!!
+        return targetScreenWidth ?:
+                assignTarget(playingMoviesView.getScreenWidth())
     }
-
 
 
     @VisibleForTesting
@@ -155,8 +155,10 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
      * Asks the view to show the initial loading view if it's the initial load.
      */
     private fun showLoadingIfNeeded() {
-        if (moviesContext.getAllMoviePages().isEmpty()) {
-            playingMoviesView.showInitialLoading()
+        with(moviesContext) {
+            if (getAllMoviePages().isEmpty()) {
+                playingMoviesView.showInitialLoading()
+            }
         }
     }
 

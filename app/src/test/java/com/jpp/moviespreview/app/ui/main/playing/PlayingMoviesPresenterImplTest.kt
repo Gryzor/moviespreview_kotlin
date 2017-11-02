@@ -152,20 +152,6 @@ class PlayingMoviesPresenterImplTest {
         verifyZeroInteractions(playingMoviesUseCase)
     }
 
-    @Test
-    fun createNextUseCaseParam_whenNoGenres_showsUnexpectedError() {
-        //--prepare
-        subject.linkView(playingMoviesView)
-        `when`(moviesContext.movieGenres).thenReturn(null)
-        `when`(moviesContext.getAllMoviePages()).thenReturn(listOf())
-
-        //--execute
-        val result = subject.createNextUseCaseParam()
-
-        //--verify
-        verify(playingMoviesView).showUnexpectedError()
-        Assert.assertNull(result)
-    }
 
     @Test
     fun createNextUseCaseParam_whenNoMorePages_showsEndOfPaging() {
@@ -215,6 +201,7 @@ class PlayingMoviesPresenterImplTest {
         //--verify
         verify(playingMoviesView).showInitialLoading()
         verify(playingMoviesUseCase).execute(param)
+        // tests getImagesWidthObjective()
         verify(moviesContext).getImageConfigForScreenWidth(200)
 
 
