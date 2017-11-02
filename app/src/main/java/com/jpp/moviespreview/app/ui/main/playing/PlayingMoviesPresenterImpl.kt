@@ -1,5 +1,7 @@
 package com.jpp.moviespreview.app.ui.main.playing
 
+import android.annotation.SuppressLint
+import android.support.annotation.VisibleForTesting
 import com.jpp.moviespreview.app.domain.MoviesInTheaterInputParam
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
@@ -22,7 +24,6 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
 
     private lateinit var playingMoviesView: PlayingMoviesView
     private var targetScreenWidth: Int? = null
-    private var canRetrieveMovies = true
 
     override fun linkView(view: PlayingMoviesView) {
         playingMoviesView = view
@@ -40,18 +41,23 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
                 playingMoviesView.showMoviePage(page)
             }
         } else {
-            retrievePlayingMoviesIfPossible()
+            getNextMoviePage()
         }
     }
 
 
-    /**
-     * Retrieves the list of movies if the [moviesContext] is completed (the initial configuration
-     * is completed). If not, takes the flow back to the splash screen in order to refresh the
-     * initial configuration.
-     */
-    private fun retrievePlayingMoviesIfPossible() {
-        getNextMoviePage()
+    @SuppressLint("VisibleForTests")
+    override fun getNextMoviePage() {
+        if (moviesContext.isConfigCompleted()) {
+            if (interactorDelegate.isIdle()) {
+                val param = createNextUseCaseParam()
+                if (param != null) {
+                    executeUseCase(param)
+                }
+            }
+        } else {
+            playingMoviesView.backToSplashScreen()
+        }
     }
 
 
@@ -60,7 +66,8 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
      * use case execution. If the scrolling has reached the last possible position,
      * it asks the view to show the end of page and returns null.
      */
-    private fun createNextUseCaseParam(): MoviesInTheaterInputParam? {
+    @VisibleForTesting
+    fun createNextUseCaseParam(): MoviesInTheaterInputParam? {
         var lastMoviePageIndex = 0 // by default, always get the first page
         var lastMoviePage: MoviePage? = null
 
@@ -84,7 +91,7 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
         }
 
 
-        return MoviesInTheaterInputParam(nextPage, mapper.convertUiGenresToDomainGenres(moviesContext.movieGenres!!))
+        return MoviesInTheaterInputParam(nextPage, mapper.convertUiGenresToDomainGenres(genres))
     }
 
 
@@ -130,28 +137,15 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
     }
 
 
-    override fun getNextMoviePage() {
-        if (moviesContext.isConfigCompleted()) {
-            if (canRetrieveMovies) {
-                val param = createNextUseCaseParam()
-                if (param != null) {
-                    executeUseCase(param)
-                }
-            }
-        } else {
-            playingMoviesView.backToSplashScreen()
-        }
-    }
 
-    private fun executeUseCase(param: MoviesInTheaterInputParam) {
-        canRetrieveMovies = false
+    @VisibleForTesting
+    fun executeUseCase(param: MoviesInTheaterInputParam) {
         interactorDelegate.executeBackgroundJob(
                 {
                     showLoadingIfNeeded()
                     playingMoviesUseCase.execute(param)
                 },
                 {
-                    canRetrieveMovies = true
                     processMoviesPage(it)
                 }
         )

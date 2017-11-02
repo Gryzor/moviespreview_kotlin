@@ -14,6 +14,8 @@ interface PlayingMoviesInteractorDelegate : BackgroundInteractor, ConnectivityIn
 
 class PlayingMoviesInteractorDelegateImpl(private val backgroundInteractor: BackgroundInteractor,
                                           private val connectivityInteractor: ConnectivityInteractor) : PlayingMoviesInteractorDelegate {
+    override fun isIdle() = backgroundInteractor.isIdle()
+
     override fun isConnectedToNetwork() = connectivityInteractor.isConnectedToNetwork()
 
     override fun <T> executeBackgroundJob(backgroundJob: () -> T?, uiJob: (T?) -> Unit?) {

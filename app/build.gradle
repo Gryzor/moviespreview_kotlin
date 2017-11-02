@@ -136,6 +136,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile "org.mockito:mockito-core:$mockito_version"
     testCompile "org.mockito:mockito-inline:$mockito_version"
+    testCompile "com.nhaarman:mockito-kotlin-kt1.1:1.5.0"
 
     // to mock final classes only in jvm tests
 }

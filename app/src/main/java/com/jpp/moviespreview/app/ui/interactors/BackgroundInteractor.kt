@@ -19,6 +19,8 @@ interface BackgroundInteractor {
      */
     fun <T> executeBackgroundJob(backgroundJob: () -> T?,
                                  uiJob: (T?) -> Unit?)
+
+    fun isIdle(): Boolean
 }
 
 
@@ -28,12 +30,19 @@ interface BackgroundInteractor {
 class BackgroundInteractorImpl : BackgroundInteractor {
 
 
+    private var isIdle = true
+
+
+    override fun isIdle() = isIdle
+
     override fun <T> executeBackgroundJob(backgroundJob: () -> T?,
                                           uiJob: (T?) -> Unit?) {
+        isIdle = false
         doAsync(exceptionHandler = { manageExceptionOnUiThread(uiJob, it) }) {
             val response = backgroundJob()
             uiThread {
                 uiJob(response)
+                isIdle = true
             }
         }
     }
@@ -43,6 +52,9 @@ class BackgroundInteractorImpl : BackgroundInteractor {
         //TODO log the error to crashlytics
         throwable.printStackTrace()
         val uiHandler = Handler(Looper.getMainLooper())
-        uiHandler.post({ uiJob(null) })
+        uiHandler.post({
+            uiJob(null)
+            isIdle = true
+        })
     }
 }
