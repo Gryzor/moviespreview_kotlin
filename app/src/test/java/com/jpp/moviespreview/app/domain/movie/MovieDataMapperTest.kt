@@ -1,10 +1,10 @@
 package com.jpp.moviespreview.app.domain.movie
 
 import com.jpp.moviespreview.app.domain.Genre
+import com.jpp.moviespreview.app.ui.util.DataPageStubs
+import com.jpp.moviespreview.app.ui.util.stubDataMoviePage
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull
-import com.jpp.moviespreview.app.data.MoviePage as DataMoviePage
-import com.jpp.moviespreview.app.data.Movie as DataMovie
 
 import org.junit.Test
 
@@ -23,47 +23,7 @@ class MovieDataMapperTest {
                 Genre(4, "four"),
                 Genre(5, "five"))
 
-        val results = listOf(
-                DataMovie(1.toDouble(),
-                        "One",
-                        "One",
-                        "OverviewOne",
-                        "ReleaseDateOne",
-                        "OriginalLanguage1",
-                        "PosterPathOne",
-                        "backdropPathOne",
-                        listOf(1, 3, 5),
-                        12.toDouble(),
-                        12F,
-                        12F),
-                DataMovie(2.toDouble(),
-                        "Two",
-                        "Two",
-                        "OverviewTwo",
-                        "ReleaseDateTwo",
-                        "OriginalLanguage2",
-                        "PosterPathTwo",
-                        "backdropPathTwo",
-                        listOf(2, 3, 4),
-                        12.toDouble(),
-                        12F,
-                        12F),
-                DataMovie(3.toDouble(),
-                        "Three",
-                        "Three",
-                        "OverviewThree",
-                        "ReleaseDateThree",
-                        "OriginalLanguage3",
-                        "PosterPathThree",
-                        "backdropPathThree",
-                        listOf(5, 1, 2),
-                        12.toDouble(),
-                        12F,
-                        12F)
-        )
-
-
-        val moviePage = DataMoviePage(1, results, 13, 13)
+        val moviePage = DataPageStubs.Companion.stubDataMoviePage(1, 13, 13)
 
         val converted = MovieDataMapper().convertDataMoviePageIntoDomainMoviePage(moviePage, genreList)
 

@@ -33,7 +33,7 @@ import javax.inject.Inject
 
 
 /**
- * Espreso tests are to verify interaction between three components:
+ * Espresso tests are to verify interaction between three components:
  *  1 - Views
  *  2 - Presenters
  *  3 - UseCases

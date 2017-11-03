@@ -1,17 +1,18 @@
 package com.jpp.moviespreview.app.ui.main.playing
 
 import com.jpp.moviespreview.app.BackgroundInteractorForTesting
-import com.jpp.moviespreview.app.domain.Genre
 import com.jpp.moviespreview.app.domain.MoviePage
 import com.jpp.moviespreview.app.domain.MoviesInTheaterInputParam
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.mock
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.ImageConfiguration
-import com.jpp.moviespreview.app.ui.MovieGenre
 import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
+import com.jpp.moviespreview.app.ui.util.DomainPageStubs
+import com.jpp.moviespreview.app.ui.util.mockMovieGenres
+import com.jpp.moviespreview.app.ui.util.stubMoviePage
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import org.junit.Assert
 import org.junit.Before
@@ -79,7 +80,7 @@ class PlayingMoviesPresenterImplTest {
         //--prepare
         `when`(moviesContext.hasMoviePages()).thenReturn(false)
         `when`(moviesContext.isConfigCompleted()).thenReturn(true)
-        `when`(moviesContext.movieGenres).thenReturn(getUIGenresList())
+        `when`(moviesContext.movieGenres).thenReturn(moviesContext.mockMovieGenres())
 
         //-- execute
         subject.linkView(playingMoviesView)
@@ -113,7 +114,7 @@ class PlayingMoviesPresenterImplTest {
         subject.linkView(playingMoviesView)
 
         `when`(moviesContext.isConfigCompleted()).thenReturn(true)
-        `when`(moviesContext.movieGenres).thenReturn(getUIGenresList())
+        `when`(moviesContext.movieGenres).thenReturn(moviesContext.mockMovieGenres())
 
         val lastMoviePage: UiMoviePage = mock()
         val movieList = listOf(
@@ -159,7 +160,7 @@ class PlayingMoviesPresenterImplTest {
         subject.linkView(playingMoviesView)
 
         `when`(moviesContext.isConfigCompleted()).thenReturn(true)
-        `when`(moviesContext.movieGenres).thenReturn(getUIGenresList())
+        `when`(moviesContext.movieGenres).thenReturn(moviesContext.mockMovieGenres())
 
         val lastMoviePage: UiMoviePage = mock()
         val movieList = listOf(
@@ -185,9 +186,9 @@ class PlayingMoviesPresenterImplTest {
     fun executeUseCase_showsLoadingOnlyIfNeeded_executesSuccessfulUseCase_processResult() {
         //--prepare
         subject.linkView(playingMoviesView)
-        val param = MoviesInTheaterInputParam(1, mapper.convertUiGenresToDomainGenres(getUIGenresList()))
+        val param = MoviesInTheaterInputParam(1, mapper.convertUiGenresToDomainGenres(moviesContext.mockMovieGenres()))
 
-        val domainMoviePage = mockDomainMoviePage()
+        val domainMoviePage = DomainPageStubs.Companion.stubMoviePage(1, 200, 201)
         `when`(playingMoviesUseCase.execute(param)).thenReturn(domainMoviePage)
         `when`(playingMoviesView.getScreenWidth()).thenReturn(200)
 
@@ -217,59 +218,4 @@ class PlayingMoviesPresenterImplTest {
             verify(playingMoviesView).showMoviePage(firstValue)
         }
     }
-
-
-    private fun getUIGenresList() = listOf(
-            MovieGenre(1, "genre1"),
-            MovieGenre(2, "genre2"),
-            MovieGenre(3, "genre3"),
-            MovieGenre(4, "genre4")
-    )
-
-
-    private fun mockDomainMoviePage() = DomainMoviePage(1,
-            mockDomainMovieList(),
-            200,
-            201)
-
-
-    private fun mockDomainMovieList() = listOf(
-            DomainMovie(1.toDouble(),
-                    "One",
-                    "One",
-                    "OverviewOne",
-                    "ReleaseDateOne",
-                    "OriginalLanguage1",
-                    "PosterPathOne",
-                    "backdropPathOne",
-                    listOf(Genre(1, "Genre1")),
-                    12.toDouble(),
-                    12F,
-                    12F),
-            DomainMovie(2.toDouble(),
-                    "Two",
-                    "Two",
-                    "OverviewTwo",
-                    "ReleaseDateTwo",
-                    "OriginalLanguage2",
-                    "PosterPathTwo",
-                    "backdropPathTwo",
-                    listOf(Genre(2, "Genre2")),
-                    12.toDouble(),
-                    12F,
-                    12F),
-            DomainMovie(3.toDouble(),
-                    "Three",
-                    "Three",
-                    "OverviewThree",
-                    "ReleaseDateThree",
-                    "OriginalLanguage3",
-                    "PosterPathThree",
-                    "backdropPathThree",
-                    listOf(Genre(3, "Genre3")),
-                    12.toDouble(),
-                    12F,
-                    12F)
-    )
-
 }
