@@ -1,8 +1,8 @@
 package com.jpp.moviespreview.app.domain.movie
 
 import com.jpp.moviespreview.app.domain.Genre
-import com.jpp.moviespreview.app.ui.util.DataPageStubs
-import com.jpp.moviespreview.app.ui.util.stubDataMoviePage
+import com.jpp.moviespreview.app.DataPageStubs
+import com.jpp.moviespreview.app.stubDataMoviePage
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull
 

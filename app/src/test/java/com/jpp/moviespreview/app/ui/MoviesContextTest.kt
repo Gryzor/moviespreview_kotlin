@@ -1,6 +1,6 @@
 package com.jpp.moviespreview.app.ui
 
-import com.jpp.moviespreview.app.ui.util.mockImageConfig
+import com.jpp.moviespreview.app.mockImageConfig
 import org.junit.Assert
 import org.junit.Test
 

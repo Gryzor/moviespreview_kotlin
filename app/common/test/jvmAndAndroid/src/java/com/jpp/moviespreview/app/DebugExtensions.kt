@@ -1,4 +1,4 @@
-package com.jpp.moviespreview.app.ui.util
+package com.jpp.moviespreview.app
 
 import com.jpp.moviespreview.app.domain.Genre
 import com.jpp.moviespreview.app.ui.ImageConfiguration

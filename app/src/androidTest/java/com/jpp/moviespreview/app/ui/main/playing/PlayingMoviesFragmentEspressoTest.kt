@@ -16,10 +16,10 @@ import com.jpp.moviespreview.app.extentions.rotate
 import com.jpp.moviespreview.app.extentions.waitToFinish
 import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.splash.SplashActivity
-import com.jpp.moviespreview.app.ui.util.DataPageStubs
+import com.jpp.moviespreview.app.DataPageStubs
 import com.jpp.moviespreview.app.ui.util.TestActivity
-import com.jpp.moviespreview.app.ui.util.completeConfig
-import com.jpp.moviespreview.app.ui.util.stubDataMoviePage
+import com.jpp.moviespreview.app.completeConfig
+import com.jpp.moviespreview.app.stubDataMoviePage
 import com.jpp.moviespreview.app.util.extentions.addFragmentIfNotInStack
 import com.jpp.moviespreview.app.utils.RecyclerViewItemCountAssertion
 import org.junit.Before

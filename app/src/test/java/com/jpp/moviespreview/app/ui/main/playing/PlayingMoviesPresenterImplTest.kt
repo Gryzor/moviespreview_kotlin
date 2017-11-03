@@ -10,9 +10,9 @@ import com.jpp.moviespreview.app.ui.ImageConfiguration
 import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
-import com.jpp.moviespreview.app.ui.util.DomainPageStubs
-import com.jpp.moviespreview.app.ui.util.mockMovieGenres
-import com.jpp.moviespreview.app.ui.util.stubMoviePage
+import com.jpp.moviespreview.app.DomainPageStubs
+import com.jpp.moviespreview.app.mockMovieGenres
+import com.jpp.moviespreview.app.stubMoviePage
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import org.junit.Assert
 import org.junit.Before
