@@ -17,7 +17,7 @@ import com.jpp.moviespreview.app.extentions.waitToFinish
 import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.splash.SplashActivity
 import com.jpp.moviespreview.app.DataPageStubs
-import com.jpp.moviespreview.app.ui.util.TestActivity
+import com.jpp.moviespreview.app.ui.util.EspressoTestActivity
 import com.jpp.moviespreview.app.completeConfig
 import com.jpp.moviespreview.app.stubDataMoviePage
 import com.jpp.moviespreview.app.util.extentions.addFragmentIfNotInStack
@@ -42,7 +42,7 @@ class PlayingMoviesFragmentEspressoTest {
 
     @get:Rule
     @JvmField
-    val activityRule = ActivityTestRule(TestActivity::class.java)
+    val activityRule = ActivityTestRule(EspressoTestActivity::class.java)
     @get:Rule
     val testComponentRule = TestComponentRule()
 

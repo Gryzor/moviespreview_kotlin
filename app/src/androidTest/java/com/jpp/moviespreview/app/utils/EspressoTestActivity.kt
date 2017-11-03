@@ -7,6 +7,6 @@ import android.support.v7.app.AppCompatActivity
  *
  * Created by jpp on 11/2/17.
  */
-class TestActivity : AppCompatActivity() {
+class EspressoTestActivity : AppCompatActivity() {
 
 }

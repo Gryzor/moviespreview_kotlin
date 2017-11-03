@@ -44,12 +44,10 @@ android {
     // add common sources for android instrumented tests
     sourceSets.androidTest {
         java.srcDirs += getCommonAndroidTestSources()
-        resources.srcDirs += getCommonAndroidTestResources()
     }
     // add common sources for jvm tests
     sourceSets.test {
         java.srcDirs += getCommonAndroidTestSources()
-        resources.srcDirs += getCommonAndroidTestResources()
     }
     // disable animations while testing
     testOptions {
@@ -64,13 +62,6 @@ def getCommonAndroidTestSources() {
     return sources
 }
 
-
-def getCommonAndroidTestResources() {
-    def sources = [
-            "${rootProject.projectDir}/app/common/test/jvmAndAndroid/src/res"
-    ]
-    return sources
-}
 
 dependencies {
     final espresso_version = '3.0.0'
