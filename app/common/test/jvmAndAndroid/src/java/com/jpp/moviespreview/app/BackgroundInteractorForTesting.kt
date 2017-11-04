@@ -9,6 +9,11 @@ import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
  */
 class BackgroundInteractorForTesting : BackgroundInteractor {
 
+
+    var idle = true
+
+    override fun isIdle() = idle
+
     var throwException: Boolean = false
 
     override fun <T> executeBackgroundJob(backgroundJob: () -> T?,

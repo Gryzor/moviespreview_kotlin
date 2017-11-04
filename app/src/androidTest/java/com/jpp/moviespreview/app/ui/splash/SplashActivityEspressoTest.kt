@@ -15,8 +15,8 @@ import com.jpp.moviespreview.app.TestComponentRule
 import com.jpp.moviespreview.app.data.Genre
 import com.jpp.moviespreview.app.data.ImagesConfiguration
 import com.jpp.moviespreview.app.data.MoviesConfiguration
-import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCache
-import com.jpp.moviespreview.app.data.cache.genre.MoviesGenreCache
+import com.jpp.moviespreview.app.data.cache.MoviesConfigurationCache
+import com.jpp.moviespreview.app.data.cache.MoviesGenreCache
 import com.jpp.moviespreview.app.extentions.launch
 import com.jpp.moviespreview.app.extentions.waitToFinish
 import com.jpp.moviespreview.app.ui.MoviesContext
@@ -33,7 +33,7 @@ import javax.inject.Inject
 
 
 /**
- * Espreso tests are to verify interaction between three components:
+ * Espresso tests are to verify interaction between three components:
  *  1 - Views
  *  2 - Presenters
  *  3 - UseCases
@@ -104,7 +104,7 @@ class SplashActivityEspressoTest {
         `when`(moviesConfigurationCache.getLastMovieConfiguration()).thenReturn(null)
         `when`(genreCache.isMoviesGenresOutOfDate()).thenReturn(true)
         `when`(genreCache.getLastGenreList()).thenReturn(null)
-        Mockito.`when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(false)
+        `when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(false)
 
         activityRule.launch(Intent())
 

@@ -1,7 +1,6 @@
-package com.jpp.moviespreview.app.data.cache.configuration
+package com.jpp.moviespreview.app.data.cache
 
 import com.jpp.moviespreview.app.data.MoviesConfiguration
-import com.jpp.moviespreview.app.data.cache.CacheTimestampUtils
 import com.jpp.moviespreview.app.data.cache.db.MoviesDataBase
 import com.jpp.moviespreview.app.util.AllOpen
 
@@ -31,7 +30,7 @@ interface MoviesConfigurationCache {
 }
 
 
-class MoviesConfigurationCacheImpl(private val cacheDataMapper: MoviesConfigurationCacheDataMapper,
+class MoviesConfigurationCacheImpl(private val mapper: CacheDataMapper,
                                    private val database: MoviesDataBase,
                                    private val cacheTimestampUtils: CacheTimestampUtils) : MoviesConfigurationCache {
 
@@ -39,7 +38,7 @@ class MoviesConfigurationCacheImpl(private val cacheDataMapper: MoviesConfigurat
     override fun getLastMovieConfiguration(): MoviesConfiguration? {
         return database.imageConfigDao().getLastImageConfig()?.let {
             val imageSizes = database.imageConfigDao().getImageSizesForConfig(it.id)
-            cacheDataMapper.convertCacheImageConfigurationToDataMoviesConfiguration(it, imageSizes!!)
+            mapper.convertCacheImageConfigurationToDataMoviesConfiguration(it, imageSizes!!)
         }
     }
 
@@ -53,11 +52,11 @@ class MoviesConfigurationCacheImpl(private val cacheDataMapper: MoviesConfigurat
         database.timestampDao().insertTimestamp(currentTimestamp)
 
         // 2 -> insert images configuration
-        val cacheImageConfig = cacheDataMapper.convertMoviesConfigurationToCacheModel(moviesConfig)
+        val cacheImageConfig = mapper.convertMoviesConfigurationToCacheModel(moviesConfig)
         val parentId = database.imageConfigDao().insertImageConfig(cacheImageConfig)
 
         // 3 -> insert image sizes
-        val imageSizes = cacheDataMapper.convertImagesConfigurationToCacheModel(parentId, moviesConfig)
+        val imageSizes = mapper.convertImagesConfigurationToCacheModel(parentId, moviesConfig)
         database.imageConfigDao().insertAllImageSize(imageSizes)
     }
 

@@ -2,7 +2,7 @@ package com.jpp.moviespreview.app.domain.genre
 
 import com.jpp.moviespreview.app.data.Genre
 import com.jpp.moviespreview.app.data.Genres
-import com.jpp.moviespreview.app.data.cache.genre.MoviesGenreCache
+import com.jpp.moviespreview.app.data.cache.MoviesGenreCache
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
 import com.jpp.moviespreview.app.mock
 import org.junit.Assert

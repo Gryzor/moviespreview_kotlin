@@ -61,4 +61,17 @@ class CacheTimestampUtilsTest {
         assertTrue(result)
     }
 
+
+
+    @Test
+    fun isMoviesPageTimestampOutdated_retrievesDataFromDao_andVeirfiesUpdated() {
+        val moviePageTimestamp = subject.createMoviePageTimestamp(1)
+        val timestampDao: TimestampDao = mock()
+
+        val result = subject.isMoviePageTimestampOutdated(timestampDao, 1)
+
+        verify(timestampDao).getTimestamp(moviePageTimestamp.id, 1)
+        assertTrue(result)
+    }
+
 }

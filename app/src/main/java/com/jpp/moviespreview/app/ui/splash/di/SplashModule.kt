@@ -1,7 +1,7 @@
 package com.jpp.moviespreview.app.ui.splash.di
 
-import com.jpp.moviespreview.app.data.cache.configuration.MoviesConfigurationCache
-import com.jpp.moviespreview.app.data.cache.genre.MoviesGenreCache
+import com.jpp.moviespreview.app.data.cache.MoviesConfigurationCache
+import com.jpp.moviespreview.app.data.cache.MoviesGenreCache
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
 import com.jpp.moviespreview.app.domain.Genre
 import com.jpp.moviespreview.app.domain.MoviesConfiguration
@@ -29,13 +29,13 @@ class SplashModule {
 
     @Provides
     @SplashScope
-    fun providesSplashPresenter(useCase: UseCase<Any, MoviesConfiguration>,
-                                genresUseCase: UseCase<Any, List<Genre>>,
+    fun providesSplashPresenter(moviesContext: MoviesContext,
                                 backgroundInteractor: BackgroundInteractor,
-                                moviesContext: MoviesContext,
                                 domainToUiDataMapper: DomainToUiDataMapper,
-                                connectivityInteractor: ConnectivityInteractor): SplashPresenter
-            = SplashPresenterImpl(useCase, genresUseCase, backgroundInteractor, moviesContext, domainToUiDataMapper, connectivityInteractor)
+                                connectivityInteractor: ConnectivityInteractor,
+                                configurationUseCase: UseCase<Any, MoviesConfiguration>,
+                                genresUseCase: UseCase<Any, List<Genre>>): SplashPresenter
+            = SplashPresenterImpl(moviesContext, backgroundInteractor, domainToUiDataMapper, connectivityInteractor, configurationUseCase, genresUseCase)
 
     @Provides
     @SplashScope

@@ -22,4 +22,10 @@ class CacheTimeUtilsHelper {
      */
     fun cacheGenresRefreshTime() = TimeUnit.MINUTES.toMillis(30)
 
+
+    /**
+     * Retrieves the maximum refresh time for the MoviesPage cache.
+     */
+    fun cacheMoviesPageRefreshTime() = TimeUnit.MINUTES.toMillis(30)
+
 }

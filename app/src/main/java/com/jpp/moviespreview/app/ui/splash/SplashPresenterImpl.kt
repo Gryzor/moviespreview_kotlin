@@ -17,12 +17,12 @@ import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
  *
  * Created by jpp on 10/4/17.
  */
-class SplashPresenterImpl(private val moviesConfigurationUseCase: UseCase<Any, MoviesConfiguration>,
-                          private val moviesGenresUseCase: UseCase<Any, List<Genre>>,
+class SplashPresenterImpl(private val moviesContext: MoviesContext,
                           private val backgroundInteractor: BackgroundInteractor,
-                          private val moviesContext: MoviesContext,
                           private val mapper: DomainToUiDataMapper,
-                          private val connectivityInteractor: ConnectivityInteractor) : SplashPresenter {
+                          private val connectivityInteractor: ConnectivityInteractor,
+                          private val moviesConfigurationUseCase: UseCase<Any, MoviesConfiguration>,
+                          private val moviesGenresUseCase: UseCase<Any, List<Genre>> ) : SplashPresenter {
 
     private lateinit var splashView: SplashView
 
@@ -59,7 +59,7 @@ class SplashPresenterImpl(private val moviesConfigurationUseCase: UseCase<Any, M
 
     private fun processGenresConfig(genres: List<Genre>?) {
         if (genres != null) {
-            moviesContext.movieGenres = mapper.convertDomainGenres(genres)
+            moviesContext.movieGenres = mapper.convertDomainGenresIntoUiGenres(genres)
             continueToHomeIfConfigReady()
         } else {
             processError()

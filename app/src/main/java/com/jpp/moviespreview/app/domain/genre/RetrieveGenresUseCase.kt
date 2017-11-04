@@ -1,6 +1,6 @@
 package com.jpp.moviespreview.app.domain.genre
 
-import com.jpp.moviespreview.app.data.cache.genre.MoviesGenreCache
+import com.jpp.moviespreview.app.data.cache.MoviesGenreCache
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
 import com.jpp.moviespreview.app.domain.Genre
 import com.jpp.moviespreview.app.domain.UseCase

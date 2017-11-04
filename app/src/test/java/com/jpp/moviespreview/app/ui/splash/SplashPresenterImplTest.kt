@@ -14,7 +14,6 @@ import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mock
 import org.mockito.Mockito
 
 
@@ -45,7 +44,7 @@ class SplashPresenterImplTest {
         splashView = mock()
         connectivityInteractor = mock()
 
-        subject = SplashPresenterImpl(moviesConfigurationUseCase, moviesGenresUseCase, backgroundInteractor, moviesContext, mapper, connectivityInteractor)
+        subject = SplashPresenterImpl(moviesContext,backgroundInteractor, mapper, connectivityInteractor, moviesConfigurationUseCase, moviesGenresUseCase)
     }
 
     @Test
@@ -78,7 +77,7 @@ class SplashPresenterImplTest {
         val rawSizes = ArrayList<String>()
         rawSizes.add("1")
         val sizes = ImagesConfiguration("randomUrl", rawSizes)
-        Mockito.`when`(movieConfigRetrieved.imagesConfiguration).thenReturn(sizes)
+        Mockito.`when`(movieConfigRetrieved.posterImagesConfiguration).thenReturn(sizes)
         Mockito.`when`(moviesConfigurationUseCase.execute()).thenReturn(movieConfigRetrieved)
         val genreList = ArrayList<Genre>()
         genreList.add(Genre(12, "Random"))
@@ -115,7 +114,7 @@ class SplashPresenterImplTest {
         // -- prepare
         val movieConfigRetrieved: MoviesConfiguration = mock()
         val sizes = ImagesConfiguration("randomUrl", ArrayList())
-        Mockito.`when`(movieConfigRetrieved.imagesConfiguration).thenReturn(sizes)
+        Mockito.`when`(movieConfigRetrieved.posterImagesConfiguration).thenReturn(sizes)
         Mockito.`when`(moviesConfigurationUseCase.execute()).thenReturn(movieConfigRetrieved)
         Mockito.`when`(moviesGenresUseCase.execute()).thenReturn(null)
         Mockito.`when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(true)
@@ -152,7 +151,7 @@ class SplashPresenterImplTest {
         // -- prepare
         val movieConfigRetrieved: MoviesConfiguration = mock()
         val sizes = ImagesConfiguration("randomUrl", ArrayList())
-        Mockito.`when`(movieConfigRetrieved.imagesConfiguration).thenReturn(sizes)
+        Mockito.`when`(movieConfigRetrieved.posterImagesConfiguration).thenReturn(sizes)
         Mockito.`when`(moviesConfigurationUseCase.execute()).thenReturn(movieConfigRetrieved)
         Mockito.`when`(moviesGenresUseCase.execute()).thenReturn(null)
         Mockito.`when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(false)

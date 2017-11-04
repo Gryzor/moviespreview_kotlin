@@ -17,4 +17,7 @@ interface TimestampDao {
 
     @Query("select * from timestamps where timestamp_id = :timestampId")
     fun getTimestamp(timestampId: Long): Timestamp?
+
+    @Query("select * from timestamps where timestamp_id = :timestampId and secondary_id = :secondaryTimestampId")
+    fun getTimestamp(timestampId: Long, secondaryTimestampId: Int): Timestamp?
 }

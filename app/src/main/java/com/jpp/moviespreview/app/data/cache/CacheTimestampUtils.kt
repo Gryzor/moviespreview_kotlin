@@ -17,6 +17,7 @@ class CacheTimestampUtils(private val helper: CacheTimeUtilsHelper) {
     companion object TimestampFactory {
         private val moviesConfigurationId = 1L
         private val moviesGenresId = 2L
+        private val moviesPageId = 3L
     }
 
     /**
@@ -28,6 +29,11 @@ class CacheTimestampUtils(private val helper: CacheTimeUtilsHelper) {
      * Creates the Timestamp that represents the movies genres
      */
     fun createMovieGenresTimestamp() = Timestamp(moviesGenresId, currentTimeInMillis())
+
+    /**
+     * Creates the Timestamp that represents the Movies [page]
+     */
+    fun createMoviePageTimestamp(page: Int) = Timestamp(moviesPageId, currentTimeInMillis(), page)
 
     /**
      * Wrap currentTimeInMillis method.
@@ -50,6 +56,16 @@ class CacheTimestampUtils(private val helper: CacheTimeUtilsHelper) {
     fun isMoviesGenreTimestampOutdated(timestampDao: TimestampDao): Boolean {
         val retrievesMoviesGenresTimestamp = timestampDao.getTimestamp(moviesGenresId)
         return isTimestampOutdated(retrievesMoviesGenresTimestamp, helper.cacheGenresRefreshTime())
+    }
+
+
+    /**
+     * Verifies if the MoviePage timestamp stored for the provided [page] is out of date.
+     */
+    @SuppressLint("VisibleForTests")
+    fun isMoviePageTimestampOutdated(timestampDao: TimestampDao, page: Int): Boolean {
+        val moviesPageTimestamp = timestampDao.getTimestamp(moviesPageId, page)
+        return isTimestampOutdated(moviesPageTimestamp, helper.cacheMoviesPageRefreshTime())
     }
 
 

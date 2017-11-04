@@ -22,5 +22,6 @@
       </intent-filter>
     </activity>
     <activity android:name=".app.ui.main.MainActivity"></activity>
+    <activity android:name=".app.ui.util.EspressoTestActivity"/>
   </application>
 </manifest>
