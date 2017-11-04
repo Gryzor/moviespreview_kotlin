@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +26,7 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
 
     private val adapter by lazy {
         PlayingMoviesAdapter({
-            //TODO implement me -> go to detail
+            Log.d("TODO", "Go to next")
         })
     }
 

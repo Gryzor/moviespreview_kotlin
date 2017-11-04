@@ -46,3 +46,32 @@ data class MoviePage(val page: Int,
                      val results: List<Movie>,
                      val total_pages: Int,
                      val total_results: Int)
+
+/**
+ * Represents a character that is present in the cast of a [Movie].
+ */
+data class CastCharacter(var cast_id: Double,
+                         var character: String,
+                         var credit_id: String,
+                         var gender: Int,
+                         var name: String,
+                         var oder: Int,
+                         var profile_path: String = "empty")
+
+/**
+ * Represents a person that is part of a crew of a [Movie].
+ */
+data class CrewPerson(var credit_id: String,
+                      var department: String,
+                      var gender: Int,
+                      var id: Double,
+                      var job: String,
+                      var name: String,
+                      var profile_path: String = "empty")
+
+/**
+ * Represents the credits of a [Movie]
+ */
+data class MovieCredits(var id: Double,
+                        var cast: List<CastCharacter>,
+                        var crew: List<CrewPerson>)
