@@ -104,7 +104,7 @@ class SplashActivityEspressoTest {
         `when`(moviesConfigurationCache.getLastMovieConfiguration()).thenReturn(null)
         `when`(genreCache.isMoviesGenresOutOfDate()).thenReturn(true)
         `when`(genreCache.getLastGenreList()).thenReturn(null)
-        Mockito.`when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(false)
+        `when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(false)
 
         activityRule.launch(Intent())
 
