@@ -9,17 +9,16 @@ import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.TestComponentRule
+import com.jpp.moviespreview.app.completeConfig
+import com.jpp.moviespreview.app.data.MoviePage
 import com.jpp.moviespreview.app.data.cache.MoviesCache
-import com.jpp.moviespreview.app.domain.movie.RetrieveMoviesInTheaterUseCase
 import com.jpp.moviespreview.app.extentions.launch
+import com.jpp.moviespreview.app.extentions.loadObjectFromJsonFile
 import com.jpp.moviespreview.app.extentions.rotate
 import com.jpp.moviespreview.app.extentions.waitToFinish
 import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.splash.SplashActivity
-import com.jpp.moviespreview.app.DataPageStubs
 import com.jpp.moviespreview.app.ui.util.EspressoTestActivity
-import com.jpp.moviespreview.app.completeConfig
-import com.jpp.moviespreview.app.stubDataMoviePage
 import com.jpp.moviespreview.app.util.extentions.addFragmentIfNotInStack
 import com.jpp.moviespreview.app.utils.RecyclerViewItemCountAssertion
 import org.junit.Before
@@ -30,10 +29,9 @@ import org.mockito.Mockito.*
 import javax.inject.Inject
 
 /**
- * Espresso test to verify interaction between components:
+ * Espresso test that test the interaction between:
  *  1 - [PlayingMoviesFragment] / [PlayingMoviesView]
  *  2 - [PlayingMoviesPresenter]
- *  3 - [RetrieveMoviesInTheaterUseCase]
  * Created by jpp on 11/2/17.
  */
 @RunWith(AndroidJUnit4::class)
@@ -77,11 +75,13 @@ class PlayingMoviesFragmentEspressoTest {
 
         // mock movies response
         `when`(moviesCache.isMoviePageOutOfDate(1)).thenReturn(false)
-        `when`(moviesCache.getMoviePage(1)).thenReturn(DataPageStubs.Companion.stubDataMoviePage(1, 13, 13))
+        `when`(moviesCache.getMoviePage(1)).thenReturn(loadMockPage(1))
 
         launchActivityAndAddFragment()
 
-        Espresso.onView(ViewMatchers.withId(R.id.rv_playing_movies)).check(RecyclerViewItemCountAssertion(3))
+        Espresso
+                .onView(ViewMatchers.withId(R.id.rv_playing_movies))
+                .check(RecyclerViewItemCountAssertion(20))
     }
 
     @Test
@@ -91,20 +91,20 @@ class PlayingMoviesFragmentEspressoTest {
 
         // mock movies response
         `when`(moviesCache.isMoviePageOutOfDate(1)).thenReturn(false)
-        `when`(moviesCache.getMoviePage(1)).thenReturn(DataPageStubs.Companion.stubDataMoviePage(1, 13, 13))
+        `when`(moviesCache.getMoviePage(1)).thenReturn(loadMockPage(1))
 
         launchActivityAndAddFragment()
 
         // sanity check
-        Espresso.onView(ViewMatchers.withId(R.id.rv_playing_movies)).check(RecyclerViewItemCountAssertion(3))
+        Espresso.onView(ViewMatchers.withId(R.id.rv_playing_movies)).check(RecyclerViewItemCountAssertion(20))
 
         // rotate 1
         activityRule.rotate()
-        Espresso.onView(ViewMatchers.withId(R.id.rv_playing_movies)).check(RecyclerViewItemCountAssertion(3))
+        Espresso.onView(ViewMatchers.withId(R.id.rv_playing_movies)).check(RecyclerViewItemCountAssertion(20))
 
         // rotate 2
         activityRule.rotate()
-        Espresso.onView(ViewMatchers.withId(R.id.rv_playing_movies)).check(RecyclerViewItemCountAssertion(3))
+        Espresso.onView(ViewMatchers.withId(R.id.rv_playing_movies)).check(RecyclerViewItemCountAssertion(20))
 
         verify(moviesCache, times(1)).isMoviePageOutOfDate(1)
     }
@@ -113,6 +113,17 @@ class PlayingMoviesFragmentEspressoTest {
     private fun launchActivityAndAddFragment() {
         activityRule.launch(Intent())
         activityRule.activity.addFragmentIfNotInStack(android.R.id.content, PlayingMoviesFragment.newInstance(), PlayingMoviesFragment.TAG)
+    }
+
+
+    private fun loadMockPage(page: Int): MoviePage {
+        when (page) {
+            1 -> return activityRule.loadObjectFromJsonFile("data_movie_page_1.json")
+            else -> {
+                throw RuntimeException("Unsupported page requested in test. Page { $page }")
+            }
+        }
+
     }
 
 }

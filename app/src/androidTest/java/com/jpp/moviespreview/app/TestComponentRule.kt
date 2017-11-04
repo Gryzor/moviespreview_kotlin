@@ -8,6 +8,8 @@ import org.junit.runner.Description
 import org.junit.runners.model.Statement
 
 /**
+ * TestRule to inject the mocked dependencies to execute a test.
+ *
  * Created by jpp on 10/14/17.
  */
 class TestComponentRule : TestRule {

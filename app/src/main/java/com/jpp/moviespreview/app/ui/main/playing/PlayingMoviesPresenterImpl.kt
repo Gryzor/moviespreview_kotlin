@@ -12,7 +12,7 @@ import com.jpp.moviespreview.app.domain.Genre as DomainGenre
 import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
 
 /**
- * Presenter implementation for the playing movies in theater section
+ * Presenter implementation for the playing movies in theater section.
  *
  * Created by jpp on 10/23/17.
  */
@@ -25,7 +25,8 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
     private lateinit var playingMoviesView: PlayingMoviesView
     private var targetScreenWidth: Int? = null
 
-    private val assignTarget = { value: Int ->
+    // function to assign a target screen width
+    private val assignTargetScreenWidth = { value: Int ->
         targetScreenWidth = value
         targetScreenWidth!!
     }
@@ -75,7 +76,6 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
      * use case execution. If the scrolling has reached the last possible position,
      * it asks the view to show the end of page and returns null.
      */
-    @VisibleForTesting
     fun createNextUseCaseParam(): MoviesInTheaterInputParam? {
         with(moviesContext) {
             var lastMoviePageIndex = 0 // by default, always get the first page
@@ -131,13 +131,19 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
 
     /**
      * Finds the proper width for the [ImageConfiguration] to be used by the presenter.
+     * The [mapper] will create and set the proper image URL for the movies that are in a [MoviePage].
+     * In order to do that, we need to target a given screen width that will be the one that defines
+     * the image to retrieve from the server.
      */
     private fun getImagesWidthObjective(): Int {
         return targetScreenWidth ?:
-                assignTarget(playingMoviesView.getScreenWidth())
+                assignTargetScreenWidth(playingMoviesView.getScreenWidth())
     }
 
 
+    /**
+     * Executes the use case to retrieve the movie page.
+     */
     @VisibleForTesting
     fun executeUseCase(param: MoviesInTheaterInputParam) {
         interactorDelegate.executeBackgroundJob(

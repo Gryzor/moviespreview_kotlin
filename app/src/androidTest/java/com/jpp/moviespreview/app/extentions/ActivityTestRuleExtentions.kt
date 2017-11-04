@@ -3,10 +3,13 @@ package com.jpp.moviespreview.app.extentions
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.support.test.InstrumentationRegistry
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.lifecycle.ActivityLifecycleCallback
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import android.support.test.runner.lifecycle.Stage
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.util.concurrent.CountDownLatch
 
 /**
@@ -69,6 +72,10 @@ fun <T : Activity> ActivityTestRule<T>.rotate() {
 }
 
 
+/**
+ * [ActivityLifecycleCallback] that holds the execution cycle until the [Activity] under test
+ * is destroyed.
+ */
 private class WaitForFinished : ActivityLifecycleCallback {
 
     val mCountdownLatch = CountDownLatch(1)
@@ -93,7 +100,10 @@ private class WaitForFinished : ActivityLifecycleCallback {
     }
 }
 
-
+/**
+ * [ActivityLifecycleCallback] that holds the execution cycle until the [Activity] under test
+ * is resumed.
+ */
 private class WaitForResumed : ActivityLifecycleCallback {
     val mCountdownLatch = CountDownLatch(1)
 
@@ -117,3 +127,20 @@ private class WaitForResumed : ActivityLifecycleCallback {
     }
 
 }
+
+/**
+ * Loads an object from the JSON file indicated in the [jsonFile] parameter.
+ */
+inline fun <T : Activity, reified R> ActivityTestRule<T>.loadObjectFromJsonFile(jsonFile: String): R {
+    val input = InstrumentationRegistry.getInstrumentation().context.assets.open(jsonFile)
+    val size = input.available()
+    val buffer = ByteArray(size)
+    input.read(buffer)
+    input.close()
+    return Gson().fromJson(String(buffer))
+}
+
+/**
+ * Helper class to load an object from GSON
+ */
+inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object : TypeToken<T>() {}.type)!!
