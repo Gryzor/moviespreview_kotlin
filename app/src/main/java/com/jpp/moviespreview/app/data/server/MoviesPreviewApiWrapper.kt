@@ -34,7 +34,7 @@ class MoviesPreviewApiWrapper(private val apiInstance: MoviesPreviewApi) {
 
 
     /**
-     * 
+     *
      */
     fun getMovieCredits(movieId: Double): MovieCredits? = apiInstance.getMovieCredits(movieId).execute().body()
 }
