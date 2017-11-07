@@ -106,24 +106,37 @@ data class GenresByMovies(@ColumnInfo(name = "genre_id") var genreId: Int,
     var id: Long = 0
 }
 
-@Entity(tableName = "movie_cast_caracters")
+
+/**
+ * Represents a character present in a movie cast. We don't store the MovieCredits
+ * class in the DB. Instead, we store the movie id on this entity and create the MovieCredits
+ * on demand. Also, the movie id is not stored as a foreign key since we don't want to
+ * delete (or deal with integrity) at this level.
+ */
+@Entity(tableName = "movie_cast_characters")
 data class CastCharacter(@PrimaryKey @ColumnInfo(name = "_id") var id: Double,
                          @ColumnInfo(name = "character") var character: String,
                          @ColumnInfo(name = "credit_id") var creditId: String,
                          @ColumnInfo(name = "gender") var gender: Int,
                          @ColumnInfo(name = "name") var name: String,
-                         @ColumnInfo(name = "oder") var oder: Int,
+                         @ColumnInfo(name = "order") var order: Int,
                          @ColumnInfo(name = "profile_path") var profilePath: String?,
                          @ColumnInfo(name = "movie_id") var movieId: Double) //-> this represents the ID of the movie to which this cast belongs to.
-                                                                             // We do not store it as a foreign key since we don't want to delete it on CASCADE and we don't want to deal with integrity at this level.
+// We do not store it as a foreign key since we don't want to delete it on CASCADE and we don't want to deal with integrity at this level.
 
-@Entity(tableName = "crew_person")
+/**
+ * Represents a crew person present in a movie cast. We don't store the MovieCredits
+ * class in the DB. Instead, we store the movie id on this entity and create the MovieCredits
+ * on demand. Also, the movie id is not stored as a foreign key since we don't want to
+ * delete (or deal with integrity) at this level.
+ */
+@Entity(tableName = "movie_crew_person")
 data class CrewPerson(@PrimaryKey @ColumnInfo(name = "_id") var id: Double,
-                         @ColumnInfo(name = "department") var department: String,
-                         @ColumnInfo(name = "gender") var gender: Int,
-                         @ColumnInfo(name = "credit_id") var creditId: String,
-                         @ColumnInfo(name = "job") var job: String,
-                         @ColumnInfo(name = "name") var name: Int,
-                         @ColumnInfo(name = "profile_path") var profilePath: String?,
-                         @ColumnInfo(name = "movie_id") var movieId: Double) //-> this represents the ID of the movie to which this cast belongs to.
-                                                                             // We do not store it as a foreign key since we don't want to delete it on CASCADE and we don't want to deal with integrity at this level.
+                      @ColumnInfo(name = "department") var department: String,
+                      @ColumnInfo(name = "gender") var gender: Int,
+                      @ColumnInfo(name = "credit_id") var creditId: String,
+                      @ColumnInfo(name = "job") var job: String,
+                      @ColumnInfo(name = "name") var name: String,
+                      @ColumnInfo(name = "profile_path") var profilePath: String?,
+                      @ColumnInfo(name = "movie_id") var movieId: Double) //-> this represents the ID of the movie to which this cast belongs to.
+// We do not store it as a foreign key since we don't want to delete it on CASCADE and we don't want to deal with integrity at this level.

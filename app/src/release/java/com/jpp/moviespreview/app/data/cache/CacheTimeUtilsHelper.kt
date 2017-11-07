@@ -27,4 +27,8 @@ class CacheTimeUtilsHelper {
      */
     fun cacheMoviesPageRefreshTime() = TimeUnit.HOURS.toMillis(1)
 
+    /**
+     * Retrieves the maximum refresh time for the MovieCredits cache.
+     */
+    fun cacheCreditsMovieRefreshTime() = TimeUnit.DAYS.toMillis(7)
 }

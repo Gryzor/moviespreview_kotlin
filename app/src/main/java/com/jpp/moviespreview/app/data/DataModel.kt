@@ -55,7 +55,7 @@ data class CastCharacter(var cast_id: Double,
                          var credit_id: String,
                          var gender: Int,
                          var name: String,
-                         var oder: Int,
+                         var order: Int,
                          var profile_path: String = "empty")
 
 /**
