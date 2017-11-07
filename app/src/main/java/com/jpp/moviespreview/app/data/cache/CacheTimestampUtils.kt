@@ -39,7 +39,7 @@ class CacheTimestampUtils(private val helper: CacheTimeUtilsHelper) {
     /**
      * Creates the Timestamp that represents the MovieCredits for the provided [movieId]
      */
-    fun createMoviCreditTimestamp(movieId: Int) = Timestamp(moviesCreditId, currentTimeInMillis(), movieId)
+    fun createMovieCreditTimestamp(movieId: Int) = Timestamp(moviesCreditId, currentTimeInMillis(), movieId)
 
     /**
      * Wrap currentTimeInMillis method.

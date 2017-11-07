@@ -6,10 +6,12 @@ import com.jpp.moviespreview.app.data.MovieCredits
 import com.jpp.moviespreview.app.data.cache.db.*
 import com.jpp.moviespreview.app.fromJson
 import com.jpp.moviespreview.app.mock
+import com.nhaarman.mockito_kotlin.verify
 import junit.framework.Assert.*
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.`when`
+import org.mockito.ArgumentMatchers
+import org.mockito.Mockito.*
 import com.jpp.moviespreview.app.data.cache.db.Movie as DBMovie
 import com.jpp.moviespreview.app.data.cache.db.MoviePage as DBMoviePage
 
@@ -32,7 +34,7 @@ class MoviesCacheImplTest {
 
     @Before
     fun setUp() {
-        mapper = CacheDataMapper()
+        mapper = spy(CacheDataMapper::class.java)
         database = mock()
         cacheTimestampUtils = mock()
         timestampDao = mock()
@@ -104,6 +106,49 @@ class MoviesCacheImplTest {
 
         // -- verify
         assertNotNull(restoredCredits)
+        assertEquals(dataMovieCredit.id, restoredCredits!!.id)
+        assertEquals(dataMovieCredit.cast.size, restoredCredits.cast.size)
+        assertEquals(dataMovieCredit.crew.size, restoredCredits.crew.size)
+    }
+
+
+    @Test
+    fun getMovieCreditForMovie_whenIsNotStoredInDB_returnsNull() {
+        // -- prepare
+        val dataMovieCreditId = 1.toDouble()
+
+        `when`(castCharacterDao.getMovieCastCharacters(dataMovieCreditId)).thenReturn(null)
+        `when`(crewPersonDao.getMovieCrew(dataMovieCreditId)).thenReturn(null)
+        val movie: Movie = mock()
+        `when`(movie.id).thenReturn(dataMovieCreditId)
+
+        // -- execute
+        val restoredCredits = subject.getMovieCreditForMovie(movie)
+
+        // -- verify
+        assertNull(restoredCredits)
+    }
+
+
+
+    @Test
+    fun saveMovieCredits() {
+        // -- prepare
+        val dataMovieCredit = Gson().fromJson<MovieCredits>(readFileAsString("data_movie_credits.json"))
+        val currentTimestamp: Timestamp = mock()
+        `when`(cacheTimestampUtils.createMovieCreditTimestamp(dataMovieCredit.id.toInt())).thenReturn(currentTimestamp)
+        val cacheCharacters: List<CastCharacter> = mock()
+        val cacheCrew: List<CrewPerson> = mock()
+        `when`(mapper.convertDataCharacterIntoCacheCharacter(dataMovieCredit.cast, dataMovieCredit.id)).thenReturn(cacheCharacters)
+        `when`(mapper.convertDataCrewIntoCacheCrew(dataMovieCredit.crew, dataMovieCredit.id)).thenReturn(cacheCrew)
+
+        // -- execute
+        subject.saveMovieCredits(dataMovieCredit)
+
+        // -- verify
+        verify(timestampDao).insertTimestamp(currentTimestamp)
+        verify(castCharacterDao).insertCastCharacters(cacheCharacters)
+        verify(crewPersonDao).insertCrew(cacheCrew)
     }
 
 

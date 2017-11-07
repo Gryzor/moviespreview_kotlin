@@ -129,7 +129,7 @@ class MoviesCacheImpl(private val mapper: CacheDataMapper,
     override fun saveMovieCredits(credits: MovieCredits) {
         with(credits) {
             // 1 -> Insert timestamp
-            val currentTimestamp = cacheTimestampUtils.createMoviCreditTimestamp(id.toInt())
+            val currentTimestamp = cacheTimestampUtils.createMovieCreditTimestamp(id.toInt())
             database.timestampDao().insertTimestamp(currentTimestamp)
 
             // 2  -> save MovieCredits

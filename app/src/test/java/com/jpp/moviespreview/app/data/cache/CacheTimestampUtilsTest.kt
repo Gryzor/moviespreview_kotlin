@@ -76,7 +76,7 @@ class CacheTimestampUtilsTest {
 
     @Test
     fun isMovieCreditsTimestampOutdated_retrievesDataFromDao_andVeirfiesUpdated() {
-        val creditTimestamp = subject.createMoviCreditTimestamp(1)
+        val creditTimestamp = subject.createMovieCreditTimestamp(1)
         val timestampDao: TimestampDao = mock()
 
         val result = subject.isMovieCreditsTimestampOutdated(timestampDao, 1)
