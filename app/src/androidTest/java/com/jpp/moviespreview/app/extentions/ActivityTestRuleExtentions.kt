@@ -10,6 +10,7 @@ import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import android.support.test.runner.lifecycle.Stage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.jpp.moviespreview.app.fromJson
 import java.util.concurrent.CountDownLatch
 
 /**
@@ -140,7 +141,3 @@ inline fun <T : Activity, reified R> ActivityTestRule<T>.loadObjectFromJsonFile(
     return Gson().fromJson(String(buffer))
 }
 
-/**
- * Helper class to load an object from GSON
- */
-inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object : TypeToken<T>() {}.type)!!

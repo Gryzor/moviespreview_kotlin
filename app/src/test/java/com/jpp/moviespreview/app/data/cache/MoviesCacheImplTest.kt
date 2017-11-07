@@ -1,6 +1,10 @@
 package com.jpp.moviespreview.app.data.cache
 
+import com.google.gson.Gson
+import com.jpp.moviespreview.app.data.Movie
+import com.jpp.moviespreview.app.data.MovieCredits
 import com.jpp.moviespreview.app.data.cache.db.*
+import com.jpp.moviespreview.app.fromJson
 import com.jpp.moviespreview.app.mock
 import junit.framework.Assert.*
 import org.junit.Before
@@ -10,6 +14,8 @@ import com.jpp.moviespreview.app.data.cache.db.Movie as DBMovie
 import com.jpp.moviespreview.app.data.cache.db.MoviePage as DBMoviePage
 
 /**
+ * Tests MoviesCacheImpl and CacheDataMapper
+ *
  * Created by jpp on 10/20/17.
  */
 class MoviesCacheImplTest {
@@ -20,6 +26,8 @@ class MoviesCacheImplTest {
     private lateinit var cacheTimestampUtils: CacheTimestampUtils
     private lateinit var timestampDao: TimestampDao
     private lateinit var moviesDao: MoviesDao
+    private lateinit var castCharacterDao: CastCharacterDao
+    private lateinit var crewPersonDao: CrewPersonDao
 
 
     @Before
@@ -29,12 +37,15 @@ class MoviesCacheImplTest {
         cacheTimestampUtils = mock()
         timestampDao = mock()
         moviesDao = mock()
+        castCharacterDao = mock()
+        crewPersonDao = mock()
 
         subject = MoviesCacheImpl(mapper, database, cacheTimestampUtils)
 
         `when`(database.timestampDao()).thenReturn(timestampDao)
         `when`(database.moviesDao()).thenReturn(moviesDao)
-
+        `when`(database.castCharacterDao()).thenReturn(castCharacterDao)
+        `when`(database.crewPersonDao()).thenReturn(crewPersonDao)
     }
 
 
@@ -73,6 +84,26 @@ class MoviesCacheImplTest {
         `when`(moviesDao.getMoviesForPage(dbMoviePage.page)).thenReturn(null)
         val result = subject.getMoviePage(1)
         assertNull(result)
+    }
+
+
+    @Test
+    fun getMovieCreditForMovie_whenIsStoredInDB() {
+        // -- prepare
+        val dataMovieCredit = Gson().fromJson<MovieCredits>(readFileAsString("data_movie_credits.json"))
+        val cacheCharacters = mapper.convertDataCharacterIntoCacheCharacter(dataMovieCredit.cast, dataMovieCredit.id)
+        val cacheCrew = mapper.convertDataCrewIntoCacheCrew(dataMovieCredit.crew, dataMovieCredit.id)
+
+        `when`(castCharacterDao.getMovieCastCharacters(dataMovieCredit.id)).thenReturn(cacheCharacters)
+        `when`(crewPersonDao.getMovieCrew(dataMovieCredit.id)).thenReturn(cacheCrew)
+        val movie: Movie = mock()
+        `when`(movie.id).thenReturn(dataMovieCredit.id)
+
+        // -- execute
+        val restoredCredits = subject.getMovieCreditForMovie(movie)
+
+        // -- verify
+        assertNotNull(restoredCredits)
     }
 
 
@@ -122,6 +153,16 @@ class MoviesCacheImplTest {
         return listOf(GenresByMovies(12, dbMovie.id),
                 GenresByMovies(16, dbMovie.id),
                 GenresByMovies(18, dbMovie.id))
+    }
+
+
+    private fun readFileAsString(fileName: String): String {
+        val input = MoviesCacheImplTest::class.java.classLoader.getResourceAsStream(fileName)
+        val size = input.available()
+        val buffer = ByteArray(size)
+        input.read(buffer)
+        input.close()
+        return String(buffer)
     }
 
 }

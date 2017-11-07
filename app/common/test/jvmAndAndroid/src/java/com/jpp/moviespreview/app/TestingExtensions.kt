@@ -1,5 +1,7 @@
 package com.jpp.moviespreview.app
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.jpp.moviespreview.app.domain.Genre
 import com.jpp.moviespreview.app.ui.ImageConfiguration
 import com.jpp.moviespreview.app.ui.MovieGenre
@@ -174,3 +176,9 @@ fun DataPageStubs.Companion.stubDataMovieList() = listOf(
  * Created by jpp on 10/11/17.
  */
 inline fun <reified T : Any> mock() = Mockito.mock(T::class.java)
+
+
+/**
+ * Helper class to load an object from GSON
+ */
+inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object : TypeToken<T>() {}.type)!!
