@@ -12,12 +12,6 @@ import com.jpp.moviespreview.app.data.MoviePage as DataMoviePage
 import com.jpp.moviespreview.app.domain.Movie as DomainMovie
 import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
 
-/**
- * Completes the [imageConfig] property with a mocked list.
- */
-fun MoviesContext.completeImageConfig(mockList: List<ImageConfiguration> = mockImageConfig()) {
-    imageConfig = mockList
-}
 
 
 /**
@@ -33,12 +27,6 @@ fun MoviesContext.mockImageConfig() = listOf(
         ImageConfiguration("url", "original", -1)
 )
 
-/**
- * Completes the [movieGenres] property with a mocked list.
- */
-fun MoviesContext.completeMovieGenres(mockList: List<MovieGenre> = mockMovieGenres()) {
-    movieGenres = mockList
-}
 
 /**
  * Mocks a list of [MovieGenre]

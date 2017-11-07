@@ -11,8 +11,8 @@ import com.nhaarman.mockito_kotlin.verify
 import junit.framework.Assert.*
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers
-import org.mockito.Mockito.*
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.spy
 import com.jpp.moviespreview.app.data.cache.db.Movie as DBMovie
 import com.jpp.moviespreview.app.data.cache.db.MoviePage as DBMoviePage
 
@@ -66,9 +66,10 @@ class MoviesCacheImplTest {
             `when`(moviesDao.getGenresForMovie(dbMovie.id)).thenReturn(mockGenresByMovie(dbMovie))
         }
 
-
+        //-- execute
         val result = subject.getMoviePage(dataMoviePage.page)
 
+        //-- verify
         assertNotNull(result)
         assertEquals(dataMoviePage.results.size, result!!.results.size)
         assertEquals(dataMoviePage.total_pages, result.total_pages)
@@ -78,17 +79,23 @@ class MoviesCacheImplTest {
 
     @Test
     fun getMoviePage_whenMoviePageIsNotInDb_returnsNull() {
+        //-- prepare
         `when`(moviesDao.getMoviesPage(1)).thenReturn(null)
+        //-- execute
         val result = subject.getMoviePage(1)
+        //-- verify
         assertNull(result)
     }
 
     @Test
     fun getMoviePage_whenMovieNoMoviesInDb_returnsNull() {
+        //-- prepare
         val dbMoviePage = DBMoviePage(1, 200, 200)
         `when`(moviesDao.getMoviesPage(1)).thenReturn(dbMoviePage)
         `when`(moviesDao.getMoviesForPage(dbMoviePage.page)).thenReturn(null)
+        //-- execute
         val result = subject.getMoviePage(1)
+        //-- verify
         assertNull(result)
     }
 
