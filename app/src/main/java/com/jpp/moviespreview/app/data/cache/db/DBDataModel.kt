@@ -105,3 +105,25 @@ data class GenresByMovies(@ColumnInfo(name = "genre_id") var genreId: Int,
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0
 }
+
+@Entity(tableName = "movie_cast_caracters")
+data class CastCharacter(@PrimaryKey @ColumnInfo(name = "_id") var id: Double,
+                         @ColumnInfo(name = "character") var character: String,
+                         @ColumnInfo(name = "credit_id") var creditId: String,
+                         @ColumnInfo(name = "gender") var gender: Int,
+                         @ColumnInfo(name = "name") var name: String,
+                         @ColumnInfo(name = "oder") var oder: Int,
+                         @ColumnInfo(name = "profile_path") var profilePath: String?,
+                         @ColumnInfo(name = "movie_id") var movieId: Double) //-> this represents the ID of the movie to which this cast belongs to.
+                                                                             // We do not store it as a foreign key since we don't want to delete it on CASCADE and we don't want to deal with integrity at this level.
+
+@Entity(tableName = "crew_person")
+data class CrewPerson(@PrimaryKey @ColumnInfo(name = "_id") var id: Double,
+                         @ColumnInfo(name = "department") var department: String,
+                         @ColumnInfo(name = "gender") var gender: Int,
+                         @ColumnInfo(name = "credit_id") var creditId: String,
+                         @ColumnInfo(name = "job") var job: String,
+                         @ColumnInfo(name = "name") var name: Int,
+                         @ColumnInfo(name = "profile_path") var profilePath: String?,
+                         @ColumnInfo(name = "movie_id") var movieId: Double) //-> this represents the ID of the movie to which this cast belongs to.
+                                                                             // We do not store it as a foreign key since we don't want to delete it on CASCADE and we don't want to deal with integrity at this level.
