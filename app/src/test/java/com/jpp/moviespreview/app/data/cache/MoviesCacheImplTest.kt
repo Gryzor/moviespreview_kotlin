@@ -3,6 +3,7 @@ package com.jpp.moviespreview.app.data.cache
 import com.google.gson.Gson
 import com.jpp.moviespreview.app.data.Movie
 import com.jpp.moviespreview.app.data.MovieCredits
+import com.jpp.moviespreview.app.data.MoviePage
 import com.jpp.moviespreview.app.data.cache.db.*
 import com.jpp.moviespreview.app.fromJson
 import com.jpp.moviespreview.app.mock
@@ -53,22 +54,25 @@ class MoviesCacheImplTest {
 
     @Test
     fun getMoviePage_whenMoviePageIsInDb() {
-        val dbMoviePage = DBMoviePage(1, 200, 200)
-        val dbMovies = mockDbMovies(dbMoviePage.page)
+        //-- prepare
+        val dataMoviePage = Gson().fromJson<MoviePage>(readFileAsString("data_movies_page.json"))
 
-        `when`(moviesDao.getMoviesPage(1)).thenReturn(dbMoviePage)
+        val dbMoviePage = mapper.convertDataMoviesPageIntoCacheMoviePage(dataMoviePage)
+        val dbMovies = mapper.convertDataMoviesIntoCacheMovie(dataMoviePage.results, dataMoviePage)
+
+        `when`(moviesDao.getMoviesPage(dataMoviePage.page)).thenReturn(dbMoviePage)
         `when`(moviesDao.getMoviesForPage(dbMoviePage.page)).thenReturn(dbMovies)
         for (dbMovie in dbMovies) {
             `when`(moviesDao.getGenresForMovie(dbMovie.id)).thenReturn(mockGenresByMovie(dbMovie))
         }
 
 
-        val result = subject.getMoviePage(1)
+        val result = subject.getMoviePage(dataMoviePage.page)
 
         assertNotNull(result)
-        assertEquals(3, result!!.results.size)
-        assertEquals(200, result.total_pages)
-        assertEquals(200, result.total_results)
+        assertEquals(dataMoviePage.results.size, result!!.results.size)
+        assertEquals(dataMoviePage.total_pages, result.total_pages)
+        assertEquals(dataMoviePage.total_results, result.total_results)
     }
 
 
@@ -130,7 +134,6 @@ class MoviesCacheImplTest {
     }
 
 
-
     @Test
     fun saveMovieCredits() {
         // -- prepare
@@ -151,48 +154,6 @@ class MoviesCacheImplTest {
         verify(crewPersonDao).insertCrew(cacheCrew)
     }
 
-
-    private fun mockDbMovies(pageId: Int): List<DBMovie> {
-        return listOf(
-                DBMovie(1.toDouble(),
-                        "Title1",
-                        "Title1",
-                        "Overview1",
-                        "ReleaseDate1",
-                        "OriginalLanguage1",
-                        "PosterPath1",
-                        "BackdropPath1",
-                        100.toDouble(),
-                        11111F,
-                        12121F,
-                        pageId),
-                DBMovie(2.toDouble(),
-                        "Title2",
-                        "Title2",
-                        "Overview2",
-                        "ReleaseDate2",
-                        "OriginalLanguage2",
-                        "PosterPath2",
-                        "BackdropPath2",
-                        200.toDouble(),
-                        2222F,
-                        12121F,
-                        pageId),
-                DBMovie(3.toDouble(),
-                        "Title3",
-                        "Title3",
-                        "Overview3",
-                        "ReleaseDate3",
-                        "OriginalLanguage3",
-                        "PosterPath3",
-                        "BackdropPath3",
-                        300.toDouble(),
-                        33333F,
-                        12121F,
-                        pageId)
-
-        )
-    }
 
     private fun mockGenresByMovie(dbMovie: DBMovie): List<GenresByMovies> {
         return listOf(GenresByMovies(12, dbMovie.id),
