@@ -13,7 +13,6 @@ import com.jpp.moviespreview.app.domain.Movie as DomainMovie
 import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
 
 
-
 /**
  * Mocks a list of [ImageConfiguration].
  */
@@ -170,3 +169,4 @@ inline fun <reified T : Any> mock() = Mockito.mock(T::class.java)
  * Helper class to load an object from GSON
  */
 inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object : TypeToken<T>() {}.type)!!
+

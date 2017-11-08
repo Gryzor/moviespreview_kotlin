@@ -9,7 +9,6 @@ import android.support.test.runner.lifecycle.ActivityLifecycleCallback
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import android.support.test.runner.lifecycle.Stage
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.jpp.moviespreview.app.fromJson
 import java.util.concurrent.CountDownLatch
 

@@ -7,6 +7,7 @@ import com.jpp.moviespreview.app.data.MoviePage
 import com.jpp.moviespreview.app.data.cache.db.*
 import com.jpp.moviespreview.app.fromJson
 import com.jpp.moviespreview.app.mock
+import com.jpp.moviespreview.app.util.extension.loadObjectFromJsonFile
 import com.nhaarman.mockito_kotlin.verify
 import junit.framework.Assert.*
 import org.junit.Before
@@ -144,7 +145,7 @@ class MoviesCacheImplTest {
     @Test
     fun saveMovieCredits() {
         // -- prepare
-        val dataMovieCredit = Gson().fromJson<MovieCredits>(readFileAsString("data_movie_credits.json"))
+        val dataMovieCredit = loadObjectFromJsonFile<MovieCredits>(MoviesCacheImplTest::class.java.classLoader, "data_movie_credits.json")
         val currentTimestamp: Timestamp = mock()
         `when`(cacheTimestampUtils.createMovieCreditTimestamp(dataMovieCredit.id.toInt())).thenReturn(currentTimestamp)
         val cacheCharacters: List<CastCharacter> = mock()
