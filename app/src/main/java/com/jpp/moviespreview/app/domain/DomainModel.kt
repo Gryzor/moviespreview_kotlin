@@ -4,7 +4,8 @@ package com.jpp.moviespreview.app.domain
  * Represents the configuration of the images tha the data layer can provide.
  */
 data class ImagesConfiguration(val baseUrl: String,
-                               val sizes: List<String>)
+                               val sizes: List<String>,
+                               var profileSizes: List<String>)
 
 /**
  * Represents the general configuration of the movies

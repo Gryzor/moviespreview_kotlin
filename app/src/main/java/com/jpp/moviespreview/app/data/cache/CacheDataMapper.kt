@@ -3,6 +3,7 @@ package com.jpp.moviespreview.app.data.cache
 import com.jpp.moviespreview.app.data.ImagesConfiguration
 import com.jpp.moviespreview.app.data.MoviesConfiguration
 import com.jpp.moviespreview.app.data.cache.db.*
+import com.jpp.moviespreview.app.util.extentions.addList
 import com.jpp.moviespreview.app.data.CastCharacter as DataCastCharacter
 import com.jpp.moviespreview.app.data.CrewPerson as DataCrewPerson
 import com.jpp.moviespreview.app.data.Genre as DataGenre
@@ -17,6 +18,11 @@ import com.jpp.moviespreview.app.data.MoviePage as DataMoviePage
  * Created by jpp on 10/20/17.
  */
 class CacheDataMapper {
+
+    private companion object {
+        val IMAGE_TYPE_POSTER = 1
+        val IMAGE_TYPE_PROFILE = 2
+    }
 
 
     /*****************************************************
@@ -35,17 +41,18 @@ class CacheDataMapper {
      * Converts from [MoviesConfiguration] into a list of [ImageSize]. The [parentId] param is used to
      * set the [ImageSize.id] param.
      */
-    fun convertImagesConfigurationToCacheModel(parentId: Long, moviesConfiguration: MoviesConfiguration) = with(moviesConfiguration) {
-        convertImageSizes(parentId, images.poster_sizes)
+    fun convertImagesConfigurationToCacheModel(parentId: Long, moviesConfiguration: MoviesConfiguration): List<ImageSize> = with(moviesConfiguration) {
+        convertImageSizes(parentId, images.poster_sizes, IMAGE_TYPE_POSTER)
+                .addList(convertImageSizes(parentId, images.profile_sizes, IMAGE_TYPE_PROFILE))
     }
 
 
     /**
      * Inner helper method
      */
-    private fun convertImageSizes(parentId: Long, imageSizes: List<String>): List<ImageSize> {
+    private fun convertImageSizes(parentId: Long, imageSizes: List<String>, imageType: Int): MutableList<ImageSize> {
         val dataImageSizes = ArrayList<ImageSize>()
-        imageSizes.mapTo(dataImageSizes) { ImageSize(it, parentId) }
+        imageSizes.mapTo(dataImageSizes) { ImageSize(it, parentId, imageType) }
         return dataImageSizes
     }
 
@@ -61,9 +68,17 @@ class CacheDataMapper {
      * Inner helper method
      */
     private fun convertCacheImageSizeToImageDataConfiguration(baseUrl: String, cacheImageSizes: List<ImageSize>): ImagesConfiguration {
-        val posterSizes = ArrayList<String>()
-        cacheImageSizes.mapTo(posterSizes) { it.size }
-        return ImagesConfiguration(baseUrl, posterSizes)
+        val posterSizes = cacheImageSizes.mapNotNull { mapImageSizeTo(it, IMAGE_TYPE_POSTER) }
+        val profileSizes = cacheImageSizes.mapNotNull { mapImageSizeTo(it, IMAGE_TYPE_PROFILE) }
+        return ImagesConfiguration(baseUrl, posterSizes, profileSizes)
+    }
+
+    private fun mapImageSizeTo(imageSize: ImageSize, imageType: Int): String? {
+        return if (imageSize.imageType == imageType) {
+            imageSize.size
+        } else {
+            null
+        }
     }
 
 

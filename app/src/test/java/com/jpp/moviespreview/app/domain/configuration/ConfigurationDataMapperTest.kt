@@ -12,12 +12,14 @@ class ConfigurationDataMapperTest {
     @Test
     fun convertMoviesConfigurationFromDataModel() {
         val posterSizes = arrayListOf("size1", "size2", "size3")
-        val dataImagesConfiguration = DataImagesConfiguration("baseUrl", posterSizes)
+        val profileSizes = arrayListOf("size1", "size2", "size3", "size4")
+        val dataImagesConfiguration = DataImagesConfiguration("baseUrl", posterSizes, profileSizes)
         val dataMoviesConfiguration = DataMoviesConfiguration(dataImagesConfiguration)
 
         val domainMoviesConfiguration = ConfigurationDataMapper().convertMoviesConfigurationFromDataModel(dataMoviesConfiguration)
 
         assertEquals(3, domainMoviesConfiguration.posterImagesConfiguration.sizes.size)
+        assertEquals(4, domainMoviesConfiguration.posterImagesConfiguration.profileSizes.size)
         assertEquals("baseUrl", domainMoviesConfiguration.posterImagesConfiguration.baseUrl)
     }
 

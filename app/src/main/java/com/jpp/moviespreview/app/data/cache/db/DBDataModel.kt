@@ -38,7 +38,8 @@ data class ImageConfig(@ColumnInfo(name = "base_url") var baseUrl: String) {
                 childColumns = arrayOf("id_image_config"),
                 onDelete = ForeignKey.CASCADE)))
 data class ImageSize(@ColumnInfo(name = "size") val size: String,
-                     @ColumnInfo(name = "id_image_config") val imageConfig: Long = 0) {
+                     @ColumnInfo(name = "id_image_config") val imageConfig: Long = 0,
+                     @ColumnInfo(name = "id_image_type") val imageType: Int) {
     @ColumnInfo(name = "_id")
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0
