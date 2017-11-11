@@ -17,7 +17,6 @@ interface PlayingMoviesView {
     fun showNotConnectedToNetwork()
     fun showEndOfPaging()
     fun showInitialLoading()
-    fun showMovieDetails()
 }
 
 

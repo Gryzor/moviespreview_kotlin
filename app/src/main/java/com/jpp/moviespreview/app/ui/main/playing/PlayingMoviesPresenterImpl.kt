@@ -70,7 +70,6 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
 
     override fun onMovieSelected(movie: Movie) {
         moviesContext.selectedMovie = movie
-        playingMoviesView.showMovieDetails()
     }
 
 

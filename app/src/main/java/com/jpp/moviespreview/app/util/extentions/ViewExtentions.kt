@@ -1,6 +1,7 @@
 package com.jpp.moviespreview.app.util.extentions
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -8,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.animation.GlideAnimation
+import com.bumptech.glide.request.target.SimpleTarget
 import com.jpp.moviespreview.R
 
 /**
@@ -38,6 +41,24 @@ fun ImageView.loadImageUrl(imageUrl: String) {
 
 }
 
+
+fun ImageView.loadImageUrlWithCallback(imageUrl: String, callback: (Bitmap) -> Unit) {
+    Glide.with(ctx)
+            .load(imageUrl)
+            .asBitmap()
+            .into(CallbackTarget(this, callback))
+}
+
+
+private class CallbackTarget(private val target: ImageView, private val callback: (Bitmap) -> Unit) : SimpleTarget<Bitmap>() {
+
+    override fun onResourceReady(resource: Bitmap, glideAnimation: GlideAnimation<in Bitmap>) {
+        target.scaleType = ImageView.ScaleType.FIT_XY
+        target.setImageBitmap(resource)
+        callback(resource)
+    }
+
+}
 
 /**
  * Extension function for the RecyclerView class that allows detecting endless scrolling.

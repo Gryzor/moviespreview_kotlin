@@ -1,15 +1,17 @@
 package com.jpp.moviespreview.app.ui.main.playing
 
+import android.support.v4.view.ViewCompat
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.Movie
 import com.jpp.moviespreview.app.util.extentions.inflate
 import com.jpp.moviespreview.app.util.extentions.loadImageUrl
 import kotlinx.android.synthetic.main.movie_list_item.view.*
 
-class PlayingMoviesAdapter(private val listener: (Movie) -> Unit,
+class PlayingMoviesAdapter(private val listener: (Movie, ImageView) -> Unit,
                            private val moviesList: MutableList<Movie> = mutableListOf()) : RecyclerView.Adapter<PlayingMoviesAdapter.ViewHolder>() {
 
 
@@ -28,13 +30,15 @@ class PlayingMoviesAdapter(private val listener: (Movie) -> Unit,
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bindMovie(movie: Movie, listener: (Movie) -> Unit) {
+        fun bindMovie(movie: Movie, listener: (Movie, ImageView) -> Unit) {
             with(movie) {
                 itemView.txt_movie_item_title.text = title
                 itemView.txt_movie_item_popularity.text = popularity.toString()
                 itemView.txt_movie_item_vote_count.text = voteCount.toString()
                 itemView.iv_movie_item_poster.loadImageUrl(posterPath)
-                itemView.setOnClickListener { listener(movie) }
+                itemView.setOnClickListener { listener(movie, itemView.iv_movie_item_poster) }
+
+                ViewCompat.setTransitionName(itemView.iv_movie_item_poster, title)
             }
         }
     }

@@ -2,12 +2,15 @@ package com.jpp.moviespreview.app.ui.main.playing
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.jpp.moviespreview.R
+import com.jpp.moviespreview.app.ui.Movie
 import com.jpp.moviespreview.app.ui.MoviePage
 import com.jpp.moviespreview.app.ui.detail.MovieDetailActivity
 import com.jpp.moviespreview.app.ui.splash.SplashActivity
@@ -26,8 +29,9 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
 
 
     private val adapter by lazy {
-        PlayingMoviesAdapter({
-            playingMoviesPresenter.onMovieSelected(it)
+        PlayingMoviesAdapter({ movie: Movie, imageView: ImageView ->
+            playingMoviesPresenter.onMovieSelected(movie)
+            showMovieDetails(imageView)
         })
     }
 
@@ -90,7 +94,7 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
         loading_movies_view.show()
     }
 
-    override fun showMovieDetails() {
-        activity.startActivity<MovieDetailActivity>()
+    private fun showMovieDetails(imageView: ImageView) {
+        MovieDetailActivity.navigateWithTransition(activity as AppCompatActivity, imageView)
     }
 }
