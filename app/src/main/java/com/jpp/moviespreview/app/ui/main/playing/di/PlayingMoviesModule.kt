@@ -12,8 +12,8 @@ import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 import com.jpp.moviespreview.app.ui.main.di.MainScreenScope
-import com.jpp.moviespreview.app.ui.main.playing.PlayingMoviesInteractorDelegate
-import com.jpp.moviespreview.app.ui.main.playing.PlayingMoviesInteractorDelegateImpl
+import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
+import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegateImpl
 import com.jpp.moviespreview.app.ui.main.playing.PlayingMoviesPresenter
 import com.jpp.moviespreview.app.ui.main.playing.PlayingMoviesPresenterImpl
 import dagger.Module
@@ -33,10 +33,10 @@ class PlayingMoviesModule {
     @Provides
     @MainScreenScope
     fun providesPlayingMoviesPresenter(moviesContext: MoviesContext,
-                                       playingMoviesInteractorDelegate: PlayingMoviesInteractorDelegate,
+                                       presenterInteractorDelegate: PresenterInteractorDelegate,
                                        playingMoviesUseCase: UseCase<MoviesInTheaterInputParam, MoviePage>,
                                        mapper: DomainToUiDataMapper): PlayingMoviesPresenter
-            = PlayingMoviesPresenterImpl(moviesContext, playingMoviesInteractorDelegate, playingMoviesUseCase, mapper)
+            = PlayingMoviesPresenterImpl(moviesContext, presenterInteractorDelegate, playingMoviesUseCase, mapper)
 
 
     @Provides
@@ -47,7 +47,7 @@ class PlayingMoviesModule {
     @Provides
     @MainScreenScope
     fun providesPlayingMoviesInteractorDelegate(backgroundInteractor: BackgroundInteractor,
-                                                connectivityInteractor: ConnectivityInteractor): PlayingMoviesInteractorDelegate
-            = PlayingMoviesInteractorDelegateImpl(backgroundInteractor, connectivityInteractor)
+                                                connectivityInteractor: ConnectivityInteractor): PresenterInteractorDelegate
+            = PresenterInteractorDelegateImpl(backgroundInteractor, connectivityInteractor)
 
 }

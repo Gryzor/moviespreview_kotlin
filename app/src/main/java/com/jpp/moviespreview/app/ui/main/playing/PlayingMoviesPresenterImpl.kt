@@ -8,6 +8,7 @@ import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.ImageConfiguration
 import com.jpp.moviespreview.app.ui.MoviePage
 import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 import com.jpp.moviespreview.app.domain.Genre as DomainGenre
 import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
 
@@ -17,7 +18,7 @@ import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
  * Created by jpp on 10/23/17.
  */
 class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
-                                 private val interactorDelegate: PlayingMoviesInteractorDelegate,
+                                 private val interactorDelegate: PresenterInteractorDelegate,
                                  private val playingMoviesUseCase: UseCase<MoviesInTheaterInputParam, DomainMoviePage>,
                                  private val mapper: DomainToUiDataMapper) : PlayingMoviesPresenter {
 
