@@ -27,7 +27,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import javax.inject.Inject
 
@@ -72,7 +71,7 @@ class SplashActivityEspressoTest {
     @Test
     fun test_appContinuesToHome_whenConfigurationRestoredFromCache() {
         Intents.init()
-        val imagesConfiguration = ImagesConfiguration("someUrl", ArrayList())
+        val imagesConfiguration = ImagesConfiguration("someUrl", arrayListOf(), arrayListOf())
         val moviesConfiguration = MoviesConfiguration(imagesConfiguration)
 
         `when`(moviesConfigurationCache.isMoviesConfigurationOutOfDate()).thenReturn(false)
@@ -155,7 +154,7 @@ class SplashActivityEspressoTest {
     @Test
     fun test_appShowsUnexpectedError_whenGenresFails() {
         // configuration retrieval OK
-        val imagesConfiguration = ImagesConfiguration("someUrl", ArrayList())
+        val imagesConfiguration = ImagesConfiguration("someUrl", arrayListOf(), arrayListOf())
         val moviesConfiguration = MoviesConfiguration(imagesConfiguration)
 
         `when`(moviesConfigurationCache.isMoviesConfigurationOutOfDate()).thenReturn(false)

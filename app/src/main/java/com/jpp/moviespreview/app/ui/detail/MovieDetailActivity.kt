@@ -2,8 +2,10 @@ package com.jpp.moviespreview.app.ui.detail
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.jpp.moviespreview.app.ui.Movie
+import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.util.extentions.app
+import com.jpp.moviespreview.app.util.extentions.loadImageUrl
+import kotlinx.android.synthetic.main.movie_detail_activity.*
 import org.jetbrains.anko.toast
 import javax.inject.Inject
 
@@ -21,6 +23,7 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.movie_detail_activity)
         component.inject(this)
     }
 
@@ -29,8 +32,8 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailView {
         presenter.linkView(this)
     }
 
-    override fun showMovie(movie: Movie) {
-        toast("Movie selected ${movie.originalTitle}")
+    override fun showMovieImages(vararg urls: String) {
+        iv_movie_details.loadImageUrl(urls[0])
     }
 
     override fun showMovieNotSelected() {
