@@ -21,5 +21,5 @@ import javax.inject.Singleton
 interface AppComponent {
     fun plus(splashModule: SplashModule): SplashComponent
     fun plus(playingMovies: PlayingMoviesModule): PlayingMoviesComponent
-    fun pluse(movieDetails: MovieDetailsModule): MovieDetailsComponent
+    fun plus(movieDetails: MovieDetailsModule): MovieDetailsComponent
 }

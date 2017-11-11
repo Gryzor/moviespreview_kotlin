@@ -19,8 +19,14 @@ class MovieDetailPresenterImpl(private val moviesContext: MoviesContext,
                                private val usecase: UseCase<Movie, MovieCredits>) : MovieDetailPresenter {
 
 
+    private lateinit var view: MovieDetailView
+
     override fun linkView(movieDetailView: MovieDetailView) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        view = movieDetailView
+        moviesContext.selectedMovie?.let {
+            view.showMovie(it)
+        } ?: view.showMovieNotSelected()
+
     }
 
 

@@ -34,6 +34,6 @@ open class MoviesPreviewApp : Application() {
 
     open fun playingMoviesComponent(): PlayingMoviesComponent = appComponent.plus(PlayingMoviesModule())
 
-    open fun movieDetailsComponent(): MovieDetailsComponent = appComponent.pluse(MovieDetailsModule())
+    open fun movieDetailsComponent(): MovieDetailsComponent = appComponent.plus(MovieDetailsModule())
 
 }

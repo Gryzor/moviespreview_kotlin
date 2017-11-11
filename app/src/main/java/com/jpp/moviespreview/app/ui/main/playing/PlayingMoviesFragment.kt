@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.MoviePage
+import com.jpp.moviespreview.app.ui.detail.MovieDetailActivity
 import com.jpp.moviespreview.app.ui.splash.SplashActivity
 import com.jpp.moviespreview.app.util.extentions.*
 import kotlinx.android.synthetic.main.playing_movies_fragment.*
@@ -24,9 +24,10 @@ import javax.inject.Inject
  */
 class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
 
+
     private val adapter by lazy {
         PlayingMoviesAdapter({
-            Log.d("TODO", "Go to next")
+            playingMoviesPresenter.onMovieSelected(it)
         })
     }
 
@@ -87,5 +88,9 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
 
     override fun showInitialLoading() {
         loading_movies_view.show()
+    }
+
+    override fun showMovieDetails() {
+        activity.startActivity<MovieDetailActivity>()
     }
 }

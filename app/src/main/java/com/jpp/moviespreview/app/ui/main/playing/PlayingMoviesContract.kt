@@ -1,5 +1,6 @@
 package com.jpp.moviespreview.app.ui.main.playing
 
+import com.jpp.moviespreview.app.ui.Movie
 import com.jpp.moviespreview.app.ui.MoviePage
 
 /**
@@ -16,10 +17,12 @@ interface PlayingMoviesView {
     fun showNotConnectedToNetwork()
     fun showEndOfPaging()
     fun showInitialLoading()
+    fun showMovieDetails()
 }
 
 
 interface PlayingMoviesPresenter {
     fun linkView(view: PlayingMoviesView)
     fun getNextMoviePage()
+    fun onMovieSelected(movie: Movie)
 }

@@ -4,10 +4,7 @@ import android.annotation.SuppressLint
 import android.support.annotation.VisibleForTesting
 import com.jpp.moviespreview.app.domain.MoviesInTheaterInputParam
 import com.jpp.moviespreview.app.domain.UseCase
-import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
-import com.jpp.moviespreview.app.ui.ImageConfiguration
-import com.jpp.moviespreview.app.ui.MoviePage
-import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.*
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 import com.jpp.moviespreview.app.domain.Genre as DomainGenre
 import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
@@ -69,6 +66,11 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
                 playingMoviesView.backToSplashScreen()
             }
         }
+    }
+
+    override fun onMovieSelected(movie: Movie) {
+        moviesContext.selectedMovie = movie
+        playingMoviesView.showMovieDetails()
     }
 
 

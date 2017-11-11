@@ -9,6 +9,7 @@ import com.jpp.moviespreview.app.ui.Movie
 
 interface MovieDetailView {
     fun showMovie(movie: Movie)
+    fun showMovieNotSelected()
 }
 
 interface MovieDetailPresenter {

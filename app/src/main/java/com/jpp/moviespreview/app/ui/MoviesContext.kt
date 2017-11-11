@@ -11,8 +11,10 @@ class MoviesContext {
 
     var imageConfig: List<ImageConfiguration>? = null
     var movieGenres: List<MovieGenre>? = null
+    var selectedMovie: Movie? = null
     private var moviePages = ArrayList<MoviePage>()
     private var imagesConfigForSizes = HashMap<Int, ImageConfiguration>()
+
 
 
     /**
