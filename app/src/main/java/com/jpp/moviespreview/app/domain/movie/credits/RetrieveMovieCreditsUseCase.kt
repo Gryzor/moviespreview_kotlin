@@ -7,6 +7,8 @@ import com.jpp.moviespreview.app.domain.MovieCredits
 import com.jpp.moviespreview.app.domain.UseCase
 
 /**
+ * Use case executed to retrieve the [MovieCredits] of a given [Movie].
+ *
  * Created by jpp on 11/8/17.
  */
 class RetrieveMovieCreditsUseCase(private val mapper: CreditsDataMapper,

@@ -1,11 +1,9 @@
 package com.jpp.moviespreview.app.data.cache
 
-import com.google.gson.Gson
 import com.jpp.moviespreview.app.data.Movie
 import com.jpp.moviespreview.app.data.MovieCredits
 import com.jpp.moviespreview.app.data.MoviePage
 import com.jpp.moviespreview.app.data.cache.db.*
-import com.jpp.moviespreview.app.fromJson
 import com.jpp.moviespreview.app.mock
 import com.jpp.moviespreview.app.util.extension.loadObjectFromJsonFile
 import com.nhaarman.mockito_kotlin.verify
@@ -56,7 +54,7 @@ class MoviesCacheImplTest {
     @Test
     fun getMoviePage_whenMoviePageIsInDb() {
         //-- prepare
-        val dataMoviePage = Gson().fromJson<MoviePage>(readFileAsString("data_movies_page.json"))
+        val dataMoviePage = loadObjectFromJsonFile<MoviePage>(MoviesCacheImplTest::class.java.classLoader, "data_movies_page.json")
 
         val dbMoviePage = mapper.convertDataMoviesPageIntoCacheMoviePage(dataMoviePage)
         val dbMovies = mapper.convertDataMoviesIntoCacheMovie(dataMoviePage.results, dataMoviePage)
@@ -104,7 +102,7 @@ class MoviesCacheImplTest {
     @Test
     fun getMovieCreditForMovie_whenIsStoredInDB() {
         // -- prepare
-        val dataMovieCredit = Gson().fromJson<MovieCredits>(readFileAsString("data_movie_credits.json"))
+        val dataMovieCredit = loadObjectFromJsonFile<MovieCredits>(MoviesCacheImplTest::class.java.classLoader, "data_movie_credits.json")
         val cacheCharacters = mapper.convertDataCharacterIntoCacheCharacter(dataMovieCredit.cast, dataMovieCredit.id)
         val cacheCrew = mapper.convertDataCrewIntoCacheCrew(dataMovieCredit.crew, dataMovieCredit.id)
 
@@ -168,15 +166,4 @@ class MoviesCacheImplTest {
                 GenresByMovies(16, dbMovie.id),
                 GenresByMovies(18, dbMovie.id))
     }
-
-
-    private fun readFileAsString(fileName: String): String {
-        val input = MoviesCacheImplTest::class.java.classLoader.getResourceAsStream(fileName)
-        val size = input.available()
-        val buffer = ByteArray(size)
-        input.read(buffer)
-        input.close()
-        return String(buffer)
-    }
-
 }
