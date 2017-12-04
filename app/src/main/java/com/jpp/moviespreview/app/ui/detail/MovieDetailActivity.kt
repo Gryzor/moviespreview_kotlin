@@ -82,7 +82,6 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailView {
             val slideTransition = Slide()
             slideTransition.excludeTarget(android.R.id.statusBarBackground, true)
             window.enterTransition = slideTransition
-//            window.returnTransition = slideTransition
         }
     }
 

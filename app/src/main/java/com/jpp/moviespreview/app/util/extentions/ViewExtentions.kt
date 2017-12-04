@@ -31,17 +31,19 @@ val View.ctx: Context
  * into the ImageView.
  */
 fun ImageView.loadImageUrl(imageUrl: String) {
-
     Glide.with(ctx)
             .load(imageUrl)
             .placeholder(R.drawable.ic_app_icon_black)
             .error(R.drawable.ic_error_black)
             .centerCrop()
             .into(this)
-
 }
 
-
+/**
+ * Loads an image retrieved from the provided [imageUrl]
+ * into the ImageView and executes the [callback] once that the
+ * image has been loaded.
+ */
 fun ImageView.loadImageUrlWithCallback(imageUrl: String, callback: (Bitmap) -> Unit) {
     Glide.with(ctx)
             .load(imageUrl)
@@ -50,11 +52,14 @@ fun ImageView.loadImageUrlWithCallback(imageUrl: String, callback: (Bitmap) -> U
 }
 
 
+/**
+ * Inner callback class
+ */
 private class CallbackTarget(private val target: ImageView, private val callback: (Bitmap) -> Unit) : SimpleTarget<Bitmap>() {
 
     override fun onResourceReady(resource: Bitmap, glideAnimation: GlideAnimation<in Bitmap>) {
-        target.scaleType = ImageView.ScaleType.FIT_XY
         target.setImageBitmap(resource)
+        target.scaleType = ImageView.ScaleType.CENTER_CROP
         callback(resource)
     }
 
