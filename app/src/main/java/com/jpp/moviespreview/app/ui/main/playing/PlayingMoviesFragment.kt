@@ -2,6 +2,7 @@ package com.jpp.moviespreview.app.ui.main.playing
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -29,7 +30,7 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
 
 
     private val adapter by lazy {
-        PlayingMoviesAdapter({ movie: Movie, imageView: ImageView ->
+        PlayingMoviesAdapter({ movie: Movie, imageView: ViewPager ->
             playingMoviesPresenter.onMovieSelected(movie)
             showMovieDetails(imageView)
         })
@@ -94,7 +95,7 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
         loading_movies_view.show()
     }
 
-    private fun showMovieDetails(imageView: ImageView) {
+    private fun showMovieDetails(imageView: ViewPager) {
         MovieDetailActivity.navigateWithTransition(activity as AppCompatActivity, imageView)
     }
 }

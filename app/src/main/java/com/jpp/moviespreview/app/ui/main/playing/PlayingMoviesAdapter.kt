@@ -1,6 +1,8 @@
 package com.jpp.moviespreview.app.ui.main.playing
 
+import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewCompat
+import android.support.v4.view.ViewPager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +13,7 @@ import com.jpp.moviespreview.app.util.extentions.inflate
 import com.jpp.moviespreview.app.util.extentions.loadImageUrl
 import kotlinx.android.synthetic.main.movie_list_item.view.*
 
-class PlayingMoviesAdapter(private val listener: (Movie, ImageView) -> Unit,
+class PlayingMoviesAdapter(private val listener: (Movie, ViewPager) -> Unit,
                            private val moviesList: MutableList<Movie> = mutableListOf()) : RecyclerView.Adapter<PlayingMoviesAdapter.ViewHolder>() {
 
 
@@ -30,16 +32,36 @@ class PlayingMoviesAdapter(private val listener: (Movie, ImageView) -> Unit,
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bindMovie(movie: Movie, listener: (Movie, ImageView) -> Unit) {
+        fun bindMovie(movie: Movie, listener: (Movie, ViewPager) -> Unit) {
             with(movie) {
                 itemView.txt_movie_item_title.text = title
                 itemView.txt_movie_item_popularity.text = popularity.toString()
                 itemView.txt_movie_item_vote_count.text = voteCount.toString()
-                itemView.iv_movie_item_poster.loadImageUrl(posterPath)
+                itemView.iv_movie_item_poster.adapter = MovieImagesPagerAdapter(movie.images)
                 itemView.setOnClickListener { listener(movie, itemView.iv_movie_item_poster) }
 
                 ViewCompat.setTransitionName(itemView.iv_movie_item_poster, title)
             }
         }
+    }
+
+
+    private class MovieImagesPagerAdapter(private val imagesUrl: List<String>) : PagerAdapter() {
+
+        override fun instantiateItem(container: ViewGroup, position: Int): Any {
+            val imageView = ImageView(container.context)
+            imageView.loadImageUrl(imagesUrl[position])
+            (container as ViewPager).addView(imageView)
+            return imageView
+        }
+
+        override fun destroyItem(container: ViewGroup, position: Int, `object`: Any?) {
+            container.removeView(`object` as View)
+        }
+
+        override fun isViewFromObject(view: View?, `object`: Any?) = view == `object` as View
+
+        override fun getCount() = imagesUrl.size
+
     }
 }

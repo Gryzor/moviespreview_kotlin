@@ -62,8 +62,10 @@ class DomainToUiDataMapper {
                     it.overview,
                     it.releaseDate,
                     it.originalLanguage,
-                    selectedImageConfiguration.prepareImageUrl(it.posterPath),
-                    selectedImageConfiguration.prepareImageUrl(it.backdropPath),
+                    listOf(
+                            selectedImageConfiguration.prepareImageUrl(it.posterPath),
+                            selectedImageConfiguration.prepareImageUrl(it.backdropPath)
+                    ),
                     getMappedUiGenres(it.genres, genres),
                     it.voteCount,
                     it.voteAverage,

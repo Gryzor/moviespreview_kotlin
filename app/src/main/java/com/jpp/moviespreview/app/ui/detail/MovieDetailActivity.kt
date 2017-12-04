@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.view.ViewCompat
+import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.transition.Slide
 import android.widget.ImageView
@@ -21,12 +22,11 @@ import javax.inject.Inject
  */
 class MovieDetailActivity : AppCompatActivity(), MovieDetailView {
 
-
     companion object {
 
         private val EXTRA_TRANSITION_NAME = "com.jpp.moviespreview.app.ui.detail.EXTRA_TRANSITION_NAME"
 
-        fun navigateWithTransition(activity: AppCompatActivity, transitionImage: ImageView) {
+        fun navigateWithTransition(activity: AppCompatActivity, transitionImage: ViewPager) {
             val intent = Intent(activity, MovieDetailActivity::class.java)
             intent.putExtra(EXTRA_TRANSITION_NAME, ViewCompat.getTransitionName(transitionImage))
             val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, transitionImage, ViewCompat.getTransitionName(transitionImage))
@@ -68,8 +68,9 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailView {
         presenter.linkView(this)
     }
 
-    override fun showMovieImages(vararg urls: String) {
-        iv_movie_details.loadImageUrlWithCallback(urls[0], { supportStartPostponedEnterTransition() })
+    override fun showMovieImages(imagesUrl: List<String>) {
+        //TODO
+        iv_movie_details.loadImageUrlWithCallback(imagesUrl[0], { supportStartPostponedEnterTransition() })
     }
 
     override fun showMovieNotSelected() {
