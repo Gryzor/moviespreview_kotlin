@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity
 import android.transition.Slide
 import android.widget.ImageView
 import com.jpp.moviespreview.R
+import com.jpp.moviespreview.app.ui.adapters.SquareImageViewPagerAdapter
 import com.jpp.moviespreview.app.util.extentions.app
 import com.jpp.moviespreview.app.util.extentions.loadImageUrlWithCallback
 import kotlinx.android.synthetic.main.movie_detail_activity.*
@@ -18,6 +19,16 @@ import org.jetbrains.anko.toast
 import javax.inject.Inject
 
 /**
+ * Shows the details of a given Movie.
+ * Performs an activity transition between the Movies list in the previous screen and this one.
+ * TODO 1 - position view pager properly
+ * TODO 2 - show view pager icons
+ * TODO 3 - Transition Movie title
+ * TODO 4 - Tint with pallete
+ * TODO 5 - transition view number
+ * TODO 6 - transition likes number
+ * TODO 7 - show details
+ *
  * Created by jpp on 11/11/17.
  */
 class MovieDetailActivity : AppCompatActivity(), MovieDetailView {
@@ -26,13 +37,12 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailView {
 
         private val EXTRA_TRANSITION_NAME = "com.jpp.moviespreview.app.ui.detail.EXTRA_TRANSITION_NAME"
 
-        fun navigateWithTransition(activity: AppCompatActivity, transitionImage: ViewPager) {
+        fun navigateWithTransition(activity: AppCompatActivity, transitionViewPager: ViewPager) {
             val intent = Intent(activity, MovieDetailActivity::class.java)
-            intent.putExtra(EXTRA_TRANSITION_NAME, ViewCompat.getTransitionName(transitionImage))
-            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, transitionImage, ViewCompat.getTransitionName(transitionImage))
+            intent.putExtra(EXTRA_TRANSITION_NAME, ViewCompat.getTransitionName(transitionViewPager) )
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, transitionViewPager, ViewCompat.getTransitionName(transitionViewPager))
             ActivityCompat.startActivity(activity, intent, options.toBundle())
         }
-
     }
 
 
@@ -69,8 +79,9 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailView {
     }
 
     override fun showMovieImages(imagesUrl: List<String>) {
-        //TODO
-        iv_movie_details.loadImageUrlWithCallback(imagesUrl[0], { supportStartPostponedEnterTransition() })
+        vp_movie_details.adapter = SquareImageViewPagerAdapter(imagesUrl.size, { imageView: ImageView, position: Int ->
+            imageView.loadImageUrlWithCallback(imagesUrl[position], { supportStartPostponedEnterTransition() })
+        })
     }
 
     override fun showMovieNotSelected() {

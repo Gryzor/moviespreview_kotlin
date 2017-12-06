@@ -22,10 +22,10 @@
             app:expandedTitleMarginStart="48dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <com.jpp.moviespreview.app.ui.views.SquareImageView
-                android:id="@+id/iv_movie_details"
+            <android.support.v4.view.ViewPager
+                android:id="@+id/vp_movie_details"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="400dp"
                 android:fitsSystemWindows="true"
                 app:layout_collapseMode="parallax" />
 

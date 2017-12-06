@@ -2,6 +2,7 @@ package com.jpp.moviespreview.app.ui.main.playing
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.view.ViewCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
@@ -16,6 +17,7 @@ import com.jpp.moviespreview.app.ui.MoviePage
 import com.jpp.moviespreview.app.ui.detail.MovieDetailActivity
 import com.jpp.moviespreview.app.ui.splash.SplashActivity
 import com.jpp.moviespreview.app.util.extentions.*
+import kotlinx.android.synthetic.main.movie_list_item.view.*
 import kotlinx.android.synthetic.main.playing_movies_fragment.*
 import org.jetbrains.anko.startActivity
 import javax.inject.Inject
@@ -30,9 +32,10 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
 
 
     private val adapter by lazy {
-        PlayingMoviesAdapter({ movie: Movie, imageView: ViewPager ->
+        PlayingMoviesAdapter({ movie: Movie, viewPager: ViewPager ->
+            ViewCompat.setTransitionName(viewPager, "vpTransition")
             playingMoviesPresenter.onMovieSelected(movie)
-            showMovieDetails(imageView)
+            showMovieDetails(viewPager)
         })
     }
 
@@ -95,7 +98,7 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
         loading_movies_view.show()
     }
 
-    private fun showMovieDetails(imageView: ViewPager) {
-        MovieDetailActivity.navigateWithTransition(activity as AppCompatActivity, imageView)
+    private fun showMovieDetails(viewPager: ViewPager) {
+        MovieDetailActivity.navigateWithTransition(activity as AppCompatActivity, viewPager)
     }
 }
