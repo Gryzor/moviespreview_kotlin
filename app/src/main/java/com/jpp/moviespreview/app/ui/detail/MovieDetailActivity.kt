@@ -22,7 +22,6 @@ import javax.inject.Inject
 /**
  * Shows the details of a given Movie.
  * Performs an activity transition between the Movies list in the previous screen and this one.
- * TODO 2 - show view pager icons
  * TODO 3 - Transition Movie title
  * TODO 4 - Tint with pallete
  * TODO 5 - transition view number
@@ -86,6 +85,7 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailView {
                          supportStartPostponedEnterTransition()
                      })
         })
+        vp_movie_details_tab_indicator.setupWithViewPager(vp_movie_details, true)
     }
 
     override fun showMovieNotSelected() {

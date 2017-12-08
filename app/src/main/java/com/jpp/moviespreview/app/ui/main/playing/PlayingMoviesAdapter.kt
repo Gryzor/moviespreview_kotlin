@@ -44,6 +44,7 @@ class PlayingMoviesAdapter(private val listener: (Movie, ViewPager) -> Unit,
                 })
                 itemView.vp_movie_item_poster.pageChangeUpdate { position: Int -> movie.currentImageShown = position }
                 itemView.vp_movie_item_poster.setCurrentItemDelayed(movie.currentImageShown)
+                itemView.vp_movie_item_tab_indicator.setupWithViewPager(itemView.vp_movie_item_poster, true)
                 itemView.setOnClickListener { listener(movie, itemView.vp_movie_item_poster) }
             }
         }
