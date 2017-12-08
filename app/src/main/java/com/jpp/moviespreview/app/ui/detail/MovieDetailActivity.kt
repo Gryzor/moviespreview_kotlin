@@ -11,9 +11,10 @@ import android.support.v7.app.AppCompatActivity
 import android.transition.Slide
 import android.widget.ImageView
 import com.jpp.moviespreview.R
-import com.jpp.moviespreview.app.ui.adapters.SquareImageViewPagerAdapter
+import com.jpp.moviespreview.app.ui.viewpager.SquareImageViewPagerAdapter
 import com.jpp.moviespreview.app.util.extentions.app
 import com.jpp.moviespreview.app.util.extentions.loadImageUrlWithCallback
+import com.jpp.moviespreview.app.util.extentions.setCurrentItemDelayed
 import kotlinx.android.synthetic.main.movie_detail_activity.*
 import org.jetbrains.anko.toast
 import javax.inject.Inject
@@ -21,7 +22,6 @@ import javax.inject.Inject
 /**
  * Shows the details of a given Movie.
  * Performs an activity transition between the Movies list in the previous screen and this one.
- * TODO 1 - position view pager properly
  * TODO 2 - show view pager icons
  * TODO 3 - Transition Movie title
  * TODO 4 - Tint with pallete
@@ -78,9 +78,13 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailView {
         presenter.linkView(this)
     }
 
-    override fun showMovieImages(imagesUrl: List<String>) {
+    override fun showMovieImages(imagesUrl: List<String>, selectedPosition: Int) {
         vp_movie_details.adapter = SquareImageViewPagerAdapter(imagesUrl.size, { imageView: ImageView, position: Int ->
-            imageView.loadImageUrlWithCallback(imagesUrl[position], { supportStartPostponedEnterTransition() })
+            imageView.loadImageUrlWithCallback(imagesUrl[position],
+                     {
+                         vp_movie_details.setCurrentItemDelayed(position)
+                         supportStartPostponedEnterTransition()
+                     })
         })
     }
 

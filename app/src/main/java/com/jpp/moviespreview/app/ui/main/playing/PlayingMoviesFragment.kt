@@ -10,14 +10,12 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.Movie
 import com.jpp.moviespreview.app.ui.MoviePage
 import com.jpp.moviespreview.app.ui.detail.MovieDetailActivity
 import com.jpp.moviespreview.app.ui.splash.SplashActivity
 import com.jpp.moviespreview.app.util.extentions.*
-import kotlinx.android.synthetic.main.movie_list_item.view.*
 import kotlinx.android.synthetic.main.playing_movies_fragment.*
 import org.jetbrains.anko.startActivity
 import javax.inject.Inject

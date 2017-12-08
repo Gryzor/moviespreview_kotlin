@@ -35,7 +35,13 @@ data class Movie(var id: Double,
                  val genres: List<MovieGenre>,
                  val voteCount: Double,
                  val voteAverage: Float,
-                 val popularity: Float)
+                 val popularity: Float) {
+
+    // represents the image that is currently shown in the UI
+    // it will be updated from the ViewPager in the UI
+    var currentImageShown = 0
+
+}
 
 
 /**

@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.Movie
-import com.jpp.moviespreview.app.ui.adapters.SquareImageViewPagerAdapter
+import com.jpp.moviespreview.app.ui.viewpager.SquareImageViewPagerAdapter
 import com.jpp.moviespreview.app.util.extentions.inflate
 import com.jpp.moviespreview.app.util.extentions.loadImageUrl
+import com.jpp.moviespreview.app.util.extentions.pageChangeUpdate
+import com.jpp.moviespreview.app.util.extentions.setCurrentItemDelayed
 import kotlinx.android.synthetic.main.movie_list_item.view.*
 
 class PlayingMoviesAdapter(private val listener: (Movie, ViewPager) -> Unit,
@@ -40,6 +42,8 @@ class PlayingMoviesAdapter(private val listener: (Movie, ViewPager) -> Unit,
                     imageView.loadImageUrl(movie.images[position])
                     imageView.setOnClickListener { listener(movie, itemView.vp_movie_item_poster) } // handle clicks on the ViewPager
                 })
+                itemView.vp_movie_item_poster.pageChangeUpdate { position: Int -> movie.currentImageShown = position }
+                itemView.vp_movie_item_poster.setCurrentItemDelayed(movie.currentImageShown)
                 itemView.setOnClickListener { listener(movie, itemView.vp_movie_item_poster) }
             }
         }

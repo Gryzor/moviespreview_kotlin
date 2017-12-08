@@ -1,4 +1,4 @@
-package com.jpp.moviespreview.app.ui.adapters
+package com.jpp.moviespreview.app.ui.viewpager
 
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager

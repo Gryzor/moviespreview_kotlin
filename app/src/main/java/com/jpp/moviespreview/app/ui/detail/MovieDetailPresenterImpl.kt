@@ -24,7 +24,7 @@ class MovieDetailPresenterImpl(private val moviesContext: MoviesContext,
     override fun linkView(movieDetailView: MovieDetailView) {
         view = movieDetailView
         moviesContext.selectedMovie?.let {
-            view.showMovieImages(it.images)
+            view.showMovieImages(it.images, it.currentImageShown)
         } ?: view.showMovieNotSelected()
 
     }

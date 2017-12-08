@@ -6,7 +6,7 @@ package com.jpp.moviespreview.app.ui.detail
 
 
 interface MovieDetailView {
-    fun showMovieImages(imagesUrl: List<String>)
+    fun showMovieImages(imagesUrl: List<String>, selectedPosition: Int)
     fun showMovieNotSelected()
 }
 
