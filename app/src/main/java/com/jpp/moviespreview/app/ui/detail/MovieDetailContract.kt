@@ -12,4 +12,5 @@ interface MovieDetailView {
 
 interface MovieDetailPresenter {
     fun linkView(movieDetailView: MovieDetailView)
+    fun onMovieImageSelected(position: Int)
 }

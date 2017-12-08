@@ -29,5 +29,8 @@ class MovieDetailPresenterImpl(private val moviesContext: MoviesContext,
 
     }
 
+    override fun onMovieImageSelected(position: Int) {
+        moviesContext.selectedMovie!!.currentImageShown = position
+    }
 
 }

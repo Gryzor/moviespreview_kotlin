@@ -28,9 +28,14 @@ fun <T> MutableList<T>.addList(list: List<T>): List<T> {
     return this
 }
 
-
-inline fun <T, R : Any> Iterable<T>.mapIfApplies(transform: (T) -> R): List<R> {
-    val listOfResults = ArrayList<R>()
-    this.mapTo(listOfResults) { transform(it) }
-    return listOfResults
+/**
+ * Retrieves the position if the current element fulfills the [criteria].
+ * If no element fulfills the [criteria], a NoSuchElementException is thrown.
+ */
+inline fun <T> MutableList<T>.getPositionForElement(criteria: (T) -> Boolean): Int {
+    var index = 0
+    this
+            .filter { criteria(it) }
+            .forEach { return index++ }
+    throw NoSuchElementException()
 }

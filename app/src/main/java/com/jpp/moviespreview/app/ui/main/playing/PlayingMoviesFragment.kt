@@ -34,6 +34,9 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
             ViewCompat.setTransitionName(viewPager, "vpTransition")
             playingMoviesPresenter.onMovieSelected(movie)
             showMovieDetails(viewPager)
+        }, {
+            movie: Movie, position: Int ->
+            playingMoviesPresenter.onMovieImageSelected(movie, position)
         })
     }
 
@@ -54,7 +57,6 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
         playingMoviesPresenter.linkView(this)
     }
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
             = inflater.inflate(R.layout.playing_movies_fragment, container, false)
 
@@ -68,9 +70,18 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
         rv_playing_movies.endlessScrolling({ playingMoviesPresenter.getNextMoviePage() })
     }
 
+    override fun onResume() {
+        super.onResume()
+        playingMoviesPresenter.refreshData()
+    }
+
     override fun showMoviePage(moviePage: MoviePage) {
         loading_movies_view.hide()
         adapter.appendMovies(moviePage.results)
+    }
+
+    override fun updateMovie(movie: Movie) {
+        adapter.refreshMovie(movie)
     }
 
     override fun backToSplashScreen() {

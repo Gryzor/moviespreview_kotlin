@@ -32,8 +32,16 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
     override fun linkView(view: PlayingMoviesView) {
         playingMoviesView = view
         loadOrRetrieveMovies()
+
     }
 
+    override fun refreshData() {
+        refreshMovieAfterDetailView()
+    }
+
+    override fun onMovieImageSelected(movie: Movie, position: Int) {
+        movie.currentImageShown = position
+    }
 
     /**
      * Verifies if there are pages loaded into the context. If there are, loads those
@@ -48,6 +56,13 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
             } else {
                 getNextMoviePage()
             }
+        }
+    }
+
+    private fun refreshMovieAfterDetailView() {
+        if (moviesContext.selectedMovie != null) {
+            playingMoviesView.updateMovie(moviesContext.selectedMovie!!)
+            moviesContext.selectedMovie = null
         }
     }
 

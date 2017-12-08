@@ -14,6 +14,7 @@ import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.viewpager.SquareImageViewPagerAdapter
 import com.jpp.moviespreview.app.util.extentions.app
 import com.jpp.moviespreview.app.util.extentions.loadImageUrlWithCallback
+import com.jpp.moviespreview.app.util.extentions.pageChangeUpdate
 import com.jpp.moviespreview.app.util.extentions.setCurrentItemDelayed
 import kotlinx.android.synthetic.main.movie_detail_activity.*
 import org.jetbrains.anko.toast
@@ -22,6 +23,7 @@ import javax.inject.Inject
 /**
  * Shows the details of a given Movie.
  * Performs an activity transition between the Movies list in the previous screen and this one.
+ * TODO 2 - transition vp indicator
  * TODO 3 - Transition Movie title
  * TODO 4 - Tint with pallete
  * TODO 5 - transition view number
@@ -38,7 +40,7 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailView {
 
         fun navigateWithTransition(activity: AppCompatActivity, transitionViewPager: ViewPager) {
             val intent = Intent(activity, MovieDetailActivity::class.java)
-            intent.putExtra(EXTRA_TRANSITION_NAME, ViewCompat.getTransitionName(transitionViewPager) )
+            intent.putExtra(EXTRA_TRANSITION_NAME, ViewCompat.getTransitionName(transitionViewPager))
             val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, transitionViewPager, ViewCompat.getTransitionName(transitionViewPager))
             ActivityCompat.startActivity(activity, intent, options.toBundle())
         }
@@ -80,11 +82,12 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailView {
     override fun showMovieImages(imagesUrl: List<String>, selectedPosition: Int) {
         vp_movie_details.adapter = SquareImageViewPagerAdapter(imagesUrl.size, { imageView: ImageView, position: Int ->
             imageView.loadImageUrlWithCallback(imagesUrl[position],
-                     {
-                         vp_movie_details.setCurrentItemDelayed(position)
-                         supportStartPostponedEnterTransition()
-                     })
+                    {
+                        vp_movie_details.setCurrentItemDelayed(selectedPosition)
+                        supportStartPostponedEnterTransition()
+                    })
         })
+        vp_movie_details.pageChangeUpdate { position: Int -> presenter.onMovieImageSelected(position) }
         vp_movie_details_tab_indicator.setupWithViewPager(vp_movie_details, true)
     }
 
