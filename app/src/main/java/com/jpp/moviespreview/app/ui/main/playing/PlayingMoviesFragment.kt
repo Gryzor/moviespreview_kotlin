@@ -30,14 +30,16 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
 
 
     private val adapter by lazy {
-        PlayingMoviesAdapter({ movie: Movie, viewPager: ViewPager ->
-            ViewCompat.setTransitionName(viewPager, "vpTransition")
-            playingMoviesPresenter.onMovieSelected(movie)
-            showMovieDetails(viewPager)
-        }, {
-            movie: Movie, position: Int ->
-            playingMoviesPresenter.onMovieImageSelected(movie, position)
-        })
+        PlayingMoviesAdapter(
+                {
+                    movie: Movie, viewPager: ViewPager ->
+                    ViewCompat.setTransitionName(viewPager, "vpTransition")
+                    playingMoviesPresenter.onMovieSelected(movie)
+                    showMovieDetails(viewPager)
+                },
+                { movie: Movie, position: Int ->
+                    playingMoviesPresenter.onMovieImageSelected(movie, position)
+                })
     }
 
     companion object {

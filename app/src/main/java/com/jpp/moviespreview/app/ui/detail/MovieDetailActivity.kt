@@ -23,6 +23,8 @@ import javax.inject.Inject
 /**
  * Shows the details of a given Movie.
  * Performs an activity transition between the Movies list in the previous screen and this one.
+ * TODO 1 - problem: select a movie from the list, change the selected image in detals, go back to movie list
+ * TODO 1bis - refactor xml to extract common values
  * TODO 2 - transition vp indicator
  * TODO 3 - Transition Movie title
  * TODO 4 - Tint with pallete

@@ -8,7 +8,10 @@ import android.widget.ImageView
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.Movie
 import com.jpp.moviespreview.app.ui.viewpager.SquareImageViewPagerAdapter
-import com.jpp.moviespreview.app.util.extentions.*
+import com.jpp.moviespreview.app.util.extentions.getPositionForElement
+import com.jpp.moviespreview.app.util.extentions.inflate
+import com.jpp.moviespreview.app.util.extentions.loadImageUrl
+import com.jpp.moviespreview.app.util.extentions.pageChangeUpdate
 import kotlinx.android.synthetic.main.movie_list_item.view.*
 
 class PlayingMoviesAdapter(private val listener: (Movie, ViewPager) -> Unit,
