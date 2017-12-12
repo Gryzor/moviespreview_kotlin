@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity
 import android.transition.Slide
 import android.widget.ImageView
 import com.jpp.moviespreview.R
+import com.jpp.moviespreview.app.ui.Movie
 import com.jpp.moviespreview.app.ui.viewpager.SquareImageViewPagerAdapter
 import com.jpp.moviespreview.app.util.extentions.app
 import com.jpp.moviespreview.app.util.extentions.loadImageUrlWithCallback
@@ -61,17 +62,12 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailView {
         setContentView(R.layout.movie_detail_activity)
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val transitionName = intent.getStringExtra(EXTRA_TRANSITION_NAME)
-            ViewCompat.setTransitionName(movie_details_app_bar_layout, transitionName)
-        }
-
+        val transitionName = intent.getStringExtra(EXTRA_TRANSITION_NAME)
+        ViewCompat.setTransitionName(movie_details_app_bar_layout, transitionName)
         supportPostponeEnterTransition()
 
         setSupportActionBar(movie_details_toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-
-        movie_details_collapsin_toolbar_layout.setExpandedTitleColor(resources.getColor(android.R.color.transparent))
 
         component.inject(this)
     }
@@ -81,16 +77,21 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailView {
         presenter.linkView(this)
     }
 
-    override fun showMovieImages(imagesUrl: List<String>, selectedPosition: Int) {
-        vp_movie_details.adapter = SquareImageViewPagerAdapter(imagesUrl.size, { imageView: ImageView, position: Int ->
-            imageView.loadImageUrlWithCallback(imagesUrl[position],
-                    {
-                        vp_movie_details.setCurrentItemDelayed(selectedPosition)
-                        supportStartPostponedEnterTransition()
-                    })
-        })
-        vp_movie_details.pageChangeUpdate { position: Int -> presenter.onMovieImageSelected(position) }
-        vp_movie_details_tab_indicator.setupWithViewPager(vp_movie_details, true)
+
+    override fun showMovie(movie: Movie) {
+        with(movie) {
+            vp_movie_details.adapter = SquareImageViewPagerAdapter(images.size, { imageView: ImageView, position: Int ->
+                imageView.loadImageUrlWithCallback(images[position],
+                        {
+                            vp_movie_details.setCurrentItemDelayed(currentImageShown)
+                            supportStartPostponedEnterTransition()
+                        })
+            })
+            vp_movie_details.pageChangeUpdate { position: Int -> presenter.onMovieImageSelected(position) }
+            vp_movie_details_tab_indicator.setupWithViewPager(vp_movie_details, true)
+            movie_details_collapsing_toolbar_layout.title = title
+            movie_details_collapsing_toolbar_layout.setExpandedTitleColor(resources.getColor(android.R.color.transparent))
+        }
     }
 
     override fun showMovieNotSelected() {

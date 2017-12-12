@@ -13,7 +13,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/movie_details_collapsin_toolbar_layout"
+            android:id="@+id/movie_details_collapsing_toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
@@ -45,8 +45,6 @@
                     app:tabPaddingStart="6dp" />
 
             </LinearLayout>
-
-
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/movie_details_toolbar"

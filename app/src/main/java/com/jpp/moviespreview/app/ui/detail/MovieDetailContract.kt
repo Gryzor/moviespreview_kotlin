@@ -1,13 +1,15 @@
 package com.jpp.moviespreview.app.ui.detail
 
+import com.jpp.moviespreview.app.ui.Movie
+
 /**
  * Created by jpp on 11/4/17.
  */
 
 
 interface MovieDetailView {
-    fun showMovieImages(imagesUrl: List<String>, selectedPosition: Int)
     fun showMovieNotSelected()
+    fun showMovie(movie: Movie)
 }
 
 interface MovieDetailPresenter {
