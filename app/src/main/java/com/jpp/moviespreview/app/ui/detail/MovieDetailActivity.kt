@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity
 import android.transition.Slide
 import android.widget.ImageView
 import com.jpp.moviespreview.R
-import com.jpp.moviespreview.app.ui.Movie
 import com.jpp.moviespreview.app.ui.viewpager.SquareImageViewPagerAdapter
 import com.jpp.moviespreview.app.util.extentions.app
 import com.jpp.moviespreview.app.util.extentions.loadImageUrlWithCallback
@@ -35,7 +34,7 @@ import javax.inject.Inject
  *
  * Created by jpp on 11/11/17.
  */
-class MovieDetailActivity : AppCompatActivity(), MovieDetailView {
+class MovieDetailActivity : AppCompatActivity() {
 
     companion object {
 
@@ -53,7 +52,8 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailView {
     private val component by lazy { app.movieDetailsComponent() }
 
     @Inject
-    lateinit var presenter: MovieDetailPresenter
+    lateinit var imagesPresenter: MovieDetailImagesPresenter
+    private lateinit var imagesView: MovieDetailImagesViewImpl
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,31 +70,16 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailView {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         component.inject(this)
+        imagesView = MovieDetailImagesViewImpl(this, imagesPresenter)
     }
 
     override fun onResume() {
         super.onResume()
-        presenter.linkView(this)
+        imagesPresenter.linkView(imagesView)
     }
 
 
-    override fun showMovie(movie: Movie) {
-        with(movie) {
-            vp_movie_details.adapter = SquareImageViewPagerAdapter(images.size, { imageView: ImageView, position: Int ->
-                imageView.loadImageUrlWithCallback(images[position],
-                        {
-                            vp_movie_details.setCurrentItemDelayed(currentImageShown)
-                            supportStartPostponedEnterTransition()
-                        })
-            })
-            vp_movie_details.pageChangeUpdate { position: Int -> presenter.onMovieImageSelected(position) }
-            vp_movie_details_tab_indicator.setupWithViewPager(vp_movie_details, true)
-            movie_details_collapsing_toolbar_layout.title = title
-            movie_details_collapsing_toolbar_layout.setExpandedTitleColor(resources.getColor(android.R.color.transparent))
-        }
-    }
-
-    override fun showMovieNotSelected() {
+    fun showMovieNotSelected() {
         toast("error")
     }
 
@@ -105,6 +90,36 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailView {
             slideTransition.excludeTarget(android.R.id.statusBarBackground, true)
             window.enterTransition = slideTransition
         }
+    }
+
+
+    /**
+     * MovieDetailImagesView implementation to control the ViewPager and the images shown.
+     */
+    private class MovieDetailImagesViewImpl(private val activity: MovieDetailActivity,
+                                            private val presenter: MovieDetailImagesPresenter) : MovieDetailImagesView {
+
+        override fun showMovieNotSelected() {
+            activity.showMovieNotSelected()
+        }
+
+        override fun showMovieTitle(movieTitle: String) {
+            activity.movie_details_collapsing_toolbar_layout.title = movieTitle
+            activity.movie_details_collapsing_toolbar_layout.setExpandedTitleColor(activity.resources.getColor(android.R.color.transparent))
+        }
+
+        override fun showMovieImages(imagesUrl: List<String>, selectedPosition: Int) {
+            activity.vp_movie_details.adapter = SquareImageViewPagerAdapter(imagesUrl.size, { imageView: ImageView, position: Int ->
+                imageView.loadImageUrlWithCallback(imagesUrl[position],
+                        {
+                            activity.vp_movie_details.setCurrentItemDelayed(selectedPosition)
+                            activity.supportStartPostponedEnterTransition()
+                        })
+            })
+            activity.vp_movie_details.pageChangeUpdate { position: Int -> presenter.onMovieImageSelected(position) }
+            activity.vp_movie_details_tab_indicator.setupWithViewPager(activity.vp_movie_details, true)
+        }
+
     }
 
 }

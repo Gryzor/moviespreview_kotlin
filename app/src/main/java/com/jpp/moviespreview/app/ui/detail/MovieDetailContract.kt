@@ -16,3 +16,14 @@ interface MovieDetailPresenter {
     fun linkView(movieDetailView: MovieDetailView)
     fun onMovieImageSelected(position: Int)
 }
+
+interface MovieDetailImagesView {
+    fun showMovieImages(imagesUrl: List<String>, selectedPosition: Int)
+    fun showMovieTitle(movieTitle: String)
+    fun showMovieNotSelected()
+}
+
+interface MovieDetailImagesPresenter {
+    fun linkView(movieDetailView: MovieDetailImagesView)
+    fun onMovieImageSelected(position: Int)
+}

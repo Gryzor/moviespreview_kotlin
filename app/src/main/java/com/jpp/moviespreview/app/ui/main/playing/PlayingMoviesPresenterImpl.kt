@@ -147,7 +147,7 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
 
 
     /**
-     * Finds the proper width for the [ImageConfiguration] to be used by the presenter.
+     * Finds the proper width for the [ImageConfiguration] to be used by the imagesPresenter.
      * The [mapper] will create and set the proper image URL for the movies that are in a [MoviePage].
      * In order to do that, we need to target a given screen width that will be the one that defines
      * the image to retrieve from the server.

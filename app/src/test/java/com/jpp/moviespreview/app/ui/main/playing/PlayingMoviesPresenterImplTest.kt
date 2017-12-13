@@ -25,7 +25,7 @@ import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
 import com.jpp.moviespreview.app.ui.MoviePage as UiMoviePage
 
 /**
- * Tests presenter + DomainToUiDataMapper
+ * Tests imagesPresenter + DomainToUiDataMapper
  *
  * Created by jpp on 11/1/17.
  */
