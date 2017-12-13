@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.Movie
-import com.jpp.moviespreview.app.ui.viewpager.SquareImageViewPagerAdapter
+import com.jpp.moviespreview.app.ui.viewpager.ImageViewPagerAdapter
 import com.jpp.moviespreview.app.util.extentions.getPositionForElement
 import com.jpp.moviespreview.app.util.extentions.inflate
 import com.jpp.moviespreview.app.util.extentions.loadImageUrl
@@ -44,7 +44,7 @@ class PlayingMoviesAdapter(private val listener: (Movie, ViewPager) -> Unit,
                 itemView.txt_movie_item_title.text = title
                 itemView.txt_movie_item_popularity.text = popularity.toString()
                 itemView.txt_movie_item_vote_count.text = voteCount.toString()
-                itemView.vp_movie_item_poster.adapter = SquareImageViewPagerAdapter(movie.images.size, { imageView: ImageView, position: Int ->
+                itemView.vp_movie_item_poster.adapter = ImageViewPagerAdapter(movie.images.size, { imageView: ImageView, position: Int ->
                     imageView.loadImageUrl(movie.images[position])
                     imageView.setOnClickListener { listener(movie, itemView.vp_movie_item_poster) } // handle clicks on the ViewPager
                 })

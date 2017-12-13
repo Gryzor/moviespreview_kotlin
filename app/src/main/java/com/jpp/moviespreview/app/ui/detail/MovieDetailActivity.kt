@@ -11,7 +11,7 @@ import android.support.v7.app.AppCompatActivity
 import android.transition.Slide
 import android.widget.ImageView
 import com.jpp.moviespreview.R
-import com.jpp.moviespreview.app.ui.viewpager.SquareImageViewPagerAdapter
+import com.jpp.moviespreview.app.ui.viewpager.ImageViewPagerAdapter
 import com.jpp.moviespreview.app.util.extentions.app
 import com.jpp.moviespreview.app.util.extentions.loadImageUrlWithCallback
 import com.jpp.moviespreview.app.util.extentions.pageChangeUpdate
@@ -25,16 +25,12 @@ import javax.inject.Inject
  * Performs an activity transition between the Movies list in the previous screen and this one.
  * TODO 1 - problem: select a movie from the list, change the selected image in detals, go back to movie list
  * TODO 1bis - refactor xml to extract common values
- * TODO 2 - transition vp indicator
- * TODO 3 - Transition Movie title
  * TODO 4 - Tint with pallete
- * TODO 5 - transition view number
- * TODO 6 - transition likes number
  * TODO 7 - show details
  *
  * Created by jpp on 11/11/17.
  */
-class MovieDetailActivity : AppCompatActivity() {
+class MovieDetailActivity : AppCompatActivity(), MovieDetailImagesView {
 
     companion object {
 
@@ -53,7 +49,6 @@ class MovieDetailActivity : AppCompatActivity() {
 
     @Inject
     lateinit var imagesPresenter: MovieDetailImagesPresenter
-    private lateinit var imagesView: MovieDetailImagesViewImpl
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,18 +65,39 @@ class MovieDetailActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         component.inject(this)
-        imagesView = MovieDetailImagesViewImpl(this, imagesPresenter)
     }
 
     override fun onResume() {
         super.onResume()
-        imagesPresenter.linkView(imagesView)
+        imagesPresenter.linkView(this)
+
+        movie_details_body_view_pager.adapter = MovieDetailsViewPagerAdapter(supportFragmentManager)
+        movie_details_body_tab_layout.setupWithViewPager(movie_details_body_view_pager)
     }
 
 
-    fun showMovieNotSelected() {
+    override fun showMovieNotSelected() {
         toast("error")
     }
+
+    override fun showMovieImages(imagesUrl: List<String>, selectedPosition: Int) {
+        movie_details_images_view_pager.adapter = ImageViewPagerAdapter(imagesUrl.size, { imageView: ImageView, position: Int ->
+            imageView.loadImageUrlWithCallback(imagesUrl[position],
+                    {
+                        movie_details_images_view_pager.setCurrentItemDelayed(selectedPosition)
+                        supportStartPostponedEnterTransition()
+                    })
+        })
+        movie_details_images_view_pager.pageChangeUpdate { position: Int -> imagesPresenter.onMovieImageSelected(position) }
+        movie_details_images_tab_indicator.setupWithViewPager(movie_details_images_view_pager, true)
+    }
+
+    override fun showMovieTitle(movieTitle: String) {
+        movie_details_collapsing_toolbar_layout.title = movieTitle
+        movie_details_collapsing_toolbar_layout.setExpandedTitleColor(resources.getColor(android.R.color.transparent))
+        supportActionBar!!.title = movieTitle
+    }
+
 
 
     private fun initActivityTransition() {
@@ -91,35 +107,4 @@ class MovieDetailActivity : AppCompatActivity() {
             window.enterTransition = slideTransition
         }
     }
-
-
-    /**
-     * MovieDetailImagesView implementation to control the ViewPager and the images shown.
-     */
-    private class MovieDetailImagesViewImpl(private val activity: MovieDetailActivity,
-                                            private val presenter: MovieDetailImagesPresenter) : MovieDetailImagesView {
-
-        override fun showMovieNotSelected() {
-            activity.showMovieNotSelected()
-        }
-
-        override fun showMovieTitle(movieTitle: String) {
-            activity.movie_details_collapsing_toolbar_layout.title = movieTitle
-            activity.movie_details_collapsing_toolbar_layout.setExpandedTitleColor(activity.resources.getColor(android.R.color.transparent))
-        }
-
-        override fun showMovieImages(imagesUrl: List<String>, selectedPosition: Int) {
-            activity.vp_movie_details.adapter = SquareImageViewPagerAdapter(imagesUrl.size, { imageView: ImageView, position: Int ->
-                imageView.loadImageUrlWithCallback(imagesUrl[position],
-                        {
-                            activity.vp_movie_details.setCurrentItemDelayed(selectedPosition)
-                            activity.supportStartPostponedEnterTransition()
-                        })
-            })
-            activity.vp_movie_details.pageChangeUpdate { position: Int -> presenter.onMovieImageSelected(position) }
-            activity.vp_movie_details_tab_indicator.setupWithViewPager(activity.vp_movie_details, true)
-        }
-
-    }
-
 }

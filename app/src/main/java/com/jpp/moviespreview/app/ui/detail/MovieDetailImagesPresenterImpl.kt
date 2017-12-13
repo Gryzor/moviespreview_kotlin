@@ -19,6 +19,7 @@ class MovieDetailImagesPresenterImpl(private val moviesContext: MoviesContext)
 
         moviesContext.selectedMovie?.let {
             view.showMovieImages(it.images, it.currentImageShown)
+            view.showMovieTitle(it.title)
         } ?: view.showMovieNotSelected()
     }
 }
