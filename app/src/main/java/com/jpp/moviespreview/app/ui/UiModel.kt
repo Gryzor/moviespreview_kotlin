@@ -19,7 +19,8 @@ data class ImageConfiguration(private val baseUrl: String,
  * Represents a Movie Genre
  */
 data class MovieGenre(val id: Int,
-                      val name: String)
+                      val name: String,
+                      val icon: Int)
 
 
 /**

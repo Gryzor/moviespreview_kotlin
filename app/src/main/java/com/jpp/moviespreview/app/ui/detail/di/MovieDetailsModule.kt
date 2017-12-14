@@ -12,7 +12,7 @@ import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.detail.MovieDetailImagesPresenter
 import com.jpp.moviespreview.app.ui.detail.MovieDetailImagesPresenterImpl
 import com.jpp.moviespreview.app.ui.detail.MovieDetailPresenter
-import com.jpp.moviespreview.app.ui.detail.MovieDetailPresenterImpl
+import com.jpp.moviespreview.app.ui.detail.body.MovieDetailPresenterImpl
 import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate

@@ -24,6 +24,6 @@
         <activity android:name=".app.ui.main.MainActivity" />
         <activity
             android:name=".app.ui.detail.MovieDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar.Inverse" />
     </application>
 </manifest>

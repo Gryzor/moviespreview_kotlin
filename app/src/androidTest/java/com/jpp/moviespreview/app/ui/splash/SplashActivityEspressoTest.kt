@@ -107,7 +107,7 @@ class SplashActivityEspressoTest {
 
         activityRule.launch(Intent())
 
-        Espresso.onView(ViewMatchers.withText(R.string.movies_preview_alert_no_network_connection_message))
+        Espresso.onView(ViewMatchers.withText(R.string.alert_no_network_connection_message))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
@@ -121,7 +121,7 @@ class SplashActivityEspressoTest {
 
         activityRule.launch(Intent())
 
-        Espresso.onView(ViewMatchers.withText(R.string.movies_preview_alert_unexpected_error_message))
+        Espresso.onView(ViewMatchers.withText(R.string.alert_unexpected_error_message))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
@@ -146,7 +146,7 @@ class SplashActivityEspressoTest {
 
         activityRule.launch(Intent())
 
-        Espresso.onView(ViewMatchers.withText(R.string.movies_preview_alert_unexpected_error_message))
+        Espresso.onView(ViewMatchers.withText(R.string.alert_unexpected_error_message))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
@@ -170,7 +170,7 @@ class SplashActivityEspressoTest {
 
         activityRule.launch(Intent())
 
-        Espresso.onView(ViewMatchers.withText(R.string.movies_preview_alert_unexpected_error_message))
+        Espresso.onView(ViewMatchers.withText(R.string.alert_unexpected_error_message))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 }

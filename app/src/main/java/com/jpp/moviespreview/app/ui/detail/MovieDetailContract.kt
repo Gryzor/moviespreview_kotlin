@@ -1,22 +1,25 @@
 package com.jpp.moviespreview.app.ui.detail
 
-import com.jpp.moviespreview.app.ui.Movie
+import com.jpp.moviespreview.app.ui.MovieGenre
 
-/**
- * Created by jpp on 11/4/17.
- */
-
-
+/************************************************************
+ ******** Contract definition for the details body **********
+ ******** This section controls the first page **************
+ ************************************************************/
 interface MovieDetailView {
-    fun showMovieNotSelected()
-    fun showMovie(movie: Movie)
+    fun showMovieOverview(overview: String)
+    fun showMovieGenres(genres: List<MovieGenre>)
 }
 
 interface MovieDetailPresenter {
     fun linkView(movieDetailView: MovieDetailView)
-    fun onMovieImageSelected(position: Int)
 }
 
+
+/***********************************************************************************
+ ******** Contract definition for the images section in the movie details **********
+ ************ This section controls the header part of the screen  *****************
+ ***********************************************************************************/
 interface MovieDetailImagesView {
     fun showMovieImages(imagesUrl: List<String>, selectedPosition: Int)
     fun showMovieTitle(movieTitle: String)

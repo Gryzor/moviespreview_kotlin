@@ -23,7 +23,7 @@ val Activity.app: MoviesPreviewApp
  * when the user preses the OK button.
  */
 fun Activity.showNoNetworkConnectionAlert() {
-    alert(getString(R.string.movies_preview_alert_no_network_connection_message)) {
+    alert(getString(R.string.alert_no_network_connection_message)) {
         title = getString(R.string.app_name)
         yesButton { finish() }
     }.show()
@@ -34,7 +34,7 @@ fun Activity.showNoNetworkConnectionAlert() {
  * When the user preses the OK button, [actionOnOkButton] is executed.
  */
 fun Activity.showUnexpectedError(actionOnOkButton: () -> Unit?) {
-    alert(getString(R.string.movies_preview_alert_unexpected_error_message)) {
+    alert(getString(R.string.alert_unexpected_error_message)) {
         title = getString(R.string.app_name)
         yesButton { actionOnOkButton() }
     }.show()

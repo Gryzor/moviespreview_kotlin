@@ -10,4 +10,12 @@
         <item name="android:fontFamily">@font/poppins</item>
     </style>
 
+    <style name="MoviesPreviewTextAppearanceInverse.Title" parent="MoviesPreviewTextAppearance.Title">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="MoviesPreviewTextAppearanceInverse.Small" parent="MoviesPreviewTextAppearance.Small">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
 </resources>

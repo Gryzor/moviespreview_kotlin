@@ -1,10 +1,12 @@
-package com.jpp.moviespreview.app.ui.detail
+package com.jpp.moviespreview.app.ui.detail.body
 
 import com.jpp.moviespreview.app.domain.Movie
 import com.jpp.moviespreview.app.domain.MovieCredits
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.detail.MovieDetailPresenter
+import com.jpp.moviespreview.app.ui.detail.MovieDetailView
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 
 /**
@@ -23,14 +25,9 @@ class MovieDetailPresenterImpl(private val moviesContext: MoviesContext,
 
     override fun linkView(movieDetailView: MovieDetailView) {
         view = movieDetailView
-        moviesContext.selectedMovie?.let {
-            view.showMovie(it)
-        } ?: view.showMovieNotSelected()
-
+        moviesContext.selectedMovie!!.let {
+            view.showMovieOverview(it.overview)
+            view.showMovieGenres(it.genres)
+        }
     }
-
-    override fun onMovieImageSelected(position: Int) {
-        moviesContext.selectedMovie!!.currentImageShown = position
-    }
-
 }

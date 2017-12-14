@@ -20,11 +20,28 @@
         <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
 
-    <style name="MoviesPreviewTextAppearance" parent="@android:style/TextAppearance"/>
+    <style name="AppTheme.NoActionBar.Inverse" parent="AppTheme.NoActionBar">
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:colorBackground">@android:color/white</item>
+    </style>
 
-    <style name="MoviesPreviewTextAppearance.Title" parent="@android:style/TextAppearance.Medium"/>
+    <style name="MoviesPreviewTextAppearance" parent="@android:style/TextAppearance" />
 
-    <style name="MoviesPreviewTextAppearance.Small" parent="@android:style/TextAppearance.Small"/>
+    <style name="MoviesPreviewTextAppearance.Title" parent="@android:style/TextAppearance.Medium" />
+
+    <style name="MoviesPreviewTextAppearance.Small" parent="@android:style/TextAppearance.Small" />
+
+    <style name="MoviesPreviewTextAppearanceInverse" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="MoviesPreviewTextAppearanceInverse.Title" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="MoviesPreviewTextAppearanceInverse.Small" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
 
 </resources>
 
