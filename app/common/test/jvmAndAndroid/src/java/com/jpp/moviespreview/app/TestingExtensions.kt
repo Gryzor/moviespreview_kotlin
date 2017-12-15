@@ -31,10 +31,10 @@ fun MoviesContext.mockImageConfig() = listOf(
  * Mocks a list of [MovieGenre]
  */
 fun MoviesContext.mockMovieGenres() = listOf(
-        MovieGenre(1, "genre1"),
-        MovieGenre(2, "genre2"),
-        MovieGenre(3, "genre3"),
-        MovieGenre(4, "genre4")
+        MovieGenre(1, "genre1", 1),
+        MovieGenre(2, "genre2", 2),
+        MovieGenre(3, "genre3", 3),
+        MovieGenre(4, "genre4", 4)
 )
 
 /**
@@ -160,7 +160,7 @@ fun DataPageStubs.Companion.stubDataMovieList() = listOf(
 )
 
 /**
- * Created by jpp on 10/11/17.
+ * Mocks a given type.
  */
 inline fun <reified T : Any> mock() = Mockito.mock(T::class.java)
 
