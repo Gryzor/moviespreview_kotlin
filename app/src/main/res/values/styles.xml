@@ -8,10 +8,14 @@
     </style>
 
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.Inverse" parent="AppTheme.NoActionBar">
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:colorBackground">@android:color/white</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
@@ -20,9 +24,14 @@
         <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
 
-    <style name="AppTheme.NoActionBar.Inverse" parent="AppTheme.NoActionBar">
-        <item name="android:windowBackground">@android:color/white</item>
-        <item name="android:colorBackground">@android:color/white</item>
+    <style name="ViewPagerTabLayoutStyle" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">?attr/colorAccent</item>
+        <item name="tabTextAppearance">@style/ViewPagerTabTextAppearance</item>
+        <item name="tabSelectedTextColor">?attr/colorAccent</item>
+    </style>
+
+    <style name="ViewPagerTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
     <style name="MoviesPreviewTextAppearance" parent="@android:style/TextAppearance" />

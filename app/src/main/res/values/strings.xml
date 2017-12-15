@@ -5,6 +5,8 @@
     <string name="alert_unexpected_error_message">An unexpected error has occurred. Pleas, try again later.</string>
 
     <!-- Details -->
+    <string name="movie_details_title">Details</string>
+    <string name="movie_credits_title">Credits</string>
     <string name="overview_title">Overview</string>
     <string name="genres_title">Genres</string>
     <string name="popularity_title">Popularity</string>

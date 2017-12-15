@@ -24,9 +24,10 @@ import javax.inject.Inject
  * Shows the details of a given Movie.
  * Performs an activity transition between the Movies list in the previous screen and this one.
  * TODO 1 - problem: select a movie from the list, change the selected image in detals, go back to movie list
- * TODO 1bis - refactor xml to extract common values
  * TODO 4 - Tint with pallete
  * TODO 7 - show details
+ * TODO 8 - show cast
+ * TODO 9 - LANDSCAPE!
  *
  * Created by jpp on 11/11/17.
  */
@@ -71,7 +72,7 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailImagesView {
         super.onResume()
         imagesPresenter.linkView(this)
 
-        movie_details_body_view_pager.adapter = MovieDetailsViewPagerAdapter(supportFragmentManager)
+        movie_details_body_view_pager.adapter = MovieDetailsViewPagerAdapter(supportFragmentManager, resources)
         movie_details_body_tab_layout.setupWithViewPager(movie_details_body_view_pager)
     }
 
