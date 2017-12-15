@@ -22,6 +22,7 @@
         style="@style/MoviesPreviewTextAppearanceInverse.Small"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/movie_details_vertical_spacing"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/movie_details_fragment_overview_title"
@@ -33,6 +34,7 @@
         style="@style/MoviesPreviewTextAppearanceInverse.Title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/movie_details_vertical_spacing"
         android:text="@string/genres_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,12 +42,59 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/movie_details_fragment_recycler_view"
-        android:padding="8dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/movie_details_vertical_spacing"
+        android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/movie_details_fragment_genres_title"/>
+        app:layout_constraintTop_toBottomOf="@+id/movie_details_fragment_genres_title" />
+
+    <TextView
+        android:id="@+id/movie_details_fragment_popularity_title"
+        style="@style/MoviesPreviewTextAppearanceInverse.Title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/movie_details_vertical_spacing"
+        android:text="@string/popularity_title"
+        app:layout_constraintEnd_toStartOf="@+id/movie_details_popularity_text_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/movie_details_fragment_recycler_view" />
+
+    <TextView
+        android:id="@+id/movie_details_popularity_text_view"
+        style="@style/MoviesPreviewTextAppearanceInverse.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        app:layout_constraintBottom_toBottomOf="@+id/movie_details_fragment_popularity_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/movie_details_fragment_popularity_title"
+        app:layout_constraintTop_toTopOf="@+id/movie_details_fragment_popularity_title"
+        tools:text="1200" />
+
+    <TextView
+        android:id="@+id/movie_details_fragment_vote_count_title"
+        style="@style/MoviesPreviewTextAppearanceInverse.Title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/movie_details_vertical_spacing"
+        android:text="@string/vote_count_title"
+        app:layout_constraintEnd_toStartOf="@+id/movie_details_fragment_vote_count_text_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/movie_details_fragment_popularity_title" />
+
+    <TextView
+        android:id="@+id/movie_details_fragment_vote_count_text_view"
+        style="@style/MoviesPreviewTextAppearanceInverse.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        app:layout_constraintBottom_toBottomOf="@+id/movie_details_fragment_vote_count_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/movie_details_fragment_vote_count_title"
+        app:layout_constraintTop_toTopOf="@+id/movie_details_fragment_vote_count_title"
+        tools:text="171818" />
 
 
 </android.support.constraint.ConstraintLayout>

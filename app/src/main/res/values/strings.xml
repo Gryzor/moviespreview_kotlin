@@ -7,4 +7,6 @@
     <!-- Details -->
     <string name="overview_title">Overview</string>
     <string name="genres_title">Genres</string>
+    <string name="popularity_title">Popularity</string>
+    <string name="vote_count_title">Vote Count</string>
 </resources>

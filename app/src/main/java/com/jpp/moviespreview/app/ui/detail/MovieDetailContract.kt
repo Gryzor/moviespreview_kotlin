@@ -9,6 +9,8 @@ import com.jpp.moviespreview.app.ui.MovieGenre
 interface MovieDetailView {
     fun showMovieOverview(overview: String)
     fun showMovieGenres(genres: List<MovieGenre>)
+    fun showMoviePopularity(popularity: Float)
+    fun showMovieVoteCount(voteCount: Double)
 }
 
 interface MovieDetailPresenter {

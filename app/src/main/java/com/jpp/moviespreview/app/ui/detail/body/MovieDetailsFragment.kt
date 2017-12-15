@@ -16,10 +16,12 @@ import kotlinx.android.synthetic.main.movie_details_fragment.*
 import javax.inject.Inject
 
 /**
+ * Shows the details of a given movie. Note that this [Fragment] does not interacts
+ * with the movie's images nor with the cast of the movie.
+ *
  * Created by jpp on 12/13/17.
  */
 class MovieDetailsFragment : Fragment(), MovieDetailView {
-
 
     companion object {
         // Factory method to follow the Fragment.newInstance() Android pattern
@@ -50,4 +52,13 @@ class MovieDetailsFragment : Fragment(), MovieDetailView {
         movie_details_fragment_recycler_view.addItemDecoration(VerticalSpaceItemDecoration(resources.getDimension(R.dimen.default_vertical_recycler_view_space).toInt()))
         movie_details_fragment_recycler_view.adapter = MovieDetailsGenreAdapter(genres)
     }
+
+    override fun showMovieVoteCount(voteCount: Double) {
+        movie_details_fragment_vote_count_text_view.text = voteCount.toString()
+    }
+
+    override fun showMoviePopularity(popularity: Float) {
+        movie_details_popularity_text_view.text = popularity.toString()
+    }
+
 }

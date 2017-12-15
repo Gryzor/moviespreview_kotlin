@@ -28,6 +28,8 @@ class MovieDetailPresenterImpl(private val moviesContext: MoviesContext,
         moviesContext.selectedMovie!!.let {
             view.showMovieOverview(it.overview)
             view.showMovieGenres(it.genres)
+            view.showMovieVoteCount(it.voteCount)
+            view.showMoviePopularity(it.popularity)
         }
     }
 }
