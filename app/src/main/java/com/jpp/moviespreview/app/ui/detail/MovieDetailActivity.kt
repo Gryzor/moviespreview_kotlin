@@ -90,7 +90,6 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailImagesView {
                     })
         })
         movie_details_images_view_pager.pageChangeUpdate { position: Int -> imagesPresenter.onMovieImageSelected(position) }
-        movie_details_images_tab_indicator.setupWithViewPager(movie_details_images_view_pager, true)
     }
 
     override fun showMovieTitle(movieTitle: String) {
@@ -98,7 +97,6 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailImagesView {
         movie_details_collapsing_toolbar_layout.setExpandedTitleColor(resources.getColor(android.R.color.transparent))
         supportActionBar!!.title = movieTitle
     }
-
 
 
     private fun initActivityTransition() {
