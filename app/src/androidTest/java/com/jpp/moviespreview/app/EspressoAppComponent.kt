@@ -2,6 +2,7 @@ package com.jpp.moviespreview.app
 
 import com.jpp.moviespreview.app.data.EspressoDataModule
 import com.jpp.moviespreview.app.ui.EspressoUiModule
+import com.jpp.moviespreview.app.ui.detail.body.MovieDetailsFragmentEspressoTests
 import com.jpp.moviespreview.app.ui.main.playing.PlayingMoviesFragmentEspressoTest
 import com.jpp.moviespreview.app.ui.splash.SplashActivityEspressoTest
 import dagger.Component
@@ -16,4 +17,5 @@ interface EspressoAppComponent : AppComponent {
 
     fun inject(splashActivityEspressoTest: SplashActivityEspressoTest)
     fun inject(playingMoviesFragmentEspressoTest: PlayingMoviesFragmentEspressoTest)
+    fun inject(movieDetailsFragmentEspressoTests: MovieDetailsFragmentEspressoTests)
 }

@@ -2,6 +2,7 @@ package com.jpp.moviespreview.app
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.domain.Genre
 import com.jpp.moviespreview.app.ui.ImageConfiguration
 import com.jpp.moviespreview.app.ui.MovieGenre
@@ -31,10 +32,10 @@ fun MoviesContext.mockImageConfig() = listOf(
  * Mocks a list of [MovieGenre]
  */
 fun MoviesContext.mockMovieGenres() = listOf(
-        MovieGenre(1, "genre1", 1),
-        MovieGenre(2, "genre2", 2),
-        MovieGenre(3, "genre3", 3),
-        MovieGenre(4, "genre4", 4)
+        MovieGenre(1, "genre1", R.drawable.ic_generic),
+        MovieGenre(2, "genre2", R.drawable.ic_generic),
+        MovieGenre(3, "genre3", R.drawable.ic_generic),
+        MovieGenre(4, "genre4", R.drawable.ic_generic)
 )
 
 /**

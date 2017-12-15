@@ -1,5 +1,7 @@
 package com.jpp.moviespreview.app.ui
 
+import com.jpp.moviespreview.app.util.AllOpen
+
 /**
  * Represents the configuration of the images from the UI perspective.
  * The URL that references the location of the images.
@@ -26,6 +28,7 @@ data class MovieGenre(val id: Int,
 /**
  * Represents a Movie for the UI module.
  */
+@AllOpen
 data class Movie(var id: Double,
                  var title: String,
                  var originalTitle: String,
