@@ -29,7 +29,6 @@ import com.jpp.moviespreview.app.util.extentions.addFragmentIfNotInStack
 import com.jpp.moviespreview.app.utils.RecyclerViewItemCountAssertion
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
