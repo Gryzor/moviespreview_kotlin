@@ -1,5 +1,7 @@
 package com.jpp.moviespreview.app.ui
 
+import com.jpp.moviespreview.app.util.AllOpen
+
 /**
  * Represents the configuration of the images from the UI perspective.
  * The URL that references the location of the images.
@@ -19,24 +21,31 @@ data class ImageConfiguration(private val baseUrl: String,
  * Represents a Movie Genre
  */
 data class MovieGenre(val id: Int,
-                      val name: String)
+                      val name: String,
+                      val icon: Int)
 
 
 /**
  * Represents a Movie for the UI module.
  */
+@AllOpen
 data class Movie(var id: Double,
                  var title: String,
                  var originalTitle: String,
                  var overview: String,
                  var releaseDate: String,
                  var originalLanguage: String,
-                 val posterPath: String,
-                 val backdropPath: String,
+                 val images: List<String>,
                  val genres: List<MovieGenre>,
                  val voteCount: Double,
                  val voteAverage: Float,
-                 val popularity: Float)
+                 val popularity: Float) {
+
+    // represents the image that is currently shown in the UI
+    // it will be updated from the ViewPager in the UI
+    var currentImageShown = 0
+
+}
 
 
 /**

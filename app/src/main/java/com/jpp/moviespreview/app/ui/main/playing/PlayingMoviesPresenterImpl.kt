@@ -4,10 +4,8 @@ import android.annotation.SuppressLint
 import android.support.annotation.VisibleForTesting
 import com.jpp.moviespreview.app.domain.MoviesInTheaterInputParam
 import com.jpp.moviespreview.app.domain.UseCase
-import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
-import com.jpp.moviespreview.app.ui.ImageConfiguration
-import com.jpp.moviespreview.app.ui.MoviePage
-import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.*
+import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 import com.jpp.moviespreview.app.domain.Genre as DomainGenre
 import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
 
@@ -17,7 +15,7 @@ import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
  * Created by jpp on 10/23/17.
  */
 class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
-                                 private val interactorDelegate: PlayingMoviesInteractorDelegate,
+                                 private val interactorDelegate: PresenterInteractorDelegate,
                                  private val playingMoviesUseCase: UseCase<MoviesInTheaterInputParam, DomainMoviePage>,
                                  private val mapper: DomainToUiDataMapper) : PlayingMoviesPresenter {
 
@@ -34,8 +32,16 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
     override fun linkView(view: PlayingMoviesView) {
         playingMoviesView = view
         loadOrRetrieveMovies()
+
     }
 
+    override fun refreshData() {
+        refreshMovieAfterDetailView()
+    }
+
+    override fun onMovieImageSelected(movie: Movie, position: Int) {
+        movie.currentImageShown = position
+    }
 
     /**
      * Verifies if there are pages loaded into the context. If there are, loads those
@@ -50,6 +56,13 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
             } else {
                 getNextMoviePage()
             }
+        }
+    }
+
+    private fun refreshMovieAfterDetailView() {
+        if (moviesContext.selectedMovie != null) {
+            playingMoviesView.updateMovie(moviesContext.selectedMovie!!)
+            moviesContext.selectedMovie = null
         }
     }
 
@@ -68,6 +81,10 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
                 playingMoviesView.backToSplashScreen()
             }
         }
+    }
+
+    override fun onMovieSelected(movie: Movie) {
+        moviesContext.selectedMovie = movie
     }
 
 
@@ -130,7 +147,7 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
 
 
     /**
-     * Finds the proper width for the [ImageConfiguration] to be used by the presenter.
+     * Finds the proper width for the [ImageConfiguration] to be used by the imagesPresenter.
      * The [mapper] will create and set the proper image URL for the movies that are in a [MoviePage].
      * In order to do that, we need to target a given screen width that will be the one that defines
      * the image to retrieve from the server.

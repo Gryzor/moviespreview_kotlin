@@ -1,5 +1,6 @@
 package com.jpp.moviespreview.app.ui
 
+import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.util.extentions.filterInList
 import com.jpp.moviespreview.app.util.extentions.transformToInt
 import com.jpp.moviespreview.app.domain.Genre as DomainGenre
@@ -13,6 +14,29 @@ import com.jpp.moviespreview.app.domain.MoviesConfiguration as DomainMovieConfig
  */
 
 class DomainToUiDataMapper {
+
+
+    private companion object {
+        val ACTION_GENRE_ID = 28
+        val ADVENTURE_GENRE_ID = 12
+        val ANIMATION_GENRE_ID = 16
+        val COMEDY_GENRE_ID = 35
+        val CRIME_GENRE_ID = 80
+        val DOCUMENTARY_GENRE_ID = 99
+        val DRAMA_GENRE_ID = 18
+        val FAMILY_GENRE_ID = 10751
+        val FANTASY_GENRE_ID = 14
+        val HISTORY_GENRE_ID = 36
+        val HORROR_GENRE_ID = 27
+        val MUSIC_GENRE_ID = 10402
+        val MYSTERY_GENRE_ID = 9648
+        val SCI_FY_GENRE_ID = 878
+        val TV_MOVIE_GENRE_ID = 10770
+        val THRILLER_GENRE_ID = 53
+        val WAR_GENRE_ID = 10752
+        val WESTERN_GENRE_ID = 37
+    }
+
 
     private var domainGenres: List<DomainGenre>? = null
 
@@ -33,7 +57,35 @@ class DomainToUiDataMapper {
      */
     fun convertDomainGenresIntoUiGenres(domainGenres: List<DomainGenre>): List<MovieGenre> {
         return domainGenres.map {
-            MovieGenre(it.id, it.name)
+            MovieGenre(it.id, it.name, mapGenreToIcon(it))
+        }
+    }
+
+
+    /**
+     * Maps all the known genres with a given icon.
+     */
+    private fun mapGenreToIcon(domainGenre: DomainGenre) : Int {
+        when(domainGenre.id) {
+            ACTION_GENRE_ID -> return R.drawable.ic_action
+            ADVENTURE_GENRE_ID -> return R.drawable.ic_adventure
+            ANIMATION_GENRE_ID -> return R.drawable.ic_animation
+            COMEDY_GENRE_ID -> return R.drawable.ic_comedy
+            CRIME_GENRE_ID -> return R.drawable.ic_crime
+            DOCUMENTARY_GENRE_ID -> return R.drawable.ic_documentary
+            DRAMA_GENRE_ID -> return R.drawable.ic_drama
+            FAMILY_GENRE_ID -> return R.drawable.ic_family
+            FANTASY_GENRE_ID -> return R.drawable.ic_fantasy
+            HISTORY_GENRE_ID -> return R.drawable.ic_history
+            HORROR_GENRE_ID -> return R.drawable.ic_horror
+            MUSIC_GENRE_ID -> return R.drawable.ic_music
+            MYSTERY_GENRE_ID -> return R.drawable.ic_mystery
+            SCI_FY_GENRE_ID -> return R.drawable.ic_science_ficcion
+            TV_MOVIE_GENRE_ID -> return R.drawable.ic_tv_movie
+            THRILLER_GENRE_ID -> return R.drawable.ic_thriller
+            WAR_GENRE_ID -> return R.drawable.ic_war
+            WESTERN_GENRE_ID -> return R.drawable.ic_western
+            else -> return R.drawable.ic_generic
         }
     }
 
@@ -62,8 +114,10 @@ class DomainToUiDataMapper {
                     it.overview,
                     it.releaseDate,
                     it.originalLanguage,
-                    selectedImageConfiguration.prepareImageUrl(it.posterPath),
-                    selectedImageConfiguration.prepareImageUrl(it.backdropPath),
+                    listOf(
+                            selectedImageConfiguration.prepareImageUrl(it.posterPath),
+                            selectedImageConfiguration.prepareImageUrl(it.backdropPath)
+                    ),
                     getMappedUiGenres(it.genres, genres),
                     it.voteCount,
                     it.voteAverage,

@@ -18,6 +18,7 @@ class CacheTimestampUtils(private val helper: CacheTimeUtilsHelper) {
         private val moviesConfigurationId = 1L
         private val moviesGenresId = 2L
         private val moviesPageId = 3L
+        private val moviesCreditId = 4L
     }
 
     /**
@@ -34,6 +35,11 @@ class CacheTimestampUtils(private val helper: CacheTimeUtilsHelper) {
      * Creates the Timestamp that represents the Movies [page]
      */
     fun createMoviePageTimestamp(page: Int) = Timestamp(moviesPageId, currentTimeInMillis(), page)
+
+    /**
+     * Creates the Timestamp that represents the MovieCredits for the provided [movieId]
+     */
+    fun createMovieCreditTimestamp(movieId: Int) = Timestamp(moviesCreditId, currentTimeInMillis(), movieId)
 
     /**
      * Wrap currentTimeInMillis method.
@@ -66,6 +72,15 @@ class CacheTimestampUtils(private val helper: CacheTimeUtilsHelper) {
     fun isMoviePageTimestampOutdated(timestampDao: TimestampDao, page: Int): Boolean {
         val moviesPageTimestamp = timestampDao.getTimestamp(moviesPageId, page)
         return isTimestampOutdated(moviesPageTimestamp, helper.cacheMoviesPageRefreshTime())
+    }
+
+    /**
+     * Verifies if the MovieCredits timestamp stored for the provided [movieId] is out of date.
+     */
+    @SuppressLint("VisibleForTests")
+    fun isMovieCreditsTimestampOutdated(timestampDao: TimestampDao, movieId: Int): Boolean {
+        val creditsTimestamp = timestampDao.getTimestamp(moviesCreditId, movieId)
+        return isTimestampOutdated(creditsTimestamp, helper.cacheCreditsMovieRefreshTime())
     }
 
 

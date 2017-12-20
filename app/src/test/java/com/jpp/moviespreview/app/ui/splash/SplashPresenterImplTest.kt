@@ -76,7 +76,9 @@ class SplashPresenterImplTest {
         val movieConfigRetrieved: MoviesConfiguration = mock()
         val rawSizes = ArrayList<String>()
         rawSizes.add("1")
-        val sizes = ImagesConfiguration("randomUrl", rawSizes)
+        val rawProfileSizes = ArrayList<String>()
+        rawProfileSizes.add("28")
+        val sizes = ImagesConfiguration("randomUrl", rawSizes, rawProfileSizes)
         Mockito.`when`(movieConfigRetrieved.posterImagesConfiguration).thenReturn(sizes)
         Mockito.`when`(moviesConfigurationUseCase.execute()).thenReturn(movieConfigRetrieved)
         val genreList = ArrayList<Genre>()
@@ -113,7 +115,7 @@ class SplashPresenterImplTest {
     fun linkView_whenContextNotCompleted_andGenresUseCaseFails_showsError() {
         // -- prepare
         val movieConfigRetrieved: MoviesConfiguration = mock()
-        val sizes = ImagesConfiguration("randomUrl", ArrayList())
+        val sizes = ImagesConfiguration("randomUrl", ArrayList(), ArrayList())
         Mockito.`when`(movieConfigRetrieved.posterImagesConfiguration).thenReturn(sizes)
         Mockito.`when`(moviesConfigurationUseCase.execute()).thenReturn(movieConfigRetrieved)
         Mockito.`when`(moviesGenresUseCase.execute()).thenReturn(null)
@@ -150,7 +152,7 @@ class SplashPresenterImplTest {
     fun linkView_whenContextNotCompleted_andGenresUseCaseFails_noConnection_showsError() {
         // -- prepare
         val movieConfigRetrieved: MoviesConfiguration = mock()
-        val sizes = ImagesConfiguration("randomUrl", ArrayList())
+        val sizes = ImagesConfiguration("randomUrl", ArrayList(), ArrayList())
         Mockito.`when`(movieConfigRetrieved.posterImagesConfiguration).thenReturn(sizes)
         Mockito.`when`(moviesConfigurationUseCase.execute()).thenReturn(movieConfigRetrieved)
         Mockito.`when`(moviesGenresUseCase.execute()).thenReturn(null)

@@ -28,4 +28,10 @@ class CacheTimeUtilsHelper {
      */
     fun cacheMoviesPageRefreshTime() = TimeUnit.MINUTES.toMillis(30)
 
+
+    /**
+     * Retrieves the maximum refresh time for the MovieCredits cache.
+     */
+    fun cacheCreditsMovieRefreshTime() = TimeUnit.MINUTES.toMillis(30)
+
 }

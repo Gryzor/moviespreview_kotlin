@@ -12,7 +12,7 @@ import com.jpp.moviespreview.app.data.Movie as DataMovie
  * Created by jpp on 10/21/17.
  */
 
-class MovieDataMapper {
+open class MovieDataMapper {
 
 
     /**
@@ -51,5 +51,24 @@ class MovieDataMapper {
         val result = ArrayList<Genre>()
         genres.filterTo(result) { genreIds.contains(it.id) }
         return result
+    }
+
+
+    /**
+     * Converts a domain [Movie] into a [DataMovie]
+     */
+    fun convertDomainMovieIntoDataMovie(domainMovie: Movie) = with(domainMovie) {
+        DataMovie(id,
+                title,
+                originalTitle,
+                overview,
+                releaseDate,
+                originalLanguage,
+                posterPath,
+                backdropPath,
+                genres.mapTo(arrayListOf()) { it.id },
+                voteCount,
+                voteAverage,
+                popularity)
     }
 }

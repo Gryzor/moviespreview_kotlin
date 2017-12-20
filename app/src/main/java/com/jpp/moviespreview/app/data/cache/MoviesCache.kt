@@ -1,6 +1,7 @@
 package com.jpp.moviespreview.app.data.cache
 
 import com.jpp.moviespreview.app.data.Movie
+import com.jpp.moviespreview.app.data.MovieCredits
 import com.jpp.moviespreview.app.data.MoviePage
 import com.jpp.moviespreview.app.data.cache.db.GenresByMovies
 import com.jpp.moviespreview.app.data.cache.db.MoviesDataBase
@@ -31,6 +32,24 @@ interface MoviesCache {
      * Stores a [MoviePage] into the local cache.
      */
     fun saveMoviePage(moviePage: MoviePage)
+
+    /**
+     * Determinate if the [MovieCredits] that belongs to the provided [movie] is out of
+     * date or not.
+     */
+    fun isMovieCreditsOutOfDate(movie: Movie): Boolean
+
+
+    /**
+     * Retrieves the [MovieCredits] that belongs to the provided [movie]. If there is no
+     * one stored, null is returned.
+     */
+    fun getMovieCreditForMovie(movie: Movie): MovieCredits?
+
+    /**
+     * Stores a [MovieCredits] into the cache.
+     */
+    fun saveMovieCredits(credits: MovieCredits)
 
 }
 
@@ -83,6 +102,42 @@ class MoviesCacheImpl(private val mapper: CacheDataMapper,
         // 4 -> insert genres
         for (movie in moviePage.results) {
             database.moviesDao().insertGenresForMovie(movie.genre_ids.mapTo(ArrayList()) { GenresByMovies(it, movie.id) })
+        }
+    }
+
+
+    /*****************
+     **** CREDITS ****
+     *****************/
+
+    override fun isMovieCreditsOutOfDate(movie: Movie)
+            = cacheTimestampUtils.isMovieCreditsTimestampOutdated(database.timestampDao(), movie.id.toInt())
+
+    override fun getMovieCreditForMovie(movie: Movie): MovieCredits? {
+        with(movie) {
+            val characters = database.castCharacterDao().getMovieCastCharacters(id)
+            val crew = database.crewPersonDao().getMovieCrew(id)
+
+            return if (characters != null && crew != null) {
+                MovieCredits(id, mapper.convertCacheCharacterIntoDataCharacter(characters), mapper.convertCacheCrewIntoDataCrew(crew))
+            } else {
+                null
+            }
+        }
+    }
+
+    override fun saveMovieCredits(credits: MovieCredits) {
+        with(credits) {
+            // 1 -> Insert timestamp
+            val currentTimestamp = cacheTimestampUtils.createMovieCreditTimestamp(id.toInt())
+            database.timestampDao().insertTimestamp(currentTimestamp)
+
+            // 2  -> save MovieCredits
+            val cacheCharacters = mapper.convertDataCharacterIntoCacheCharacter(cast, id)
+            val cacheCrew = mapper.convertDataCrewIntoCacheCrew(crew, id)
+
+            database.castCharacterDao().insertCastCharacters(cacheCharacters)
+            database.crewPersonDao().insertCrew(cacheCrew)
         }
     }
 

@@ -3,8 +3,12 @@ package com.jpp.moviespreview.app.data.cache
 import com.jpp.moviespreview.app.data.ImagesConfiguration
 import com.jpp.moviespreview.app.data.MoviesConfiguration
 import com.jpp.moviespreview.app.data.cache.db.*
+import com.jpp.moviespreview.app.util.extentions.addList
+import com.jpp.moviespreview.app.data.CastCharacter as DataCastCharacter
+import com.jpp.moviespreview.app.data.CrewPerson as DataCrewPerson
 import com.jpp.moviespreview.app.data.Genre as DataGenre
 import com.jpp.moviespreview.app.data.Movie as DataMovie
+import com.jpp.moviespreview.app.data.MovieCredits as DataMovieCredits
 import com.jpp.moviespreview.app.data.MoviePage as DataMoviePage
 
 
@@ -14,6 +18,11 @@ import com.jpp.moviespreview.app.data.MoviePage as DataMoviePage
  * Created by jpp on 10/20/17.
  */
 class CacheDataMapper {
+
+    private companion object {
+        val IMAGE_TYPE_POSTER = 1
+        val IMAGE_TYPE_PROFILE = 2
+    }
 
 
     /*****************************************************
@@ -32,17 +41,18 @@ class CacheDataMapper {
      * Converts from [MoviesConfiguration] into a list of [ImageSize]. The [parentId] param is used to
      * set the [ImageSize.id] param.
      */
-    fun convertImagesConfigurationToCacheModel(parentId: Long, moviesConfiguration: MoviesConfiguration) = with(moviesConfiguration) {
-        convertImageSizes(parentId, images.poster_sizes)
+    fun convertImagesConfigurationToCacheModel(parentId: Long, moviesConfiguration: MoviesConfiguration): List<ImageSize> = with(moviesConfiguration) {
+        convertImageSizes(parentId, images.poster_sizes, IMAGE_TYPE_POSTER)
+                .addList(convertImageSizes(parentId, images.profile_sizes, IMAGE_TYPE_PROFILE))
     }
 
 
     /**
      * Inner helper method
      */
-    private fun convertImageSizes(parentId: Long, imageSizes: List<String>): List<ImageSize> {
+    private fun convertImageSizes(parentId: Long, imageSizes: List<String>, imageType: Int): MutableList<ImageSize> {
         val dataImageSizes = ArrayList<ImageSize>()
-        imageSizes.mapTo(dataImageSizes) { ImageSize(it, parentId) }
+        imageSizes.mapTo(dataImageSizes) { ImageSize(it, parentId, imageType) }
         return dataImageSizes
     }
 
@@ -58,9 +68,17 @@ class CacheDataMapper {
      * Inner helper method
      */
     private fun convertCacheImageSizeToImageDataConfiguration(baseUrl: String, cacheImageSizes: List<ImageSize>): ImagesConfiguration {
-        val posterSizes = ArrayList<String>()
-        cacheImageSizes.mapTo(posterSizes) { it.size }
-        return ImagesConfiguration(baseUrl, posterSizes)
+        val posterSizes = cacheImageSizes.mapNotNull { mapImageSizeTo(it, IMAGE_TYPE_POSTER) }
+        val profileSizes = cacheImageSizes.mapNotNull { mapImageSizeTo(it, IMAGE_TYPE_PROFILE) }
+        return ImagesConfiguration(baseUrl, posterSizes, profileSizes)
+    }
+
+    private fun mapImageSizeTo(imageSize: ImageSize, imageType: Int): String? {
+        return if (imageSize.imageType == imageType) {
+            imageSize.size
+        } else {
+            null
+        }
     }
 
 
@@ -130,11 +148,7 @@ class CacheDataMapper {
     /**
      * Converts a list of [GenresByMovies] into the list of Int that represents each one of them
      */
-    private fun getGenreIdsFromDataGenres(cacheGenres: List<GenresByMovies>): List<Int> {
-        val genresId = ArrayList<Int>()
-        cacheGenres.mapTo(genresId) { it.genreId }
-        return genresId
-    }
+    private fun getGenreIdsFromDataGenres(cacheGenres: List<GenresByMovies>) = cacheGenres.mapTo(ArrayList()) { it.genreId }
 
 
     /**
@@ -149,8 +163,7 @@ class CacheDataMapper {
      * Converts from [DataMovie] into [Movie]
      */
     fun convertDataMoviesIntoCacheMovie(dataMovies: List<DataMovie>, dataMoviePage: DataMoviePage): List<Movie> {
-        val dbMovies = ArrayList<Movie>()
-        dataMovies.mapTo(dbMovies) {
+        return dataMovies.mapTo(ArrayList()) {
             Movie(it.id,
                     it.title,
                     it.original_title,
@@ -165,6 +178,73 @@ class CacheDataMapper {
                     dataMoviePage.page
             )
         }
-        return dbMovies
     }
+
+
+    /***************************************
+     ********** CREDITS SECTION ************
+     ***************************************/
+
+    /**
+     * Converts a list of cache [CastCharacter] into a list of [DataCastCharacter]
+     */
+    fun convertCacheCharacterIntoDataCharacter(cacheCreditCharacters: List<CastCharacter>): List<DataCastCharacter> {
+        return cacheCreditCharacters.mapTo(ArrayList()) {
+            DataCastCharacter(it.id,
+                    it.character,
+                    it.creditId,
+                    it.gender,
+                    it.name,
+                    it.order,
+                    it.profilePath ?: "empty")
+        }
+    }
+
+
+    /**
+     * Converts a list of cache [CrewPerson] into a list of [DataCrewPerson]
+     */
+    fun convertCacheCrewIntoDataCrew(cacheCrew: List<CrewPerson>): List<DataCrewPerson> {
+        return cacheCrew.mapTo(ArrayList()) {
+            DataCrewPerson(it.creditId,
+                    it.department,
+                    it.gender, it.id,
+                    it.job,
+                    it.name,
+                    it.profilePath ?: "empty")
+        }
+    }
+
+    /**
+     * Converts a list of [DataCastCharacter] into a list of cache [CastCharacter]
+     */
+    fun convertDataCharacterIntoCacheCharacter(dataCharacters: List<DataCastCharacter>, movieId: Double): List<CastCharacter> {
+        return dataCharacters.mapTo(ArrayList()) {
+            CastCharacter(it.cast_id,
+                    it.character,
+                    it.credit_id,
+                    it.gender,
+                    it.name,
+                    it.order,
+                    it.profile_path,
+                    movieId)
+        }
+    }
+
+    /**
+     * Converts a list of [DataCrewPerson] into a list of cache [CrewPerson]
+     */
+    fun convertDataCrewIntoCacheCrew(dataCrew: List<DataCrewPerson>, movieId: Double): List<CrewPerson> {
+        return dataCrew.mapTo(ArrayList()) {
+            CrewPerson(it.id,
+                    it.department,
+                    it.gender,
+                    it.credit_id,
+                    it.job,
+                    it.name,
+                    it.profile_path,
+                    movieId)
+        }
+    }
+
 }

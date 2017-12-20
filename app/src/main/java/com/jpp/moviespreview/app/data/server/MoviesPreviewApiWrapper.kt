@@ -1,6 +1,7 @@
 package com.jpp.moviespreview.app.data.server
 
 import com.jpp.moviespreview.app.data.Genres
+import com.jpp.moviespreview.app.data.MovieCredits
 import com.jpp.moviespreview.app.data.MoviePage
 import com.jpp.moviespreview.app.data.MoviesConfiguration
 import com.jpp.moviespreview.app.util.AllOpen
@@ -30,4 +31,10 @@ class MoviesPreviewApiWrapper(private val apiInstance: MoviesPreviewApi) {
      * Retrieves the provided [page] of movies currently playing on theaters.
      */
     fun getNowPlaying(page: Int): MoviePage? = apiInstance.getNowPlaying(page).execute().body()
+
+
+    /**
+     *
+     */
+    fun getMovieCredits(movieId: Double): MovieCredits? = apiInstance.getMovieCredits(movieId).execute().body()
 }

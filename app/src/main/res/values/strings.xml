@@ -1,6 +1,14 @@
 <resources>
-  <string name="app_name">Movies Preview</string>
-  <!-- Alerts -->
-  <string name="movies_preview_alert_no_network_connection_message">Verify your network connection and try again</string>
-  <string name="movies_preview_alert_unexpected_error_message">An unexpected error has occurred. Pleas, try again later.</string>
+    <string name="app_name">Movies Preview</string>
+    <!-- Alerts -->
+    <string name="alert_no_network_connection_message">Verify your network connection and try again</string>
+    <string name="alert_unexpected_error_message">An unexpected error has occurred. Pleas, try again later.</string>
+
+    <!-- Details -->
+    <string name="movie_details_title">Details</string>
+    <string name="movie_credits_title">Credits</string>
+    <string name="overview_title">Overview</string>
+    <string name="genres_title">Genres</string>
+    <string name="popularity_title">Popularity</string>
+    <string name="vote_count_title">Vote Count</string>
 </resources>

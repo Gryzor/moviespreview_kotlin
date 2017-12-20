@@ -2,6 +2,8 @@ package com.jpp.moviespreview.app
 
 import com.jpp.moviespreview.app.data.DataModule
 import com.jpp.moviespreview.app.ui.UiModule
+import com.jpp.moviespreview.app.ui.detail.di.MovieDetailsComponent
+import com.jpp.moviespreview.app.ui.detail.di.MovieDetailsModule
 import com.jpp.moviespreview.app.ui.main.playing.di.PlayingMoviesComponent
 import com.jpp.moviespreview.app.ui.main.playing.di.PlayingMoviesModule
 import com.jpp.moviespreview.app.ui.splash.di.SplashComponent
@@ -19,4 +21,5 @@ import javax.inject.Singleton
 interface AppComponent {
     fun plus(splashModule: SplashModule): SplashComponent
     fun plus(playingMovies: PlayingMoviesModule): PlayingMoviesComponent
+    fun plus(movieDetails: MovieDetailsModule): MovieDetailsComponent
 }

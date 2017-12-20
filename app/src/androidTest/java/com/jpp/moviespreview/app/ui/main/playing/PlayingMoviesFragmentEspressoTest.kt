@@ -1,13 +1,16 @@
 package com.jpp.moviespreview.app.ui.main.playing
 
 import android.content.Intent
-import android.support.test.espresso.Espresso
+import android.support.test.espresso.Espresso.onView
+import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.assertion.ViewAssertions
-import android.support.test.espresso.intent.Intents
-import android.support.test.espresso.intent.matcher.IntentMatchers
-import android.support.test.espresso.matcher.ViewMatchers
+import android.support.test.espresso.contrib.RecyclerViewActions
+import android.support.test.espresso.intent.Intents.*
+import android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent
+import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
+import android.support.v7.widget.RecyclerView
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.TestComponentRule
 import com.jpp.moviespreview.app.completeConfig
@@ -18,16 +21,20 @@ import com.jpp.moviespreview.app.extentions.loadObjectFromJsonFile
 import com.jpp.moviespreview.app.extentions.rotate
 import com.jpp.moviespreview.app.extentions.waitToFinish
 import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.detail.MovieDetailActivity
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 import com.jpp.moviespreview.app.ui.splash.SplashActivity
 import com.jpp.moviespreview.app.ui.util.EspressoTestActivity
 import com.jpp.moviespreview.app.util.extentions.addFragmentIfNotInStack
 import com.jpp.moviespreview.app.utils.RecyclerViewItemCountAssertion
+import junit.framework.Assert.assertEquals
+import junit.framework.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.*
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 import javax.inject.Inject
 
 /**
@@ -63,13 +70,13 @@ class PlayingMoviesFragmentEspressoTest {
     @Test
     fun test_appGoesBackToSplashScreen_whenConfigIsNotCompleted() {
         // pre:  moviesContext has not been configured
-        Intents.init()
+        init()
 
         launchActivityAndAddFragment()
 
         activityRule.waitToFinish()
-        Intents.intended(IntentMatchers.hasComponent(SplashActivity::class.java.name))
-        Intents.release()
+        intended(hasComponent(SplashActivity::class.java.name))
+        release()
     }
 
     @Test
@@ -83,8 +90,7 @@ class PlayingMoviesFragmentEspressoTest {
 
         launchActivityAndAddFragment()
 
-        Espresso
-                .onView(ViewMatchers.withId(R.id.rv_playing_movies))
+        onView(withId(R.id.rv_playing_movies))
                 .check(RecyclerViewItemCountAssertion(20))
     }
 
@@ -100,23 +106,20 @@ class PlayingMoviesFragmentEspressoTest {
         launchActivityAndAddFragment()
 
         // sanity check
-        Espresso
-                .onView(ViewMatchers.withId(R.id.rv_playing_movies))
+        onView(withId(R.id.rv_playing_movies))
                 .check(RecyclerViewItemCountAssertion(20))
 
         // rotate 1
         activityRule.rotate()
-        Espresso
-                .onView(ViewMatchers.withId(R.id.rv_playing_movies))
+        onView(withId(R.id.rv_playing_movies))
                 .check(RecyclerViewItemCountAssertion(20))
 
         // rotate 2
         activityRule.rotate()
-        Espresso
-                .onView(ViewMatchers.withId(R.id.rv_playing_movies))
+        onView(withId(R.id.rv_playing_movies))
                 .check(RecyclerViewItemCountAssertion(20))
 
-        verify(moviesCache, times(1)).isMoviePageOutOfDate(1)
+        verify(moviesCache).isMoviePageOutOfDate(1)
     }
 
 
@@ -134,9 +137,8 @@ class PlayingMoviesFragmentEspressoTest {
 
         launchActivityAndAddFragment()
 
-        Espresso
-                .onView(ViewMatchers.withText(R.string.movies_preview_alert_no_network_connection_message))
-                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withText(R.string.alert_no_network_connection_message))
+                .check(ViewAssertions.matches(isDisplayed()))
 
     }
 
@@ -154,9 +156,31 @@ class PlayingMoviesFragmentEspressoTest {
 
         launchActivityAndAddFragment()
 
-        Espresso
-                .onView(ViewMatchers.withText(R.string.movies_preview_alert_unexpected_error_message))
-                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withText(R.string.alert_unexpected_error_message))
+                .check(ViewAssertions.matches(isDisplayed()))
+    }
+
+    @Test
+    fun test_userSelectsMovie_setsMovieInContext_startDetailsActivity() {
+        init()
+
+        // complete context configuration
+        moviesContext.completeConfig()
+
+        // mock movies response
+        `when`(moviesCache.isMoviePageOutOfDate(1)).thenReturn(false)
+        `when`(moviesCache.getMoviePage(1)).thenReturn(loadMockPage(1))
+
+        launchActivityAndAddFragment()
+
+        onView(withId(R.id.rv_playing_movies))
+                .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(3, click()))
+
+        assertNotNull(moviesContext.selectedMovie)
+        assertEquals(moviesContext.selectedMovie!!.id, 335984.toDouble())
+
+        intended(hasComponent(MovieDetailActivity::class.java.name))
+        release()
     }
 
 

@@ -3,11 +3,12 @@ package com.jpp.moviespreview.app.ui.splash
 import android.annotation.TargetApi
 import android.content.Intent
 import android.os.Build
-import android.support.test.espresso.Espresso
-import android.support.test.espresso.assertion.ViewAssertions
+import android.support.test.espresso.Espresso.onView
+import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.intent.Intents
 import android.support.test.espresso.intent.matcher.IntentMatchers
-import android.support.test.espresso.matcher.ViewMatchers
+import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
+import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import com.jpp.moviespreview.R
@@ -22,12 +23,12 @@ import com.jpp.moviespreview.app.extentions.waitToFinish
 import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 import com.jpp.moviespreview.app.ui.main.MainActivity
-import org.junit.Assert
+import junit.framework.Assert.assertNotNull
+import junit.framework.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import javax.inject.Inject
 
@@ -72,7 +73,7 @@ class SplashActivityEspressoTest {
     @Test
     fun test_appContinuesToHome_whenConfigurationRestoredFromCache() {
         Intents.init()
-        val imagesConfiguration = ImagesConfiguration("someUrl", ArrayList())
+        val imagesConfiguration = ImagesConfiguration("someUrl", arrayListOf(), arrayListOf())
         val moviesConfiguration = MoviesConfiguration(imagesConfiguration)
 
         `when`(moviesConfigurationCache.isMoviesConfigurationOutOfDate()).thenReturn(false)
@@ -91,9 +92,9 @@ class SplashActivityEspressoTest {
         val name = MainActivity::class.java.name
 
         activityRule.waitToFinish()
-        Assert.assertNotNull(moviesContext.imageConfig)
+        assertNotNull(moviesContext.imageConfig)
         Intents.intended(IntentMatchers.hasComponent(name))
-        Assert.assertTrue(activityRule.activity.isDestroyed)
+        assertTrue(activityRule.activity.isDestroyed)
         Intents.release()
     }
 
@@ -108,8 +109,8 @@ class SplashActivityEspressoTest {
 
         activityRule.launch(Intent())
 
-        Espresso.onView(ViewMatchers.withText(R.string.movies_preview_alert_no_network_connection_message))
-                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withText(R.string.alert_no_network_connection_message))
+                .check(matches(isDisplayed()))
     }
 
     @Test
@@ -122,8 +123,8 @@ class SplashActivityEspressoTest {
 
         activityRule.launch(Intent())
 
-        Espresso.onView(ViewMatchers.withText(R.string.movies_preview_alert_unexpected_error_message))
-                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withText(R.string.alert_unexpected_error_message))
+                .check(matches(isDisplayed()))
     }
 
 
@@ -147,15 +148,15 @@ class SplashActivityEspressoTest {
 
         activityRule.launch(Intent())
 
-        Espresso.onView(ViewMatchers.withText(R.string.movies_preview_alert_unexpected_error_message))
-                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withText(R.string.alert_unexpected_error_message))
+                .check(matches(isDisplayed()))
     }
 
 
     @Test
     fun test_appShowsUnexpectedError_whenGenresFails() {
         // configuration retrieval OK
-        val imagesConfiguration = ImagesConfiguration("someUrl", ArrayList())
+        val imagesConfiguration = ImagesConfiguration("someUrl", arrayListOf(), arrayListOf())
         val moviesConfiguration = MoviesConfiguration(imagesConfiguration)
 
         `when`(moviesConfigurationCache.isMoviesConfigurationOutOfDate()).thenReturn(false)
@@ -171,7 +172,7 @@ class SplashActivityEspressoTest {
 
         activityRule.launch(Intent())
 
-        Espresso.onView(ViewMatchers.withText(R.string.movies_preview_alert_unexpected_error_message))
-                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withText(R.string.alert_unexpected_error_message))
+                .check(matches(isDisplayed()))
     }
 }

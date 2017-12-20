@@ -20,7 +20,7 @@ class ConfigurationDataMapper {
     }
 
     private fun convertImagesConfigurationFromDataModel(imagesConfiguration: DataImagesConfiguration) = with(imagesConfiguration) {
-        ImagesConfiguration(base_url, poster_sizes)
+        ImagesConfiguration(base_url, poster_sizes, profile_sizes)
     }
 
 }

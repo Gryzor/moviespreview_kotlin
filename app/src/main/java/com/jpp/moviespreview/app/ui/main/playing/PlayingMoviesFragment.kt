@@ -2,13 +2,18 @@ package com.jpp.moviespreview.app.ui.main.playing
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.view.ViewCompat
+import android.support.v4.view.ViewPager
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jpp.moviespreview.R
+import com.jpp.moviespreview.app.ui.Movie
 import com.jpp.moviespreview.app.ui.MoviePage
+import com.jpp.moviespreview.app.ui.detail.MovieDetailActivity
 import com.jpp.moviespreview.app.ui.splash.SplashActivity
 import com.jpp.moviespreview.app.util.extentions.*
 import kotlinx.android.synthetic.main.playing_movies_fragment.*
@@ -23,10 +28,17 @@ import javax.inject.Inject
  */
 class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
 
+
     private val adapter by lazy {
-        PlayingMoviesAdapter({
-            //TODO implement me -> go to detail
-        })
+        PlayingMoviesAdapter(
+                {
+                    movie: Movie, viewPager: ViewPager ->
+                    playingMoviesPresenter.onMovieSelected(movie)
+                    showMovieDetails(viewPager)
+                },
+                { movie: Movie, position: Int ->
+                    playingMoviesPresenter.onMovieImageSelected(movie, position)
+                })
     }
 
     companion object {
@@ -46,7 +58,6 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
         playingMoviesPresenter.linkView(this)
     }
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
             = inflater.inflate(R.layout.playing_movies_fragment, container, false)
 
@@ -60,9 +71,18 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
         rv_playing_movies.endlessScrolling({ playingMoviesPresenter.getNextMoviePage() })
     }
 
+    override fun onResume() {
+        super.onResume()
+        playingMoviesPresenter.refreshData()
+    }
+
     override fun showMoviePage(moviePage: MoviePage) {
         loading_movies_view.hide()
         adapter.appendMovies(moviePage.results)
+    }
+
+    override fun updateMovie(movie: Movie) {
+        adapter.refreshMovie(movie)
     }
 
     override fun backToSplashScreen() {
@@ -86,5 +106,10 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
 
     override fun showInitialLoading() {
         loading_movies_view.show()
+    }
+
+    private fun showMovieDetails(viewPager: ViewPager) {
+        ViewCompat.setTransitionName(viewPager, "vpTransition")
+        MovieDetailActivity.navigateWithTransition(activity as AppCompatActivity, viewPager)
     }
 }

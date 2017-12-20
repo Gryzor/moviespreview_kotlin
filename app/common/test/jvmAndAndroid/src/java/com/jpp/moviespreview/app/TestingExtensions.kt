@@ -1,5 +1,8 @@
 package com.jpp.moviespreview.app
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.domain.Genre
 import com.jpp.moviespreview.app.ui.ImageConfiguration
 import com.jpp.moviespreview.app.ui.MovieGenre
@@ -9,13 +12,6 @@ import com.jpp.moviespreview.app.data.Movie as DataMovie
 import com.jpp.moviespreview.app.data.MoviePage as DataMoviePage
 import com.jpp.moviespreview.app.domain.Movie as DomainMovie
 import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
-
-/**
- * Completes the [imageConfig] property with a mocked list.
- */
-fun MoviesContext.completeImageConfig(mockList: List<ImageConfiguration> = mockImageConfig()) {
-    imageConfig = mockList
-}
 
 
 /**
@@ -31,21 +27,15 @@ fun MoviesContext.mockImageConfig() = listOf(
         ImageConfiguration("url", "original", -1)
 )
 
-/**
- * Completes the [movieGenres] property with a mocked list.
- */
-fun MoviesContext.completeMovieGenres(mockList: List<MovieGenre> = mockMovieGenres()) {
-    movieGenres = mockList
-}
 
 /**
  * Mocks a list of [MovieGenre]
  */
 fun MoviesContext.mockMovieGenres() = listOf(
-        MovieGenre(1, "genre1"),
-        MovieGenre(2, "genre2"),
-        MovieGenre(3, "genre3"),
-        MovieGenre(4, "genre4")
+        MovieGenre(1, "genre1", R.drawable.ic_generic),
+        MovieGenre(2, "genre2", R.drawable.ic_generic),
+        MovieGenre(3, "genre3", R.drawable.ic_generic),
+        MovieGenre(4, "genre4", R.drawable.ic_generic)
 )
 
 /**
@@ -171,6 +161,13 @@ fun DataPageStubs.Companion.stubDataMovieList() = listOf(
 )
 
 /**
- * Created by jpp on 10/11/17.
+ * Mocks a given type.
  */
 inline fun <reified T : Any> mock() = Mockito.mock(T::class.java)
+
+
+/**
+ * Helper class to load an object from GSON
+ */
+inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object : TypeToken<T>() {}.type)!!
+

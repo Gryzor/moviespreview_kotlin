@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- TextAppearance.Design.Tab is the default used in the Design Library -->
+    <style name="ViewPagerTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:fontFamily">@font/poppins_bold</item>
+    </style>
 
     <style name="MoviesPreviewTextAppearance.Title" parent="@android:style/TextAppearance.Medium">
         <item name="android:fontFamily">@font/poppins_bold</item>
@@ -8,6 +13,14 @@
 
     <style name="MoviesPreviewTextAppearance.Small" parent="@android:style/TextAppearance.Small">
         <item name="android:fontFamily">@font/poppins</item>
+    </style>
+
+    <style name="MoviesPreviewTextAppearanceInverse.Title" parent="MoviesPreviewTextAppearance.Title">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="MoviesPreviewTextAppearanceInverse.Small" parent="MoviesPreviewTextAppearance.Small">
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
 </resources>

@@ -38,7 +38,8 @@ data class ImageConfig(@ColumnInfo(name = "base_url") var baseUrl: String) {
                 childColumns = arrayOf("id_image_config"),
                 onDelete = ForeignKey.CASCADE)))
 data class ImageSize(@ColumnInfo(name = "size") val size: String,
-                     @ColumnInfo(name = "id_image_config") val imageConfig: Long = 0) {
+                     @ColumnInfo(name = "id_image_config") val imageConfig: Long = 0,
+                     @ColumnInfo(name = "id_image_type") val imageType: Int) {
     @ColumnInfo(name = "_id")
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0
@@ -105,3 +106,38 @@ data class GenresByMovies(@ColumnInfo(name = "genre_id") var genreId: Int,
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0
 }
+
+
+/**
+ * Represents a character present in a movie cast. We don't store the MovieCredits
+ * class in the DB. Instead, we store the movie id on this entity and create the MovieCredits
+ * on demand. Also, the movie id is not stored as a foreign key since we don't want to
+ * delete (or deal with integrity) at this level.
+ */
+@Entity(tableName = "movie_cast_characters")
+data class CastCharacter(@PrimaryKey @ColumnInfo(name = "_id") var id: Double,
+                         @ColumnInfo(name = "character") var character: String,
+                         @ColumnInfo(name = "credit_id") var creditId: String,
+                         @ColumnInfo(name = "gender") var gender: Int,
+                         @ColumnInfo(name = "name") var name: String,
+                         @ColumnInfo(name = "order") var order: Int,
+                         @ColumnInfo(name = "profile_path") var profilePath: String?,
+                         @ColumnInfo(name = "movie_id") var movieId: Double) //-> this represents the ID of the movie to which this cast belongs to.
+// We do not store it as a foreign key since we don't want to delete it on CASCADE and we don't want to deal with integrity at this level.
+
+/**
+ * Represents a crew person present in a movie cast. We don't store the MovieCredits
+ * class in the DB. Instead, we store the movie id on this entity and create the MovieCredits
+ * on demand. Also, the movie id is not stored as a foreign key since we don't want to
+ * delete (or deal with integrity) at this level.
+ */
+@Entity(tableName = "movie_crew_person")
+data class CrewPerson(@PrimaryKey @ColumnInfo(name = "_id") var id: Double,
+                      @ColumnInfo(name = "department") var department: String,
+                      @ColumnInfo(name = "gender") var gender: Int,
+                      @ColumnInfo(name = "credit_id") var creditId: String,
+                      @ColumnInfo(name = "job") var job: String,
+                      @ColumnInfo(name = "name") var name: String,
+                      @ColumnInfo(name = "profile_path") var profilePath: String?,
+                      @ColumnInfo(name = "movie_id") var movieId: Double) //-> this represents the ID of the movie to which this cast belongs to.
+// We do not store it as a foreign key since we don't want to delete it on CASCADE and we don't want to deal with integrity at this level.

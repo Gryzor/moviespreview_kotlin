@@ -13,6 +13,8 @@ import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 import com.jpp.moviespreview.app.DomainPageStubs
 import com.jpp.moviespreview.app.mockMovieGenres
 import com.jpp.moviespreview.app.stubMoviePage
+import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
+import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegateImpl
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import org.junit.Assert
 import org.junit.Before
@@ -23,14 +25,14 @@ import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
 import com.jpp.moviespreview.app.ui.MoviePage as UiMoviePage
 
 /**
- * Tests presenter + DomainToUiDataMapper
+ * Tests imagesPresenter + DomainToUiDataMapper
  *
  * Created by jpp on 11/1/17.
  */
 class PlayingMoviesPresenterImplTest {
 
     private lateinit var moviesContext: MoviesContext
-    private lateinit var interactorDelegate: PlayingMoviesInteractorDelegate
+    private lateinit var interactorDelegate: PresenterInteractorDelegate
     private lateinit var connectivityInteractor: ConnectivityInteractor
     private lateinit var backgroundInteractor: BackgroundInteractor
     private lateinit var playingMoviesUseCase: UseCase<MoviesInTheaterInputParam, MoviePage>
@@ -43,7 +45,7 @@ class PlayingMoviesPresenterImplTest {
     fun doBefore() {
         backgroundInteractor = BackgroundInteractorForTesting()
         connectivityInteractor = mock()
-        interactorDelegate = PlayingMoviesInteractorDelegateImpl(backgroundInteractor, connectivityInteractor)
+        interactorDelegate = PresenterInteractorDelegateImpl(backgroundInteractor, connectivityInteractor)
 
 
         moviesContext = mock()
