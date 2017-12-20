@@ -87,6 +87,10 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailImagesView {
                     {
                         movie_details_images_view_pager.setCurrentItemDelayed(selectedPosition)
                         supportStartPostponedEnterTransition()
+                    },
+                    {
+                        // on fail, just continue with the flow -> an error image will be set
+                        supportStartPostponedEnterTransition()
                     })
         })
         movie_details_images_view_pager.pageChangeUpdate { position: Int -> imagesPresenter.onMovieImageSelected(position) }

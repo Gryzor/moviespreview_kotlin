@@ -33,7 +33,6 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
         PlayingMoviesAdapter(
                 {
                     movie: Movie, viewPager: ViewPager ->
-                    ViewCompat.setTransitionName(viewPager, "vpTransition")
                     playingMoviesPresenter.onMovieSelected(movie)
                     showMovieDetails(viewPager)
                 },
@@ -110,6 +109,7 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
     }
 
     private fun showMovieDetails(viewPager: ViewPager) {
+        ViewCompat.setTransitionName(viewPager, "vpTransition")
         MovieDetailActivity.navigateWithTransition(activity as AppCompatActivity, viewPager)
     }
 }

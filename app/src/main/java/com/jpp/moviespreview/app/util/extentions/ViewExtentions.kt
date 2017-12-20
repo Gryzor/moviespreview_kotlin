@@ -10,9 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.animation.GlideAnimation
 import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.target.Target
 import com.jpp.moviespreview.R
+import java.lang.Exception
 
 /**
  * Inflates a given layout resources and returns the inflated view.
@@ -45,10 +48,13 @@ fun ImageView.loadImageUrl(imageUrl: String) {
  * into the ImageView and executes the [callback] once that the
  * image has been loaded.
  */
-fun ImageView.loadImageUrlWithCallback(imageUrl: String, callback: (Bitmap) -> Unit) {
+fun ImageView.loadImageUrlWithCallback(imageUrl: String,
+                                       callback: (Bitmap) -> Unit,
+                                       errorListener: ((Exception?) -> Unit)? = null) {
     Glide.with(ctx)
             .load(imageUrl)
             .asBitmap()
+            .listener(ImageLoadListener(errorListener))
             .into(CallbackTarget(this, callback))
 }
 
@@ -56,7 +62,8 @@ fun ImageView.loadImageUrlWithCallback(imageUrl: String, callback: (Bitmap) -> U
 /**
  * Inner callback class
  */
-private class CallbackTarget(private val target: ImageView, private val callback: (Bitmap) -> Unit) : SimpleTarget<Bitmap>() {
+private class CallbackTarget(private val target: ImageView,
+                             private val callback: (Bitmap) -> Unit) : SimpleTarget<Bitmap>() {
 
     override fun onResourceReady(resource: Bitmap, glideAnimation: GlideAnimation<in Bitmap>) {
         target.setImageBitmap(resource)
@@ -64,6 +71,18 @@ private class CallbackTarget(private val target: ImageView, private val callback
         callback(resource)
     }
 
+}
+
+/**
+ * [RequestListener] to get a callback when a image loading fails.
+ */
+private class ImageLoadListener(private val errorListener: ((Exception?) -> Unit)?) : RequestListener<String, Bitmap> {
+    override fun onException(e: Exception?, model: String?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean {
+        errorListener?.invoke(e)
+        return true
+    }
+
+    override fun onResourceReady(resource: Bitmap?, model: String?, target: Target<Bitmap>?, isFromMemoryCache: Boolean, isFirstResource: Boolean) = false
 }
 
 /**
