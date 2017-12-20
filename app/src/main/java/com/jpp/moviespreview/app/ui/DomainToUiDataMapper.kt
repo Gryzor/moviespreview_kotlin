@@ -9,6 +9,8 @@ import com.jpp.moviespreview.app.domain.Genre as DomainGenre
 import com.jpp.moviespreview.app.domain.Movie as DomainMovie
 import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
 import com.jpp.moviespreview.app.domain.MoviesConfiguration as DomainMovieConfiguration
+import com.jpp.moviespreview.app.domain.CrewPerson as DomainCrewPerson
+import com.jpp.moviespreview.app.domain.CastCharacter as DomainCastCharacter
 
 /**
  * Maps domain model to UI model
@@ -61,6 +63,15 @@ class DomainToUiDataMapper {
     fun convertDomainGenresIntoUiGenres(domainGenres: List<DomainGenre>): List<MovieGenre> {
         return domainGenres.map {
             MovieGenre(it.id, it.name, mapGenreToIcon(it))
+        }
+    }
+
+    /**
+     * Converts a list of [MovieGenre] into a list of [DomainGenre]
+     */
+    fun convertUiGenresIntoDomainGenres(uiGenres: List<MovieGenre>): List<DomainGenre> {
+        return uiGenres.map {
+            DomainGenre(it.id, it.name)
         }
     }
 
@@ -130,6 +141,25 @@ class DomainToUiDataMapper {
 
 
     /**
+     * Converts a [Movie] into a [DomainMovie]
+     */
+    fun convertUiMovieIntoDomainMovie(movie: Movie): DomainMovie = with(movie) {
+        return DomainMovie(id,
+                title,
+                originalTitle,
+                overview,
+                releaseDate,
+                originalLanguage,
+                images[0],
+                images[1],
+                convertUiGenresIntoDomainGenres(genres),
+                voteCount,
+                voteAverage,
+                popularity)
+    }
+
+
+    /**
      * Maps the received [domainGenres] into a list of the same [MovieGenre]s
      */
     private fun getMappedUiGenres(domainGenres: List<DomainGenre>, genres: List<MovieGenre>)
@@ -144,4 +174,16 @@ class DomainToUiDataMapper {
             DomainGenre(it.id, it.name)
         }
     }
+    }
+
+
+    /**
+     * Converts the provided lists of [DomainCastCharacter] and [DomainCrewPerson] into
+     * a single list of [CreditPerson]
+     */
+    fun convertDomainCreditsInUiCredits(cast: List<DomainCastCharacter>, crew: List<DomainCrewPerson>): List<CreditPerson> {
+        val creditPersonList = ArrayList<CreditPerson>()
+        cast.mapTo(creditPersonList) { CreditPerson(it.profilePath, it.character, it.name) }
+        crew.mapTo(creditPersonList) { CreditPerson(it.profilePath, it.name, it.department) }
+        return creditPersonList
 }

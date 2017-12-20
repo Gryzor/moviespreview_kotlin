@@ -1,5 +1,6 @@
 package com.jpp.moviespreview.app.ui.detail
 
+import com.jpp.moviespreview.app.ui.CreditPerson
 import com.jpp.moviespreview.app.ui.MovieGenre
 
 /************************************************************
@@ -31,4 +32,19 @@ interface MovieDetailImagesView {
 interface MovieDetailImagesPresenter {
     fun linkView(movieDetailView: MovieDetailImagesView)
     fun onMovieImageSelected(position: Int)
+}
+
+
+/***********************************************************************************
+ ******** Contract definition for the credits section in the movie details *********
+ ************ This section controls the header part of the screen  *****************
+ ***********************************************************************************/
+interface MovieDetailCreditsView {
+    fun showLoading()
+    fun showMovieCredits(credits: List<CreditPerson>)
+    fun showErrorRetrievingCredits()
+}
+
+interface MovieDetailCreditsPresenter {
+    fun linkView(view: MovieDetailCreditsView)
 }

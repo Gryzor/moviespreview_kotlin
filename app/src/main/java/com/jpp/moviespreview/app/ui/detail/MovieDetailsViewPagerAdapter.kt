@@ -18,7 +18,7 @@ class MovieDetailsViewPagerAdapter(fm: FragmentManager, private val resources: R
     override fun getCount() = 2
 
     override fun getPageTitle(position: Int): CharSequence = when (position) {
-        1 -> resources.getString(R.string.movie_details_title)
+        0 -> resources.getString(R.string.movie_details_title)
         else -> resources.getString(R.string.movie_credits_title)
     }
 }
