@@ -81,7 +81,7 @@ data class CastCharacter(var castId: Double,
                          var gender: Int,
                          var name: String,
                          var order: Int,
-                         var profilePath: String = "empty")
+                         var profilePath: String?)
 
 /**
  * Represents a person that is part of a crew of a [Movie].
@@ -92,7 +92,7 @@ data class CrewPerson(var creditId: String,
                       var id: Double,
                       var job: String,
                       var name: String,
-                      var profilePath: String = "empty")
+                      var profilePath: String?)
 
 /**
  * Represents the credits of a [Movie]

@@ -2,6 +2,8 @@ package com.jpp.moviespreview.app.util.extentions
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -12,6 +14,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.animation.GlideAnimation
+import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.target.Target
 import com.jpp.moviespreview.R
@@ -58,6 +61,21 @@ fun ImageView.loadImageUrlWithCallback(imageUrl: String,
             .into(CallbackTarget(this, callback))
 }
 
+fun ImageView.loadCircularImageView(imageUrl: String) {
+    Glide.with(ctx)
+            .load(imageUrl)
+            .asBitmap()
+            .centerCrop()
+            .into(CircularImageViewTransformation(this))
+}
+
+private class CircularImageViewTransformation(private val imageView: ImageView) : BitmapImageViewTarget(imageView) {
+    override fun setResource(resource: Bitmap) {
+        val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(imageView.ctx.resources, resource)
+        circularBitmapDrawable.isCircular = true
+        imageView.setImageDrawable(circularBitmapDrawable)
+    }
+}
 
 /**
  * Inner callback class

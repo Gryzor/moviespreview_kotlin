@@ -2,10 +2,19 @@ package com.jpp.moviespreview.app.ui.detail.credits
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.CreditPerson
 import com.jpp.moviespreview.app.ui.detail.MovieDetailCreditsPresenter
 import com.jpp.moviespreview.app.ui.detail.MovieDetailCreditsView
 import com.jpp.moviespreview.app.util.extentions.app
+import com.jpp.moviespreview.app.util.extentions.ctx
+import kotlinx.android.synthetic.main.movie_credits_fragment.*
+import javax.inject.Inject
 
 /**
  * Created by jpp on 12/20/17.
@@ -18,7 +27,8 @@ class MovieCreditsFragment : Fragment(), MovieDetailCreditsView {
         fun newInstance() = MovieCreditsFragment()
     }
 
-    private lateinit var presenter: MovieDetailCreditsPresenter
+    @Inject
+    lateinit var presenter: MovieDetailCreditsPresenter
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -27,12 +37,23 @@ class MovieCreditsFragment : Fragment(), MovieDetailCreditsView {
         presenter.linkView(this)
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
+            = inflater.inflate(R.layout.movie_credits_fragment, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val layoutManager = LinearLayoutManager(view.ctx)
+        rv_movie_credits.layoutManager = layoutManager
+        rv_movie_credits.addItemDecoration(DividerItemDecoration(view.ctx, layoutManager.orientation))
+    }
+
     override fun showLoading() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        loading_credits_view.show()
     }
 
     override fun showMovieCredits(credits: List<CreditPerson>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        loading_credits_view.hide()
+        rv_movie_credits.adapter = MovieCreditsAdapter(credits)
     }
 
     override fun showErrorRetrievingCredits() {

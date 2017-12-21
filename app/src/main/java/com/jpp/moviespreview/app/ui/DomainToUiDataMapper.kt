@@ -183,7 +183,7 @@ class DomainToUiDataMapper {
      */
     fun convertDomainCreditsInUiCredits(cast: List<DomainCastCharacter>, crew: List<DomainCrewPerson>): List<CreditPerson> {
         val creditPersonList = ArrayList<CreditPerson>()
-        cast.mapTo(creditPersonList) { CreditPerson(it.profilePath, it.character, it.name) }
-        crew.mapTo(creditPersonList) { CreditPerson(it.profilePath, it.name, it.department) }
+        cast.mapTo(creditPersonList) { CreditPerson(it.profilePath.toString(), it.character, it.name) }
+        crew.mapTo(creditPersonList) { CreditPerson(it.profilePath.toString(), it.name, it.department) }
         return creditPersonList
 }
