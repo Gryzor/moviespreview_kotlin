@@ -5,10 +5,6 @@ import com.jpp.moviespreview.app.ui.detail.MovieDetailImagesPresenter
 import com.jpp.moviespreview.app.ui.detail.MovieDetailImagesPresenterImpl
 import com.jpp.moviespreview.app.ui.detail.MovieDetailPresenter
 import com.jpp.moviespreview.app.ui.detail.body.MovieDetailPresenterImpl
-import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
-import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
-import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
-import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegateImpl
 import dagger.Module
 import dagger.Provides
 
@@ -30,11 +26,4 @@ class MovieDetailsModule {
     @DetailsScope
     fun providesMovieDetailsPresenter(moviesContext: MoviesContext): MovieDetailPresenter
             = MovieDetailPresenterImpl(moviesContext)
-
-
-    @Provides
-    @DetailsScope
-    fun provideMovieDetailsInteractorDelegate(backgroundInteractor: BackgroundInteractor,
-                                              connectivityInteractor: ConnectivityInteractor): PresenterInteractorDelegate
-            = PresenterInteractorDelegateImpl(backgroundInteractor, connectivityInteractor)
 }

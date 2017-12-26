@@ -18,7 +18,7 @@ import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
 /**
  * Mocks a list of [PosterImageConfiguration].
  */
-fun MoviesContext.mockPosterImageConfig() = listOf(
+fun mockPosterImageConfig() = listOf(
         PosterImageConfiguration("url", "w92"),
         PosterImageConfiguration("url", "w154"),
         PosterImageConfiguration("url", "w185"),
@@ -31,7 +31,7 @@ fun MoviesContext.mockPosterImageConfig() = listOf(
 /**
  * Mocks a list of [ProfileImageConfiguration].
  */
-fun MoviesContext.mockProfileImageConfig() = listOf(
+fun mockProfileImageConfig() = listOf(
         ProfileImageConfiguration("url", "h45"),
         ProfileImageConfiguration("url", "h185"),
         ProfileImageConfiguration("url", "h632"),
@@ -42,7 +42,7 @@ fun MoviesContext.mockProfileImageConfig() = listOf(
 /**
  * Mocks a list of [MovieGenre]
  */
-fun MoviesContext.mockMovieGenres() = listOf(
+fun mockMovieGenres() = listOf(
         MovieGenre(1, "genre1", R.drawable.ic_generic),
         MovieGenre(2, "genre2", R.drawable.ic_generic),
         MovieGenre(3, "genre3", R.drawable.ic_generic),

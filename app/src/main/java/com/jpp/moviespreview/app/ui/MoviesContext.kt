@@ -14,8 +14,6 @@ class MoviesContext {
     var movieGenres: List<MovieGenre>? = null
     var selectedMovie: Movie? = null
     private var moviePages = ArrayList<MoviePage>()
-    private var imagesConfigForSizes = HashMap<Int, ImageConfiguration>()
-
 
     /**
      * Determinate if the initial configuration is completed or not.
@@ -45,24 +43,4 @@ class MoviesContext {
      * Returns the immutable list of [MoviePage]
      */
     fun getAllMoviePages(): List<MoviePage> = moviePages
-
-
-    /**
-     * Retrieves the [ImageConfiguration] that bests suits with the provided [width]
-     */
-    fun getImageConfigForScreenWidth(width: Int): ImageConfiguration {
-        var imageConfig = imagesConfigForSizes[width]
-
-        if (imageConfig == null) {
-            imageConfig = findProperImageConfigForScreenWidth(width)
-        }
-
-        return imageConfig
-    }
-
-
-    private fun findProperImageConfigForScreenWidth(width: Int): ImageConfiguration {
-        throw IllegalStateException("Config can not be null at this point")
-    }
-
 }

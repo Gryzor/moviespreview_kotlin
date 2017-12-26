@@ -1,10 +1,7 @@
 package com.jpp.moviespreview.app.ui
 
 import android.content.Context
-import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
-import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractorImpl
-import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
-import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractorImpl
+import com.jpp.moviespreview.app.ui.interactors.*
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -31,5 +28,11 @@ class UiModule {
 
     @Singleton
     @Provides
-    fun providesConnectivityInteractor(context: Context) : ConnectivityInteractor = ConnectivityInteractorImpl(context)
+    fun providesConnectivityInteractor(context: Context): ConnectivityInteractor = ConnectivityInteractorImpl(context)
+
+    @Singleton
+    @Provides
+    fun providePresenterInteractorDelegate(backgroundInteractor: BackgroundInteractor,
+                                           connectivityInteractor: ConnectivityInteractor): PresenterInteractorDelegate
+            = PresenterInteractorDelegateImpl(backgroundInteractor, connectivityInteractor)
 }
