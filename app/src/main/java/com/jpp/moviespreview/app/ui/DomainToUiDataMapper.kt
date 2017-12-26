@@ -174,7 +174,6 @@ class DomainToUiDataMapper {
             DomainGenre(it.id, it.name)
         }
     }
-    }
 
 
     /**
@@ -186,4 +185,5 @@ class DomainToUiDataMapper {
         cast.mapTo(creditPersonList) { CreditPerson(it.profilePath.toString(), it.character, it.name) }
         crew.mapTo(creditPersonList) { CreditPerson(it.profilePath.toString(), it.name, it.department) }
         return creditPersonList
+    }
 }
