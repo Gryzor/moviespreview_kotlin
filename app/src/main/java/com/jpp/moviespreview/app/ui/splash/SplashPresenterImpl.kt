@@ -22,7 +22,7 @@ class SplashPresenterImpl(private val moviesContext: MoviesContext,
                           private val mapper: DomainToUiDataMapper,
                           private val connectivityInteractor: ConnectivityInteractor,
                           private val moviesConfigurationUseCase: UseCase<Any, MoviesConfiguration>,
-                          private val moviesGenresUseCase: UseCase<Any, List<Genre>> ) : SplashPresenter {
+                          private val moviesGenresUseCase: UseCase<Any, List<Genre>>) : SplashPresenter {
 
     private lateinit var splashView: SplashView
 
@@ -50,7 +50,8 @@ class SplashPresenterImpl(private val moviesContext: MoviesContext,
 
     private fun processMoviesConfig(moviesConfiguration: MoviesConfiguration?) {
         if (moviesConfiguration != null) {
-            moviesContext.imageConfig = mapper.convertConfigurationToImagesConfiguration(moviesConfiguration)
+            moviesContext.posterImageConfig = mapper.convertPosterImageConfigurations(moviesConfiguration)
+            moviesContext.profileImageConfig = mapper.convertProfileImageConfigurations(moviesConfiguration)
             continueToHomeIfConfigReady()
         } else {
             processError()

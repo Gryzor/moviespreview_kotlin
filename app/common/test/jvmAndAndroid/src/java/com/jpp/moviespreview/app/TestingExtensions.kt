@@ -4,9 +4,10 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.domain.Genre
-import com.jpp.moviespreview.app.ui.ImageConfiguration
 import com.jpp.moviespreview.app.ui.MovieGenre
 import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.PosterImageConfiguration
+import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
 import org.mockito.Mockito
 import com.jpp.moviespreview.app.data.Movie as DataMovie
 import com.jpp.moviespreview.app.data.MoviePage as DataMoviePage
@@ -15,16 +16,26 @@ import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
 
 
 /**
- * Mocks a list of [ImageConfiguration].
+ * Mocks a list of [PosterImageConfiguration].
  */
-fun MoviesContext.mockImageConfig() = listOf(
-        ImageConfiguration("url", "w92", 92),
-        ImageConfiguration("url", "w154", 154),
-        ImageConfiguration("url", "w185", 185),
-        ImageConfiguration("url", "w342", 342),
-        ImageConfiguration("url", "w500", 500),
-        ImageConfiguration("url", "w780", 780),
-        ImageConfiguration("url", "original", -1)
+fun MoviesContext.mockPosterImageConfig() = listOf(
+        PosterImageConfiguration("url", "w92"),
+        PosterImageConfiguration("url", "w154"),
+        PosterImageConfiguration("url", "w185"),
+        PosterImageConfiguration("url", "w342"),
+        PosterImageConfiguration("url", "w500"),
+        PosterImageConfiguration("url", "w780"),
+        PosterImageConfiguration("url", "original")
+)
+
+/**
+ * Mocks a list of [ProfileImageConfiguration].
+ */
+fun MoviesContext.mockProfileImageConfig() = listOf(
+        ProfileImageConfiguration("url", "h45"),
+        ProfileImageConfiguration("url", "h185"),
+        ProfileImageConfiguration("url", "h632"),
+        ProfileImageConfiguration("url", "original")
 )
 
 
@@ -41,9 +52,11 @@ fun MoviesContext.mockMovieGenres() = listOf(
 /**
  * Completes the configuration of the context with mocked data.
  */
-fun MoviesContext.completeConfig(imageConfigMockList: List<ImageConfiguration> = mockImageConfig(),
+fun MoviesContext.completeConfig(posterImageConfigMockList: List<PosterImageConfiguration> = mockPosterImageConfig(),
+                                 profileImageConfigurationList: List<ProfileImageConfiguration> = mockProfileImageConfig(),
                                  movieGenreMockList: List<MovieGenre> = mockMovieGenres()) {
-    imageConfig = imageConfigMockList
+    posterImageConfig = posterImageConfigMockList
+    profileImageConfig = profileImageConfigurationList
     movieGenres = movieGenreMockList
 }
 

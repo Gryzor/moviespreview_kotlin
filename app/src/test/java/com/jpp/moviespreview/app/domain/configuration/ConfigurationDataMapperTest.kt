@@ -1,5 +1,7 @@
 package com.jpp.moviespreview.app.domain.configuration
 
+import com.jpp.moviespreview.app.domain.ImageConfiguration.Companion.POSTER
+import com.jpp.moviespreview.app.domain.ImageConfiguration.Companion.PROFILE
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import com.jpp.moviespreview.app.data.ImagesConfiguration as DataImagesConfiguration
@@ -18,9 +20,9 @@ class ConfigurationDataMapperTest {
 
         val domainMoviesConfiguration = ConfigurationDataMapper().convertMoviesConfigurationFromDataModel(dataMoviesConfiguration)
 
-        assertEquals(3, domainMoviesConfiguration.imagesConfiguration.posterSizes.size)
-        assertEquals(4, domainMoviesConfiguration.imagesConfiguration.profileSizes.size)
-        assertEquals("baseUrl", domainMoviesConfiguration.imagesConfiguration.baseUrl)
+        assertEquals(3, domainMoviesConfiguration.imagesConfiguration.count { it.type == POSTER })
+        assertEquals(4, domainMoviesConfiguration.imagesConfiguration.count { it.type == PROFILE })
+        assertEquals(7, domainMoviesConfiguration.imagesConfiguration.count { it.baseUrl == "baseUrl" })
     }
 
 }

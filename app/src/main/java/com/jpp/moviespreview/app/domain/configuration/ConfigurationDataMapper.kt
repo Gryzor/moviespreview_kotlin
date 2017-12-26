@@ -1,6 +1,8 @@
 package com.jpp.moviespreview.app.domain.configuration
 
-import com.jpp.moviespreview.app.domain.ImagesConfiguration
+import com.jpp.moviespreview.app.domain.ImageConfiguration
+import com.jpp.moviespreview.app.domain.ImageConfiguration.Companion.POSTER
+import com.jpp.moviespreview.app.domain.ImageConfiguration.Companion.PROFILE
 import com.jpp.moviespreview.app.domain.MoviesConfiguration
 import com.jpp.moviespreview.app.data.ImagesConfiguration as DataImagesConfiguration
 import com.jpp.moviespreview.app.data.MoviesConfiguration as DataMoviesConfiguration
@@ -19,8 +21,20 @@ class ConfigurationDataMapper {
         MoviesConfiguration(convertImagesConfigurationFromDataModel(dataMoviesConfiguration.images))
     }
 
-    private fun convertImagesConfigurationFromDataModel(imagesConfiguration: DataImagesConfiguration) = with(imagesConfiguration) {
-        ImagesConfiguration(base_url, poster_sizes, profile_sizes)
+
+    private fun convertImagesConfigurationFromDataModel(imagesConfiguration: DataImagesConfiguration): List<ImageConfiguration> {
+        val imageConfigurations = ArrayList<ImageConfiguration>()
+        with(imagesConfiguration) {
+            //map poster sizes
+            poster_sizes.mapTo(imageConfigurations) {
+                ImageConfiguration(base_url, it, POSTER)
+            }
+            // map profile pictures
+            profile_sizes.mapTo(imageConfigurations) {
+                ImageConfiguration(base_url, it, PROFILE)
+            }
+        }
+        return imageConfigurations
     }
 
 }

@@ -39,3 +39,17 @@ inline fun <T> MutableList<T>.getPositionForElement(criteria: (T) -> Boolean): I
             .forEach { return index++ }
     throw NoSuchElementException()
 }
+
+
+/**
+ * Maps the current list to another list of [R] if the [criteria] if
+ * fulfilled by the item.
+ */
+inline fun <T, R> Iterable<T>.mapIf(criteria: (T) -> Boolean,
+                                    transform: (T) -> R): List<R> {
+    val ret = ArrayList<R>()
+    this
+            .filter { criteria(it) }
+            .mapTo(ret) { transform(it) }
+    return ret
+}

@@ -9,29 +9,19 @@ package com.jpp.moviespreview.app.ui
 class MoviesContext {
 
 
-    var imageConfig: List<ImageConfiguration>? = null
+    var posterImageConfig: List<PosterImageConfiguration>? = null
+    var profileImageConfig: List<ProfileImageConfiguration>? = null
     var movieGenres: List<MovieGenre>? = null
     var selectedMovie: Movie? = null
     private var moviePages = ArrayList<MoviePage>()
     private var imagesConfigForSizes = HashMap<Int, ImageConfiguration>()
 
 
-
     /**
      * Determinate if the initial configuration is completed or not.
      */
-    fun isConfigCompleted(): Boolean {
-        var completed = false
-        if (imageConfig != null) {
-            (imageConfig?.isNotEmpty())
-            completed = if (movieGenres != null) {
-                movieGenres?.isNotEmpty()!!
-            } else {
-                false
-            }
-        }
-        return completed
-    }
+    fun isConfigCompleted() =
+            posterImageConfig?.isEmpty() ?: false && profileImageConfig?.isEmpty() ?: false && movieGenres?.isEmpty() ?: false
 
 
     /**
@@ -72,10 +62,7 @@ class MoviesContext {
 
 
     private fun findProperImageConfigForScreenWidth(width: Int): ImageConfiguration {
-        if (imageConfig == null) {
-            throw IllegalStateException("Config can not be null at this point")
-        }
-        return imageConfig!!.firstOrNull { it.realSize != null && it.realSize > width } ?: imageConfig!!.last()
+        throw IllegalStateException("Config can not be null at this point")
     }
 
 }

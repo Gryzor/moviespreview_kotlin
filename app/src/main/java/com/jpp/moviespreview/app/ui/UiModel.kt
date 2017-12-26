@@ -1,32 +1,35 @@
 package com.jpp.moviespreview.app.ui
 
-import android.support.annotation.IntDef
 import com.jpp.moviespreview.app.util.AllOpen
 
 /**
  * Represents the configuration of the images from the UI perspective.
- * The URL that references the location of the images.
- * A list of possible movieSizes to retrieve (the presenters and views are the ones
- * that take care of finding the proper size)
+ * [baseUrl] represents the base url where the images are located.
+ * [size] represents the size of the image.
  */
-data class ImageConfiguration(private val baseUrl: String,
-                              val size: String,
-                              val realSize: Int?,
-                              @Type private val type: Long) {
+interface ImageConfiguration {
 
-    companion object {
+    val baseUrl: String
+    val size: String
 
-        @IntDef(POSTER, PROFILE)
-        @Retention(AnnotationRetention.SOURCE)
-        annotation class Type
-
-        const val POSTER = 0L
-        const val PROFILE = 1L
-    }
-
+    /**
+     * Prepares and returns the prepared URL that represents this image configuration.
+     */
     fun prepareImageUrl(path: String) = "$baseUrl$size$path"
-
 }
+
+
+/**
+ * Represents the poster images configuration.
+ */
+data class PosterImageConfiguration(override val baseUrl: String,
+                                    override val size: String) : ImageConfiguration
+
+/**
+ * Represents the profile images configurations.
+ */
+data class ProfileImageConfiguration(override val baseUrl: String,
+                                     override val size: String) : ImageConfiguration
 
 
 /**

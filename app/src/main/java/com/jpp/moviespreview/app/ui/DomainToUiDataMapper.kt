@@ -1,10 +1,10 @@
 package com.jpp.moviespreview.app.ui
 
 import com.jpp.moviespreview.R
-import com.jpp.moviespreview.app.ui.ImageConfiguration.Companion.POSTER
-import com.jpp.moviespreview.app.ui.ImageConfiguration.Companion.PROFILE
+import com.jpp.moviespreview.app.domain.ImageConfiguration.Companion.POSTER
+import com.jpp.moviespreview.app.domain.ImageConfiguration.Companion.PROFILE
 import com.jpp.moviespreview.app.util.extentions.filterInList
-import com.jpp.moviespreview.app.util.extentions.transformToInt
+import com.jpp.moviespreview.app.util.extentions.mapIf
 import com.jpp.moviespreview.app.domain.Genre as DomainGenre
 import com.jpp.moviespreview.app.domain.Movie as DomainMovie
 import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
@@ -39,25 +39,21 @@ class DomainToUiDataMapper {
         val WESTERN_GENRE_ID = 37
     }
 
-    /**
-     * Converts a [DomainMovieConfiguration] into a list of [ImageConfiguration] containing the images base URL and the posterSizes provided
-     * by the [domainMoviesConfiguration].
-     */
-    fun convertConfigurationToImagesConfiguration(domainMoviesConfiguration: DomainMovieConfiguration): List<ImageConfiguration> {
-        val imageConfigurations = ArrayList<ImageConfiguration>()
-        with(domainMoviesConfiguration.imagesConfiguration) {
-            //map poster sizes
-            posterSizes.mapTo(imageConfigurations) {
-                ImageConfiguration(baseUrl, it, it.transformToInt(), POSTER)
-            }
-            // map profile pictures
-            profileSizes.mapTo(imageConfigurations) {
-                ImageConfiguration(baseUrl, it, it.transformToInt(), PROFILE)
-            }
-        }
-        return imageConfigurations
+
+    fun convertPosterImageConfigurations(domainMoviesConfiguration: DomainMovieConfiguration): List<PosterImageConfiguration> {
+        return domainMoviesConfiguration.imagesConfiguration.mapIf(
+                { it.type == POSTER },
+                { PosterImageConfiguration(it.baseUrl, it.size) }
+        )
     }
 
+
+    fun convertProfileImageConfigurations(domainMoviesConfiguration: DomainMovieConfiguration): List<ProfileImageConfiguration> {
+        return domainMoviesConfiguration.imagesConfiguration.mapIf(
+                { it.type == PROFILE },
+                { ProfileImageConfiguration(it.baseUrl, it.size) }
+        )
+    }
 
     /**
      * Converts a list of [DomainGenre]s into a list of [MovieGenre]
