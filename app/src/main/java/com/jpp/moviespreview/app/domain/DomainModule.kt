@@ -1,0 +1,50 @@
+package com.jpp.moviespreview.app.domain
+
+import com.jpp.moviespreview.app.data.cache.MoviesCache
+import com.jpp.moviespreview.app.data.cache.MoviesConfigurationCache
+import com.jpp.moviespreview.app.data.cache.MoviesGenreCache
+import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
+import com.jpp.moviespreview.app.domain.configuration.ConfigurationDataMapper
+import com.jpp.moviespreview.app.domain.configuration.RetrieveConfigurationUseCase
+import com.jpp.moviespreview.app.domain.genre.GenreDataMapper
+import com.jpp.moviespreview.app.domain.genre.RetrieveGenresUseCase
+import com.jpp.moviespreview.app.domain.movie.MovieDataMapper
+import com.jpp.moviespreview.app.domain.movie.RetrieveMoviesInTheaterUseCase
+import com.jpp.moviespreview.app.domain.movie.credits.CreditsDataMapper
+import com.jpp.moviespreview.app.domain.movie.credits.RetrieveMovieCreditsUseCase
+import com.jpp.moviespreview.app.ui.detail.di.DetailsScope
+import dagger.Module
+import dagger.Provides
+import javax.inject.Singleton
+
+/**
+ * DI module to provide domain dependencies
+ *
+ * Created by jpp on 12/26/17.
+ */
+@Module
+class DomainModule {
+
+    @Provides
+    @Singleton
+    fun provideRetrieveMovieGenresUseCase(apiInstance: MoviesPreviewApiWrapper, genresCache: MoviesGenreCache): UseCase<Any, List<Genre>>
+            = RetrieveGenresUseCase(GenreDataMapper(), apiInstance, genresCache)
+
+    @Provides
+    @Singleton
+    fun provideRetrieveConfigurationUseCase(apiInstance: MoviesPreviewApiWrapper, configurationCache: MoviesConfigurationCache): UseCase<Any, MoviesConfiguration>
+            = RetrieveConfigurationUseCase(ConfigurationDataMapper(), apiInstance, configurationCache)
+
+
+    @Provides
+    @Singleton
+    fun providesRetrieveMoviesInTheaterUseCase(api: MoviesPreviewApiWrapper, moviesCache: MoviesCache): UseCase<MoviesInTheaterInputParam, MoviePage>
+            = RetrieveMoviesInTheaterUseCase(MovieDataMapper(), api, moviesCache)
+
+
+    @Provides
+    @DetailsScope
+    fun providesRetrieveMoviesCreditUseCase(api: MoviesPreviewApiWrapper, moviesCache: MoviesCache): UseCase<Movie, MovieCredits>
+            = RetrieveMovieCreditsUseCase(CreditsDataMapper(), api, moviesCache)
+
+}

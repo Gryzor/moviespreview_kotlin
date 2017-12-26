@@ -1,12 +1,5 @@
 package com.jpp.moviespreview.app.ui.detail.di
 
-import com.jpp.moviespreview.app.data.cache.MoviesCache
-import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
-import com.jpp.moviespreview.app.domain.Movie
-import com.jpp.moviespreview.app.domain.MovieCredits
-import com.jpp.moviespreview.app.domain.UseCase
-import com.jpp.moviespreview.app.domain.movie.credits.CreditsDataMapper
-import com.jpp.moviespreview.app.domain.movie.credits.RetrieveMovieCreditsUseCase
 import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.detail.MovieDetailImagesPresenter
 import com.jpp.moviespreview.app.ui.detail.MovieDetailImagesPresenterImpl
@@ -37,12 +30,6 @@ class MovieDetailsModule {
     @DetailsScope
     fun providesMovieDetailsPresenter(moviesContext: MoviesContext): MovieDetailPresenter
             = MovieDetailPresenterImpl(moviesContext)
-
-
-    @Provides
-    @DetailsScope
-    fun providesRetrieveMoviesCreditUseCase(api: MoviesPreviewApiWrapper, moviesCache: MoviesCache): UseCase<Movie, MovieCredits>
-            = RetrieveMovieCreditsUseCase(CreditsDataMapper(), api, moviesCache)
 
 
     @Provides

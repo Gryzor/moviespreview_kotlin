@@ -2,6 +2,7 @@ package com.jpp.moviespreview.app
 
 import android.app.Application
 import com.jpp.moviespreview.app.data.DataModule
+import com.jpp.moviespreview.app.domain.DomainModule
 import com.jpp.moviespreview.app.ui.UiModule
 import com.jpp.moviespreview.app.ui.detail.di.MovieDetailsComponent
 import com.jpp.moviespreview.app.ui.detail.di.MovieDetailsModule
@@ -26,6 +27,7 @@ open class MoviesPreviewApp : Application() {
                 .builder()
                 .appModule(AppModule(this))
                 .dataModule(DataModule())
+                .domainModule(DomainModule())
                 .uiModule(UiModule())
                 .build()
     }

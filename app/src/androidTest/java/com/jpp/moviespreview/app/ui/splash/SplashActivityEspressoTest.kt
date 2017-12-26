@@ -34,10 +34,10 @@ import javax.inject.Inject
 
 
 /**
- * Espresso tests are to verify interaction between three components:
- *  1 - Views
- *  2 - Presenters
- *  3 - UseCases
+ * Espresso tests are to verify the UI module.
+ *
+ * This test exercises the View, the Presenter and the Mapper for the
+ * Splash section.
  *
  * Created by jpp on 10/13/17.
  */

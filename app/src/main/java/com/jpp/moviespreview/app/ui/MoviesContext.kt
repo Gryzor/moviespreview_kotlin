@@ -21,7 +21,7 @@ class MoviesContext {
      * Determinate if the initial configuration is completed or not.
      */
     fun isConfigCompleted() =
-            posterImageConfig?.isEmpty() ?: false && profileImageConfig?.isEmpty() ?: false && movieGenres?.isEmpty() ?: false
+            posterImageConfig?.isNotEmpty() ?: false && profileImageConfig?.isNotEmpty() ?: false && movieGenres?.isNotEmpty() ?: false
 
 
     /**
