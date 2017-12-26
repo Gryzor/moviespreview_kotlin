@@ -2,6 +2,7 @@ package com.jpp.moviespreview.app
 
 import android.support.test.InstrumentationRegistry
 import com.jpp.moviespreview.app.data.EspressoDataModule
+import com.jpp.moviespreview.app.domain.EspressoDomainModule
 import com.jpp.moviespreview.app.ui.EspressoUiModule
 import org.junit.rules.TestRule
 import org.junit.runner.Description
@@ -23,6 +24,7 @@ class TestComponentRule : TestRule {
                 .espressoAppModule(EspressoAppModule(application))
                 .espressoDataModule(EspressoDataModule())
                 .espressoUiModule(EspressoUiModule())
+                .espressoDomainModule(EspressoDomainModule())
                 .build()
         application.appComponent = testComponent as AppComponent
     }

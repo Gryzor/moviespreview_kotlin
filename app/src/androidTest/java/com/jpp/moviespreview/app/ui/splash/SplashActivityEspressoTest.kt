@@ -1,8 +1,6 @@
 package com.jpp.moviespreview.app.ui.splash
 
-import android.annotation.TargetApi
 import android.content.Intent
-import android.os.Build
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.intent.Intents
@@ -13,24 +11,31 @@ import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.TestComponentRule
-import com.jpp.moviespreview.app.data.Genre
-import com.jpp.moviespreview.app.data.ImagesConfiguration
-import com.jpp.moviespreview.app.data.MoviesConfiguration
-import com.jpp.moviespreview.app.data.cache.MoviesConfigurationCache
-import com.jpp.moviespreview.app.data.cache.MoviesGenreCache
+import com.jpp.moviespreview.app.data.Genres
+import com.jpp.moviespreview.app.domain.ImageConfiguration.Companion.POSTER
+import com.jpp.moviespreview.app.domain.ImageConfiguration.Companion.PROFILE
+import com.jpp.moviespreview.app.domain.UseCase
+import com.jpp.moviespreview.app.domain.configuration.ConfigurationDataMapper
+import com.jpp.moviespreview.app.domain.genre.GenreDataMapper
 import com.jpp.moviespreview.app.extentions.launch
+import com.jpp.moviespreview.app.extentions.loadObjectFromJsonFile
 import com.jpp.moviespreview.app.extentions.waitToFinish
+import com.jpp.moviespreview.app.ui.MovieGenre
 import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.PosterImageConfiguration
+import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 import com.jpp.moviespreview.app.ui.main.MainActivity
-import junit.framework.Assert.assertNotNull
-import junit.framework.Assert.assertTrue
+import junit.framework.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verifyZeroInteractions
 import javax.inject.Inject
+import com.jpp.moviespreview.app.domain.Genre as DomainGenre
+import com.jpp.moviespreview.app.domain.MoviesConfiguration as DomainMoviesConfiguration
 
 
 /**
@@ -54,57 +59,94 @@ class SplashActivityEspressoTest {
 
     @Inject
     lateinit var moviesContext: MoviesContext
-
-    @Inject
-    lateinit var moviesConfigurationCache: MoviesConfigurationCache
-
-    @Inject
-    lateinit var genreCache: MoviesGenreCache
-
     @Inject
     lateinit var connectivityInteractor: ConnectivityInteractor
+    @Inject
+    lateinit var moviesConfigUseCase: UseCase<Any, DomainMoviesConfiguration>
+    @Inject
+    lateinit var genresUseCase: UseCase<Any, List<DomainGenre>>
 
     @Before
     fun setUp() {
         testComponentRule.testComponent?.inject(this)
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+
     @Test
-    fun test_appContinuesToHome_whenConfigurationRestoredFromCache() {
+    fun completesContextAndContinuesToHomeScreen() {
         Intents.init()
-        val imagesConfiguration = ImagesConfiguration("someUrl", arrayListOf(), arrayListOf())
-        val moviesConfiguration = MoviesConfiguration(imagesConfiguration)
+        val moviesConfiguration = loadDomainConfig()
+        `when`(moviesConfigUseCase.execute()).thenReturn(moviesConfiguration)
 
-        `when`(moviesConfigurationCache.isMoviesConfigurationOutOfDate()).thenReturn(false)
-        `when`(moviesConfigurationCache.getLastMovieConfiguration()).thenReturn(moviesConfiguration)
-
-        val genreList = listOf(
-                Genre(1, "Action"),
-                Genre(2, "Romantic"),
-                Genre(3, "Thriller")
-        )
-        `when`(genreCache.isMoviesGenresOutOfDate()).thenReturn(false)
-        `when`(genreCache.getLastGenreList()).thenReturn(genreList)
+        val genreList = loadDomainGenres()
+        `when`(genresUseCase.execute()).thenReturn(genreList)
 
         activityRule.launch(Intent())
 
-        val name = MainActivity::class.java.name
 
         activityRule.waitToFinish()
-        assertNotNull(moviesContext.imageConfig)
+
+        assertNotNull(moviesContext.profileImageConfig)
+        assertEquals(moviesConfiguration.imagesConfiguration.count { it.type == PROFILE }, moviesContext.profileImageConfig!!.size)
+
+        assertNotNull(moviesContext.posterImageConfig)
+        assertEquals(moviesConfiguration.imagesConfiguration.count { it.type == POSTER }, moviesContext.posterImageConfig!!.size)
+
+        assertNotNull(moviesContext.movieGenres)
+        assertEquals(genreList.size, moviesContext.movieGenres!!.size)
+
+
+        val name = MainActivity::class.java.name
         Intents.intended(IntentMatchers.hasComponent(name))
         assertTrue(activityRule.activity.isDestroyed)
+
         Intents.release()
     }
 
 
     @Test
-    fun test_appShowsConnectivityError_whenRetrievingData_andNoConnection() {
-        `when`(moviesConfigurationCache.isMoviesConfigurationOutOfDate()).thenReturn(true)
-        `when`(moviesConfigurationCache.getLastMovieConfiguration()).thenReturn(null)
-        `when`(genreCache.isMoviesGenresOutOfDate()).thenReturn(true)
-        `when`(genreCache.getLastGenreList()).thenReturn(null)
+    fun continuesToHomeScreenWhenContextIsCompleted() {
+        Intents.init()
+        moviesContext.movieGenres = listOf(MovieGenre(1, "aGenre", 1))
+        moviesContext.posterImageConfig = listOf(PosterImageConfiguration("aUrl", "aSize"))
+        moviesContext.profileImageConfig = listOf(ProfileImageConfiguration("aUrl", "aSize"))
+
+        activityRule.launch(Intent())
+
+
+        activityRule.waitToFinish()
+
+        verifyZeroInteractions(genresUseCase)
+        verifyZeroInteractions(moviesConfigUseCase)
+
+        val name = MainActivity::class.java.name
+        Intents.intended(IntentMatchers.hasComponent(name))
+        assertTrue(activityRule.activity.isDestroyed)
+
+        Intents.release()
+    }
+
+
+    @Test
+    fun appShowsConnectivityErrorWhenRetrievingMoviesConfigAndNoConnection() {
+        `when`(moviesConfigUseCase.execute()).thenReturn(null)
+        `when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(false)
+
+        activityRule.launch(Intent())
+
+        onView(withText(R.string.alert_no_network_connection_message))
+                .check(matches(isDisplayed()))
+    }
+
+
+    @Test
+    fun appShowsConnectivityErrorWhenRetrievingGenresAndNoConnection() {
+        //config OK
+        val moviesConfiguration = loadDomainConfig()
+        `when`(moviesConfigUseCase.execute()).thenReturn(moviesConfiguration)
+        // no genres
+        `when`(genresUseCase.execute()).thenReturn(null)
+        // no connectivity
         `when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(false)
 
         activityRule.launch(Intent())
@@ -114,11 +156,8 @@ class SplashActivityEspressoTest {
     }
 
     @Test
-    fun test_appShowsUnexpectedError() {
-        `when`(moviesConfigurationCache.isMoviesConfigurationOutOfDate()).thenReturn(true)
-        `when`(moviesConfigurationCache.getLastMovieConfiguration()).thenReturn(null)
-        `when`(genreCache.isMoviesGenresOutOfDate()).thenReturn(true)
-        `when`(genreCache.getLastGenreList()).thenReturn(null)
+    fun appShowsUnexpectedErrorWhenRetrievingMoviesConfig() {
+        `when`(moviesConfigUseCase.execute()).thenReturn(null)
         `when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(true)
 
         activityRule.launch(Intent())
@@ -126,23 +165,14 @@ class SplashActivityEspressoTest {
         onView(withText(R.string.alert_unexpected_error_message))
                 .check(matches(isDisplayed()))
     }
-
 
     @Test
-    fun test_appShowsUnexpectedError_whenConfigurationFails() {
-        // configuration retrieval fails
-        `when`(moviesConfigurationCache.isMoviesConfigurationOutOfDate()).thenReturn(true)
-        `when`(moviesConfigurationCache.getLastMovieConfiguration()).thenReturn(null)
-
-        // genres OK
-        val genreList = listOf(
-                Genre(1, "Action"),
-                Genre(2, "Romantic"),
-                Genre(3, "Thriller")
-        )
-        `when`(genreCache.isMoviesGenresOutOfDate()).thenReturn(false)
-        `when`(genreCache.getLastGenreList()).thenReturn(genreList)
-
+    fun appShowsUnexpectedErrorWhenRetrievingGenres() {
+        //config OK
+        val moviesConfiguration = loadDomainConfig()
+        `when`(moviesConfigUseCase.execute()).thenReturn(moviesConfiguration)
+        // no genres
+        `when`(genresUseCase.execute()).thenReturn(null)
 
         `when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(true)
 
@@ -153,26 +183,10 @@ class SplashActivityEspressoTest {
     }
 
 
-    @Test
-    fun test_appShowsUnexpectedError_whenGenresFails() {
-        // configuration retrieval OK
-        val imagesConfiguration = ImagesConfiguration("someUrl", arrayListOf(), arrayListOf())
-        val moviesConfiguration = MoviesConfiguration(imagesConfiguration)
+    private fun loadDomainConfig(): DomainMoviesConfiguration
+            = ConfigurationDataMapper().convertMoviesConfigurationFromDataModel(activityRule.loadObjectFromJsonFile("data_movies_configuration.json"))
 
-        `when`(moviesConfigurationCache.isMoviesConfigurationOutOfDate()).thenReturn(false)
-        `when`(moviesConfigurationCache.getLastMovieConfiguration()).thenReturn(moviesConfiguration)
+    private fun loadDomainGenres(): List<DomainGenre> = GenreDataMapper().convertGenreListFromDataModel(loadDataGenres().genres)
 
-
-        // genres fail
-        `when`(genreCache.isMoviesGenresOutOfDate()).thenReturn(true)
-        `when`(genreCache.getLastGenreList()).thenReturn(null)
-
-
-        `when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(true)
-
-        activityRule.launch(Intent())
-
-        onView(withText(R.string.alert_unexpected_error_message))
-                .check(matches(isDisplayed()))
-    }
+    private fun loadDataGenres(): Genres = activityRule.loadObjectFromJsonFile("data_genres.json")
 }
