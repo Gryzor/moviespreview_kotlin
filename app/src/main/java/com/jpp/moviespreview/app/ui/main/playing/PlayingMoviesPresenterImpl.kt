@@ -29,11 +29,10 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
     override fun linkView(view: PlayingMoviesView) {
         playingMoviesView = view
         loadOrRetrieveMovies()
-
     }
 
     override fun refreshData() {
-        refreshMovieAfterDetailView()
+        refreshMovieData()
     }
 
     override fun onMovieImageSelected(movie: Movie, position: Int) {
@@ -56,7 +55,7 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
         }
     }
 
-    private fun refreshMovieAfterDetailView() {
+    private fun refreshMovieData() {
         if (moviesContext.selectedMovie != null) {
             playingMoviesView.updateMovie(moviesContext.selectedMovie!!)
             moviesContext.selectedMovie = null

@@ -3,40 +3,58 @@ package com.jpp.moviespreview.app.extentions
 import android.app.Activity
 import android.support.test.InstrumentationRegistry
 import android.support.test.rule.ActivityTestRule
-import android.support.test.runner.intercepting.SingleActivityFactory
 import com.google.gson.Gson
 import com.jpp.moviespreview.app.data.Genres
+import com.jpp.moviespreview.app.data.MoviePage
 import com.jpp.moviespreview.app.domain.Genre
 import com.jpp.moviespreview.app.domain.MoviesConfiguration
 import com.jpp.moviespreview.app.domain.configuration.ConfigurationDataMapper
 import com.jpp.moviespreview.app.domain.genre.GenreDataMapper
+import com.jpp.moviespreview.app.domain.movie.MovieDataMapper
 import com.jpp.moviespreview.app.fromJson
+import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
 
 /**
  * Helper [ActivityTestRule] to specific usages.
  *
  * Created by jpp on 12/26/17.
  */
-class MoviesPreviewActivityTestRule<T : Activity> : ActivityTestRule<T> {
+class MoviesPreviewActivityTestRule<T : Activity>(activityClass: Class<T>) : ActivityTestRule<T>(activityClass) {
 
 
-    constructor(activityClass: Class<T>) : super(activityClass)
-
-    constructor(activityClass: Class<T>, initialTouchMode: Boolean) : super(activityClass, initialTouchMode)
-
-    constructor(activityClass: Class<T>, initialTouchMode: Boolean, launchActivity: Boolean) : super(activityClass, initialTouchMode, launchActivity)
-
-    constructor(activityFactory: SingleActivityFactory<T>, initialTouchMode: Boolean, launchActivity: Boolean) : super(activityFactory, initialTouchMode, launchActivity)
-
-    constructor(activityClass: Class<T>, targetPackage: String, launchFlags: Int, initialTouchMode: Boolean, launchActivity: Boolean) : super(activityClass, targetPackage, launchFlags, initialTouchMode, launchActivity)
-
-
+    /**
+     * Loads a DOMAIN [MoviesConfiguration]
+     */
     fun loadDomainConfig(): MoviesConfiguration
             = ConfigurationDataMapper().convertMoviesConfigurationFromDataModel(loadObjectFromJsonFile("data_movies_configuration.json"))
 
+    /**
+     * Loads a DOMAIN [Genre] list
+     */
     fun loadDomainGenres(): List<Genre> = GenreDataMapper().convertGenreListFromDataModel(loadDataGenres().genres)
 
-    fun loadDataGenres(): Genres = loadObjectFromJsonFile("data_genres.json")
+
+    /**
+     * Loads a DOMAIN [DomainMoviePage]
+     */
+    fun loadDomainPage(page: Int): DomainMoviePage = MovieDataMapper().convertDataMoviePageIntoDomainMoviePage(loadDataPage(page), loadDomainGenres())
+
+
+    /**********************
+     * INNER DATA HELPERS *
+     **********************/
+
+    private fun loadDataGenres(): Genres = loadObjectFromJsonFile("data_genres.json")
+
+
+    private fun loadDataPage(page: Int): MoviePage = when (page) {
+        1-> loadObjectFromJsonFile("data_movie_page_1.json")
+        2 -> loadObjectFromJsonFile("data_movie_page_2.json")
+        3 -> loadObjectFromJsonFile("data_movie_page_3.json")
+        else -> {
+            throw RuntimeException("Unsupported page requested in test. Page { $page }")
+        }
+    }
 
 
     /**

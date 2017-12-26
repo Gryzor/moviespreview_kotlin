@@ -74,6 +74,7 @@ dependencies {
     final room_version = '1.0.0'
     final mockito_version = '2.10.0'
     final glide_version = '3.8.0'
+    final mockito_nhaarman_version = '1.5.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
     // Google libs
@@ -135,11 +136,12 @@ dependencies {
     }
     androidTestCompile "org.mockito:mockito-android:$mockito_version"
     androidTestCompile "org.mockito:mockito-core:$mockito_version"
+    androidTestCompile "com.nhaarman:mockito-kotlin-kt1.1:$mockito_nhaarman_version"
     kaptAndroidTest "com.google.dagger:dagger-compiler:$daggerVersion"
     testCompile 'junit:junit:4.12'
     testCompile "org.mockito:mockito-core:$mockito_version"
     testCompile "org.mockito:mockito-inline:$mockito_version"
-    testCompile "com.nhaarman:mockito-kotlin-kt1.1:1.5.0"
+    testCompile "com.nhaarman:mockito-kotlin-kt1.1:$mockito_nhaarman_version"
 
     // to mock final classes only in jvm tests
 }

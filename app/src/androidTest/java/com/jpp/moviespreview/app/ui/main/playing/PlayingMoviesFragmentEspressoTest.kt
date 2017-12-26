@@ -1,5 +1,6 @@
 package com.jpp.moviespreview.app.ui.main.playing
 
+import android.app.Activity
 import android.content.Intent
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.action.ViewActions.click
@@ -8,20 +9,18 @@ import android.support.test.espresso.contrib.RecyclerViewActions
 import android.support.test.espresso.intent.Intents.*
 import android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import android.support.test.espresso.matcher.ViewMatchers.*
-import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import android.support.v7.widget.RecyclerView
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.TestComponentRule
 import com.jpp.moviespreview.app.completeConfig
-import com.jpp.moviespreview.app.data.MoviePage
-import com.jpp.moviespreview.app.data.cache.MoviesCache
 import com.jpp.moviespreview.app.domain.MoviesInTheaterInputParam
 import com.jpp.moviespreview.app.domain.UseCase
-import com.jpp.moviespreview.app.domain.movie.MovieDataMapper
+import com.jpp.moviespreview.app.extentions.MoviesPreviewActivityTestRule
 import com.jpp.moviespreview.app.extentions.launch
 import com.jpp.moviespreview.app.extentions.rotate
 import com.jpp.moviespreview.app.extentions.waitToFinish
+import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.detail.MovieDetailActivity
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
@@ -35,11 +34,11 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
+import org.mockito.invocation.InvocationOnMock
+import org.mockito.stubbing.Answer
 import javax.inject.Inject
 import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
-//import com.nhaarman.mockito_kotlin.argumentCaptor
 
 /**
  * Espresso tests are to verify the UI module.
@@ -55,14 +54,12 @@ class PlayingMoviesFragmentEspressoTest {
 
     @get:Rule
     @JvmField
-    val activityRule = ActivityTestRule(EspressoTestActivity::class.java)
+    val activityRule = MoviesPreviewActivityTestRule(EspressoTestActivity::class.java)
     @get:Rule
     val testComponentRule = TestComponentRule()
 
     @Inject
     lateinit var moviesContext: MoviesContext
-    @Inject
-    lateinit var moviesCache: MoviesCache
     @Inject
     lateinit var connectivityInteractor: ConnectivityInteractor
     @Inject
@@ -92,9 +89,11 @@ class PlayingMoviesFragmentEspressoTest {
         // complete context configuration
         moviesContext.completeConfig()
 
-        // mock movies response
-//        val inputParamCaptor = argumentCaptor<MoviesInTheaterInputParam>()
-//        `when`(playingMoviesUseCase.execute(inputParamCaptor.capture())).thenReturn()
+        val initialPage = 1
+        val expectedMoviePage = activityRule.loadDomainPage(initialPage)
+
+        `when`(playingMoviesUseCase.execute(any(MoviesInTheaterInputParam::class.java)))
+                .thenAnswer(MoviePageAnswer(expectedMoviePage, initialPage))
 
 
         launchActivityAndAddFragment()
@@ -102,119 +101,162 @@ class PlayingMoviesFragmentEspressoTest {
         onView(withId(R.id.rv_playing_movies))
                 .check(RecyclerViewItemCountAssertion(20))
     }
-//
-//    @Test
-//    fun test_orientationChange_doesNotRequestNewData() {
-//        // complete context configuration
-//        moviesContext.completeConfig()
-//
-//        // mock movies response
-//        `when`(moviesCache.isMoviePageOutOfDate(1)).thenReturn(false)
-//        `when`(moviesCache.getMoviePage(1)).thenReturn(loadMockPage(1))
-//
-//        launchActivityAndAddFragment()
-//
-//        // sanity check
-//        onView(withId(R.id.rv_playing_movies))
-//                .check(RecyclerViewItemCountAssertion(20))
-//
-//        // rotate 1
-//        activityRule.rotate()
-//        onView(withId(R.id.rv_playing_movies))
-//                .check(RecyclerViewItemCountAssertion(20))
-//
-//        // rotate 2
-//        activityRule.rotate()
-//        onView(withId(R.id.rv_playing_movies))
-//                .check(RecyclerViewItemCountAssertion(20))
-//
-//        verify(moviesCache).isMoviePageOutOfDate(1)
-//    }
-//
-//
-//    @Test
-//    fun test_appShowsConnectivityError_whenRetrievingData_andNoConnection() {
-//        // complete context configuration
-//        moviesContext.completeConfig()
-//
-//        // return null page will cause error verification
-//        `when`(moviesCache.isMoviePageOutOfDate(1)).thenReturn(false)
-//        `when`(moviesCache.getMoviePage(1)).thenReturn(null)
-//
-//        // mock connectivity issues
-//        `when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(false)
-//
-//        launchActivityAndAddFragment()
-//
-//        onView(withText(R.string.alert_no_network_connection_message))
-//                .check(ViewAssertions.matches(isDisplayed()))
-//
-//    }
-//
-//    @Test
-//    fun test_appShowsUnexpectedError() {
-//        // complete context configuration
-//        moviesContext.completeConfig()
-//
-//        // return null page will cause error verification
-//        `when`(moviesCache.isMoviePageOutOfDate(1)).thenReturn(false)
-//        `when`(moviesCache.getMoviePage(1)).thenReturn(null)
-//
-//        // mock connectivity NO issues
-//        `when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(true)
-//
-//        launchActivityAndAddFragment()
-//
-//        onView(withText(R.string.alert_unexpected_error_message))
-//                .check(ViewAssertions.matches(isDisplayed()))
-//    }
-//
-//    @Test
-//    fun test_userSelectsMovie_setsMovieInContext_startDetailsActivity() {
-//        init()
-//
-//        // complete context configuration
-//        moviesContext.completeConfig()
-//
-//        // mock movies response
-//        `when`(moviesCache.isMoviePageOutOfDate(1)).thenReturn(false)
-//        `when`(moviesCache.getMoviePage(1)).thenReturn(loadMockPage(1))
-//
-//        launchActivityAndAddFragment()
-//
-//        onView(withId(R.id.rv_playing_movies))
-//                .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(3, click()))
-//
-//        assertNotNull(moviesContext.selectedMovie)
-//        assertEquals(moviesContext.selectedMovie!!.id, 335984.toDouble())
-//
-//        intended(hasComponent(MovieDetailActivity::class.java.name))
-//        release()
-//    }
-//
-//
+
+
+    @Test
+    fun doesNotRetrievesDataWhenPagesInContext() {
+        // complete context configuration
+        moviesContext.completeConfig()
+
+
+        // add 3 pages to the context
+        var dataMoviePage = activityRule.loadDomainPage(1)
+        var uiMoviePage = DomainToUiDataMapper().convertDomainMoviePageToUiMoviePage(dataMoviePage, moviesContext.posterImageConfig!![0], moviesContext.movieGenres!!)
+        moviesContext.addMoviePage(uiMoviePage)
+
+        dataMoviePage = activityRule.loadDomainPage(2)
+        uiMoviePage = DomainToUiDataMapper().convertDomainMoviePageToUiMoviePage(dataMoviePage, moviesContext.posterImageConfig!![0], moviesContext.movieGenres!!)
+        moviesContext.addMoviePage(uiMoviePage)
+
+        dataMoviePage = activityRule.loadDomainPage(3)
+        uiMoviePage = DomainToUiDataMapper().convertDomainMoviePageToUiMoviePage(dataMoviePage, moviesContext.posterImageConfig!![0], moviesContext.movieGenres!!)
+        moviesContext.addMoviePage(uiMoviePage)
+
+        launchActivityAndAddFragment()
+
+        // verify all pages where loaded
+        onView(withId(R.id.rv_playing_movies))
+                .check(RecyclerViewItemCountAssertion(60))
+
+        verifyZeroInteractions(playingMoviesUseCase)
+    }
+
+
+    @Test
+    fun orientationChangeDoesNotRequestNewData() {
+        // complete context configuration
+        moviesContext.completeConfig()
+
+        val initialPage = 1
+        val expectedMoviePage = activityRule.loadDomainPage(initialPage)
+
+        `when`(playingMoviesUseCase.execute(any(MoviesInTheaterInputParam::class.java)))
+                .thenAnswer(MoviePageAnswer(expectedMoviePage, initialPage))
+
+        launchActivityAndAddFragment()
+
+        // sanity check
+        onView(withId(R.id.rv_playing_movies))
+                .check(RecyclerViewItemCountAssertion(20))
+
+        // rotate 1
+        activityRule.rotate()
+        onView(withId(R.id.rv_playing_movies))
+                .check(RecyclerViewItemCountAssertion(20))
+
+        // rotate 2
+        activityRule.rotate()
+        onView(withId(R.id.rv_playing_movies))
+                .check(RecyclerViewItemCountAssertion(20))
+
+        verify(playingMoviesUseCase).execute(any(MoviesInTheaterInputParam::class.java))
+    }
+
+
+    @Test
+    fun appShowsConnectivityErrorWhenRetrievingDataAndNoConnection() {
+        // complete context configuration
+        moviesContext.completeConfig()
+
+        // return null page will cause error verification
+        `when`(playingMoviesUseCase.execute(any(MoviesInTheaterInputParam::class.java))).thenReturn(null)
+
+        // mock connectivity issues
+        `when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(false)
+
+        launchActivityAndAddFragment()
+
+        onView(withText(R.string.alert_no_network_connection_message))
+                .check(ViewAssertions.matches(isDisplayed()))
+
+    }
+
+    @Test
+    fun appShowsUnexpectedError() {
+        // complete context configuration
+        moviesContext.completeConfig()
+
+        // return null page will cause error verification
+        `when`(playingMoviesUseCase.execute(any(MoviesInTheaterInputParam::class.java))).thenReturn(null)
+
+        // mock connectivity NO issues
+        `when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(true)
+
+        launchActivityAndAddFragment()
+
+        onView(withText(R.string.alert_unexpected_error_message))
+                .check(ViewAssertions.matches(isDisplayed()))
+    }
+
+    @Test
+    fun userSelectsMovieSetsMovieInContextStartDetailsActivity() {
+        init()
+
+        // complete context configuration
+        moviesContext.completeConfig()
+
+        val initialPage = 1
+        val expectedMoviePage = activityRule.loadDomainPage(initialPage)
+        val expectedSelectedMovie = expectedMoviePage.results[3]
+
+        `when`(playingMoviesUseCase.execute(any(MoviesInTheaterInputParam::class.java)))
+                .thenAnswer(MoviePageAnswer(expectedMoviePage, initialPage))
+
+        launchActivityAndAddFragment()
+
+        onView(withId(R.id.rv_playing_movies))
+                .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(3, click()))
+
+        assertNotNull(moviesContext.selectedMovie)
+        assertEquals(moviesContext.selectedMovie!!.id, expectedSelectedMovie.id)
+
+        intended(hasComponent(MovieDetailActivity::class.java.name))
+        release()
+    }
+
+
     private fun launchActivityAndAddFragment() {
         activityRule.launch(Intent())
         activityRule.activity.addFragmentIfNotInStack(android.R.id.content, PlayingMoviesFragment.newInstance(), PlayingMoviesFragment.TAG)
     }
 
-//
-//    private fun loadDomainPage(page: Int): DomainMoviePage = when(page) {
-//        1 -> MovieDataMapper().convertDataMoviePageIntoDomainMoviePage(loadDataPage(page))
-//        2 -> activityRule.loadObjectFromJsonFile("data_movie_page_2.json")
-//        3 -> activityRule.loadObjectFromJsonFile("data_movie_page_3.json")
-//        else -> {
-//            throw RuntimeException("Unsupported page requested in test. Page { $page }")
-//        }
-//    }
-//
-//    private fun loadDataPage(page: Int): MoviePage = when (page) {
-//        1 -> activityRule.loadObjectFromJsonFile("data_movie_page_1.json")
-//        2 -> activityRule.loadObjectFromJsonFile("data_movie_page_2.json")
-//        3 -> activityRule.loadObjectFromJsonFile("data_movie_page_3.json")
-//        else -> {
-//            throw RuntimeException("Unsupported page requested in test. Page { $page }")
-//        }
-//    }
+    private class MoviePageAnswer(private val expectedMoviePage: DomainMoviePage,
+                                  private val initialPage: Int? = null) : Answer<DomainMoviePage> {
+        override fun answer(invocation: InvocationOnMock?): DomainMoviePage? {
+            val argument = invocation!!.arguments[0]
+            return if (argument is MoviesInTheaterInputParam) {
+                val page = argument.page
+                if (initialPage != null) {
+                    assertEquals(initialPage, page)
+                }
+                return expectedMoviePage
+            } else {
+                null
+            }
+        }
+    }
+
+
+    private class MoviePageAnswerLoader<T : Activity>(private val activityTestRule: MoviesPreviewActivityTestRule<T>) : Answer<DomainMoviePage> {
+        override fun answer(invocation: InvocationOnMock?): DomainMoviePage? {
+            val argument = invocation!!.arguments[0]
+            return if (argument is MoviesInTheaterInputParam) {
+                val page = argument.page
+                return activityTestRule.loadDomainPage(page)
+            } else {
+                null
+            }
+        }
+    }
 
 }
