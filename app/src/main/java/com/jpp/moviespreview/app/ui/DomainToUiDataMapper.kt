@@ -42,11 +42,11 @@ class DomainToUiDataMapper {
 
 
     /**
-     * Converts a [DomainMovieConfiguration] into a list of [ImageConfiguration] containing the images base URL and the sizes provided
+     * Converts a [DomainMovieConfiguration] into a list of [ImageConfiguration] containing the images base URL and the posterSizes provided
      * by the [domainMoviesConfiguration].
      */
     fun convertConfigurationToImagesConfiguration(domainMoviesConfiguration: DomainMovieConfiguration): List<ImageConfiguration> {
-        return domainMoviesConfiguration.posterImagesConfiguration.sizes.map {
+        return domainMoviesConfiguration.posterImagesConfiguration.posterSizes.map {
             ImageConfiguration(domainMoviesConfiguration.posterImagesConfiguration.baseUrl, it, it.transformToInt())
         }
     }

@@ -5,7 +5,7 @@ import com.jpp.moviespreview.app.util.AllOpen
 /**
  * Represents the configuration of the images from the UI perspective.
  * The URL that references the location of the images.
- * A list of possible sizes to retrieve (the presenters and views are the ones
+ * A list of possible posterSizes to retrieve (the presenters and views are the ones
  * that take care of finding the proper size)
  */
 data class ImageConfiguration(private val baseUrl: String,
