@@ -3,13 +3,10 @@ package com.jpp.moviespreview.app.extentions
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.support.test.InstrumentationRegistry
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.lifecycle.ActivityLifecycleCallback
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import android.support.test.runner.lifecycle.Stage
-import com.google.gson.Gson
-import com.jpp.moviespreview.app.fromJson
 import java.util.concurrent.CountDownLatch
 
 /**
@@ -126,17 +123,5 @@ private class WaitForResumed : ActivityLifecycleCallback {
         mCountdownLatch.await()
     }
 
-}
-
-/**
- * Loads an object from the JSON file indicated in the [jsonFile] parameter.
- */
-inline fun <T : Activity, reified R> ActivityTestRule<T>.loadObjectFromJsonFile(jsonFile: String): R {
-    val input = InstrumentationRegistry.getInstrumentation().context.assets.open(jsonFile)
-    val size = input.available()
-    val buffer = ByteArray(size)
-    input.read(buffer)
-    input.close()
-    return Gson().fromJson(String(buffer))
 }
 

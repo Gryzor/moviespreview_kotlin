@@ -50,9 +50,9 @@ class MovieDetailsFragmentEspressoTests {
     }
 
     @Test
-    fun test_onLinkView_showsAllMovieDetails() {
+    fun showsAllMovieDetails() {
         val expectedOverview = "Overview"
-        val expectedGenres = moviesContext.mockMovieGenres()
+        val expectedGenres = mockMovieGenres()
         val expectedVoteCount = 12.toDouble()
         val expectedPopularity = 12.toFloat()
 
@@ -74,7 +74,6 @@ class MovieDetailsFragmentEspressoTests {
         onView(withId(R.id.movie_details_popularity_text_view))
                 .check(matches(withText(expectedPopularity.toString())))
     }
-
 
 
     private fun launchActivityAndAddFragment() {

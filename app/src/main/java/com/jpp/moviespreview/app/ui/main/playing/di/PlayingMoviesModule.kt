@@ -1,21 +1,16 @@
 package com.jpp.moviespreview.app.ui.main.playing.di
 
-import com.jpp.moviespreview.app.data.cache.MoviesCache
-import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
 import com.jpp.moviespreview.app.domain.MoviePage
 import com.jpp.moviespreview.app.domain.MoviesInTheaterInputParam
 import com.jpp.moviespreview.app.domain.UseCase
-import com.jpp.moviespreview.app.domain.movie.MovieDataMapper
-import com.jpp.moviespreview.app.domain.movie.RetrieveMoviesInTheaterUseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.MoviesContext
-import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
-import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
-import com.jpp.moviespreview.app.ui.main.di.MainScreenScope
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
-import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegateImpl
+import com.jpp.moviespreview.app.ui.main.di.MainScreenScope
 import com.jpp.moviespreview.app.ui.main.playing.PlayingMoviesPresenter
 import com.jpp.moviespreview.app.ui.main.playing.PlayingMoviesPresenterImpl
+import com.jpp.moviespreview.app.ui.main.playing.PlayingMoviesPresenterInteractor
+import com.jpp.moviespreview.app.ui.main.playing.PlayingMoviesPresenterInteractorImpl
 import dagger.Module
 import dagger.Provides
 
@@ -33,7 +28,7 @@ class PlayingMoviesModule {
     @Provides
     @MainScreenScope
     fun providesPlayingMoviesPresenter(moviesContext: MoviesContext,
-                                       presenterInteractorDelegate: PresenterInteractorDelegate,
+                                       presenterInteractorDelegate: PlayingMoviesPresenterInteractor,
                                        playingMoviesUseCase: UseCase<MoviesInTheaterInputParam, MoviePage>,
                                        mapper: DomainToUiDataMapper): PlayingMoviesPresenter
             = PlayingMoviesPresenterImpl(moviesContext, presenterInteractorDelegate, playingMoviesUseCase, mapper)
@@ -41,13 +36,7 @@ class PlayingMoviesModule {
 
     @Provides
     @MainScreenScope
-    fun providesRetrieveMoviesInTheaterUseCase(api: MoviesPreviewApiWrapper, moviesCache: MoviesCache): UseCase<MoviesInTheaterInputParam, MoviePage>
-            = RetrieveMoviesInTheaterUseCase(MovieDataMapper(), api, moviesCache)
-
-    @Provides
-    @MainScreenScope
-    fun providesPlayingMoviesInteractorDelegate(backgroundInteractor: BackgroundInteractor,
-                                                connectivityInteractor: ConnectivityInteractor): PresenterInteractorDelegate
-            = PresenterInteractorDelegateImpl(backgroundInteractor, connectivityInteractor)
+    fun providesPlayingMoviesInteractorDelegate(presenterInteractorDelegate: PresenterInteractorDelegate): PlayingMoviesPresenterInteractor
+            = PlayingMoviesPresenterInteractorImpl(presenterInteractorDelegate)
 
 }

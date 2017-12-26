@@ -1,16 +1,32 @@
 package com.jpp.moviespreview.app.domain
 
+import android.support.annotation.IntDef
+
 /**
- * Represents the configuration of the images tha the data layer can provide.
+ * Represents the configuration of the images from the Domain perspective.
+ * [baseUrl] is the base url where the images are located.
+ * [size] represents the size for this image config.
+ * [type] maps the ImageConfiguration to a given type.
  */
-data class ImagesConfiguration(val baseUrl: String,
-                               val sizes: List<String>,
-                               var profileSizes: List<String>)
+data class ImageConfiguration(val baseUrl: String,
+                              val size: String,
+                              @Type val type: Long) {
+
+    companion object {
+
+        @IntDef(POSTER, PROFILE)
+        @Retention(AnnotationRetention.SOURCE)
+        annotation class Type
+
+        const val POSTER = 0L
+        const val PROFILE = 1L
+    }
+}
 
 /**
  * Represents the general configuration of the movies
  */
-data class MoviesConfiguration(val posterImagesConfiguration: ImagesConfiguration)
+data class MoviesConfiguration(val imagesConfiguration: List<ImageConfiguration>)
 
 
 /**

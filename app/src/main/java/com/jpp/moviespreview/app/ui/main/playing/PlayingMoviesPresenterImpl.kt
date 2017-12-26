@@ -1,11 +1,8 @@
 package com.jpp.moviespreview.app.ui.main.playing
 
-import android.annotation.SuppressLint
-import android.support.annotation.VisibleForTesting
 import com.jpp.moviespreview.app.domain.MoviesInTheaterInputParam
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.*
-import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 import com.jpp.moviespreview.app.domain.Genre as DomainGenre
 import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
 
@@ -15,7 +12,7 @@ import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
  * Created by jpp on 10/23/17.
  */
 class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
-                                 private val interactorDelegate: PresenterInteractorDelegate,
+                                 private val interactorDelegate: PlayingMoviesPresenterInteractor,
                                  private val playingMoviesUseCase: UseCase<MoviesInTheaterInputParam, DomainMoviePage>,
                                  private val mapper: DomainToUiDataMapper) : PlayingMoviesPresenter {
 
@@ -32,11 +29,10 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
     override fun linkView(view: PlayingMoviesView) {
         playingMoviesView = view
         loadOrRetrieveMovies()
-
     }
 
     override fun refreshData() {
-        refreshMovieAfterDetailView()
+        refreshMovieData()
     }
 
     override fun onMovieImageSelected(movie: Movie, position: Int) {
@@ -59,7 +55,7 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
         }
     }
 
-    private fun refreshMovieAfterDetailView() {
+    private fun refreshMovieData() {
         if (moviesContext.selectedMovie != null) {
             playingMoviesView.updateMovie(moviesContext.selectedMovie!!)
             moviesContext.selectedMovie = null
@@ -67,7 +63,6 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
     }
 
 
-    @SuppressLint("VisibleForTests")
     override fun getNextMoviePage() {
         with(moviesContext) {
             if (isConfigCompleted()) {
@@ -123,7 +118,7 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
      */
     private fun processMoviesPage(moviePage: DomainMoviePage?) {
         moviePage?.let {
-            val selectedImageConfig = moviesContext.getImageConfigForScreenWidth(getImagesWidthObjective())
+            val selectedImageConfig = interactorDelegate.findPosterImageConfigurationForWidth(moviesContext.posterImageConfig!!, getImagesWidthObjective())
             val convertedMoviePage = mapper.convertDomainMoviePageToUiMoviePage(it, selectedImageConfig, moviesContext.movieGenres!!)
             moviesContext.addMoviePage(convertedMoviePage)
             playingMoviesView.showMoviePage(convertedMoviePage)
@@ -161,8 +156,7 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
     /**
      * Executes the use case to retrieve the movie page.
      */
-    @VisibleForTesting
-    fun executeUseCase(param: MoviesInTheaterInputParam) {
+    private fun executeUseCase(param: MoviesInTheaterInputParam) {
         interactorDelegate.executeBackgroundJob(
                 {
                     showLoadingIfNeeded()

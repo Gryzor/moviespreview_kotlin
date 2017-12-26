@@ -1,15 +1,8 @@
 package com.jpp.moviespreview.app.ui.splash.di
 
-import com.jpp.moviespreview.app.data.cache.MoviesConfigurationCache
-import com.jpp.moviespreview.app.data.cache.MoviesGenreCache
-import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
 import com.jpp.moviespreview.app.domain.Genre
 import com.jpp.moviespreview.app.domain.MoviesConfiguration
 import com.jpp.moviespreview.app.domain.UseCase
-import com.jpp.moviespreview.app.domain.configuration.ConfigurationDataMapper
-import com.jpp.moviespreview.app.domain.configuration.RetrieveConfigurationUseCase
-import com.jpp.moviespreview.app.domain.genre.GenreDataMapper
-import com.jpp.moviespreview.app.domain.genre.RetrieveGenresUseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
@@ -36,15 +29,4 @@ class SplashModule {
                                 configurationUseCase: UseCase<Any, MoviesConfiguration>,
                                 genresUseCase: UseCase<Any, List<Genre>>): SplashPresenter
             = SplashPresenterImpl(moviesContext, backgroundInteractor, domainToUiDataMapper, connectivityInteractor, configurationUseCase, genresUseCase)
-
-    @Provides
-    @SplashScope
-    fun provideRetrieveConfigurationUseCase(apiInstance: MoviesPreviewApiWrapper, configurationCache: MoviesConfigurationCache): UseCase<Any, MoviesConfiguration>
-            = RetrieveConfigurationUseCase(ConfigurationDataMapper(), apiInstance, configurationCache)
-
-
-    @Provides
-    @SplashScope
-    fun provideRetrieveMovieGenresUseCase(apiInstance: MoviesPreviewApiWrapper, genresCache: MoviesGenreCache): UseCase<Any, List<Genre>>
-            = RetrieveGenresUseCase(GenreDataMapper(), apiInstance, genresCache)
 }

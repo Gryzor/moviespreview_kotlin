@@ -55,7 +55,7 @@ class MoviesConfigurationCacheImpl(private val mapper: CacheDataMapper,
         val cacheImageConfig = mapper.convertMoviesConfigurationToCacheModel(moviesConfig)
         val parentId = database.imageConfigDao().insertImageConfig(cacheImageConfig)
 
-        // 3 -> insert image sizes
+        // 3 -> insert image posterSizes
         val imageSizes = mapper.convertImagesConfigurationToCacheModel(parentId, moviesConfig)
         database.imageConfigDao().insertAllImageSize(imageSizes)
     }

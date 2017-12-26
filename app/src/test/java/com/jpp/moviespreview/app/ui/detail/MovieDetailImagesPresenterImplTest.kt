@@ -10,6 +10,8 @@ import org.mockito.Mockito.verify
 
 
 /**
+ * Espresso tests for this presenter is hard, that's why unit tests are added.
+ *
  * Created by jpp on 12/15/17.
  */
 class MovieDetailImagesPresenterImplTest {

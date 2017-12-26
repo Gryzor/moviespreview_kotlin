@@ -1,8 +1,10 @@
 package com.jpp.moviespreview.app.ui
 
 import com.jpp.moviespreview.R
+import com.jpp.moviespreview.app.domain.ImageConfiguration.Companion.POSTER
+import com.jpp.moviespreview.app.domain.ImageConfiguration.Companion.PROFILE
 import com.jpp.moviespreview.app.util.extentions.filterInList
-import com.jpp.moviespreview.app.util.extentions.transformToInt
+import com.jpp.moviespreview.app.util.extentions.mapIf
 import com.jpp.moviespreview.app.domain.Genre as DomainGenre
 import com.jpp.moviespreview.app.domain.Movie as DomainMovie
 import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
@@ -38,19 +40,20 @@ class DomainToUiDataMapper {
     }
 
 
-    private var domainGenres: List<DomainGenre>? = null
-
-
-    /**
-     * Converts a [DomainMovieConfiguration] into a list of [ImageConfiguration] containing the images base URL and the sizes provided
-     * by the [domainMoviesConfiguration].
-     */
-    fun convertConfigurationToImagesConfiguration(domainMoviesConfiguration: DomainMovieConfiguration): List<ImageConfiguration> {
-        return domainMoviesConfiguration.posterImagesConfiguration.sizes.map {
-            ImageConfiguration(domainMoviesConfiguration.posterImagesConfiguration.baseUrl, it, it.transformToInt())
-        }
+    fun convertPosterImageConfigurations(domainMoviesConfiguration: DomainMovieConfiguration): List<PosterImageConfiguration> {
+        return domainMoviesConfiguration.imagesConfiguration.mapIf(
+                { it.type == POSTER },
+                { PosterImageConfiguration(it.baseUrl, it.size) }
+        )
     }
 
+
+    fun convertProfileImageConfigurations(domainMoviesConfiguration: DomainMovieConfiguration): List<ProfileImageConfiguration> {
+        return domainMoviesConfiguration.imagesConfiguration.mapIf(
+                { it.type == PROFILE },
+                { ProfileImageConfiguration(it.baseUrl, it.size) }
+        )
+    }
 
     /**
      * Converts a list of [DomainGenre]s into a list of [MovieGenre]
@@ -65,8 +68,8 @@ class DomainToUiDataMapper {
     /**
      * Maps all the known genres with a given icon.
      */
-    private fun mapGenreToIcon(domainGenre: DomainGenre) : Int {
-        when(domainGenre.id) {
+    private fun mapGenreToIcon(domainGenre: DomainGenre): Int {
+        when (domainGenre.id) {
             ACTION_GENRE_ID -> return R.drawable.ic_action
             ADVENTURE_GENRE_ID -> return R.drawable.ic_adventure
             ANIMATION_GENRE_ID -> return R.drawable.ic_animation
@@ -135,18 +138,10 @@ class DomainToUiDataMapper {
 
     /**
      * Converts a list of [MovieGenre] (UI model) into a list of [DomainGenre].
-     * Will hold in memory the last list of [DomainGenre] created in order to avoid
-     * overhead. If it detects that the provided [uiGenres] list is different that the one
-     * in memory, it will convert to the new one.
      */
     fun convertUiGenresToDomainGenres(uiGenres: List<MovieGenre>): List<DomainGenre> {
-        if (domainGenres == null || domainGenres?.size == uiGenres.size) {
-            domainGenres = uiGenres.map {
-                DomainGenre(it.id, it.name)
-            }
+        return uiGenres.map {
+            DomainGenre(it.id, it.name)
         }
-        return domainGenres as List<DomainGenre>
     }
-
-
 }

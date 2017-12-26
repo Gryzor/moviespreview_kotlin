@@ -29,7 +29,7 @@ data class ImageConfig(@ColumnInfo(name = "base_url") var baseUrl: String) {
 
 
 /**
- * Represents the array of image sizes in ImagesConfiguration.
+ * Represents the array of image posterSizes in ImagesConfiguration.
  * Has a foreign key to the ImageConfig definition table.
  */
 @Entity(tableName = "image_size",
