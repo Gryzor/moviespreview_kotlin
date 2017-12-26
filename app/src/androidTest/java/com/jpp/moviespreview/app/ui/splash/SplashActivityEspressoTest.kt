@@ -7,18 +7,14 @@ import android.support.test.espresso.intent.Intents
 import android.support.test.espresso.intent.matcher.IntentMatchers
 import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.support.test.espresso.matcher.ViewMatchers.withText
-import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.TestComponentRule
-import com.jpp.moviespreview.app.data.Genres
 import com.jpp.moviespreview.app.domain.ImageConfiguration.Companion.POSTER
 import com.jpp.moviespreview.app.domain.ImageConfiguration.Companion.PROFILE
 import com.jpp.moviespreview.app.domain.UseCase
-import com.jpp.moviespreview.app.domain.configuration.ConfigurationDataMapper
-import com.jpp.moviespreview.app.domain.genre.GenreDataMapper
+import com.jpp.moviespreview.app.extentions.MoviesPreviewActivityTestRule
 import com.jpp.moviespreview.app.extentions.launch
-import com.jpp.moviespreview.app.extentions.loadObjectFromJsonFile
 import com.jpp.moviespreview.app.extentions.waitToFinish
 import com.jpp.moviespreview.app.ui.MovieGenre
 import com.jpp.moviespreview.app.ui.MoviesContext
@@ -52,7 +48,7 @@ class SplashActivityEspressoTest {
 
     @get:Rule
     @JvmField
-    val activityRule = ActivityTestRule(SplashActivity::class.java)
+    val activityRule = MoviesPreviewActivityTestRule(SplashActivity::class.java)
     @get:Rule
     val testComponentRule = TestComponentRule()
 
@@ -75,10 +71,10 @@ class SplashActivityEspressoTest {
     @Test
     fun completesContextAndContinuesToHomeScreen() {
         Intents.init()
-        val moviesConfiguration = loadDomainConfig()
+        val moviesConfiguration = activityRule.loadDomainConfig()
         `when`(moviesConfigUseCase.execute()).thenReturn(moviesConfiguration)
 
-        val genreList = loadDomainGenres()
+        val genreList = activityRule.loadDomainGenres()
         `when`(genresUseCase.execute()).thenReturn(genreList)
 
         activityRule.launch(Intent())
@@ -142,7 +138,7 @@ class SplashActivityEspressoTest {
     @Test
     fun appShowsConnectivityErrorWhenRetrievingGenresAndNoConnection() {
         //config OK
-        val moviesConfiguration = loadDomainConfig()
+        val moviesConfiguration = activityRule.loadDomainConfig()
         `when`(moviesConfigUseCase.execute()).thenReturn(moviesConfiguration)
         // no genres
         `when`(genresUseCase.execute()).thenReturn(null)
@@ -169,7 +165,7 @@ class SplashActivityEspressoTest {
     @Test
     fun appShowsUnexpectedErrorWhenRetrievingGenres() {
         //config OK
-        val moviesConfiguration = loadDomainConfig()
+        val moviesConfiguration = activityRule.loadDomainConfig()
         `when`(moviesConfigUseCase.execute()).thenReturn(moviesConfiguration)
         // no genres
         `when`(genresUseCase.execute()).thenReturn(null)
@@ -181,12 +177,4 @@ class SplashActivityEspressoTest {
         onView(withText(R.string.alert_unexpected_error_message))
                 .check(matches(isDisplayed()))
     }
-
-
-    private fun loadDomainConfig(): DomainMoviesConfiguration
-            = ConfigurationDataMapper().convertMoviesConfigurationFromDataModel(activityRule.loadObjectFromJsonFile("data_movies_configuration.json"))
-
-    private fun loadDomainGenres(): List<DomainGenre> = GenreDataMapper().convertGenreListFromDataModel(loadDataGenres().genres)
-
-    private fun loadDataGenres(): Genres = activityRule.loadObjectFromJsonFile("data_genres.json")
 }

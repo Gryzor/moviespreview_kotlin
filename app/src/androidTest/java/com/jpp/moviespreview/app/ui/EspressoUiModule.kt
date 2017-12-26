@@ -4,6 +4,8 @@ import com.jpp.moviespreview.app.BackgroundInteractorForTesting
 import com.jpp.moviespreview.app.mock
 import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
+import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
+import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegateImpl
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -31,4 +33,10 @@ class EspressoUiModule {
     @Singleton
     @Provides
     fun providesConnectivityInteractor(): ConnectivityInteractor = mock()
+
+    @Singleton
+    @Provides
+    fun providePresenterInteractorDelegate(backgroundInteractor: BackgroundInteractor,
+                                           connectivityInteractor: ConnectivityInteractor): PresenterInteractorDelegate
+            = PresenterInteractorDelegateImpl(backgroundInteractor, connectivityInteractor)
 }

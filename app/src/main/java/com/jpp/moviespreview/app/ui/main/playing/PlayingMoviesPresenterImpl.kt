@@ -1,7 +1,5 @@
 package com.jpp.moviespreview.app.ui.main.playing
 
-import android.annotation.SuppressLint
-import android.support.annotation.VisibleForTesting
 import com.jpp.moviespreview.app.domain.MoviesInTheaterInputParam
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.*
@@ -66,7 +64,6 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
     }
 
 
-    @SuppressLint("VisibleForTests")
     override fun getNextMoviePage() {
         with(moviesContext) {
             if (isConfigCompleted()) {
@@ -160,7 +157,6 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
     /**
      * Executes the use case to retrieve the movie page.
      */
-    @VisibleForTesting
     private fun executeUseCase(param: MoviesInTheaterInputParam) {
         interactorDelegate.executeBackgroundJob(
                 {
