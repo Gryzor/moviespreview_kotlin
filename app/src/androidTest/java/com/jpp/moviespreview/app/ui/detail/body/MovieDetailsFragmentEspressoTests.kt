@@ -50,31 +50,30 @@ class MovieDetailsFragmentEspressoTests {
     }
 
     @Test
-    fun test_onLinkView_showsAllMovieDetails() {
-//        val expectedOverview = "Overview"
-//        val expectedGenres = moviesContext.mockMovieGenres()
-//        val expectedVoteCount = 12.toDouble()
-//        val expectedPopularity = 12.toFloat()
-//
-//        `when`(selectedMovie.overview).thenReturn(expectedOverview)
-//        `when`(selectedMovie.genres).thenReturn(expectedGenres)
-//        `when`(selectedMovie.voteCount).thenReturn(expectedVoteCount)
-//        `when`(selectedMovie.popularity).thenReturn(expectedPopularity)
-//        launchActivityAndAddFragment()
-//
-//        onView(withId(R.id.movie_details_fragment_overview_body))
-//                .check(matches(withText(expectedOverview)))
-//
-//        onView(withId(R.id.movie_details_fragment_recycler_view))
-//                .check(RecyclerViewItemCountAssertion(expectedGenres.size))
-//
-//        onView(withId(R.id.movie_details_fragment_vote_count_text_view))
-//                .check(matches(withText(expectedVoteCount.toString())))
-//
-//        onView(withId(R.id.movie_details_popularity_text_view))
-//                .check(matches(withText(expectedPopularity.toString())))
-    }
+    fun showsAllMovieDetails() {
+        val expectedOverview = "Overview"
+        val expectedGenres = mockMovieGenres()
+        val expectedVoteCount = 12.toDouble()
+        val expectedPopularity = 12.toFloat()
 
+        `when`(selectedMovie.overview).thenReturn(expectedOverview)
+        `when`(selectedMovie.genres).thenReturn(expectedGenres)
+        `when`(selectedMovie.voteCount).thenReturn(expectedVoteCount)
+        `when`(selectedMovie.popularity).thenReturn(expectedPopularity)
+        launchActivityAndAddFragment()
+
+        onView(withId(R.id.movie_details_fragment_overview_body))
+                .check(matches(withText(expectedOverview)))
+
+        onView(withId(R.id.movie_details_fragment_recycler_view))
+                .check(RecyclerViewItemCountAssertion(expectedGenres.size))
+
+        onView(withId(R.id.movie_details_fragment_vote_count_text_view))
+                .check(matches(withText(expectedVoteCount.toString())))
+
+        onView(withId(R.id.movie_details_popularity_text_view))
+                .check(matches(withText(expectedPopularity.toString())))
+    }
 
 
     private fun launchActivityAndAddFragment() {

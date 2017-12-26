@@ -88,7 +88,7 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
      * use case execution. If the scrolling has reached the last possible position,
      * it asks the view to show the end of page and returns null.
      */
-    private fun createNextUseCaseParam(): MoviesInTheaterInputParam? {
+    fun createNextUseCaseParam(): MoviesInTheaterInputParam? {
         with(moviesContext) {
             var lastMoviePageIndex = 0 // by default, always get the first page
             var lastMoviePage: MoviePage? = null
