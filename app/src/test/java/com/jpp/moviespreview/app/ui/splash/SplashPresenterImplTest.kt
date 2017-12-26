@@ -79,7 +79,7 @@ class SplashPresenterImplTest {
         val rawProfileSizes = ArrayList<String>()
         rawProfileSizes.add("28")
         val sizes = ImagesConfiguration("randomUrl", rawSizes, rawProfileSizes)
-        Mockito.`when`(movieConfigRetrieved.posterImagesConfiguration).thenReturn(sizes)
+        Mockito.`when`(movieConfigRetrieved.imagesConfiguration).thenReturn(sizes)
         Mockito.`when`(moviesConfigurationUseCase.execute()).thenReturn(movieConfigRetrieved)
         val genreList = ArrayList<Genre>()
         genreList.add(Genre(12, "Random"))
@@ -116,7 +116,7 @@ class SplashPresenterImplTest {
         // -- prepare
         val movieConfigRetrieved: MoviesConfiguration = mock()
         val sizes = ImagesConfiguration("randomUrl", ArrayList(), ArrayList())
-        Mockito.`when`(movieConfigRetrieved.posterImagesConfiguration).thenReturn(sizes)
+        Mockito.`when`(movieConfigRetrieved.imagesConfiguration).thenReturn(sizes)
         Mockito.`when`(moviesConfigurationUseCase.execute()).thenReturn(movieConfigRetrieved)
         Mockito.`when`(moviesGenresUseCase.execute()).thenReturn(null)
         Mockito.`when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(true)
@@ -153,7 +153,7 @@ class SplashPresenterImplTest {
         // -- prepare
         val movieConfigRetrieved: MoviesConfiguration = mock()
         val sizes = ImagesConfiguration("randomUrl", ArrayList(), ArrayList())
-        Mockito.`when`(movieConfigRetrieved.posterImagesConfiguration).thenReturn(sizes)
+        Mockito.`when`(movieConfigRetrieved.imagesConfiguration).thenReturn(sizes)
         Mockito.`when`(moviesConfigurationUseCase.execute()).thenReturn(movieConfigRetrieved)
         Mockito.`when`(moviesGenresUseCase.execute()).thenReturn(null)
         Mockito.`when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(false)

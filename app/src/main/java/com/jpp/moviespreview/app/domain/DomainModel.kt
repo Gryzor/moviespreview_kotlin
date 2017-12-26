@@ -10,7 +10,7 @@ data class ImagesConfiguration(val baseUrl: String,
 /**
  * Represents the general configuration of the movies
  */
-data class MoviesConfiguration(val posterImagesConfiguration: ImagesConfiguration)
+data class MoviesConfiguration(val imagesConfiguration: ImagesConfiguration)
 
 
 /**
