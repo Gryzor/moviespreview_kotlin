@@ -5,12 +5,12 @@ import com.jpp.moviespreview.app.domain.ImageConfiguration.Companion.POSTER
 import com.jpp.moviespreview.app.domain.ImageConfiguration.Companion.PROFILE
 import com.jpp.moviespreview.app.util.extentions.filterInList
 import com.jpp.moviespreview.app.util.extentions.mapIf
+import com.jpp.moviespreview.app.domain.CastCharacter as DomainCastCharacter
+import com.jpp.moviespreview.app.domain.CrewPerson as DomainCrewPerson
 import com.jpp.moviespreview.app.domain.Genre as DomainGenre
 import com.jpp.moviespreview.app.domain.Movie as DomainMovie
 import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
 import com.jpp.moviespreview.app.domain.MoviesConfiguration as DomainMovieConfiguration
-import com.jpp.moviespreview.app.domain.CrewPerson as DomainCrewPerson
-import com.jpp.moviespreview.app.domain.CastCharacter as DomainCastCharacter
 
 /**
  * Maps domain model to UI model
@@ -180,10 +180,10 @@ class DomainToUiDataMapper {
      * Converts the provided lists of [DomainCastCharacter] and [DomainCrewPerson] into
      * a single list of [CreditPerson]
      */
-    fun convertDomainCreditsInUiCredits(cast: List<DomainCastCharacter>, crew: List<DomainCrewPerson>): List<CreditPerson> {
+    fun convertDomainCreditsInUiCredits(cast: List<DomainCastCharacter>, crew: List<DomainCrewPerson>, selectedImageConfiguration: ImageConfiguration): List<CreditPerson> {
         val creditPersonList = ArrayList<CreditPerson>()
-        cast.mapTo(creditPersonList) { CreditPerson(it.profilePath.toString(), it.character, it.name) }
-        crew.mapTo(creditPersonList) { CreditPerson(it.profilePath.toString(), it.name, it.department) }
+        cast.mapTo(creditPersonList) { CreditPerson(selectedImageConfiguration.prepareImageUrl(it.profilePath.toString()), it.character, it.name) }
+        crew.mapTo(creditPersonList) { CreditPerson(selectedImageConfiguration.prepareImageUrl(it.profilePath.toString()), it.name, it.department) }
         return creditPersonList
     }
 }

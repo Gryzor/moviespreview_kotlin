@@ -21,7 +21,6 @@ import javax.inject.Inject
  */
 class MovieCreditsFragment : Fragment(), MovieDetailCreditsView {
 
-
     companion object {
         // Factory method to follow the Fragment.newInstance() Android pattern
         fun newInstance() = MovieCreditsFragment()
@@ -60,5 +59,6 @@ class MovieCreditsFragment : Fragment(), MovieDetailCreditsView {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override fun getTargetProfileImageHeight() = resources.getDimensionPixelSize(R.dimen.credits_list_item_image_view_height)
 
 }

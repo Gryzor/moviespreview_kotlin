@@ -43,6 +43,7 @@ interface MovieDetailCreditsView {
     fun showLoading()
     fun showMovieCredits(credits: List<CreditPerson>)
     fun showErrorRetrievingCredits()
+    fun getTargetProfileImageHeight(): Int
 }
 
 interface MovieDetailCreditsPresenter {

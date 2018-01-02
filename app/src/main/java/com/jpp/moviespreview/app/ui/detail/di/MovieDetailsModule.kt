@@ -11,6 +11,8 @@ import com.jpp.moviespreview.app.ui.detail.MovieDetailImagesPresenterImpl
 import com.jpp.moviespreview.app.ui.detail.MovieDetailPresenter
 import com.jpp.moviespreview.app.ui.detail.body.MovieDetailPresenterImpl
 import com.jpp.moviespreview.app.ui.detail.credits.MovieDetailCreditsPresenterImpl
+import com.jpp.moviespreview.app.ui.detail.credits.MovieDetailsCreditsPresenterInteractor
+import com.jpp.moviespreview.app.ui.detail.credits.MovieDetailsCreditsPresenterInteractorImpl
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 import dagger.Module
 import dagger.Provides
@@ -37,8 +39,14 @@ class MovieDetailsModule {
     @Provides
     @DetailsScope
     fun providesMovieDetailsCreditsPresenter(moviesContext: MoviesContext,
-                                             presenterInteractorDelegate: PresenterInteractorDelegate,
+                                             presenterInteractorDelegate: MovieDetailsCreditsPresenterInteractor,
                                              useCase: UseCase<Movie, MovieCredits>,
                                              mapper: DomainToUiDataMapper): MovieDetailCreditsPresenter
             = MovieDetailCreditsPresenterImpl(moviesContext, presenterInteractorDelegate, useCase, mapper)
+
+    @Provides
+    @DetailsScope
+    fun providesMovieDetailsCreditsPresenterInteractor(presenterInteractorDelegate: PresenterInteractorDelegate): MovieDetailsCreditsPresenterInteractor
+            = MovieDetailsCreditsPresenterInteractorImpl(presenterInteractorDelegate)
+
 }

@@ -65,6 +65,7 @@ fun ImageView.loadCircularImageView(imageUrl: String) {
     Glide.with(ctx)
             .load(imageUrl)
             .asBitmap()
+            .error(R.drawable.ic_person_black)
             .centerCrop()
             .into(CircularImageViewTransformation(this))
 }

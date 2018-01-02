@@ -13,7 +13,7 @@ import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
  * Created by jpp on 12/20/17.
  */
 class MovieDetailCreditsPresenterImpl(private val moviesContext: MoviesContext,
-                                      private val interactorDelegate: PresenterInteractorDelegate,
+                                      private val interactorDelegate: MovieDetailsCreditsPresenterInteractor,
                                       private val useCase: UseCase<Movie, MovieCredits>,
                                       private val mapper: DomainToUiDataMapper) : MovieDetailCreditsPresenter {
 
@@ -25,7 +25,9 @@ class MovieDetailCreditsPresenterImpl(private val moviesContext: MoviesContext,
                     { useCase.execute(mapper.convertUiMovieIntoDomainMovie(moviesContext.selectedMovie!!)) },
                     {
                         if (it != null) {
-                            view.showMovieCredits(mapper.convertDomainCreditsInUiCredits(it.cast, it.crew))
+                            val imageConfig = interactorDelegate.findProfileImageConfigurationForHeight(moviesContext.profileImageConfig!!, view.getTargetProfileImageHeight())
+                            view.showMovieCredits(mapper
+                                    .convertDomainCreditsInUiCredits(it.cast.sortedBy { it.order }, it.crew, imageConfig))
                         } else {
                             view.showErrorRetrievingCredits()
                         }
