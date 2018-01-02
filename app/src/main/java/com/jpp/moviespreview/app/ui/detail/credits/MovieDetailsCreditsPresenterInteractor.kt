@@ -19,8 +19,6 @@ interface MovieDetailsCreditsPresenterInteractor : PresenterInteractorDelegate {
 class MovieDetailsCreditsPresenterInteractorImpl(private val presenterInteractorDelegate: PresenterInteractorDelegate)
     : MovieDetailsCreditsPresenterInteractor {
 
-    private var selectedProfileImageConfig: ProfileImageConfiguration? = null
-
     override fun isConnectedToNetwork() = presenterInteractorDelegate.isConnectedToNetwork()
 
     override fun <T> executeBackgroundJob(backgroundJob: () -> T?, uiJob: (T?) -> Unit?) {
@@ -31,12 +29,9 @@ class MovieDetailsCreditsPresenterInteractorImpl(private val presenterInteractor
 
 
     override fun findProfileImageConfigurationForHeight(profileImageConfigs: List<ProfileImageConfiguration>, height: Int): ProfileImageConfiguration {
-        if (selectedProfileImageConfig == null) {
-            selectedProfileImageConfig = profileImageConfigs.firstOrNull {
-                isImageConfigForSize(height, it)
-            } ?: profileImageConfigs.last()
-        }
-        return selectedProfileImageConfig!!
+        return profileImageConfigs.firstOrNull {
+            isImageConfigForSize(height, it)
+        } ?: profileImageConfigs.last()
     }
 
 
