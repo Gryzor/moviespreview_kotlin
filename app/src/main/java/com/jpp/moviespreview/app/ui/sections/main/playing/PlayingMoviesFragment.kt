@@ -108,7 +108,6 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
     }
 
     private fun showMovieDetails(viewPager: ViewPager) {
-        ViewCompat.setTransitionName(viewPager, "vpTransition")
         MovieDetailActivity.navigateWithTransition(activity as AppCompatActivity, viewPager)
     }
 }

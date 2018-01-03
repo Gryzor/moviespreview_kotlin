@@ -1,8 +1,7 @@
 package com.jpp.moviespreview.app.ui.sections.main
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-
+import android.support.v7.app.AppCompatActivity
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.sections.main.playing.PlayingMoviesFragment
 import com.jpp.moviespreview.app.util.extentions.addFragmentIfNotInStack

@@ -34,9 +34,15 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailImagesView {
 
         fun navigateWithTransition(activity: AppCompatActivity, transitionViewPager: ViewPager) {
             val intent = Intent(activity, MovieDetailActivity::class.java)
-            intent.putExtra(EXTRA_TRANSITION_NAME, ViewCompat.getTransitionName(transitionViewPager))
-            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, transitionViewPager, ViewCompat.getTransitionName(transitionViewPager))
-            ActivityCompat.startActivity(activity, intent, options.toBundle())
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                activity.startActivity(intent)
+                activity.overridePendingTransition(R.anim.activity_enter_transition, 0)
+            } else {
+                ViewCompat.setTransitionName(transitionViewPager, "vpTransition")
+                intent.putExtra(EXTRA_TRANSITION_NAME, ViewCompat.getTransitionName(transitionViewPager))
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, transitionViewPager, ViewCompat.getTransitionName(transitionViewPager))
+                activity.startActivity(intent, options.toBundle())
+            }
         }
     }
 
@@ -103,6 +109,13 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailImagesView {
             val slideTransition = Slide()
             slideTransition.excludeTarget(android.R.id.statusBarBackground, true)
             window.enterTransition = slideTransition
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            overridePendingTransition(R.anim.activity_enter_transition, R.anim.activity_exit_transition)
         }
     }
 }
