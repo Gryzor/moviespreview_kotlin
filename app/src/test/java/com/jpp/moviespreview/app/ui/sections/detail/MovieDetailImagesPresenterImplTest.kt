@@ -1,4 +1,4 @@
-package com.jpp.moviespreview.app.ui.detail
+package com.jpp.moviespreview.app.ui.sections.detail
 
 import com.jpp.moviespreview.app.mock
 import com.jpp.moviespreview.app.ui.Movie

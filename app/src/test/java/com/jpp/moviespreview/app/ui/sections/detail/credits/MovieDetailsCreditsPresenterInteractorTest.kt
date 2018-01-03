@@ -1,4 +1,4 @@
-package com.jpp.moviespreview.app.ui.detail.credits
+package com.jpp.moviespreview.app.ui.sections.detail.credits
 
 import com.jpp.moviespreview.app.mock
 import com.jpp.moviespreview.app.ui.ProfileImageConfiguration

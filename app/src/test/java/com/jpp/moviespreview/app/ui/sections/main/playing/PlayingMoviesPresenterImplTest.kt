@@ -1,4 +1,4 @@
-package com.jpp.moviespreview.app.ui.main.playing
+package com.jpp.moviespreview.app.ui.sections.main.playing
 
 import com.jpp.moviespreview.app.BackgroundInteractorForTesting
 import com.jpp.moviespreview.app.domain.MoviePage
