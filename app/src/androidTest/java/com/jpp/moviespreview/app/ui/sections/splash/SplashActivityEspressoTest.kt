@@ -1,4 +1,4 @@
-package com.jpp.moviespreview.app.ui.splash
+package com.jpp.moviespreview.app.ui.sections.splash
 
 import android.content.Intent
 import android.support.test.espresso.Espresso.onView

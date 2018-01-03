@@ -1,4 +1,4 @@
-package com.jpp.moviespreview.app.ui.detail.credits
+package com.jpp.moviespreview.app.ui.sections.detail.credits
 
 import android.content.Intent
 import android.support.test.espresso.Espresso.onView
