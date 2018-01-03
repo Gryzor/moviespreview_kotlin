@@ -11,4 +11,5 @@
     <string name="genres_title">Genres</string>
     <string name="popularity_title">Popularity</string>
     <string name="vote_count_title">Vote Count</string>
+    <string name="error_retrieving_credits">@string/alert_unexpected_error_message</string>
 </resources>

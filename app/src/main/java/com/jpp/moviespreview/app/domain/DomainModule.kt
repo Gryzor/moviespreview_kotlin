@@ -12,7 +12,6 @@ import com.jpp.moviespreview.app.domain.movie.MovieDataMapper
 import com.jpp.moviespreview.app.domain.movie.RetrieveMoviesInTheaterUseCase
 import com.jpp.moviespreview.app.domain.movie.credits.CreditsDataMapper
 import com.jpp.moviespreview.app.domain.movie.credits.RetrieveMovieCreditsUseCase
-import com.jpp.moviespreview.app.ui.detail.di.DetailsScope
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -43,7 +42,7 @@ class DomainModule {
 
 
     @Provides
-    @DetailsScope
+    @Singleton
     fun providesRetrieveMoviesCreditUseCase(api: MoviesPreviewApiWrapper, moviesCache: MoviesCache): UseCase<Movie, MovieCredits>
             = RetrieveMovieCreditsUseCase(CreditsDataMapper(), api, moviesCache)
 

@@ -1,7 +1,6 @@
 package com.jpp.moviespreview.app.domain
 
 import com.jpp.moviespreview.app.mock
-import com.jpp.moviespreview.app.ui.detail.di.DetailsScope
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -29,6 +28,6 @@ class EspressoDomainModule {
 
 
     @Provides
-    @DetailsScope
+    @Singleton
     fun providesRetrieveMoviesCreditUseCase(): UseCase<Movie, MovieCredits> = mock()
 }

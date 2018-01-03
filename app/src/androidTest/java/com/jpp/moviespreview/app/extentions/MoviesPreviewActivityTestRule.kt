@@ -11,8 +11,11 @@ import com.jpp.moviespreview.app.domain.MoviesConfiguration
 import com.jpp.moviespreview.app.domain.configuration.ConfigurationDataMapper
 import com.jpp.moviespreview.app.domain.genre.GenreDataMapper
 import com.jpp.moviespreview.app.domain.movie.MovieDataMapper
+import com.jpp.moviespreview.app.domain.movie.credits.CreditsDataMapper
 import com.jpp.moviespreview.app.fromJson
 import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
+import com.jpp.moviespreview.app.domain.MovieCredits as DomainMovieCredits
+import com.jpp.moviespreview.app.data.MovieCredits as DataMovieCredits
 
 /**
  * Helper [ActivityTestRule] to specific usages.
@@ -40,6 +43,12 @@ class MoviesPreviewActivityTestRule<T : Activity>(activityClass: Class<T>) : Act
     fun loadDomainPage(page: Int): DomainMoviePage = MovieDataMapper().convertDataMoviePageIntoDomainMoviePage(loadDataPage(page), loadDomainGenres())
 
 
+    /**
+     * Loads a DOMAIN [DomainMovieCredits]
+     */
+    fun loadDomainMovieCredits(): DomainMovieCredits = CreditsDataMapper().convertDataMovieCreditsIntoDomainMovieCredits(loadMovieCredits())
+
+
     /**********************
      * INNER DATA HELPERS *
      **********************/
@@ -55,6 +64,9 @@ class MoviesPreviewActivityTestRule<T : Activity>(activityClass: Class<T>) : Act
             throw RuntimeException("Unsupported page requested in test. Page { $page }")
         }
     }
+
+
+    private fun loadMovieCredits(): DataMovieCredits = loadObjectFromJsonFile("data_movie_credits.json")
 
 
     /**

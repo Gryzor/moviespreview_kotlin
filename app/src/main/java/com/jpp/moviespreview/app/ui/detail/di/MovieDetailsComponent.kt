@@ -2,6 +2,7 @@ package com.jpp.moviespreview.app.ui.detail.di
 
 import com.jpp.moviespreview.app.ui.detail.MovieDetailActivity
 import com.jpp.moviespreview.app.ui.detail.body.MovieDetailsFragment
+import com.jpp.moviespreview.app.ui.detail.credits.MovieCreditsFragment
 import dagger.Subcomponent
 
 /**
@@ -15,5 +16,5 @@ interface MovieDetailsComponent {
 
     fun inject(movieDetailsActivity: MovieDetailActivity)
     fun inject(movieDetailsBodyFragment: MovieDetailsFragment)
-
+    fun inject(movieCreditsFragment: MovieCreditsFragment)
 }

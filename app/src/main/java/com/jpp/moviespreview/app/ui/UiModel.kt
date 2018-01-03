@@ -70,3 +70,12 @@ data class MoviePage(val page: Int,
                      val results: List<Movie>,
                      val totalPages: Int,
                      val totalResults: Int)
+
+
+/**
+ * Represents a person in the credits list. It might be a character or
+ * a crew member.
+ */
+data class CreditPerson(var profilePath: String,
+                        var title: String,
+                        var subTitle: String)
