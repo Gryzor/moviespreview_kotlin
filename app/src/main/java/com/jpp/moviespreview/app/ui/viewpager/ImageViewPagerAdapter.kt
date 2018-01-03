@@ -5,6 +5,7 @@ import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import com.jpp.moviespreview.R
 
 /**
  *
@@ -20,6 +21,7 @@ class ImageViewPagerAdapter(private val size: Int,
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val imageView = ImageView(container.context)
         imageViewProcessor(imageView, position)
+        imageView.setImageResource(R.drawable.ic_app_icon_black)
         (container as ViewPager).addView(imageView)
         return imageView
     }
