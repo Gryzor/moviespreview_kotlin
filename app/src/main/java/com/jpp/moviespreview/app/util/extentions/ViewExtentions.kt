@@ -34,6 +34,13 @@ val View.ctx: Context
     get() = context
 
 /**
+ * Extension function for the View class to make a View visible
+ */
+fun View.setVisible() {
+    this.visibility = View.VISIBLE
+}
+
+/**
  * Loads an image retrieved from the provided [imageUrl]
  * into the ImageView.
  */

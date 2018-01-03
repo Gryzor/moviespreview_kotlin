@@ -13,6 +13,7 @@ import com.jpp.moviespreview.app.ui.detail.MovieDetailCreditsPresenter
 import com.jpp.moviespreview.app.ui.detail.MovieDetailCreditsView
 import com.jpp.moviespreview.app.util.extentions.app
 import com.jpp.moviespreview.app.util.extentions.ctx
+import com.jpp.moviespreview.app.util.extentions.setVisible
 import kotlinx.android.synthetic.main.movie_credits_fragment.*
 import javax.inject.Inject
 
@@ -56,7 +57,8 @@ class MovieCreditsFragment : Fragment(), MovieDetailCreditsView {
     }
 
     override fun showErrorRetrievingCredits() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        loading_credits_view.hide()
+        movie_credits_error_text_view.setVisible()
     }
 
     override fun getTargetProfileImageHeight() = resources.getDimensionPixelSize(R.dimen.credits_list_item_image_view_height)

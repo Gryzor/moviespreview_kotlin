@@ -23,15 +23,27 @@ class MovieDetailCreditsPresenterImpl(private val moviesContext: MoviesContext,
     override fun linkView(view: MovieDetailCreditsView) {
         viewInstance = view
         with(view) {
-            view.showLoading()
+            val creditsInContext = moviesContext.getCreditsForMovie(moviesContext.selectedMovie!!)
+            if (creditsInContext != null) {
+                showMovieCredits(creditsInContext)
+            } else {
+                retrieveMovieCredits()
+            }
+        }
+    }
+
+    private fun retrieveMovieCredits() {
+        with(viewInstance) {
+            showLoading()
             interactorDelegate.executeBackgroundJob(
                     { useCase.execute(mapper.convertUiMovieIntoDomainMovie(moviesContext.selectedMovie!!)) },
                     {
                         if (it != null) {
-                            view.showMovieCredits(mapper
-                                    .convertDomainCreditsInUiCredits(it.cast.sortedBy { it.order }, it.crew, getProfileImageConfiguration()))
+                            val uiCredits = mapper.convertDomainCreditsInUiCredits(it.cast.sortedBy { it.order }, it.crew, getProfileImageConfiguration())
+                            moviesContext.putCreditsForMovie(moviesContext.selectedMovie!!, uiCredits)
+                            showMovieCredits(uiCredits)
                         } else {
-                            view.showErrorRetrievingCredits()
+                            showErrorRetrievingCredits()
                         }
                     }
             )

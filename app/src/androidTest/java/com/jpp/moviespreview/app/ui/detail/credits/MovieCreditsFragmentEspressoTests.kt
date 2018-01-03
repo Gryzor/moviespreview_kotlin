@@ -1,17 +1,18 @@
 package com.jpp.moviespreview.app.ui.detail.credits
 
 import android.content.Intent
-import android.support.test.espresso.Espresso
 import android.support.test.espresso.Espresso.onView
+import android.support.test.espresso.assertion.ViewAssertions
 import android.support.test.espresso.matcher.ViewMatchers
+import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.TestComponentRule
 import com.jpp.moviespreview.app.completeConfig
-import com.jpp.moviespreview.app.domain.CastCharacter
 import com.jpp.moviespreview.app.domain.MovieCredits
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.extentions.MoviesPreviewActivityTestRule
 import com.jpp.moviespreview.app.extentions.launch
+import com.jpp.moviespreview.app.extentions.rotate
 import com.jpp.moviespreview.app.mock
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.MoviesContext
@@ -19,6 +20,10 @@ import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
 import com.jpp.moviespreview.app.ui.util.EspressoTestActivity
 import com.jpp.moviespreview.app.util.extentions.addFragmentIfNotInStack
 import com.jpp.moviespreview.app.utils.RecyclerViewItemCountAssertion
+import com.nhaarman.mockito_kotlin.verify
+import junit.framework.Assert.assertNotNull
+import org.hamcrest.Matchers.not
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -66,17 +71,67 @@ class MovieCreditsFragmentEspressoTests {
         val domainMovieCredits = activityRule.loadDomainMovieCredits()
         `when`(useCase.execute(any(DomainMovie::class.java))).thenReturn(domainMovieCredits)
 
-        val orderedCast: List<CastCharacter> = domainMovieCredits.cast.sortedBy { it.order }
-
-
         launchActivityAndAddFragment()
 
         // check all credits are loaded
         onView(ViewMatchers.withId(R.id.rv_movie_credits))
                 .check(RecyclerViewItemCountAssertion(129))
 
+        onView(ViewMatchers.withId(R.id.loading_credits_view))
+                .check(ViewAssertions.matches(not(isDisplayed())))
+
+        // only one call
+        verify(useCase).execute(any(DomainMovie::class.java))
+
+        // saves credits
+        assertNotNull(moviesContext.getCreditsForMovie(moviesContext.selectedMovie!!))
     }
 
+
+    @Test
+    fun errorRetrievingMovieCredits() {
+        `when`(useCase.execute(any(DomainMovie::class.java))).thenReturn(null)
+
+        launchActivityAndAddFragment()
+
+        onView(ViewMatchers.withId(R.id.movie_credits_error_text_view))
+                .check(ViewAssertions.matches(isDisplayed()))
+
+        onView(ViewMatchers.withId(R.id.loading_credits_view))
+                .check(ViewAssertions.matches(not(isDisplayed())))
+    }
+
+    @Test
+    fun orientationChangeDoesNotRequestNewData() {
+        val domainMovieCredits = activityRule.loadDomainMovieCredits()
+        `when`(useCase.execute(any(DomainMovie::class.java))).thenReturn(domainMovieCredits)
+
+        launchActivityAndAddFragment()
+
+        // sanity check
+        onView(ViewMatchers.withId(R.id.rv_movie_credits))
+                .check(RecyclerViewItemCountAssertion(129))
+        onView(ViewMatchers.withId(R.id.loading_credits_view))
+                .check(ViewAssertions.matches(not(isDisplayed())))
+
+        // rotate 1
+        activityRule.rotate()
+        onView(ViewMatchers.withId(R.id.rv_movie_credits))
+                .check(RecyclerViewItemCountAssertion(129))
+        onView(ViewMatchers.withId(R.id.loading_credits_view))
+                .check(ViewAssertions.matches(not(isDisplayed())))
+
+        // rotate 2
+        activityRule.rotate()
+        onView(ViewMatchers.withId(R.id.rv_movie_credits))
+                .check(RecyclerViewItemCountAssertion(129))
+        onView(ViewMatchers.withId(R.id.loading_credits_view))
+                .check(ViewAssertions.matches(not(isDisplayed())))
+
+        // only one call
+        verify(useCase).execute(any(DomainMovie::class.java))
+
+    }
 
     /**************************
      **** HELPER FUNCTIONS ****
