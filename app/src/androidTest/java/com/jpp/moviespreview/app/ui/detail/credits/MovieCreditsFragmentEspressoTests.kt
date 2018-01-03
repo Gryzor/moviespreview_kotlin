@@ -17,6 +17,7 @@ import com.jpp.moviespreview.app.mock
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
+import com.jpp.moviespreview.app.ui.sections.detail.credits.MovieCreditsFragment
 import com.jpp.moviespreview.app.ui.util.EspressoTestActivity
 import com.jpp.moviespreview.app.util.extentions.addFragmentIfNotInStack
 import com.jpp.moviespreview.app.utils.RecyclerViewItemCountAssertion

@@ -14,14 +14,14 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
     <activity
-      android:name=".app.ui.splash.SplashActivity"
+      android:name=".app.ui.sections.splash.SplashActivity"
       android:theme="@style/SplashTheme">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-    <activity android:name=".app.ui.main.MainActivity"></activity>
+    <activity android:name=".app.ui.sections.main.MainActivity"></activity>
     <activity android:name=".app.ui.util.EspressoTestActivity"/>
   </application>
 </manifest>

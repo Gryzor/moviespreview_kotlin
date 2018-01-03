@@ -22,9 +22,10 @@ import com.jpp.moviespreview.app.extentions.rotate
 import com.jpp.moviespreview.app.extentions.waitToFinish
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.MoviesContext
-import com.jpp.moviespreview.app.ui.detail.MovieDetailActivity
+import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailActivity
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
-import com.jpp.moviespreview.app.ui.splash.SplashActivity
+import com.jpp.moviespreview.app.ui.sections.main.playing.PlayingMoviesFragment
+import com.jpp.moviespreview.app.ui.sections.splash.SplashActivity
 import com.jpp.moviespreview.app.ui.util.EspressoTestActivity
 import com.jpp.moviespreview.app.util.extentions.addFragmentIfNotInStack
 import com.jpp.moviespreview.app.utils.RecyclerViewItemCountAssertion

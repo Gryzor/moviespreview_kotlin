@@ -11,6 +11,10 @@ import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegateImpl
+import com.jpp.moviespreview.app.ui.sections.main.playing.PlayingMoviesPresenterImpl
+import com.jpp.moviespreview.app.ui.sections.main.playing.PlayingMoviesPresenterInteractor
+import com.jpp.moviespreview.app.ui.sections.main.playing.PlayingMoviesPresenterInteractorImpl
+import com.jpp.moviespreview.app.ui.sections.main.playing.PlayingMoviesView
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import org.junit.Assert
 import org.junit.Before

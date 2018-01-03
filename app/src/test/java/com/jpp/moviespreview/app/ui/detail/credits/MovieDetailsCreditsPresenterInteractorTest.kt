@@ -3,6 +3,8 @@ package com.jpp.moviespreview.app.ui.detail.credits
 import com.jpp.moviespreview.app.mock
 import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
+import com.jpp.moviespreview.app.ui.sections.detail.credits.MovieDetailsCreditsPresenterInteractor
+import com.jpp.moviespreview.app.ui.sections.detail.credits.MovieDetailsCreditsPresenterInteractorImpl
 import junit.framework.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

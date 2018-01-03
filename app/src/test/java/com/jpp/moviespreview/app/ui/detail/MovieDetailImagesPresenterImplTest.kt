@@ -3,6 +3,8 @@ package com.jpp.moviespreview.app.ui.detail
 import com.jpp.moviespreview.app.mock
 import com.jpp.moviespreview.app.ui.Movie
 import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailImagesPresenterImpl
+import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailImagesView
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.`when`

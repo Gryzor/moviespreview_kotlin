@@ -21,7 +21,8 @@ import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.PosterImageConfiguration
 import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
-import com.jpp.moviespreview.app.ui.main.MainActivity
+import com.jpp.moviespreview.app.ui.sections.main.MainActivity
+import com.jpp.moviespreview.app.ui.sections.splash.SplashActivity
 import junit.framework.Assert.*
 import org.junit.Before
 import org.junit.Rule
