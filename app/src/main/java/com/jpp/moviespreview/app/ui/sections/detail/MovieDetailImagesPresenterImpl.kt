@@ -14,8 +14,8 @@ class MovieDetailImagesPresenterImpl(private val moviesContext: MoviesContext)
         moviesContext.selectedMovie!!.currentImageShown = position
     }
 
-    override fun linkView(movieDetailImagesView: MovieDetailImagesView) {
-        view = movieDetailImagesView
+    override fun linkView(movieDetailView: MovieDetailImagesView) {
+        view = movieDetailView
 
         moviesContext.selectedMovie?.let {
             view.showMovieImages(it.images, it.currentImageShown)
