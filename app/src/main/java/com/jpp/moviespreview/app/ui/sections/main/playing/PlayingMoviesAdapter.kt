@@ -48,7 +48,8 @@ class PlayingMoviesAdapter(private val listener: (Movie, ImageView) -> Unit,
                          * Use palette to generate a color, and use it as background
                          * of the bottom icons and texts.
                          */
-                        itemView.view_movie_item_bottom_background.setBackgroundColor(ColorUtils.setAlphaComponent(it.lightVibrantSwatch!!.rgb, 180))
+                        val swatchColor = it.lightVibrantSwatch?.rgb ?: android.R.color.white
+                        itemView.view_movie_item_bottom_background.setBackgroundColor(ColorUtils.setAlphaComponent(swatchColor, 180))
                     }
                 })
                 itemView.setOnClickListener { listener(movie, itemView.iv_movie_item) }
