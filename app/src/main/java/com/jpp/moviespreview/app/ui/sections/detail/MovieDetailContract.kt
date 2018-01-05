@@ -24,14 +24,13 @@ interface MovieDetailPresenter {
  ************ This section controls the header part of the screen  *****************
  ***********************************************************************************/
 interface MovieDetailImagesView {
-    fun showMovieImages(imagesUrl: List<String>, selectedPosition: Int)
+    fun showMovieImage(imageUrl: String)
     fun showMovieTitle(movieTitle: String)
     fun showMovieNotSelected()
 }
 
 interface MovieDetailImagesPresenter {
     fun linkView(movieDetailView: MovieDetailImagesView)
-    fun onMovieImageSelected(position: Int)
 }
 
 

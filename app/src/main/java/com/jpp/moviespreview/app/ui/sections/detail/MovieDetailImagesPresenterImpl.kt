@@ -10,15 +10,12 @@ class MovieDetailImagesPresenterImpl(private val moviesContext: MoviesContext)
 
     private lateinit var view: MovieDetailImagesView
 
-    override fun onMovieImageSelected(position: Int) {
-        moviesContext.selectedMovie!!.currentImageShown = position
-    }
 
     override fun linkView(movieDetailView: MovieDetailImagesView) {
         view = movieDetailView
 
         moviesContext.selectedMovie?.let {
-            view.showMovieImages(it.images, it.currentImageShown)
+            view.showMovieImage(it.getPosterPath())
             view.showMovieTitle(it.title)
         } ?: view.showMovieNotSelected()
     }

@@ -3,19 +3,14 @@ package com.jpp.moviespreview.app.ui.sections.detail
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.view.ViewCompat
-import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.transition.Slide
 import android.widget.ImageView
 import com.jpp.moviespreview.R
-import com.jpp.moviespreview.app.ui.viewpager.ImageViewPagerAdapter
 import com.jpp.moviespreview.app.util.extentions.app
 import com.jpp.moviespreview.app.util.extentions.loadImageUrlWithCallback
-import com.jpp.moviespreview.app.util.extentions.pageChangeUpdate
-import com.jpp.moviespreview.app.util.extentions.setCurrentItemDelayed
 import kotlinx.android.synthetic.main.movie_detail_activity.*
 import org.jetbrains.anko.toast
 import javax.inject.Inject
@@ -32,15 +27,15 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailImagesView {
 
         private val EXTRA_TRANSITION_NAME = "com.jpp.moviespreview.app.ui.detail.EXTRA_TRANSITION_NAME"
 
-        fun navigateWithTransition(activity: AppCompatActivity, transitionViewPager: ViewPager) {
+        fun navigateWithTransition(activity: AppCompatActivity, transitionView: ImageView) {
             val intent = Intent(activity, MovieDetailActivity::class.java)
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                 activity.startActivity(intent)
                 activity.overridePendingTransition(R.anim.activity_enter_transition, 0)
             } else {
-                ViewCompat.setTransitionName(transitionViewPager, "vpTransition")
-                intent.putExtra(EXTRA_TRANSITION_NAME, ViewCompat.getTransitionName(transitionViewPager))
-                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, transitionViewPager, ViewCompat.getTransitionName(transitionViewPager))
+                ViewCompat.setTransitionName(transitionView, "transitionView")
+                intent.putExtra(EXTRA_TRANSITION_NAME, ViewCompat.getTransitionName(transitionView))
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, transitionView, ViewCompat.getTransitionName(transitionView))
                 activity.startActivity(intent, options.toBundle())
             }
         }
@@ -82,19 +77,13 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailImagesView {
         toast("error")
     }
 
-    override fun showMovieImages(imagesUrl: List<String>, selectedPosition: Int) {
-        movie_details_images_view_pager.adapter = ImageViewPagerAdapter(imagesUrl.size, { imageView: ImageView, position: Int ->
-            imageView.loadImageUrlWithCallback(imagesUrl[position],
-                    {
-                        movie_details_images_view_pager.setCurrentItemDelayed(selectedPosition)
-                        supportStartPostponedEnterTransition()
-                    },
-                    {
-                        // on fail, just continue with the flow -> an error image will be set
-                        supportStartPostponedEnterTransition()
-                    })
-        })
-        movie_details_images_view_pager.pageChangeUpdate { position: Int -> imagesPresenter.onMovieImageSelected(position) }
+    override fun showMovieImage(imageUrl: String) {
+        iv_movie_details.loadImageUrlWithCallback(imageUrl,
+                { supportStartPostponedEnterTransition() },
+                {
+                    iv_movie_details.setImageResource(R.drawable.ic_error_black)
+                    supportStartPostponedEnterTransition()
+                })
     }
 
     override fun showMovieTitle(movieTitle: String) {

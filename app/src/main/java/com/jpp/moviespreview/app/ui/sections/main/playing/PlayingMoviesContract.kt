@@ -26,5 +26,4 @@ interface PlayingMoviesPresenter {
     fun getNextMoviePage()
     fun onMovieSelected(movie: Movie)
     fun refreshData()
-    fun onMovieImageSelected(movie: Movie, position:Int)
 }

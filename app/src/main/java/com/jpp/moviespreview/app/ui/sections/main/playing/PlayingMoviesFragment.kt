@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.Movie
 import com.jpp.moviespreview.app.ui.MoviePage
@@ -31,12 +32,9 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
 
     private val adapter by lazy {
         PlayingMoviesAdapter(
-                { movie: Movie, viewPager: ViewPager ->
+                { movie: Movie, viewPager: ImageView ->
                     playingMoviesPresenter.onMovieSelected(movie)
                     showMovieDetails(viewPager)
-                },
-                { movie: Movie, position: Int ->
-                    playingMoviesPresenter.onMovieImageSelected(movie, position)
                 })
     }
 
@@ -107,7 +105,7 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
         loading_movies_view.show()
     }
 
-    private fun showMovieDetails(viewPager: ViewPager) {
-        MovieDetailActivity.navigateWithTransition(activity as AppCompatActivity, viewPager)
+    private fun showMovieDetails(transitionView: ImageView) {
+        MovieDetailActivity.navigateWithTransition(activity as AppCompatActivity, transitionView)
     }
 }

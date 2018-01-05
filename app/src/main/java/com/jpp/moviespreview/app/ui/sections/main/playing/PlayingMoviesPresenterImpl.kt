@@ -35,9 +35,6 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
         refreshMovieData()
     }
 
-    override fun onMovieImageSelected(movie: Movie, position: Int) {
-        movie.currentImageShown = position
-    }
 
     /**
      * Verifies if there are pages loaded into the context. If there are, loads those
