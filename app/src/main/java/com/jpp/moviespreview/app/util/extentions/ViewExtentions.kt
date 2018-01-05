@@ -64,6 +64,8 @@ fun ImageView.loadImageUrlWithCallback(imageUrl: String,
     Glide.with(ctx)
             .load(imageUrl)
             .asBitmap()
+            .placeholder(R.drawable.ic_app_icon_black)
+            .error(R.drawable.ic_error_black)
             .listener(ImageLoadListener(errorListener))
             .into(CallbackTarget(this, callback))
 }

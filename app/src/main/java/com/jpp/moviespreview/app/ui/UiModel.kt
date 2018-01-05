@@ -55,11 +55,11 @@ data class Movie(var id: Double,
                  val voteCount: Double,
                  val voteAverage: Float,
                  val popularity: Float) {
-
-    // represents the image that is currently shown in the UI
-    // it will be updated from the ViewPager in the UI
-    var currentImageShown = 0
-
+    /**
+     * Retrieves the movies poster path (located at the zero
+     * index of the images list).
+     */
+    fun getPosterPath() = images[0]
 }
 
 

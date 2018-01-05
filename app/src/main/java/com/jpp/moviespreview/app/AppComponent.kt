@@ -3,12 +3,12 @@ package com.jpp.moviespreview.app
 import com.jpp.moviespreview.app.data.DataModule
 import com.jpp.moviespreview.app.domain.DomainModule
 import com.jpp.moviespreview.app.ui.UiModule
-import com.jpp.moviespreview.app.ui.detail.di.MovieDetailsComponent
-import com.jpp.moviespreview.app.ui.detail.di.MovieDetailsModule
-import com.jpp.moviespreview.app.ui.main.playing.di.PlayingMoviesComponent
-import com.jpp.moviespreview.app.ui.main.playing.di.PlayingMoviesModule
-import com.jpp.moviespreview.app.ui.splash.di.SplashComponent
-import com.jpp.moviespreview.app.ui.splash.di.SplashModule
+import com.jpp.moviespreview.app.ui.sections.detail.di.MovieDetailsComponent
+import com.jpp.moviespreview.app.ui.sections.detail.di.MovieDetailsModule
+import com.jpp.moviespreview.app.ui.sections.main.playing.di.PlayingMoviesComponent
+import com.jpp.moviespreview.app.ui.sections.main.playing.di.PlayingMoviesModule
+import com.jpp.moviespreview.app.ui.sections.splash.di.SplashComponent
+import com.jpp.moviespreview.app.ui.sections.splash.di.SplashModule
 import dagger.Component
 import javax.inject.Singleton
 
