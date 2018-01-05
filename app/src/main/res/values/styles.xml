@@ -36,7 +36,9 @@
 
     <style name="MoviesPreviewTextAppearance" parent="@android:style/TextAppearance" />
 
-    <style name="MoviesPreviewTextAppearance.Title" parent="@android:style/TextAppearance.Medium" />
+    <style name="MoviesPreviewTextAppearance.Title" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">@dimen/titleTextSize</item>
+    </style>
 
     <style name="MoviesPreviewTextAppearance.Small" parent="@android:style/TextAppearance.Small" />
 

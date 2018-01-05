@@ -7,4 +7,6 @@
     <dimen name="credits_list_item_image_view_height">42dp</dimen>
 
     <dimen name="movie_image_height">340dp</dimen>
+    
+    <dimen name="titleTextSize">14dp</dimen>
 </resources>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:maxHeight="400dp">
+    android:maxHeight="@dimen/movie_item_max_height">
 
     <TextView
         android:id="@+id/txt_movie_item_title"
