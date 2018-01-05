@@ -24,6 +24,11 @@
         <activity android:name=".app.ui.sections.main.MainActivity" />
         <activity
             android:name=".app.ui.sections.detail.MovieDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar.Inverse" />
+            android:parentActivityName=".app.ui.sections.main.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar.Inverse">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".app.ui.sections.main.MainActivity" />
+        </activity>
     </application>
 </manifest>

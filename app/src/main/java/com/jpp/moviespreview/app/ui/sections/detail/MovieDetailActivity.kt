@@ -7,6 +7,7 @@ import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.transition.Slide
+import android.view.MenuItem
 import android.widget.ImageView
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.util.extentions.app
@@ -99,6 +100,21 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailImagesView {
             slideTransition.excludeTarget(android.R.id.statusBarBackground, true)
             window.enterTransition = slideTransition
         }
+    }
+
+    /**
+     * Override in order to provide activity transition when back button
+     * is pressed.
+     */
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val itemId = item.itemId
+        when (itemId) {
+            android.R.id.home -> {
+                super.onOptionsItemSelected(item)
+                onBackPressed()
+            }
+        }
+        return true
     }
 
     override fun onBackPressed() {
