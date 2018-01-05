@@ -75,7 +75,7 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailImagesView {
 
 
     override fun showMovieNotSelected() {
-        toast("error")
+        finish()
     }
 
     override fun showMovieImage(imageUrl: String) {
