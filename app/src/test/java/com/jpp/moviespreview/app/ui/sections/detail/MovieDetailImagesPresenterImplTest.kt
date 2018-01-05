@@ -30,26 +30,18 @@ class MovieDetailImagesPresenterImplTest {
     }
 
 
-    @Test
-    fun onMovieImageSelected_updatesSelectedMovie() {
-        `when`(moviesContext.selectedMovie).thenReturn(selectedMovie)
-        subject.onMovieImageSelected(2)
-        verify(selectedMovie).currentImageShown = 2
-    }
 
     @Test
     fun linkView_showMovieImages_andMovieTitle() {
         `when`(moviesContext.selectedMovie).thenReturn(selectedMovie)
-        val expectedImageList = listOf<String>()
-        val expectedCurrentImage = 2
+        val expectedPath = "path"
         val expectedMovieTitle = "Title"
-        `when`(selectedMovie.images).thenReturn(expectedImageList)
-        `when`(selectedMovie.currentImageShown).thenReturn(expectedCurrentImage)
+        `when`(selectedMovie.getPosterPath()).thenReturn(expectedPath)
         `when`(selectedMovie.title).thenReturn(expectedMovieTitle)
 
         subject.linkView(movieDetailImagesView)
 
-        verify(movieDetailImagesView).showMovieImage(expectedImageList, expectedCurrentImage)
+        verify(movieDetailImagesView).showMovieImage(expectedPath)
         verify(movieDetailImagesView).showMovieTitle(expectedMovieTitle)
     }
 
