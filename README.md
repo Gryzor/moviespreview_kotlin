@@ -26,7 +26,7 @@ to map data models between each layer.
 ## Build status
 This repo is builided and controlled using Bitrise
 
-https://www.bitrise.io/app/b7fa5b86b2dd7aa5/status.svg?token=Up4pz7SVhmB3cO1ZhDk9RA&branch=develop
+[![Build Status](https://www.bitrise.io/app/b7fa5b86b2dd7aa5/status.svg?token=Up4pz7SVhmB3cO1ZhDk9RA&branch=develop)](https://www.bitrise.io/app/Up4pz7SVhmB3cO1ZhDk9RA)
 
 ## Versioning
 
