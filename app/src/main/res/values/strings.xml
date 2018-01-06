@@ -12,4 +12,8 @@
     <string name="popularity_title">Popularity</string>
     <string name="vote_count_title">Vote Count</string>
     <string name="error_retrieving_credits">@string/alert_unexpected_error_message</string>
+
+    <!-- Search -->
+    <string name="search_movies_menu_title">Search movies</string>
+    <string name="searchable_hint">SearchMe</string>
 </resources>

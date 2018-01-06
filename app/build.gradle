@@ -75,6 +75,7 @@ dependencies {
     final mockito_version = '2.10.0'
     final glide_version = '3.8.0'
     final mockito_nhaarman_version = '1.5.0'
+    final rxJava_version = '1.2.3'
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
     // Google libs
@@ -112,6 +113,12 @@ dependencies {
     androidTestCompile 'com.android.support.test:runner:1.0.1'
     androidTestCompile "com.android.support.test.espresso:espresso-core:$espresso_version"
     androidTestCompile "com.android.support.test.espresso:espresso-intents:$espresso_version"
+
+    // RxJava
+    compile "io.reactivex:rxjava:$rxJava_version"
+
+    // RxAndroid
+    compile 'io.reactivex:rxandroid:1.2.1'
 
     /*
      * Loading views library
