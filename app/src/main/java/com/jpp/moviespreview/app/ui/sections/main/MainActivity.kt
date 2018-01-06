@@ -7,7 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.sections.main.playing.PlayingMoviesFragment
-import com.jpp.moviespreview.app.ui.sections.main.search.SearchMoviesActivity
+import com.jpp.moviespreview.app.ui.sections.main.search.MultiSearchActivity
 import com.jpp.moviespreview.app.util.extentions.addFragmentIfNotInStack
 
 class MainActivity : AppCompatActivity() {
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.action_search -> {
-            startActivity(Intent(this, SearchMoviesActivity::class.java))
+            startActivity(Intent(this, MultiSearchActivity::class.java))
             true
         }
         else -> super.onOptionsItemSelected(item)
