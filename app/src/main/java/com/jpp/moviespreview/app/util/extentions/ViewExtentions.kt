@@ -61,6 +61,7 @@ fun ImageView.loadImageUrl(imageUrl: String) {
 fun ImageView.loadImageUrlWithCallback(imageUrl: String,
                                        callback: (Bitmap) -> Unit,
                                        errorListener: ((Exception?) -> Unit)? = null) {
+    setImageResource(R.drawable.ic_app_icon_black)
     Glide.with(ctx)
             .load(imageUrl)
             .asBitmap()

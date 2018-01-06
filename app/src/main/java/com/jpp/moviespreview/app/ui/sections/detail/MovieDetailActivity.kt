@@ -6,13 +6,14 @@ import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.graphics.Palette
 import android.transition.Slide
+import android.view.MenuItem
 import android.widget.ImageView
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.util.extentions.app
 import com.jpp.moviespreview.app.util.extentions.loadImageUrlWithCallback
 import kotlinx.android.synthetic.main.movie_detail_activity.*
-import org.jetbrains.anko.toast
 import javax.inject.Inject
 
 /**
@@ -74,16 +75,28 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailImagesView {
 
 
     override fun showMovieNotSelected() {
-        toast("error")
+        finish()
     }
 
     override fun showMovieImage(imageUrl: String) {
         iv_movie_details.loadImageUrlWithCallback(imageUrl,
-                { supportStartPostponedEnterTransition() },
+                {
+                    Palette.from(it).generate {
+                        applyPalette(it)
+                    }
+                },
                 {
                     iv_movie_details.setImageResource(R.drawable.ic_error_black)
                     supportStartPostponedEnterTransition()
                 })
+    }
+
+    private fun applyPalette(palette: Palette) {
+        val primaryDark = resources.getColor(R.color.colorPrimaryDark)
+        val primary = resources.getColor(R.color.colorPrimary)
+        movie_details_collapsing_toolbar_layout.setContentScrimColor(palette.getMutedColor(primary))
+        movie_details_collapsing_toolbar_layout.setStatusBarScrimColor(palette.getDarkMutedColor(primaryDark))
+        supportStartPostponedEnterTransition()
     }
 
     override fun showMovieTitle(movieTitle: String) {
@@ -99,6 +112,21 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailImagesView {
             slideTransition.excludeTarget(android.R.id.statusBarBackground, true)
             window.enterTransition = slideTransition
         }
+    }
+
+    /**
+     * Override in order to provide activity transition when back button
+     * is pressed.
+     */
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val itemId = item.itemId
+        when (itemId) {
+            android.R.id.home -> {
+                super.onOptionsItemSelected(item)
+                onBackPressed()
+            }
+        }
+        return true
     }
 
     override fun onBackPressed() {
