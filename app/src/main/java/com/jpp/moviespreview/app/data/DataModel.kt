@@ -76,3 +76,30 @@ data class CrewPerson(var credit_id: String,
 data class MovieCredits(var id: Double,
                         var cast: List<CastCharacter>,
                         var crew: List<CrewPerson>)
+
+
+/**
+ * Represents a page of results of a search retrieved from the backend.
+ */
+data class MultiSearchPage(val page: Int,
+                           val results: List<MultiSearchResult>,
+                           val total_pages: Int,
+                           val total_results: Int)
+
+/**
+ * Represents an item int the result of a multi search
+ */
+data class MultiSearchResult(var id: Double,
+                             var poster_path: String?,
+                             var backdrop_path: String?,
+                             var overview: String,
+                             var release_date: String?,
+                             var original_title: String?,
+                             var genre_ids: List<Int>?,
+                             var media_type: String,
+                             var original_language: String?,
+                             var vote_count: Double?,
+                             var vote_average: Float?,
+                             var popularity: Float?,
+                             var name: String?,
+                             var known_for: List<Movie>?)

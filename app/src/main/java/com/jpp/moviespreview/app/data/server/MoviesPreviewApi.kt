@@ -1,10 +1,7 @@
 package com.jpp.moviespreview.app.data.server
 
 import com.jpp.moviespreview.BuildConfig
-import com.jpp.moviespreview.app.data.Genres
-import com.jpp.moviespreview.app.data.MovieCredits
-import com.jpp.moviespreview.app.data.MoviePage
-import com.jpp.moviespreview.app.data.MoviesConfiguration
+import com.jpp.moviespreview.app.data.*
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -53,4 +50,20 @@ interface MoviesPreviewApi {
     @GET("movie/{movie_id}/credits")
     fun getMovieCredits(@Path("movie_id") movieId: Double,
                         @Query("api_key") api_key: String = BuildConfig.API_KEY): Call<MovieCredits>
+
+
+    /**
+     * Executes a multi search API call.
+     * [page] the current page to retrieve.
+     * [api_key] the api key provided by themoviedb.
+     * [language] Pass a ISO 639-1 value to display translated data for the fields that support it. - Optional.
+     * [region] Specify a ISO 3166-1 code to filter release dates. Must be uppercase. - Optional.
+     * [query] The query to execute.
+     */
+    @GET("search/multi")
+    fun multiSearch(@Query("query") query: String,
+                    @Query("page") page: Int,
+                    @Query("api_key") api_key: String = BuildConfig.API_KEY,
+                    @Query("language") language: String? = null,
+                    @Query("region") region: String? = null): Call<MultiSearchPage>
 }
