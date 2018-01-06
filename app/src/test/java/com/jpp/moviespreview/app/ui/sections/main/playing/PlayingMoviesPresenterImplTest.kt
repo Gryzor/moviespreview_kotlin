@@ -2,7 +2,7 @@ package com.jpp.moviespreview.app.ui.sections.main.playing
 
 import com.jpp.moviespreview.app.BackgroundInteractorForTesting
 import com.jpp.moviespreview.app.domain.MoviePage
-import com.jpp.moviespreview.app.domain.MoviesInTheaterInputParam
+import com.jpp.moviespreview.app.domain.PageParam
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.mock
 import com.jpp.moviespreview.app.mockMovieGenres
@@ -11,10 +11,6 @@ import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegateImpl
-import com.jpp.moviespreview.app.ui.sections.main.playing.PlayingMoviesPresenterImpl
-import com.jpp.moviespreview.app.ui.sections.main.playing.PlayingMoviesPresenterInteractor
-import com.jpp.moviespreview.app.ui.sections.main.playing.PlayingMoviesPresenterInteractorImpl
-import com.jpp.moviespreview.app.ui.sections.main.playing.PlayingMoviesView
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import org.junit.Assert
 import org.junit.Before
@@ -35,7 +31,7 @@ class PlayingMoviesPresenterImplTest {
     private lateinit var interactorDelegate: PlayingMoviesPresenterInteractor
     private lateinit var connectivityInteractor: ConnectivityInteractor
     private lateinit var backgroundInteractor: BackgroundInteractor
-    private lateinit var playingMoviesUseCase: UseCase<MoviesInTheaterInputParam, MoviePage>
+    private lateinit var playingMoviesUseCase: UseCase<PageParam, MoviePage>
     private lateinit var mapper: DomainToUiDataMapper
     private lateinit var playingMoviesView: PlayingMoviesView
     private lateinit var subject: PlayingMoviesPresenterImpl
@@ -81,7 +77,7 @@ class PlayingMoviesPresenterImplTest {
         subject.getNextMoviePage()
 
         //-- verify
-        argumentCaptor<MoviesInTheaterInputParam>().apply {
+        argumentCaptor<PageParam>().apply {
             verify(playingMoviesUseCase).execute(capture())
             Assert.assertEquals(5, firstValue.page)
             Assert.assertEquals(4, firstValue.genres.size)

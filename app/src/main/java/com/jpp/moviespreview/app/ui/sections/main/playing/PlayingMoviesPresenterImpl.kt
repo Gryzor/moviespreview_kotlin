@@ -1,6 +1,6 @@
 package com.jpp.moviespreview.app.ui.sections.main.playing
 
-import com.jpp.moviespreview.app.domain.MoviesInTheaterInputParam
+import com.jpp.moviespreview.app.domain.PageParam
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.*
 import com.jpp.moviespreview.app.domain.Genre as DomainGenre
@@ -13,7 +13,7 @@ import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
  */
 class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
                                  private val interactorDelegate: PlayingMoviesPresenterInteractor,
-                                 private val playingMoviesUseCase: UseCase<MoviesInTheaterInputParam, DomainMoviePage>,
+                                 private val playingMoviesUseCase: UseCase<PageParam, DomainMoviePage>,
                                  private val mapper: DomainToUiDataMapper) : PlayingMoviesPresenter {
 
 
@@ -81,11 +81,11 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
 
 
     /**
-     * Creates the [MoviesInTheaterInputParam] that is going to be used for the next
+     * Creates the [PageParam] that is going to be used for the next
      * use case execution. If the scrolling has reached the last possible position,
      * it asks the view to show the end of page and returns null.
      */
-    fun createNextUseCaseParam(): MoviesInTheaterInputParam? {
+    fun createNextUseCaseParam(): PageParam? {
         with(moviesContext) {
             var lastMoviePageIndex = 0 // by default, always get the first page
             var lastMoviePage: MoviePage? = null
@@ -102,7 +102,7 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
                 return null
             }
 
-            return MoviesInTheaterInputParam(nextPage, mapper.convertUiGenresToDomainGenres(movieGenres!!))
+            return PageParam(nextPage, mapper.convertUiGenresToDomainGenres(movieGenres!!))
         }
     }
 
@@ -153,7 +153,7 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
     /**
      * Executes the use case to retrieve the movie page.
      */
-    private fun executeUseCase(param: MoviesInTheaterInputParam) {
+    private fun executeUseCase(param: PageParam) {
         interactorDelegate.executeBackgroundJob(
                 {
                     showLoadingIfNeeded()

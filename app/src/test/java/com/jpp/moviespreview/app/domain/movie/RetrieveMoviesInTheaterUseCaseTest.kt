@@ -3,7 +3,7 @@ package com.jpp.moviespreview.app.domain.movie
 import com.jpp.moviespreview.app.data.cache.MoviesCache
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
 import com.jpp.moviespreview.app.domain.MoviePage
-import com.jpp.moviespreview.app.domain.MoviesInTheaterInputParam
+import com.jpp.moviespreview.app.domain.PageParam
 import com.jpp.moviespreview.app.mock
 import junit.framework.Assert.*
 import org.junit.Before
@@ -43,7 +43,7 @@ class RetrieveMoviesInTheaterUseCaseTest {
         val storedData: DataMoviePage = mock()
         `when`(moviesCache.getMoviePage(1)).thenReturn(storedData)
         `when`(moviesCache.isMoviePageOutOfDate(1)).thenReturn(false)
-        val param = MoviesInTheaterInputParam(1, listOf())
+        val param = PageParam(1, listOf())
         val mappedMoviePage: MoviePage = mock()
         `when`(mapper.convertDataMoviePageIntoDomainMoviePage(storedData, param.genres)).thenReturn(mappedMoviePage)
 
@@ -60,7 +60,7 @@ class RetrieveMoviesInTheaterUseCaseTest {
     fun execute_whenDataInCacheIsValid_butFails_returnsNull() {
         `when`(moviesCache.getMoviePage(1)).thenReturn(null)
         `when`(moviesCache.isMoviePageOutOfDate(1)).thenReturn(false)
-        val param = MoviesInTheaterInputParam(1, listOf())
+        val param = PageParam(1, listOf())
 
         val result = subject.execute(param)
 
@@ -72,7 +72,7 @@ class RetrieveMoviesInTheaterUseCaseTest {
         val retrievedData: DataMoviePage = mock()
         `when`(api.getNowPlaying(1)).thenReturn(retrievedData)
         `when`(moviesCache.isMoviePageOutOfDate(1)).thenReturn(true)
-        val param = MoviesInTheaterInputParam(1, listOf())
+        val param = PageParam(1, listOf())
         val mappedMoviePage: MoviePage = mock()
         `when`(mapper.convertDataMoviePageIntoDomainMoviePage(retrievedData, param.genres)).thenReturn(mappedMoviePage)
 
@@ -89,7 +89,7 @@ class RetrieveMoviesInTheaterUseCaseTest {
     fun execute_whenDataInCacheIsOutOfSate_retrievesDataFromApi_andDataIsNull_returnsNull() {
         `when`(api.getNowPlaying(1)).thenReturn(null)
         `when`(moviesCache.isMoviePageOutOfDate(1)).thenReturn(true)
-        val param = MoviesInTheaterInputParam(1, listOf())
+        val param = PageParam(1, listOf())
 
         val result = subject.execute(param)
 

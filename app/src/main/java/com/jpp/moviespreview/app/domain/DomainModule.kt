@@ -12,6 +12,8 @@ import com.jpp.moviespreview.app.domain.movie.MovieDataMapper
 import com.jpp.moviespreview.app.domain.movie.RetrieveMoviesInTheaterUseCase
 import com.jpp.moviespreview.app.domain.movie.credits.CreditsDataMapper
 import com.jpp.moviespreview.app.domain.movie.credits.RetrieveMovieCreditsUseCase
+import com.jpp.moviespreview.app.domain.search.MultiSearchDataMapper
+import com.jpp.moviespreview.app.domain.search.MultiSearchUseCase
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -37,7 +39,7 @@ class DomainModule {
 
     @Provides
     @Singleton
-    fun providesRetrieveMoviesInTheaterUseCase(api: MoviesPreviewApiWrapper, moviesCache: MoviesCache): UseCase<MoviesInTheaterInputParam, MoviePage>
+    fun providesRetrieveMoviesInTheaterUseCase(api: MoviesPreviewApiWrapper, moviesCache: MoviesCache): UseCase<PageParam, MoviePage>
             = RetrieveMoviesInTheaterUseCase(MovieDataMapper(), api, moviesCache)
 
 
@@ -46,4 +48,9 @@ class DomainModule {
     fun providesRetrieveMoviesCreditUseCase(api: MoviesPreviewApiWrapper, moviesCache: MoviesCache): UseCase<Movie, MovieCredits>
             = RetrieveMovieCreditsUseCase(CreditsDataMapper(), api, moviesCache)
 
+
+    @Provides
+    @Singleton
+    fun providesMultiSearchUseCase(api: MoviesPreviewApiWrapper): UseCase<MultiSearchParam, MultiSearchPage>
+            = MultiSearchUseCase(MultiSearchDataMapper(), api)
 }

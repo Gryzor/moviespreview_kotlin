@@ -1,7 +1,7 @@
 package com.jpp.moviespreview.app.ui.sections.main.playing.di
 
 import com.jpp.moviespreview.app.domain.MoviePage
-import com.jpp.moviespreview.app.domain.MoviesInTheaterInputParam
+import com.jpp.moviespreview.app.domain.PageParam
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.MoviesContext
@@ -29,7 +29,7 @@ class PlayingMoviesModule {
     @MainScreenScope
     fun providesPlayingMoviesPresenter(moviesContext: MoviesContext,
                                        presenterInteractorDelegate: PlayingMoviesPresenterInteractor,
-                                       playingMoviesUseCase: UseCase<MoviesInTheaterInputParam, MoviePage>,
+                                       playingMoviesUseCase: UseCase<PageParam, MoviePage>,
                                        mapper: DomainToUiDataMapper): PlayingMoviesPresenter
             = PlayingMoviesPresenterImpl(moviesContext, presenterInteractorDelegate, playingMoviesUseCase, mapper)
 
