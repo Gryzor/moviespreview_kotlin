@@ -26,7 +26,7 @@ open class MovieDataMapper {
     /**
      * Converts a list of [DataMovie] into a list of domain [Movie]s
      */
-    private fun convertDataMoviesIntoDomainMovies(dataMovies: List<DataMovie>, genres: List<Genre>): List<Movie> {
+    fun convertDataMoviesIntoDomainMovies(dataMovies: List<DataMovie>, genres: List<Genre>): List<Movie> {
         return dataMovies.mapTo(ArrayList()) {
             Movie(it.id,
                     it.title,
@@ -47,7 +47,7 @@ open class MovieDataMapper {
     /**
      * Maps a list of genre ids into the corresponding Genre list
      */
-    private fun mapGenresIdToDomainGenres(genreIds: List<Int>, genres: List<Genre>): List<Genre> {
+    fun mapGenresIdToDomainGenres(genreIds: List<Int>, genres: List<Genre>): List<Genre> {
         val result = ArrayList<Genre>()
         genres.filterTo(result) { genreIds.contains(it.id) }
         return result

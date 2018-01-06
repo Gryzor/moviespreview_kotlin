@@ -66,10 +66,18 @@ data class MoviePage(val page: Int,
 
 
 /**
- * Represents the input received by the [RetrieveMoviesInTheaterUseCase]
+ * Represents the input received by the UseCases that supports
+ * pagination.
  */
-data class MoviesInTheaterInputParam(val page: Int,
-                                     val genres: List<Genre>)
+data class PageParam(val page: Int,
+                     val genres: List<Genre>)
+
+/**
+ * Represents the input of the multi search use case.
+ */
+data class MultiSearchParam(val query: String,
+                            val page: Int,
+                            val genres: List<Genre>)
 
 
 /**
@@ -100,3 +108,42 @@ data class CrewPerson(var creditId: String,
 data class MovieCredits(var id: Double,
                         var cast: List<CastCharacter>,
                         var crew: List<CrewPerson>)
+
+
+/**
+ * Represents a page of results of a search retrieved from the backend.
+ */
+data class MultiSearchPage(val page: Int,
+                           val results: List<MultiSearchResult>,
+                           val totalPages: Int,
+                           val totalResults: Int)
+
+/**
+ * Represents an item int the result of a multi search
+ */
+data class MultiSearchResult(var id: Double,
+                             var posterPath: String?,
+                             var backdropPath: String?,
+                             var overview: String,
+                             var releaseDate: String?,
+                             var originalTitle: String?,
+                             val genres: List<Genre>?,
+                             @MediaType var mediaType: Long,
+                             var originalLanguage: String?,
+                             var voteCount: Double?,
+                             var voteAverage: Float?,
+                             var popularity: Float?,
+                             var name: String?,
+                             var knownFor: List<Movie>?) {
+
+    companion object {
+        @IntDef(MOVIE, TV, PERSON)
+        @Retention(AnnotationRetention.SOURCE)
+        annotation class MediaType
+
+        const val MOVIE = 0L
+        const val TV = 1L
+        const val PERSON = 2L
+    }
+
+}
