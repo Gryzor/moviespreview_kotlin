@@ -39,8 +39,8 @@ class DomainModule {
 
     @Provides
     @Singleton
-    fun providesRetrieveMoviesInTheaterUseCase(api: MoviesPreviewApiWrapper, moviesCache: MoviesCache, mapper: MovieDataMapper): UseCase<PageParam, MoviePage>
-            = RetrieveMoviesInTheaterUseCase(mapper, api, moviesCache)
+    fun providesRetrieveMoviesInTheaterUseCase(api: MoviesPreviewApiWrapper, moviesCache: MoviesCache): UseCase<PageParam, MoviePage>
+            = RetrieveMoviesInTheaterUseCase(MovieDataMapper(), api, moviesCache)
 
 
     @Provides
@@ -51,11 +51,6 @@ class DomainModule {
 
     @Provides
     @Singleton
-    fun providesMultiSearchUseCase(mapper: MovieDataMapper, api: MoviesPreviewApiWrapper): UseCase<MultiSearchParam, MultiSearchPage>
-            = MultiSearchUseCase(MultiSearchDataMapper(mapper), api)
-
-
-    @Provides
-    @Singleton
-    fun providesMovieDataMapper() = MovieDataMapper()
+    fun providesMultiSearchUseCase(api: MoviesPreviewApiWrapper): UseCase<MultiSearchParam, MultiSearchPage>
+            = MultiSearchUseCase(MultiSearchDataMapper(), api)
 }

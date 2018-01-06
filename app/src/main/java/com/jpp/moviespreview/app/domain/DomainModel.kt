@@ -76,38 +76,37 @@ data class PageParam(val page: Int,
  * Represents the input of the multi search use case.
  */
 data class MultiSearchParam(val query: String,
-                            val page: Int,
-                            val genres: List<Genre>)
+                            val page: Int)
 
 
 /**
  * Represents a character that is present in the cast of a [Movie].
  */
-data class CastCharacter(var castId: Double,
-                         var character: String,
-                         var creditId: String,
-                         var gender: Int,
-                         var name: String,
-                         var order: Int,
-                         var profilePath: String?)
+data class CastCharacter(val castId: Double,
+                         val character: String,
+                         val creditId: String,
+                         val gender: Int,
+                         val name: String,
+                         val order: Int,
+                         val profilePath: String?)
 
 /**
  * Represents a person that is part of a crew of a [Movie].
  */
-data class CrewPerson(var creditId: String,
-                      var department: String,
-                      var gender: Int,
-                      var id: Double,
-                      var job: String,
-                      var name: String,
-                      var profilePath: String?)
+data class CrewPerson(val creditId: String,
+                      val department: String,
+                      val gender: Int,
+                      val id: Double,
+                      val job: String,
+                      val name: String,
+                      val profilePath: String?)
 
 /**
  * Represents the credits of a [Movie]
  */
-data class MovieCredits(var id: Double,
-                        var cast: List<CastCharacter>,
-                        var crew: List<CrewPerson>)
+data class MovieCredits(val id: Double,
+                        val cast: List<CastCharacter>,
+                        val crew: List<CrewPerson>)
 
 
 /**
@@ -121,29 +120,20 @@ data class MultiSearchPage(val page: Int,
 /**
  * Represents an item int the result of a multi search
  */
-data class MultiSearchResult(var id: Double,
-                             var posterPath: String?,
-                             var backdropPath: String?,
-                             var overview: String,
-                             var releaseDate: String?,
-                             var originalTitle: String?,
-                             val genres: List<Genre>?,
-                             @MediaType var mediaType: Long,
-                             var originalLanguage: String?,
-                             var voteCount: Double?,
-                             var voteAverage: Float?,
-                             var popularity: Float?,
-                             var name: String?,
-                             var knownFor: List<Movie>?) {
+data class MultiSearchResult(val id: Double,
+                             val posterPath: String?,
+                             @MediaType val mediaType: Long,
+                             val name: String?,
+                             val title: String?) {
 
     companion object {
-        @IntDef(MOVIE, TV, PERSON)
+        @IntDef(MOVIE, TV, PERSON, UNKNWON)
         @Retention(AnnotationRetention.SOURCE)
         annotation class MediaType
 
         const val MOVIE = 0L
         const val TV = 1L
         const val PERSON = 2L
+        const val UNKNWON = 3L
     }
-
 }
