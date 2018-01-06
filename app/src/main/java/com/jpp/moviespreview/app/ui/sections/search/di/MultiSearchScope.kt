@@ -1,4 +1,4 @@
-package com.jpp.moviespreview.app.ui.sections.main.search.di
+package com.jpp.moviespreview.app.ui.sections.search.di
 
 import javax.inject.Scope
 

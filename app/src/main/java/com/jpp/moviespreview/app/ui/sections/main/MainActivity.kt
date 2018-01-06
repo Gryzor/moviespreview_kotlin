@@ -7,7 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.sections.main.playing.PlayingMoviesFragment
-import com.jpp.moviespreview.app.ui.sections.main.search.MultiSearchActivity
+import com.jpp.moviespreview.app.ui.sections.search.MultiSearchActivity
 import com.jpp.moviespreview.app.util.extentions.addFragmentIfNotInStack
 
 class MainActivity : AppCompatActivity() {

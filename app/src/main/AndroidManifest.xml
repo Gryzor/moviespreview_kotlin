@@ -31,7 +31,7 @@
                 android:value=".app.ui.sections.main.MainActivity" />
         </activity>
         <activity
-            android:name=".app.ui.sections.main.search.MultiSearchActivity"
+            android:name=".app.ui.sections.search.MultiSearchActivity"
             android:parentActivityName=".app.ui.sections.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar.Inverse">
             <meta-data

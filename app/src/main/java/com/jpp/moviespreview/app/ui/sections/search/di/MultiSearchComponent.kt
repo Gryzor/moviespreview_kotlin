@@ -1,6 +1,6 @@
-package com.jpp.moviespreview.app.ui.sections.main.search.di
+package com.jpp.moviespreview.app.ui.sections.search.di
 
-import com.jpp.moviespreview.app.ui.sections.main.search.MultiSearchActivity
+import com.jpp.moviespreview.app.ui.sections.search.MultiSearchActivity
 import dagger.Subcomponent
 
 /**
