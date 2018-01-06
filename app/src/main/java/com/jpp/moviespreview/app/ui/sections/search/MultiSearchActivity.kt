@@ -4,15 +4,16 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.SearchView
 import com.jpp.moviespreview.R
+import com.jpp.moviespreview.app.ui.MultiSearchResult
 import com.jpp.moviespreview.app.util.extentions.app
 import kotlinx.android.synthetic.main.search_movies_activity.*
+import org.jetbrains.anko.longToast
 import javax.inject.Inject
 
 /**
  * Created by jpp on 1/6/18.
  */
 class MultiSearchActivity : AppCompatActivity(), MultiSearchView {
-
 
     private val component by lazy { app.multiSearchComponent() }
 
@@ -39,6 +40,10 @@ class MultiSearchActivity : AppCompatActivity(), MultiSearchView {
     }
 
     override fun getQueryTextView(): QueryTextView = QueryTextViewImpl(search_view)
+
+    override fun showResults(results: List<MultiSearchResult>) {
+        longToast("Result ${results.size}")
+    }
 
 
     /*

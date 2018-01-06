@@ -19,8 +19,8 @@ class QuerySubmitManagerImpl : QuerySubmitManager {
     override fun linkQueryTextView(queryTextView: QueryTextView, action: (String) -> Unit) {
         RxQueryTextListener(queryTextView)
                 .getObservableInstance()
-                .debounce(300, TimeUnit.MILLISECONDS)
-                .filter { item -> item.length > 3 }
+                .debounce(1, TimeUnit.SECONDS) // wait one second
+                .filter { item -> item.length > 3 } // at least 3 characters
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { query -> action(query) }
     }

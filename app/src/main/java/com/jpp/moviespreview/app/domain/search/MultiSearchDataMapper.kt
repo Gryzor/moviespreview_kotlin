@@ -5,7 +5,7 @@ import com.jpp.moviespreview.app.domain.MultiSearchResult
 import com.jpp.moviespreview.app.domain.MultiSearchResult.Companion.MOVIE
 import com.jpp.moviespreview.app.domain.MultiSearchResult.Companion.PERSON
 import com.jpp.moviespreview.app.domain.MultiSearchResult.Companion.TV
-import com.jpp.moviespreview.app.domain.MultiSearchResult.Companion.UNKNWON
+import com.jpp.moviespreview.app.domain.MultiSearchResult.Companion.UNKNOWN
 import com.jpp.moviespreview.app.data.Movie as DataMovie
 import com.jpp.moviespreview.app.data.MultiSearchPage as DataResultPage
 import com.jpp.moviespreview.app.data.MultiSearchResult as DataResult
@@ -43,7 +43,7 @@ class MultiSearchDataMapper {
         "movie" -> MOVIE
         "tv" -> TV
         "person" -> PERSON
-        else -> UNKNWON
+        else -> UNKNOWN
     }
 
 }

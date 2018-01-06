@@ -127,13 +127,13 @@ data class MultiSearchResult(val id: Double,
                              val title: String?) {
 
     companion object {
-        @IntDef(MOVIE, TV, PERSON, UNKNWON)
+        @IntDef(MOVIE, TV, PERSON, UNKNOWN)
         @Retention(AnnotationRetention.SOURCE)
         annotation class MediaType
 
         const val MOVIE = 0L
         const val TV = 1L
         const val PERSON = 2L
-        const val UNKNWON = 3L
+        const val UNKNOWN = 3L
     }
 }

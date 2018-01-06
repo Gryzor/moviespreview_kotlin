@@ -7,7 +7,7 @@ import com.jpp.moviespreview.app.data.Genre as DataGenre
 import com.jpp.moviespreview.app.data.Genres as DataGenres
 import com.jpp.moviespreview.app.data.MultiSearchPage as DataResultPage
 import com.jpp.moviespreview.app.data.MultiSearchResult as DataResult
-import com.jpp.moviespreview.app.domain.MultiSearchResult.Companion.UNKNWON
+import com.jpp.moviespreview.app.domain.MultiSearchResult.Companion.UNKNOWN
 
 /**
  * Created by jpp on 1/6/18.
@@ -37,7 +37,7 @@ class MultiSearchDataMapperTest {
         assertEquals(3, result.totalPages)
         assertEquals(20, result.results.size)
         val lastResult = result.results[19]
-        assertEquals(UNKNWON, lastResult.mediaType)
+        assertEquals(UNKNOWN, lastResult.mediaType)
     }
 
 }

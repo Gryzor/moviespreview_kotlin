@@ -1,5 +1,11 @@
 package com.jpp.moviespreview.app.ui.sections.search.di
 
+import com.jpp.moviespreview.app.domain.MultiSearchPage
+import com.jpp.moviespreview.app.domain.MultiSearchParam
+import com.jpp.moviespreview.app.domain.UseCase
+import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
+import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 import com.jpp.moviespreview.app.ui.sections.search.MultiSearchPresenter
 import com.jpp.moviespreview.app.ui.sections.search.MultiSearchPresenterImpl
 import com.jpp.moviespreview.app.ui.sections.search.QuerySubmitManager
@@ -23,5 +29,10 @@ class MultiSearchModule {
 
     @Provides
     @MultiSearchScope
-    fun providesMultiSearchPresenter(querySubmitManager: QuerySubmitManager): MultiSearchPresenter = MultiSearchPresenterImpl(querySubmitManager)
+    fun providesMultiSearchPresenter(moviesContext: MoviesContext,
+                                     interactorDelegate: PresenterInteractorDelegate,
+                                     mapper: DomainToUiDataMapper,
+                                     querySubmitManager: QuerySubmitManager,
+                                     useCase: UseCase<MultiSearchParam, MultiSearchPage>): MultiSearchPresenter
+            = MultiSearchPresenterImpl(moviesContext, interactorDelegate, mapper, querySubmitManager, useCase)
 }

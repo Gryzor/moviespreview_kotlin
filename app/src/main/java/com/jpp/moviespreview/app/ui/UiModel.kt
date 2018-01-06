@@ -1,5 +1,6 @@
 package com.jpp.moviespreview.app.ui
 
+import android.support.annotation.IntDef
 import com.jpp.moviespreview.app.util.AllOpen
 
 /**
@@ -79,3 +80,20 @@ data class MoviePage(val page: Int,
 data class CreditPerson(var profilePath: String,
                         var title: String,
                         var subTitle: String)
+
+
+/**
+ * Represents a page of results of a search retrieved from the backend.
+ */
+data class MultiSearchPage(val page: Int,
+                           val results: List<MultiSearchResult>,
+                           val totalPages: Int,
+                           val totalResults: Int)
+
+/**
+ * Represents result item in the result of a multi search
+ */
+data class MultiSearchResult(val id: Double,
+                             val posterPath: String,
+                             val name: String)
+

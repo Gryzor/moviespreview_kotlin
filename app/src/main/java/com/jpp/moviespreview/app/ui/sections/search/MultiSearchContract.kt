@@ -1,5 +1,7 @@
 package com.jpp.moviespreview.app.ui.sections.search
 
+import com.jpp.moviespreview.app.ui.MultiSearchResult
+
 /**
  * Contains the MVP contract for themulti search section
  *
@@ -8,6 +10,7 @@ package com.jpp.moviespreview.app.ui.sections.search
 
 interface MultiSearchView {
     fun getQueryTextView(): QueryTextView
+    fun showResults(results: List<MultiSearchResult>)
 }
 
 interface MultiSearchPresenter {

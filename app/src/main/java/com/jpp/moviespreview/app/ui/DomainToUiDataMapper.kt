@@ -3,6 +3,8 @@ package com.jpp.moviespreview.app.ui
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.domain.ImageConfiguration.Companion.POSTER
 import com.jpp.moviespreview.app.domain.ImageConfiguration.Companion.PROFILE
+import com.jpp.moviespreview.app.domain.MultiSearchResult.Companion.MOVIE
+import com.jpp.moviespreview.app.domain.MultiSearchResult.Companion.UNKNOWN
 import com.jpp.moviespreview.app.util.extentions.filterInList
 import com.jpp.moviespreview.app.util.extentions.mapIf
 import com.jpp.moviespreview.app.domain.CastCharacter as DomainCastCharacter
@@ -11,6 +13,8 @@ import com.jpp.moviespreview.app.domain.Genre as DomainGenre
 import com.jpp.moviespreview.app.domain.Movie as DomainMovie
 import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
 import com.jpp.moviespreview.app.domain.MoviesConfiguration as DomainMovieConfiguration
+import com.jpp.moviespreview.app.domain.MultiSearchPage as DomainSearchPage
+import com.jpp.moviespreview.app.domain.MultiSearchResult as DomainSearchResult
 
 /**
  * Maps domain model to UI model
@@ -185,5 +189,36 @@ class DomainToUiDataMapper {
         cast.mapTo(creditPersonList) { CreditPerson(selectedImageConfiguration.prepareImageUrl(it.profilePath.toString()), it.character, it.name) }
         crew.mapTo(creditPersonList) { CreditPerson(selectedImageConfiguration.prepareImageUrl(it.profilePath.toString()), it.name, it.department) }
         return creditPersonList
+    }
+
+
+    /**
+     * Converts a [DomainSearchPage] into a UI [MultiSearchPage]
+     */
+    fun convertDomainResultPageInUiResultPage(domainResultPage: DomainSearchPage) = with(domainResultPage) {
+        MultiSearchPage(page,
+                convertDomainSearchResultsInUiMultiSearchResults(results),
+                totalPages,
+                totalResults)
+    }
+
+
+    /**
+     * Transforms a list of [DomainSearchResult] into a list of UI [MultiSearchResult]
+     */
+    private fun convertDomainSearchResultsInUiMultiSearchResults(domainSearchResult: List<DomainSearchResult>): List<MultiSearchResult> {
+        return domainSearchResult.mapIf(
+                { it.mediaType != UNKNOWN },
+                {
+                    MultiSearchResult(it.id,
+                            it.posterPath ?: "Empty",
+                            extractTitleFromSearchResult(it))
+                })
+    }
+
+
+    private fun extractTitleFromSearchResult(domainSearchResult: DomainSearchResult) = when (domainSearchResult.mediaType) {
+        MOVIE -> domainSearchResult.title!!
+        else -> domainSearchResult.name!! // case: TV and PERSON
     }
 }
