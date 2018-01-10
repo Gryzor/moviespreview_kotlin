@@ -33,6 +33,7 @@ class MultiSearchDataMapper {
         return dataSearchResults.mapTo(ArrayList()) {
             MultiSearchResult(it.id,
                     it.poster_path,
+                    it.profile_path,
                     mapMediaType(it.media_type),
                     it.name,
                     it.title)

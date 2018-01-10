@@ -122,6 +122,7 @@ data class MultiSearchPage(val page: Int,
  */
 data class MultiSearchResult(val id: Double,
                              val posterPath: String?,
+                             val profilePath: String?,
                              @MediaType val mediaType: Long,
                              val name: String?,
                              val title: String?) {

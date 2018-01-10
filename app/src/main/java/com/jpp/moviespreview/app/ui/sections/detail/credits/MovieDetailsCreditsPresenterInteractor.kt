@@ -1,8 +1,8 @@
 package com.jpp.moviespreview.app.ui.sections.detail.credits
 
 import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
+import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationPresenterDelegate
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
-import com.jpp.moviespreview.app.util.extentions.transformToInt
 
 /**
  * Interactor definition for the movies credits presenter.
@@ -16,7 +16,8 @@ interface MovieDetailsCreditsPresenterInteractor : PresenterInteractorDelegate {
 
 }
 
-class MovieDetailsCreditsPresenterInteractorImpl(private val presenterInteractorDelegate: PresenterInteractorDelegate)
+class MovieDetailsCreditsPresenterInteractorImpl(private val presenterInteractorDelegate: PresenterInteractorDelegate,
+                                                 private val imageConfigPresenterDelegate: ImageConfigurationPresenterDelegate)
     : MovieDetailsCreditsPresenterInteractor {
 
     override fun isConnectedToNetwork() = presenterInteractorDelegate.isConnectedToNetwork()
@@ -28,17 +29,6 @@ class MovieDetailsCreditsPresenterInteractorImpl(private val presenterInteractor
     override fun isIdle() = presenterInteractorDelegate.isIdle()
 
 
-    override fun findProfileImageConfigurationForHeight(profileImageConfigs: List<ProfileImageConfiguration>, height: Int): ProfileImageConfiguration {
-        return profileImageConfigs.firstOrNull {
-            isImageConfigForSize(height, it)
-        } ?: profileImageConfigs.last()
-    }
-
-
-    private fun isImageConfigForSize(sizeToMatch: Int, profileImageConfiguration: ProfileImageConfiguration): Boolean {
-        with(profileImageConfiguration) {
-            val realSize = size.transformToInt()
-            return realSize != null && realSize > sizeToMatch
-        }
-    }
+    override fun findProfileImageConfigurationForHeight(profileImageConfigs: List<ProfileImageConfiguration>, height: Int)
+            = imageConfigPresenterDelegate.findProfileImageConfigurationForHeight(profileImageConfigs, height)
 }

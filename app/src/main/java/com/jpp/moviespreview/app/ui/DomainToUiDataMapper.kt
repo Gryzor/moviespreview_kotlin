@@ -4,6 +4,7 @@ import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.domain.ImageConfiguration.Companion.POSTER
 import com.jpp.moviespreview.app.domain.ImageConfiguration.Companion.PROFILE
 import com.jpp.moviespreview.app.domain.MultiSearchResult.Companion.MOVIE
+import com.jpp.moviespreview.app.domain.MultiSearchResult.Companion.TV
 import com.jpp.moviespreview.app.domain.MultiSearchResult.Companion.UNKNOWN
 import com.jpp.moviespreview.app.util.extentions.filterInList
 import com.jpp.moviespreview.app.util.extentions.mapIf
@@ -195,9 +196,11 @@ class DomainToUiDataMapper {
     /**
      * Converts a [DomainSearchPage] into a UI [MultiSearchPage]
      */
-    fun convertDomainResultPageInUiResultPage(domainResultPage: DomainSearchPage) = with(domainResultPage) {
+    fun convertDomainResultPageInUiResultPage(domainResultPage: DomainSearchPage,
+                                              posterImageConfiguration: PosterImageConfiguration,
+                                              profileImageConfiguration: ProfileImageConfiguration) = with(domainResultPage) {
         MultiSearchPage(page,
-                convertDomainSearchResultsInUiMultiSearchResults(results),
+                convertDomainSearchResultsInUiMultiSearchResults(results, posterImageConfiguration, profileImageConfiguration),
                 totalPages,
                 totalResults)
     }
@@ -206,13 +209,17 @@ class DomainToUiDataMapper {
     /**
      * Transforms a list of [DomainSearchResult] into a list of UI [MultiSearchResult]
      */
-    private fun convertDomainSearchResultsInUiMultiSearchResults(domainSearchResult: List<DomainSearchResult>): List<MultiSearchResult> {
+    private fun convertDomainSearchResultsInUiMultiSearchResults(domainSearchResult: List<DomainSearchResult>,
+                                                                 posterImageConfiguration: PosterImageConfiguration,
+                                                                 profileImageConfiguration: ProfileImageConfiguration): List<MultiSearchResult> {
         return domainSearchResult.mapIf(
                 { it.mediaType != UNKNOWN },
                 {
                     MultiSearchResult(it.id,
-                            it.posterPath ?: "Empty",
-                            extractTitleFromSearchResult(it))
+                            prepareImagePathForResult(it, posterImageConfiguration, profileImageConfiguration),
+                            extractTitleFromSearchResult(it),
+                            getIconForSearchResult(it),
+                            it.mediaType == MOVIE) // details only for movies for the moment
                 })
     }
 
@@ -220,5 +227,20 @@ class DomainToUiDataMapper {
     private fun extractTitleFromSearchResult(domainSearchResult: DomainSearchResult) = when (domainSearchResult.mediaType) {
         MOVIE -> domainSearchResult.title!!
         else -> domainSearchResult.name!! // case: TV and PERSON
+    }
+
+
+    private fun getIconForSearchResult(domainSearchResult: DomainSearchResult) = when (domainSearchResult.mediaType) {
+        MOVIE -> R.drawable.ic_clapperboard
+        TV -> R.drawable.ic_tv
+        else -> R.drawable.ic_person_black
+    }
+
+    private fun prepareImagePathForResult(domainSearchResult: DomainSearchResult,
+                                          posterImageConfiguration: PosterImageConfiguration,
+                                          profileImageConfiguration: ProfileImageConfiguration) = when (domainSearchResult.mediaType) {
+
+        PROFILE -> profileImageConfiguration.prepareImageUrl(domainSearchResult.profilePath.toString())
+        else -> posterImageConfiguration.prepareImageUrl(domainSearchResult.posterPath.toString())
     }
 }

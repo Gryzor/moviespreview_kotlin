@@ -91,6 +91,7 @@ data class MultiSearchPage(val page: Int,
  */
 data class MultiSearchResult(val id: Double,
                              val poster_path: String?,
+                             val profile_path: String?,
                              val media_type: String,
                              val name: String?,
                              val title: String?)

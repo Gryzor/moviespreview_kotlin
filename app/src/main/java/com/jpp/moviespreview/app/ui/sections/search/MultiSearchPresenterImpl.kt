@@ -5,7 +5,6 @@ import com.jpp.moviespreview.app.domain.MultiSearchParam
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.MoviesContext
-import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 import com.jpp.moviespreview.app.domain.MultiSearchPage as DomainSearchPage
 import com.jpp.moviespreview.app.domain.MultiSearchResult as DomainSearchResult
 
@@ -13,7 +12,7 @@ import com.jpp.moviespreview.app.domain.MultiSearchResult as DomainSearchResult
  * Created by jpp on 1/6/18.
  */
 class MultiSearchPresenterImpl(private val moviesContext: MoviesContext,
-                               private val interactorDelegate: PresenterInteractorDelegate,
+                               private val interactorDelegate: MultiSearchPresenterInteractor,
                                private val mapper: DomainToUiDataMapper,
                                private val querySubmitManager: QuerySubmitManager,
                                private val useCase: UseCase<MultiSearchParam, MultiSearchPage>) : MultiSearchPresenter {
@@ -48,9 +47,16 @@ class MultiSearchPresenterImpl(private val moviesContext: MoviesContext,
 
     private fun processSearchResult(result: DomainSearchPage?) {
         if (result != null) {
-            viewInstance.showResults(mapper.convertDomainResultPageInUiResultPage(result).results)
+            val uiResults = mapper.convertDomainResultPageInUiResultPage(result, getPosterImageConfiguration(), getProfileImageConfiguration())
+            viewInstance.showResults(uiResults.results)
         } else {
             //TODO what do we do here?
         }
     }
+
+
+    private fun getProfileImageConfiguration() = interactorDelegate.findProfileImageConfigurationForHeight(moviesContext.profileImageConfig!!, viewInstance.getTargetMultiSearchResultImageSize())
+
+    private fun getPosterImageConfiguration() = interactorDelegate.findPosterImageConfigurationForWidth(moviesContext.posterImageConfig!!, viewInstance.getTargetMultiSearchResultImageSize())
+
 }

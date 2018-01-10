@@ -2,33 +2,49 @@ package com.jpp.moviespreview.app.ui.sections.search
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.MultiSearchResult
+import com.jpp.moviespreview.app.ui.recyclerview.SimpleDividerItemDecoration
 import com.jpp.moviespreview.app.util.extentions.app
-import kotlinx.android.synthetic.main.search_movies_activity.*
-import org.jetbrains.anko.longToast
+import kotlinx.android.synthetic.main.multi_search_activity.*
 import javax.inject.Inject
 
 /**
+ * TODO pagination
+ * TODO handle search button soft keyboard
+ * TODO DETAILS
+ * TODO hint search
+ * TODO clear when X button is pressed
+ * TODO rotation
+ *
  * Created by jpp on 1/6/18.
  */
 class MultiSearchActivity : AppCompatActivity(), MultiSearchView {
 
+
     private val component by lazy { app.multiSearchComponent() }
+    private val adapter by lazy { MultiSearchAdapter() }
 
     @Inject
     lateinit var presenter: MultiSearchPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.search_movies_activity)
+        setContentView(R.layout.multi_search_activity)
 
         setSupportActionBar(search_activity_toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         search_view.isIconified = false
         search_view.setIconifiedByDefault(false)
 
+
+        val layoutManager = LinearLayoutManager(this)
+        search_results_recycler_view.layoutManager = layoutManager
+        search_results_recycler_view.addItemDecoration(SimpleDividerItemDecoration(this))
+        search_results_recycler_view.adapter = adapter
+        //TODO search_results_recycler_view.endlessScrolling({ playingMoviesPresenter.getNextMoviePage() })
 
         component.inject(this)
     }
@@ -42,9 +58,10 @@ class MultiSearchActivity : AppCompatActivity(), MultiSearchView {
     override fun getQueryTextView(): QueryTextView = QueryTextViewImpl(search_view)
 
     override fun showResults(results: List<MultiSearchResult>) {
-        longToast("Result ${results.size}")
+        adapter.appendResults(results)
     }
 
+    override fun getTargetMultiSearchResultImageSize() = resources.getDimensionPixelSize(R.dimen.multi_search_result_image_size)
 
     /*
      * Inner implementation of QueryTextView. It will add itself as OnQueryTextListener of

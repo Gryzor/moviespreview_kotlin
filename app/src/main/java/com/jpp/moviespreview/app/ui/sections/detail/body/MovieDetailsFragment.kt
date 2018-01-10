@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.MovieGenre
+import com.jpp.moviespreview.app.ui.recyclerview.SimpleDividerItemDecoration
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailPresenter
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailView
-import com.jpp.moviespreview.app.ui.recyclerview.VerticalSpaceItemDecoration
 import com.jpp.moviespreview.app.util.extentions.app
 import kotlinx.android.synthetic.main.movie_details_fragment.*
 import javax.inject.Inject
@@ -49,7 +49,7 @@ class MovieDetailsFragment : Fragment(), MovieDetailView {
     override fun showMovieGenres(genres: List<MovieGenre>) {
         val layoutManager = LinearLayoutManager(activity)
         movie_details_fragment_recycler_view.layoutManager = layoutManager
-        movie_details_fragment_recycler_view.addItemDecoration(VerticalSpaceItemDecoration(resources.getDimension(R.dimen.default_vertical_recycler_view_space).toInt()))
+        movie_details_fragment_recycler_view.addItemDecoration(SimpleDividerItemDecoration(activity))
         movie_details_fragment_recycler_view.adapter = MovieDetailsGenreAdapter(genres)
     }
 

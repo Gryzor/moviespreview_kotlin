@@ -1,6 +1,6 @@
 package com.jpp.moviespreview.app.ui
 
-import android.support.annotation.IntDef
+import android.support.annotation.DrawableRes
 import com.jpp.moviespreview.app.util.AllOpen
 
 /**
@@ -94,6 +94,8 @@ data class MultiSearchPage(val page: Int,
  * Represents result item in the result of a multi search
  */
 data class MultiSearchResult(val id: Double,
-                             val posterPath: String,
-                             val name: String)
+                             val imagePath: String,
+                             val name: String,
+                             @DrawableRes val icon: Int,
+                             val hasDetails: Boolean)
 

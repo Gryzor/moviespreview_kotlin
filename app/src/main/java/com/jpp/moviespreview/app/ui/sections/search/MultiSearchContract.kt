@@ -11,6 +11,7 @@ import com.jpp.moviespreview.app.ui.MultiSearchResult
 interface MultiSearchView {
     fun getQueryTextView(): QueryTextView
     fun showResults(results: List<MultiSearchResult>)
+    fun getTargetMultiSearchResultImageSize(): Int
 }
 
 interface MultiSearchPresenter {
