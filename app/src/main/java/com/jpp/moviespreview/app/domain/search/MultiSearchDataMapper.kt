@@ -21,8 +21,8 @@ class MultiSearchDataMapper {
     /**
      * Converts a [DataResultPage] into a domain [MultiSearchPage]
      */
-    fun convertDataSearchPageIntoDomainSearchResult(dataResultPage: DataResultPage) = with(dataResultPage) {
-        MultiSearchPage(page, convertDataSearchResultsIntoDomainSearchResults(results), total_pages, total_results)
+    fun convertDataSearchPageIntoDomainSearchResult(dataResultPage: DataResultPage, query: String) = with(dataResultPage) {
+        MultiSearchPage(page, convertDataSearchResultsIntoDomainSearchResults(results), total_pages, total_results, query)
     }
 
 

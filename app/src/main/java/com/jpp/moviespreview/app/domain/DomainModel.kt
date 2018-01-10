@@ -115,7 +115,8 @@ data class MovieCredits(val id: Double,
 data class MultiSearchPage(val page: Int,
                            val results: List<MultiSearchResult>,
                            val totalPages: Int,
-                           val totalResults: Int)
+                           val totalResults: Int,
+                           val query: String)
 
 /**
  * Represents an item int the result of a multi search

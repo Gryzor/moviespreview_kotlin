@@ -4,7 +4,6 @@ import com.jpp.moviespreview.app.domain.MultiSearchPage
 import com.jpp.moviespreview.app.domain.MultiSearchParam
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
-import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationPresenterDelegate
 import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationPresenterDelegateImpl
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
@@ -28,12 +27,12 @@ class MultiSearchModule {
 
     @Provides
     @MultiSearchScope
-    fun providesMultiSearchPresenter(moviesContext: MoviesContext,
+    fun providesMultiSearchPresenter(multiSearchContext: MultiSearchContext,
                                      interactorDelegate: MultiSearchPresenterInteractor,
                                      mapper: DomainToUiDataMapper,
                                      querySubmitManager: QuerySubmitManager,
                                      useCase: UseCase<MultiSearchParam, MultiSearchPage>): MultiSearchPresenter
-            = MultiSearchPresenterImpl(moviesContext, interactorDelegate, mapper, querySubmitManager, useCase)
+            = MultiSearchPresenterImpl(multiSearchContext, interactorDelegate, mapper, querySubmitManager, useCase)
 
     @Provides
     @MultiSearchScope

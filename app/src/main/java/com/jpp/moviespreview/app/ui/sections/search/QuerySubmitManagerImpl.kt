@@ -20,7 +20,7 @@ class QuerySubmitManagerImpl : QuerySubmitManager {
         RxQueryTextListener(queryTextView)
                 .getObservableInstance()
                 .debounce(1, TimeUnit.SECONDS) // wait one second
-                .filter { item -> item.length > 3 } // at least 3 characters
+                .filter { item -> item.length > 1 } // at least 1 characters
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { query -> action(query) }
     }
@@ -28,7 +28,7 @@ class QuerySubmitManagerImpl : QuerySubmitManager {
 
     private class RxQueryTextListener(queryTextView: QueryTextView) : QueryTextListener {
 
-        private val subject = BehaviorSubject.create("")
+        private var subject = BehaviorSubject.create("")
 
         init {
             queryTextView.addQueryTextListener(this)

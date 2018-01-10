@@ -58,10 +58,16 @@ class MultiSearchActivity : AppCompatActivity(), MultiSearchView {
     override fun getQueryTextView(): QueryTextView = QueryTextViewImpl(search_view)
 
     override fun showResults(results: List<MultiSearchResult>) {
-        adapter.appendResults(results)
+        adapter.showResults(results)
     }
 
     override fun getTargetMultiSearchResultImageSize() = resources.getDimensionPixelSize(R.dimen.multi_search_result_image_size)
+
+    override fun appendResults(results: List<MultiSearchResult>) {
+        adapter.appendResults(results)
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
 
     /*
      * Inner implementation of QueryTextView. It will add itself as OnQueryTextListener of

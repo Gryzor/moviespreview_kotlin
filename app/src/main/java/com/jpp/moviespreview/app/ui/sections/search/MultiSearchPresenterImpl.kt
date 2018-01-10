@@ -4,14 +4,13 @@ import com.jpp.moviespreview.app.domain.MultiSearchPage
 import com.jpp.moviespreview.app.domain.MultiSearchParam
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
-import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.domain.MultiSearchPage as DomainSearchPage
 import com.jpp.moviespreview.app.domain.MultiSearchResult as DomainSearchResult
 
 /**
  * Created by jpp on 1/6/18.
  */
-class MultiSearchPresenterImpl(private val moviesContext: MoviesContext,
+class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContext,
                                private val interactorDelegate: MultiSearchPresenterInteractor,
                                private val mapper: DomainToUiDataMapper,
                                private val querySubmitManager: QuerySubmitManager,
@@ -22,12 +21,7 @@ class MultiSearchPresenterImpl(private val moviesContext: MoviesContext,
 
     override fun linkView(multiSearchView: MultiSearchView) {
         viewInstance = multiSearchView
-        querySubmitManager
-                .linkQueryTextView(
-                        multiSearchView.getQueryTextView(),
-                        { query ->
-                            executeUseCase(query)
-                        })
+        listenQueryUpdates()
     }
 
 
@@ -36,27 +30,54 @@ class MultiSearchPresenterImpl(private val moviesContext: MoviesContext,
         interactorDelegate.executeBackgroundJob(
                 {
                     //TODO show loading if needed
+
+                    multiSearchContext.onGoingQueryParam = param
+
                     useCase.execute(param)
                 },
                 {
-                    processSearchResult(it)
+
+                    processIfIsDataFromOngoingCall(it, {
+                        val uiResults = mapper.convertDomainResultPageInUiResultPage(it, getPosterImageConfiguration(), getProfileImageConfiguration())
+                        viewInstance.showResults(uiResults.results)
+                        listenQueryUpdates()
+                    })
+
+
+                    processIfIsError(it, {
+                        //TODO manage error
+                    })
 
                 }
         )
     }
 
-    private fun processSearchResult(result: DomainSearchPage?) {
-        if (result != null) {
-            val uiResults = mapper.convertDomainResultPageInUiResultPage(result, getPosterImageConfiguration(), getProfileImageConfiguration())
-            viewInstance.showResults(uiResults.results)
-        } else {
-            //TODO what do we do here?
+    private fun listenQueryUpdates() {
+        querySubmitManager
+                .linkQueryTextView(
+                        viewInstance.getQueryTextView(),
+                        { query ->
+                            executeUseCase(query)
+                        })
+    }
+
+
+    private fun processIfIsDataFromOngoingCall(result: DomainSearchPage?, func: (DomainSearchPage) -> Unit) {
+        if (multiSearchContext.onGoingQueryParam?.page == result?.page) {
+            func(result!!) // only if result != null
         }
     }
 
 
-    private fun getProfileImageConfiguration() = interactorDelegate.findProfileImageConfigurationForHeight(moviesContext.profileImageConfig!!, viewInstance.getTargetMultiSearchResultImageSize())
+    private fun processIfIsError(result: DomainSearchPage?, func: () -> Unit) {
+        if (result == null) {
+            func()
+        }
+    }
 
-    private fun getPosterImageConfiguration() = interactorDelegate.findPosterImageConfigurationForWidth(moviesContext.posterImageConfig!!, viewInstance.getTargetMultiSearchResultImageSize())
+
+    private fun getProfileImageConfiguration() = interactorDelegate.findProfileImageConfigurationForHeight(multiSearchContext.getProfileImageConfig()!!, viewInstance.getTargetMultiSearchResultImageSize())
+
+    private fun getPosterImageConfiguration() = interactorDelegate.findPosterImageConfigurationForWidth(multiSearchContext.getPosterImageConfigs()!!, viewInstance.getTargetMultiSearchResultImageSize())
 
 }
