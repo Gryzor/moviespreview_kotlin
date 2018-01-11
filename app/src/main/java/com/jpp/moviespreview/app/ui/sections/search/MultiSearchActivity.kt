@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
+import android.util.Log
+import android.view.MenuItem
+import android.view.View
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.MultiSearchResult
 import com.jpp.moviespreview.app.ui.recyclerview.SimpleDividerItemDecoration
@@ -14,11 +17,8 @@ import org.jetbrains.anko.longToast
 import javax.inject.Inject
 
 /**
- * TODO clear results when exit
- * TODO pagination
  * TODO DETAILS
  * TODO hint search
- * TODO clear when X button is pressed
  *
  * Created by jpp on 1/6/18.
  */
@@ -37,8 +37,7 @@ class MultiSearchActivity : AppCompatActivity(), MultiSearchView {
 
         setSupportActionBar(search_activity_toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        search_view.isIconified = false
-        search_view.setIconifiedByDefault(false)
+        setupSearchView()
 
 
         val layoutManager = LinearLayoutManager(this)
@@ -48,6 +47,18 @@ class MultiSearchActivity : AppCompatActivity(), MultiSearchView {
         search_results_recycler_view.endlessScrolling({ presenter.getNextSearchPage() })
 
         component.inject(this)
+    }
+
+    private fun setupSearchView() {
+        search_view.isIconified = false
+        search_view.setIconifiedByDefault(false)
+
+
+        // we need to find the button this way b/c we're using isIconified = false
+        val closeButton = search_view.findViewById<View>(android.support.v7.appcompat.R.id.search_close_btn)
+        closeButton.setOnClickListener {
+            presenter.clearLastSearch()
+        }
     }
 
 
@@ -70,14 +81,30 @@ class MultiSearchActivity : AppCompatActivity(), MultiSearchView {
 
     override fun showEndOfPaging() {
         //TODO implement me
-       longToast("End of paging")
+        longToast("End of paging")
     }
 
+    override fun clearPages() {
+        search_view.setQuery("", false)
+        adapter.clear()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> presenter.clearLastSearch()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        presenter.clearLastSearch()
+        super.onBackPressed()
+    }
 
     /*
-     * Inner implementation of QueryTextView. It will add itself as OnQueryTextListener of
-     * the provided SearchView and will update the QueryTextListener with each respective query.
-     */
+         * Inner implementation of QueryTextView. It will add itself as OnQueryTextListener of
+         * the provided SearchView and will update the QueryTextListener with each respective query.
+         */
     private class QueryTextViewImpl(searchView: SearchView) : QueryTextView, SearchView.OnQueryTextListener {
 
         private lateinit var queryTextListener: QueryTextListener

@@ -38,6 +38,25 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
     }
 
 
+    override fun getNextSearchPage() {
+        with(multiSearchContext) {
+            if (interactorDelegate.isIdle()) {
+                val param = createNextUseCaseParam(onGoingQueryParam!!.query)
+                if (param != null) {
+                    executeUseCase(param, {
+                        viewInstance.appendResults(it)
+                    })
+                }
+            }
+        }
+    }
+
+    override fun clearLastSearch() {
+        multiSearchContext.clearPages()
+        viewInstance.clearPages()
+    }
+
+
     private fun executeUseCase(param: MultiSearchParam, showResult: (List<MultiSearchResult>) -> Unit) {
         with(multiSearchContext) {
             if (multiSearchContext.onGoingQueryParam != param) {
@@ -67,21 +86,6 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
             }
         }
     }
-
-
-    override fun getNextSearchPage() {
-        with(multiSearchContext) {
-            if (interactorDelegate.isIdle()) {
-                val param = createNextUseCaseParam(onGoingQueryParam!!.query)
-                if (param != null) {
-                    executeUseCase(param, {
-                        viewInstance.appendResults(it)
-                    })
-                }
-            }
-        }
-    }
-
 
     /**
      * Adds a listener to the [querySubmitManager] in order to detect new queries.
@@ -120,6 +124,7 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
     }
 
     private fun createNextUseCaseParam(query: String): MultiSearchParam? {
+        //TODO create PaginationInteractor
         with(multiSearchContext) {
             var lastMPageIndex = 0 // by default, always get the first page
             var lastPage: com.jpp.moviespreview.app.ui.MultiSearchPage? = null

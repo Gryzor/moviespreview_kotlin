@@ -35,6 +35,11 @@ class MultiSearchAdapter(private val searchResults: MutableList<MultiSearchResul
         notifyDataSetChanged()
     }
 
+    fun clear() {
+        searchResults.clear()
+        notifyDataSetChanged()
+    }
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bindResult(result: MultiSearchResult) {
