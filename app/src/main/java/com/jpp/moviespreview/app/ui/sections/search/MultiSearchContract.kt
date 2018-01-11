@@ -13,10 +13,12 @@ interface MultiSearchView {
     fun showResults(results: List<MultiSearchResult>)
     fun appendResults(results: List<MultiSearchResult>)
     fun getTargetMultiSearchResultImageSize(): Int
+    fun showEndOfPaging()
 }
 
 interface MultiSearchPresenter {
     fun linkView(multiSearchView: MultiSearchView)
+    fun getNextSearchPage()
 }
 
 

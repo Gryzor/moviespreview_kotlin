@@ -4,10 +4,18 @@ import com.jpp.moviespreview.app.domain.MultiSearchPage
 import com.jpp.moviespreview.app.domain.MultiSearchParam
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
+import com.jpp.moviespreview.app.ui.MultiSearchResult
 import com.jpp.moviespreview.app.domain.MultiSearchPage as DomainSearchPage
 import com.jpp.moviespreview.app.domain.MultiSearchResult as DomainSearchResult
 
 /**
+ * [MultiSearchPresenter] implementation. Will add itself as listener of the [querySubmitManager]
+ * in order to handle the queries executed.
+ *
+ * When the user makes a query, the presenter will execute the use case, will store the result
+ * in [MultiSearchContext] in order to keep them in memory (to handle rotation for instance) and
+ * will ask the [MultiSearchView] to show the result.
+ *
  * Created by jpp on 1/6/18.
  */
 class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContext,
@@ -22,42 +30,72 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
     override fun linkView(multiSearchView: MultiSearchView) {
         viewInstance = multiSearchView
         listenQueryUpdates()
+        with(multiSearchContext) {
+            if (hasSearchPages()) {
+                viewInstance.showResults(getAllSearchResults())
+            }
+        }
     }
 
 
-    private fun executeUseCase(query: String) {
-        val param = MultiSearchParam(query, 1)
-        interactorDelegate.executeBackgroundJob(
-                {
-                    //TODO show loading if needed
+    private fun executeUseCase(param: MultiSearchParam, showResult: (List<MultiSearchResult>) -> Unit) {
+        with(multiSearchContext) {
+            if (multiSearchContext.onGoingQueryParam != param) {
+                interactorDelegate.executeBackgroundJob(
+                        {
+                            //TODO show loading if needed
+                            clearPagesInContextIfQueryChanged(multiSearchContext.onGoingQueryParam?.query, param.query)
+                            multiSearchContext.onGoingQueryParam = param
+                            useCase.execute(param)
+                        },
+                        {
+                            // process only if is for the current query
+                            processIfIsDataFromOngoingCall(it, {
+                                val uiResults = mapper.convertDomainResultPageInUiResultPage(it, getPosterImageConfiguration(), getProfileImageConfiguration())
+                                multiSearchContext.addSearchPage(uiResults)
+                                showResult(uiResults.results)
+                                listenQueryUpdates()
+                            })
 
-                    multiSearchContext.onGoingQueryParam = param
 
-                    useCase.execute(param)
-                },
-                {
+                            processIfIsError(it, {
+                                //TODO manage error
+                            })
 
-                    processIfIsDataFromOngoingCall(it, {
-                        val uiResults = mapper.convertDomainResultPageInUiResultPage(it, getPosterImageConfiguration(), getProfileImageConfiguration())
-                        viewInstance.showResults(uiResults.results)
-                        listenQueryUpdates()
+                        }
+                )
+            }
+        }
+    }
+
+
+    override fun getNextSearchPage() {
+        with(multiSearchContext) {
+            if (interactorDelegate.isIdle()) {
+                val param = createNextUseCaseParam(onGoingQueryParam!!.query)
+                if (param != null) {
+                    executeUseCase(param, {
+                        viewInstance.appendResults(it)
                     })
-
-
-                    processIfIsError(it, {
-                        //TODO manage error
-                    })
-
                 }
-        )
+            }
+        }
     }
 
+
+    /**
+     * Adds a listener to the [querySubmitManager] in order to detect new queries.
+     * When a new query is detected, the use case is executed to retrieve the first
+     * page of the query.
+     */
     private fun listenQueryUpdates() {
         querySubmitManager
                 .linkQueryTextView(
                         viewInstance.getQueryTextView(),
                         { query ->
-                            executeUseCase(query)
+                            executeUseCase(createNextUseCaseParam(query)!!, {
+                                viewInstance.showResults(it)
+                            })
                         })
     }
 
@@ -75,6 +113,32 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
         }
     }
 
+    private fun clearPagesInContextIfQueryChanged(queryInContext: String?, newQuery: String) {
+        if (queryInContext != newQuery) {
+            multiSearchContext.clearPages()
+        }
+    }
+
+    private fun createNextUseCaseParam(query: String): MultiSearchParam? {
+        with(multiSearchContext) {
+            var lastMPageIndex = 0 // by default, always get the first page
+            var lastPage: com.jpp.moviespreview.app.ui.MultiSearchPage? = null
+
+            if (getAllSearchPages().isNotEmpty()) {
+                lastPage = getAllSearchPages().last()
+                lastMPageIndex = lastPage.page
+            }
+
+            val nextPage = lastMPageIndex + 1
+
+            if (lastPage != null && nextPage > lastPage.totalPages) {
+                viewInstance.showEndOfPaging()
+                return null
+            }
+
+            return MultiSearchParam(query, nextPage)
+        }
+    }
 
     private fun getProfileImageConfiguration() = interactorDelegate.findProfileImageConfigurationForHeight(multiSearchContext.getProfileImageConfig()!!, viewInstance.getTargetMultiSearchResultImageSize())
 

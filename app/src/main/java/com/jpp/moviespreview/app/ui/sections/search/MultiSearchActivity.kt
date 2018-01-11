@@ -8,16 +8,17 @@ import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.MultiSearchResult
 import com.jpp.moviespreview.app.ui.recyclerview.SimpleDividerItemDecoration
 import com.jpp.moviespreview.app.util.extentions.app
+import com.jpp.moviespreview.app.util.extentions.endlessScrolling
 import kotlinx.android.synthetic.main.multi_search_activity.*
+import org.jetbrains.anko.longToast
 import javax.inject.Inject
 
 /**
+ * TODO clear results when exit
  * TODO pagination
- * TODO handle search button soft keyboard
  * TODO DETAILS
  * TODO hint search
  * TODO clear when X button is pressed
- * TODO rotation
  *
  * Created by jpp on 1/6/18.
  */
@@ -44,7 +45,7 @@ class MultiSearchActivity : AppCompatActivity(), MultiSearchView {
         search_results_recycler_view.layoutManager = layoutManager
         search_results_recycler_view.addItemDecoration(SimpleDividerItemDecoration(this))
         search_results_recycler_view.adapter = adapter
-        //TODO search_results_recycler_view.endlessScrolling({ playingMoviesPresenter.getNextMoviePage() })
+        search_results_recycler_view.endlessScrolling({ presenter.getNextSearchPage() })
 
         component.inject(this)
     }
@@ -65,7 +66,11 @@ class MultiSearchActivity : AppCompatActivity(), MultiSearchView {
 
     override fun appendResults(results: List<MultiSearchResult>) {
         adapter.appendResults(results)
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showEndOfPaging() {
+        //TODO implement me
+       longToast("End of paging")
     }
 
 
