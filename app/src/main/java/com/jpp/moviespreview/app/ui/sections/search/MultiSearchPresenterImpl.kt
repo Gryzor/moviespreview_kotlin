@@ -85,10 +85,25 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
                             })
 
                             processIfIsError(it, {
-                                //TODO manage error
+                                processError()
                             })
                         }
                 )
+            }
+        }
+    }
+
+
+    /**
+     * Process the detected error by showing an internet connection error
+     * or a unexpected error message.
+     */
+    private fun processError() {
+        with(interactorDelegate) {
+            if (isConnectedToNetwork()) {
+                viewInstance.showUnexpectedError()
+            } else {
+                viewInstance.showNotConnectedToNetwork()
             }
         }
     }

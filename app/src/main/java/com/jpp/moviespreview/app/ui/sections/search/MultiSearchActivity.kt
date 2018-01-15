@@ -11,16 +11,13 @@ import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.MultiSearchResult
 import com.jpp.moviespreview.app.ui.recyclerview.SimpleDividerItemDecoration
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailActivity
-import com.jpp.moviespreview.app.util.extentions.app
-import com.jpp.moviespreview.app.util.extentions.endlessScrolling
-import com.jpp.moviespreview.app.util.extentions.getScreenSizeInPixels
+import com.jpp.moviespreview.app.util.extentions.*
 import kotlinx.android.synthetic.main.multi_search_activity.*
-import org.jetbrains.anko.longToast
 import javax.inject.Inject
 
 /**
- * TODO ERROR
- * TODO END PAGINATION
+ * Presents the search user interface for the user to search movies, tv shows
+ * and people.
  *
  * Created by jpp on 1/6/18.
  */
@@ -94,8 +91,7 @@ class MultiSearchActivity : AppCompatActivity(), MultiSearchView {
     }
 
     override fun showEndOfPaging() {
-        //TODO implement me
-        longToast("End of paging")
+        // do nothing for the moment
     }
 
     override fun clearPages() {
@@ -105,6 +101,14 @@ class MultiSearchActivity : AppCompatActivity(), MultiSearchView {
 
     override fun showMovieDetails() {
         MovieDetailActivity.navigateWithTransition(this, transitionView)
+    }
+
+    override fun showUnexpectedError() {
+        showUnexpectedError { finish() }
+    }
+
+    override fun showNotConnectedToNetwork() {
+        showNoNetworkConnectionAlert()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

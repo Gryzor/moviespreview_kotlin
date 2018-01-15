@@ -16,6 +16,8 @@ interface MultiSearchView {
     fun showEndOfPaging()
     fun clearPages()
     fun showMovieDetails()
+    fun showUnexpectedError()
+    fun showNotConnectedToNetwork()
 }
 
 interface MultiSearchPresenter {
