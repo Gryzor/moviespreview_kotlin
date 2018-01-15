@@ -62,7 +62,6 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
             if (multiSearchContext.onGoingQueryParam != param) {
                 interactorDelegate.executeBackgroundJob(
                         {
-                            //TODO show loading if needed
                             clearPagesInContextIfQueryChanged(multiSearchContext.onGoingQueryParam?.query, param.query)
                             multiSearchContext.onGoingQueryParam = param
                             useCase.execute(param)
@@ -76,11 +75,9 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
                                 listenQueryUpdates()
                             })
 
-
                             processIfIsError(it, {
                                 //TODO manage error
                             })
-
                         }
                 )
             }

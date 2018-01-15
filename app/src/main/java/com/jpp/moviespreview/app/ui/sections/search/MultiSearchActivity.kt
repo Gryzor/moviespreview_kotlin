@@ -18,7 +18,8 @@ import javax.inject.Inject
 
 /**
  * TODO DETAILS
- * TODO hint search
+ * TODO ERROR
+ * TODO END PAGINATION
  *
  * Created by jpp on 1/6/18.
  */
@@ -102,9 +103,9 @@ class MultiSearchActivity : AppCompatActivity(), MultiSearchView {
     }
 
     /*
-         * Inner implementation of QueryTextView. It will add itself as OnQueryTextListener of
-         * the provided SearchView and will update the QueryTextListener with each respective query.
-         */
+     * Inner implementation of QueryTextView. It will add itself as OnQueryTextListener of
+     * the provided SearchView and will update the QueryTextListener with each respective query.
+     */
     private class QueryTextViewImpl(searchView: SearchView) : QueryTextView, SearchView.OnQueryTextListener {
 
         private lateinit var queryTextListener: QueryTextListener

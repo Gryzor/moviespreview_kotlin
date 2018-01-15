@@ -15,5 +15,5 @@
 
     <!-- Search -->
     <string name="search_movies_menu_title">Search movies</string>
-    <string name="searchable_hint">SearchMe</string>
+    <string name="search_hint">Search movies, tv shows and characters</string>
 </resources>
