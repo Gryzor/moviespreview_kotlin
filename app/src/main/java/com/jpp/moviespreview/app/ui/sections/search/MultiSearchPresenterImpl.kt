@@ -145,7 +145,6 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
                     { getAllSearchPages() },
                     { viewInstance.showEndOfPaging() },
                     { manager(MultiSearchParam(query, it, mapper.convertUiGenresToDomainGenres(getUIMovieGenres()!!))) }
-
             )
         }
     }
