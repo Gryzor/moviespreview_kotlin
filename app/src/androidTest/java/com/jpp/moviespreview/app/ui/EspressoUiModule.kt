@@ -2,10 +2,7 @@ package com.jpp.moviespreview.app.ui
 
 import com.jpp.moviespreview.app.BackgroundInteractorForTesting
 import com.jpp.moviespreview.app.mock
-import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
-import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
-import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
-import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegateImpl
+import com.jpp.moviespreview.app.ui.interactors.*
 import com.jpp.moviespreview.app.ui.sections.search.MultiSearchContext
 import dagger.Module
 import dagger.Provides
@@ -44,4 +41,8 @@ class EspressoUiModule {
     @Singleton
     @Provides
     fun providesMultiSearchContext(moviesContext: MoviesContext) = MultiSearchContext(moviesContext)
+
+    @Singleton
+    @Provides
+    fun providesPaginationInteractor(): PaginationInteractor = PaginationInteractorImpl()
 }
