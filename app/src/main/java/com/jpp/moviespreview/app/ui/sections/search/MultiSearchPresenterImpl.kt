@@ -41,12 +41,9 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
     override fun getNextSearchPage() {
         with(multiSearchContext) {
             if (interactorDelegate.isIdle()) {
-                val param = createNextUseCaseParam(onGoingQueryParam!!.query)
-                if (param != null) {
-                    executeUseCase(param, {
-                        viewInstance.appendResults(it)
-                    })
-                }
+                createNextUseCaseParam(onGoingQueryParam!!.query, {
+                    executeUseCase(it, { viewInstance.appendResults(it) })
+                })
             }
         }
     }
@@ -118,9 +115,7 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
                 .linkQueryTextView(
                         viewInstance.getQueryTextView(),
                         { query ->
-                            executeUseCase(createNextUseCaseParam(query)!!, {
-                                viewInstance.showResults(it)
-                            })
+                            createNextUseCaseParam(query, { executeUseCase(it, { viewInstance.showResults(it) }) })
                         })
     }
 
@@ -144,25 +139,14 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
         }
     }
 
-    private fun createNextUseCaseParam(query: String): MultiSearchParam? {
-        //TODO create PaginationInteractor
+    private fun createNextUseCaseParam(query: String, manager: (MultiSearchParam) -> Unit) {
         with(multiSearchContext) {
-            var lastMPageIndex = 0 // by default, always get the first page
-            var lastPage: com.jpp.moviespreview.app.ui.MultiSearchPage? = null
+            interactorDelegate.managePagination(
+                    { getAllSearchPages() },
+                    { viewInstance.showEndOfPaging() },
+                    { manager(MultiSearchParam(query, it, mapper.convertUiGenresToDomainGenres(getUIMovieGenres()!!))) }
 
-            if (getAllSearchPages().isNotEmpty()) {
-                lastPage = getAllSearchPages().last()
-                lastMPageIndex = lastPage.page
-            }
-
-            val nextPage = lastMPageIndex + 1
-
-            if (lastPage != null && nextPage > lastPage.totalPages) {
-                viewInstance.showEndOfPaging()
-                return null
-            }
-
-            return MultiSearchParam(query, nextPage, mapper.convertUiGenresToDomainGenres(getUIMovieGenres()!!))
+            )
         }
     }
 

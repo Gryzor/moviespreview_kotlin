@@ -6,6 +6,7 @@ import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationPresenterDelegate
 import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationPresenterDelegateImpl
+import com.jpp.moviespreview.app.ui.interactors.PaginationInteractor
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 import com.jpp.moviespreview.app.ui.sections.search.*
 import dagger.Module
@@ -37,8 +38,9 @@ class MultiSearchModule {
     @Provides
     @MultiSearchScope
     fun providesPlayingMoviesPresenterInteractor(presenterInteractorDelegate: PresenterInteractorDelegate,
-                                                 imageConfigurationPresenterDelegate: ImageConfigurationPresenterDelegate): MultiSearchPresenterInteractor
-            = MultiSearchPresenterInteractorImpl(presenterInteractorDelegate, imageConfigurationPresenterDelegate)
+                                                 imageConfigurationPresenterDelegate: ImageConfigurationPresenterDelegate,
+                                                 paginationInteractor: PaginationInteractor): MultiSearchPresenterInteractor
+            = MultiSearchPresenterInteractorImpl(presenterInteractorDelegate, imageConfigurationPresenterDelegate, paginationInteractor)
 
 
     @Provides

@@ -7,6 +7,7 @@ import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationPresenterDelegate
 import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationPresenterDelegateImpl
+import com.jpp.moviespreview.app.ui.interactors.PaginationInteractor
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 import com.jpp.moviespreview.app.ui.sections.main.di.MainScreenScope
 import com.jpp.moviespreview.app.ui.sections.main.playing.PlayingMoviesPresenter
@@ -39,8 +40,9 @@ class PlayingMoviesModule {
     @Provides
     @MainScreenScope
     fun providesPlayingMoviesInteractorDelegate(presenterInteractorDelegate: PresenterInteractorDelegate,
-                                                imageConfigurationPresenterDelegate: ImageConfigurationPresenterDelegate): PlayingMoviesPresenterInteractor
-            = PlayingMoviesPresenterInteractorImpl(presenterInteractorDelegate, imageConfigurationPresenterDelegate)
+                                                imageConfigurationPresenterDelegate: ImageConfigurationPresenterDelegate,
+                                                paginationInteractor: PaginationInteractor): PlayingMoviesPresenterInteractor
+            = PlayingMoviesPresenterInteractorImpl(presenterInteractorDelegate, imageConfigurationPresenterDelegate, paginationInteractor)
 
     @Provides
     @MainScreenScope

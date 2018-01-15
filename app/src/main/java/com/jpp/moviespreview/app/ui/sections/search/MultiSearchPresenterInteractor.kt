@@ -2,13 +2,15 @@ package com.jpp.moviespreview.app.ui.sections.search
 
 import com.jpp.moviespreview.app.ui.PosterImageConfiguration
 import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
+import com.jpp.moviespreview.app.ui.UiPage
 import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationPresenterDelegate
+import com.jpp.moviespreview.app.ui.interactors.PaginationInteractor
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 
 /**
  * Created by jpp on 1/9/18.
  */
-interface MultiSearchPresenterInteractor : PresenterInteractorDelegate {
+interface MultiSearchPresenterInteractor : PresenterInteractorDelegate, PaginationInteractor {
 
     fun findProfileImageConfigurationForHeight(profileImageConfigs: List<ProfileImageConfiguration>,
                                                height: Int): ProfileImageConfiguration
@@ -22,8 +24,12 @@ interface MultiSearchPresenterInteractor : PresenterInteractorDelegate {
  * PlayingMoviesPresenterInteractor implementation.
  */
 class MultiSearchPresenterInteractorImpl(private val presenterInteractorDelegate: PresenterInteractorDelegate,
-                                         private val imageConfigPresenterDelegate: ImageConfigurationPresenterDelegate) : MultiSearchPresenterInteractor {
+                                         private val imageConfigPresenterDelegate: ImageConfigurationPresenterDelegate,
+                                         private val paginationInteractorImpl: PaginationInteractor) : MultiSearchPresenterInteractor {
 
+    override fun managePagination(getAllPages: () -> List<UiPage>, onEndOfPaging: () -> Unit, onNextPage: (Int) -> Unit) {
+        paginationInteractorImpl.managePagination(getAllPages, onEndOfPaging, onNextPage)
+    }
 
     override fun isConnectedToNetwork() = presenterInteractorDelegate.isConnectedToNetwork()
 

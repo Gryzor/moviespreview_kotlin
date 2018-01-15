@@ -21,11 +21,18 @@ class UiModule {
 
     @Singleton
     @Provides
-    fun providesBackgroundInteractor(): BackgroundInteractor = BackgroundInteractorImpl()
+    fun providesMultiSearchContext(moviesContext: MoviesContext) = MultiSearchContext(moviesContext)
+
+
 
     @Singleton
     @Provides
     fun providesDomainToUiDataMapper() = DomainToUiDataMapper()
+
+    @Singleton
+    @Provides
+    fun providesBackgroundInteractor(): BackgroundInteractor = BackgroundInteractorImpl()
+
 
     @Singleton
     @Provides
@@ -37,7 +44,8 @@ class UiModule {
                                            connectivityInteractor: ConnectivityInteractor): PresenterInteractorDelegate
             = PresenterInteractorDelegateImpl(backgroundInteractor, connectivityInteractor)
 
+
     @Singleton
     @Provides
-    fun providesMultiSearchContext(moviesContext: MoviesContext) = MultiSearchContext(moviesContext)
+    fun providesPaginationInteractor(): PaginationInteractor = PaginationInteractorImpl()
 }

@@ -1,7 +1,9 @@
 package com.jpp.moviespreview.app.ui.sections.main.playing
 
 import com.jpp.moviespreview.app.ui.PosterImageConfiguration
+import com.jpp.moviespreview.app.ui.UiPage
 import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationPresenterDelegate
+import com.jpp.moviespreview.app.ui.interactors.PaginationInteractor
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 
 /**
@@ -9,7 +11,7 @@ import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
  *
  * Created by jpp on 12/26/17.
  */
-interface PlayingMoviesPresenterInteractor : PresenterInteractorDelegate {
+interface PlayingMoviesPresenterInteractor : PresenterInteractorDelegate, PaginationInteractor {
 
     fun findPosterImageConfigurationForWidth(posterImageConfigs: List<PosterImageConfiguration>,
                                              width: Int): PosterImageConfiguration
@@ -20,7 +22,12 @@ interface PlayingMoviesPresenterInteractor : PresenterInteractorDelegate {
  * PlayingMoviesPresenterInteractor implementation.
  */
 class PlayingMoviesPresenterInteractorImpl(private val presenterInteractorDelegate: PresenterInteractorDelegate,
-                                           private val imageConfigPresenterDelegate: ImageConfigurationPresenterDelegate) : PlayingMoviesPresenterInteractor {
+                                           private val imageConfigPresenterDelegate: ImageConfigurationPresenterDelegate,
+                                           private val paginationInteractorImpl: PaginationInteractor) : PlayingMoviesPresenterInteractor {
+
+    override fun managePagination(getAllPages: () -> List<UiPage>, onEndOfPaging: () -> Unit, onNextPage: (Int) -> Unit) {
+        paginationInteractorImpl.managePagination(getAllPages, onEndOfPaging, onNextPage)
+    }
 
     override fun isConnectedToNetwork() = presenterInteractorDelegate.isConnectedToNetwork()
 

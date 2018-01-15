@@ -53,10 +53,7 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
         with(moviesContext) {
             if (isConfigCompleted()) {
                 if (interactorDelegate.isIdle()) {
-                    val param = createNextUseCaseParam()
-                    if (param != null) {
-                        executeUseCase(param)
-                    }
+                    createNextUseCaseParam({ executeUseCase(it) })
                 }
             } else {
                 playingMoviesView.backToSplashScreen()
@@ -74,25 +71,13 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
      * use case execution. If the scrolling has reached the last possible position,
      * it asks the view to show the end of page and returns null.
      */
-    fun createNextUseCaseParam(): PageParam? {
-        //TODO create PaginationInteractor
+    fun createNextUseCaseParam(manager: (PageParam) -> Unit) {
         with(moviesContext) {
-            var lastMoviePageIndex = 0 // by default, always get the first page
-            var lastMoviePage: MoviePage? = null
-
-            if (getAllMoviePages().isNotEmpty()) {
-                lastMoviePage = getAllMoviePages().last()
-                lastMoviePageIndex = lastMoviePage.page
-            }
-
-            val nextPage = lastMoviePageIndex + 1
-
-            if (lastMoviePage != null && nextPage > lastMoviePage.totalPages) {
-                playingMoviesView.showEndOfPaging()
-                return null
-            }
-
-            return PageParam(nextPage, mapper.convertUiGenresToDomainGenres(movieGenres!!))
+            interactorDelegate.managePagination(
+                    { getAllMoviePages() },
+                    { playingMoviesView.showEndOfPaging() },
+                    { manager(PageParam(it, mapper.convertUiGenresToDomainGenres(movieGenres!!))) }
+            )
         }
     }
 
