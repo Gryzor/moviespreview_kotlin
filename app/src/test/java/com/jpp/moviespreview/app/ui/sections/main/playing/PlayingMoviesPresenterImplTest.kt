@@ -42,7 +42,7 @@ class PlayingMoviesPresenterImplTest {
         backgroundInteractor = BackgroundInteractorForTesting()
         connectivityInteractor = mock()
         val basePresenterInteractorDelegate = PresenterInteractorDelegateImpl(backgroundInteractor, connectivityInteractor)
-        interactorDelegate = PlayingMoviesPresenterInteractorImpl(basePresenterInteractorDelegate)
+        interactorDelegate = PlayingMoviesPresenterInteractorImpl(basePresenterInteractorDelegate, mock())
 
 
         moviesContext = mock()

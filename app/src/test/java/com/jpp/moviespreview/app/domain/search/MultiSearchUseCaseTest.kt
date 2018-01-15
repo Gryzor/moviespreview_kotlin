@@ -1,6 +1,7 @@
 package com.jpp.moviespreview.app.domain.search
 
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
+import com.jpp.moviespreview.app.domain.Genre
 import com.jpp.moviespreview.app.domain.MultiSearchPage
 import com.jpp.moviespreview.app.domain.MultiSearchParam
 import com.jpp.moviespreview.app.mock
@@ -36,10 +37,11 @@ class MultiSearchUseCaseTest {
 
     @Test
     fun execute_withValidData_callsApi() {
-        val param = MultiSearchParam("query", 1)
+        val listOfGenres: List<Genre> = listOf()
+        val param = MultiSearchParam("query", 1, listOfGenres)
         val dataResult: DataResult = mock()
         val domainResult: MultiSearchPage = mock()
-        `when`(mapper.convertDataSearchPageIntoDomainSearchResult(dataResult)).thenReturn(domainResult)
+        `when`(mapper.convertDataSearchPageIntoDomainSearchResult(dataResult, "query", listOfGenres)).thenReturn(domainResult)
         `when`(api.multiSearch(param.query, param.page)).thenReturn(dataResult)
         val result = subject.execute(param)
 
@@ -50,7 +52,7 @@ class MultiSearchUseCaseTest {
 
     @Test
     fun execute_whenApiFails() {
-        val param = MultiSearchParam("query", 1)
+        val param = MultiSearchParam("query", 1, listOf())
         `when`(api.multiSearch(param.query, param.page)).thenReturn(null)
         val result = subject.execute(param)
 

@@ -1,30 +1,35 @@
-package com.jpp.moviespreview.app.ui.sections.detail.credits
+package com.jpp.moviespreview.app.ui.interactors
 
-import com.jpp.moviespreview.app.mock
+import com.jpp.moviespreview.app.mockPosterImageConfig
 import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
-import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
-import com.jpp.moviespreview.app.ui.sections.detail.credits.MovieDetailsCreditsPresenterInteractor
-import com.jpp.moviespreview.app.ui.sections.detail.credits.MovieDetailsCreditsPresenterInteractorImpl
-import junit.framework.Assert.assertEquals
-import org.junit.Before
+import junit.framework.Assert
 import org.junit.Test
 
 /**
- * Created by jpp on 1/2/18.
+ * Created by jpp on 1/15/18.
  */
+class ImageConfigurationPresenterDelegateTest {
 
-class MovieDetailsCreditsPresenterInteractorTest {
-
-    private lateinit var presenterInteractorDelegate: PresenterInteractorDelegate
-    private lateinit var subject: MovieDetailsCreditsPresenterInteractor
+    private val subject = ImageConfigurationPresenterDelegateImpl()
 
 
-    @Before
-    fun setUp() {
-        presenterInteractorDelegate = mock()
-        subject = MovieDetailsCreditsPresenterInteractorImpl(presenterInteractorDelegate)
+    @Test
+    fun findPosterImageConfigurationForWidth() {
+        val mockPosterImageConfig = mockPosterImageConfig()
+        val targetWidth = 520
+        val expected = mockPosterImageConfig[5]
+        val actual = subject.findPosterImageConfigurationForWidth(mockPosterImageConfig, targetWidth)
+        Assert.assertEquals(expected, actual)
     }
 
+    @Test
+    fun findPosterImageConfigurationForWidthAssignsOriginal() {
+        val mockPosterImageConfig = mockPosterImageConfig()
+        val targetWidth = 1520
+        val expected = mockPosterImageConfig[6]
+        val actual = subject.findPosterImageConfigurationForWidth(mockPosterImageConfig, targetWidth)
+        Assert.assertEquals(expected, actual)
+    }
 
     @Test
     fun findProfileImageConfigurationForHeight() {
@@ -39,7 +44,7 @@ class MovieDetailsCreditsPresenterInteractorTest {
         val height = 350
         val expected = profileImageConfigs[3]
         val actual = subject.findProfileImageConfigurationForHeight(profileImageConfigs, height)
-        assertEquals(actual, expected)
+        Assert.assertEquals(actual, expected)
     }
 
 
@@ -56,7 +61,7 @@ class MovieDetailsCreditsPresenterInteractorTest {
         val height = 300
         val expected = profileImageConfigs[3]
         val actual = subject.findProfileImageConfigurationForHeight(profileImageConfigs, height)
-        assertEquals(actual, expected)
+        Assert.assertEquals(actual, expected)
     }
 
 
@@ -73,7 +78,8 @@ class MovieDetailsCreditsPresenterInteractorTest {
         val height = 850
         val expected = profileImageConfigs[5]
         val actual = subject.findProfileImageConfigurationForHeight(profileImageConfigs, height)
-        assertEquals(actual, expected)
+        Assert.assertEquals(actual, expected)
     }
+
 
 }

@@ -23,6 +23,8 @@ interface ImageConfigurationPresenterDelegate {
                                              width: Int): PosterImageConfiguration
 }
 
+
+
 class ImageConfigurationPresenterDelegateImpl : ImageConfigurationPresenterDelegate {
 
     private var selectedPosterImageConfig: PosterImageConfiguration? = null
