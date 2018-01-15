@@ -6,6 +6,7 @@ import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegateImpl
+import com.jpp.moviespreview.app.ui.sections.search.MultiSearchContext
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -39,4 +40,8 @@ class EspressoUiModule {
     fun providePresenterInteractorDelegate(backgroundInteractor: BackgroundInteractor,
                                            connectivityInteractor: ConnectivityInteractor): PresenterInteractorDelegate
             = PresenterInteractorDelegateImpl(backgroundInteractor, connectivityInteractor)
+
+    @Singleton
+    @Provides
+    fun providesMultiSearchContext(moviesContext: MoviesContext) = MultiSearchContext(moviesContext)
 }
