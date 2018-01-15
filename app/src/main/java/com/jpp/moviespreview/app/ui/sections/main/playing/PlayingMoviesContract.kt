@@ -17,7 +17,6 @@ interface PlayingMoviesView {
     fun showNotConnectedToNetwork()
     fun showEndOfPaging()
     fun showInitialLoading()
-    fun updateMovie(movie: Movie)
 }
 
 
@@ -25,5 +24,4 @@ interface PlayingMoviesPresenter {
     fun linkView(view: PlayingMoviesView)
     fun getNextMoviePage()
     fun onMovieSelected(movie: Movie)
-    fun refreshData()
 }

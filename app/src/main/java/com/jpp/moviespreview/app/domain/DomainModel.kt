@@ -76,7 +76,8 @@ data class PageParam(val page: Int,
  * Represents the input of the multi search use case.
  */
 data class MultiSearchParam(val query: String,
-                            val page: Int)
+                            val page: Int,
+                            val genres: List<Genre>)
 
 
 /**
@@ -126,7 +127,16 @@ data class MultiSearchResult(val id: Double,
                              val profilePath: String?,
                              @MediaType val mediaType: Long,
                              val name: String?,
-                             val title: String?) {
+                             val title: String?,
+                             val originalTitle: String?,
+                             val overview: String?,
+                             val releaseDate: String?,
+                             val originalLanguage: String?,
+                             val backdropPath: String?,
+                             val genres: List<Genre>?,
+                             val voteCount: Double?,
+                             val voteAverage: Float?,
+                             val popularity: Float?) {
 
     companion object {
         @IntDef(MOVIE, TV, PERSON, UNKNOWN)

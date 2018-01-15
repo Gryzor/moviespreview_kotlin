@@ -198,9 +198,10 @@ class DomainToUiDataMapper {
      */
     fun convertDomainResultPageInUiResultPage(domainResultPage: DomainSearchPage,
                                               posterImageConfiguration: PosterImageConfiguration,
-                                              profileImageConfiguration: ProfileImageConfiguration) = with(domainResultPage) {
+                                              profileImageConfiguration: ProfileImageConfiguration,
+                                              genreList: List<MovieGenre>) = with(domainResultPage) {
         MultiSearchPage(page,
-                convertDomainSearchResultsInUiMultiSearchResults(results, posterImageConfiguration, profileImageConfiguration),
+                convertDomainSearchResultsInUiMultiSearchResults(results, posterImageConfiguration, profileImageConfiguration, genreList),
                 totalPages,
                 totalResults)
     }
@@ -211,7 +212,8 @@ class DomainToUiDataMapper {
      */
     private fun convertDomainSearchResultsInUiMultiSearchResults(domainSearchResult: List<DomainSearchResult>,
                                                                  posterImageConfiguration: PosterImageConfiguration,
-                                                                 profileImageConfiguration: ProfileImageConfiguration): List<MultiSearchResult> {
+                                                                 profileImageConfiguration: ProfileImageConfiguration,
+                                                                 genreList: List<MovieGenre>): List<MultiSearchResult> {
         return domainSearchResult.mapIf(
                 { it.mediaType != UNKNOWN },
                 {
@@ -219,8 +221,36 @@ class DomainToUiDataMapper {
                             prepareImagePathForResult(it, posterImageConfiguration, profileImageConfiguration),
                             extractTitleFromSearchResult(it),
                             getIconForSearchResult(it),
-                            it.mediaType == MOVIE) // details only for movies for the moment
+                            it.mediaType == MOVIE, // details only for movies for the moment
+                            convertDomainSearchResultIntoMovie(it, posterImageConfiguration, genreList))
                 })
+    }
+
+
+    /**
+     * Converts a list of [DomainMovie] into a list of [Movie]s (UI model)
+     */
+    private fun convertDomainSearchResultIntoMovie(domainSearchResult: DomainSearchResult, selectedImageConfiguration: ImageConfiguration, genreList: List<MovieGenre>): Movie? {
+        if (domainSearchResult.mediaType == MOVIE) {
+            return with(domainSearchResult) {
+                Movie(id,
+                        title!!,
+                        originalTitle!!,
+                        overview!!,
+                        releaseDate!!,
+                        originalLanguage!!,
+                        listOf(
+                                selectedImageConfiguration.prepareImageUrl(posterPath ?: "empty"),
+                                selectedImageConfiguration.prepareImageUrl(backdropPath ?: "empty")
+                        ),
+                        getMappedUiGenres(genres!!, genreList),
+                        voteCount!!,
+                        voteAverage!!,
+                        popularity!!)
+            }
+        } else {
+            return null
+        }
     }
 
 

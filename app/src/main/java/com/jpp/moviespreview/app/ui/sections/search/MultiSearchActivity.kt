@@ -4,20 +4,21 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.MultiSearchResult
 import com.jpp.moviespreview.app.ui.recyclerview.SimpleDividerItemDecoration
+import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailActivity
 import com.jpp.moviespreview.app.util.extentions.app
 import com.jpp.moviespreview.app.util.extentions.endlessScrolling
+import com.jpp.moviespreview.app.util.extentions.getScreenSizeInPixels
 import kotlinx.android.synthetic.main.multi_search_activity.*
 import org.jetbrains.anko.longToast
 import javax.inject.Inject
 
 /**
- * TODO DETAILS
  * TODO ERROR
  * TODO END PAGINATION
  *
@@ -27,10 +28,18 @@ class MultiSearchActivity : AppCompatActivity(), MultiSearchView {
 
 
     private val component by lazy { app.multiSearchComponent() }
-    private val adapter by lazy { MultiSearchAdapter() }
+
+    private val adapter by lazy {
+        MultiSearchAdapter({ selectedItem: MultiSearchResult, view: ImageView ->
+            transitionView = view
+            presenter.onItemSelected(selectedItem)
+        })
+    }
 
     @Inject
     lateinit var presenter: MultiSearchPresenter
+
+    private lateinit var transitionView: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,7 +83,11 @@ class MultiSearchActivity : AppCompatActivity(), MultiSearchView {
         adapter.showResults(results)
     }
 
-    override fun getTargetMultiSearchResultImageSize() = resources.getDimensionPixelSize(R.dimen.multi_search_result_image_size)
+    /*
+     * Loading this images in such a big configuration is only
+     * to favor the transition to details
+     */
+    override fun getTargetMultiSearchResultImageSize() = getScreenSizeInPixels().x
 
     override fun appendResults(results: List<MultiSearchResult>) {
         adapter.appendResults(results)
@@ -88,6 +101,10 @@ class MultiSearchActivity : AppCompatActivity(), MultiSearchView {
     override fun clearPages() {
         search_view.setQuery("", false)
         adapter.clear()
+    }
+
+    override fun showMovieDetails() {
+        MovieDetailActivity.navigateWithTransition(this, transitionView)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

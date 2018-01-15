@@ -31,10 +31,6 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
         loadOrRetrieveMovies()
     }
 
-    override fun refreshData() {
-        refreshMovieData()
-    }
-
 
     /**
      * Verifies if there are pages loaded into the context. If there are, loads those
@@ -49,13 +45,6 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
             } else {
                 getNextMoviePage()
             }
-        }
-    }
-
-    private fun refreshMovieData() {
-        if (moviesContext.selectedMovie != null) {
-            playingMoviesView.updateMovie(moviesContext.selectedMovie!!)
-            moviesContext.selectedMovie = null
         }
     }
 

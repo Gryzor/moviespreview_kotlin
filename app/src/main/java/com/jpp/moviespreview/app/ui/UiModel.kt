@@ -97,5 +97,6 @@ data class MultiSearchResult(val id: Double,
                              val imagePath: String,
                              val name: String,
                              @DrawableRes val icon: Int,
-                             val hasDetails: Boolean)
+                             val hasDetails: Boolean,
+                             val movieDetails: Movie?)
 

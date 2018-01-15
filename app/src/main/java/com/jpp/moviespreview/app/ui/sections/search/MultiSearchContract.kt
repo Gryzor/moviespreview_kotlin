@@ -15,12 +15,14 @@ interface MultiSearchView {
     fun getTargetMultiSearchResultImageSize(): Int
     fun showEndOfPaging()
     fun clearPages()
+    fun showMovieDetails()
 }
 
 interface MultiSearchPresenter {
     fun linkView(multiSearchView: MultiSearchView)
     fun getNextSearchPage()
     fun clearLastSearch()
+    fun onItemSelected(selectedItem: MultiSearchResult)
 }
 
 

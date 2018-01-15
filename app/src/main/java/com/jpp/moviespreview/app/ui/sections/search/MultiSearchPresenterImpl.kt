@@ -56,6 +56,13 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
         viewInstance.clearPages()
     }
 
+    override fun onItemSelected(selectedItem: MultiSearchResult) {
+        if (selectedItem.movieDetails != null) {
+            multiSearchContext.setSelectedMovie(selectedItem.movieDetails)
+            viewInstance.showMovieDetails()
+        }
+    }
+
 
     private fun executeUseCase(param: MultiSearchParam, showResult: (List<MultiSearchResult>) -> Unit) {
         with(multiSearchContext) {
@@ -69,10 +76,12 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
                         {
                             // process only if is for the current query
                             processIfIsDataFromOngoingCall(it, {
-                                val uiResults = mapper.convertDomainResultPageInUiResultPage(it, getPosterImageConfiguration(), getProfileImageConfiguration())
-                                multiSearchContext.addSearchPage(uiResults)
-                                showResult(uiResults.results)
-                                listenQueryUpdates()
+                                with(multiSearchContext) {
+                                    val uiResults = mapper.convertDomainResultPageInUiResultPage(it, getPosterImageConfiguration(), getProfileImageConfiguration(), getUIMovieGenres()!!)
+                                    multiSearchContext.addSearchPage(uiResults)
+                                    showResult(uiResults.results)
+                                    listenQueryUpdates()
+                                }
                             })
 
                             processIfIsError(it, {
@@ -138,7 +147,7 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
                 return null
             }
 
-            return MultiSearchParam(query, nextPage)
+            return MultiSearchParam(query, nextPage, mapper.convertUiGenresToDomainGenres(getUIMovieGenres()!!))
         }
     }
 

@@ -94,5 +94,14 @@ data class MultiSearchResult(val id: Double,
                              val profile_path: String?,
                              val media_type: String,
                              val name: String?,
-                             val title: String?)
+                             val title: String?,
+                             val original_title: String?,
+                             val overview: String?,
+                             val release_date: String?,
+                             val original_language: String?,
+                             val backdrop_path: String?,
+                             val genre_ids: List<Int>?,
+                             val vote_count: Double?,
+                             val vote_average: Float?,
+                             val popularity: Float?)
 

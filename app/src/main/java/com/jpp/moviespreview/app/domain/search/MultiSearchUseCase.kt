@@ -19,7 +19,7 @@ class MultiSearchUseCase(private val mapper: MultiSearchDataMapper,
         }
 
         return api.multiSearch(param.query, param.page)?.let {
-            mapper.convertDataSearchPageIntoDomainSearchResult(it, param.query)
+            mapper.convertDataSearchPageIntoDomainSearchResult(it, param.query, param.genres)
         }
     }
 }
