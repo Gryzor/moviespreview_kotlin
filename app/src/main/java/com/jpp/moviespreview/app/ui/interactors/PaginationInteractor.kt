@@ -32,6 +32,7 @@ class PaginationInteractorImpl : PaginationInteractor {
 
         if (lastPage != null && nextPage > lastPage.totalPages()) {
             onEndOfPaging()
+            return
         }
 
         onNextPage(nextPage)

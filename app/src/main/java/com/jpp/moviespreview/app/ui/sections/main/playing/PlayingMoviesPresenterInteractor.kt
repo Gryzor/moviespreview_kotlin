@@ -2,7 +2,7 @@ package com.jpp.moviespreview.app.ui.sections.main.playing
 
 import com.jpp.moviespreview.app.ui.PosterImageConfiguration
 import com.jpp.moviespreview.app.ui.UiPage
-import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationPresenterDelegate
+import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationInteractor
 import com.jpp.moviespreview.app.ui.interactors.PaginationInteractor
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 
@@ -22,7 +22,7 @@ interface PlayingMoviesPresenterInteractor : PresenterInteractorDelegate, Pagina
  * PlayingMoviesPresenterInteractor implementation.
  */
 class PlayingMoviesPresenterInteractorImpl(private val presenterInteractorDelegate: PresenterInteractorDelegate,
-                                           private val imageConfigPresenterDelegate: ImageConfigurationPresenterDelegate,
+                                           private val imageConfigInteractor: ImageConfigurationInteractor,
                                            private val paginationInteractorImpl: PaginationInteractor) : PlayingMoviesPresenterInteractor {
 
     override fun managePagination(getAllPages: () -> List<UiPage>, onEndOfPaging: () -> Unit, onNextPage: (Int) -> Unit) {
@@ -38,5 +38,5 @@ class PlayingMoviesPresenterInteractorImpl(private val presenterInteractorDelega
     override fun isIdle() = presenterInteractorDelegate.isIdle()
 
     override fun findPosterImageConfigurationForWidth(posterImageConfigs: List<PosterImageConfiguration>, width: Int): PosterImageConfiguration =
-            imageConfigPresenterDelegate.findPosterImageConfigurationForWidth(posterImageConfigs, width)
+            imageConfigInteractor.findPosterImageConfigurationForWidth(posterImageConfigs, width)
 }

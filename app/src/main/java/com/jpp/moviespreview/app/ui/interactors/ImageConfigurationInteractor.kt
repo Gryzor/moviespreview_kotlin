@@ -8,7 +8,7 @@ import com.jpp.moviespreview.app.util.extentions.transformToInt
 /**
  * Created by jpp on 1/9/18.
  */
-interface ImageConfigurationPresenterDelegate {
+interface ImageConfigurationInteractor {
 
 
     fun findProfileImageConfigurationForHeight(profileImageConfigs: List<ProfileImageConfiguration>,
@@ -25,7 +25,7 @@ interface ImageConfigurationPresenterDelegate {
 
 
 
-class ImageConfigurationPresenterDelegateImpl : ImageConfigurationPresenterDelegate {
+class ImageConfigurationInteractorImpl : ImageConfigurationInteractor {
 
     private var selectedPosterImageConfig: PosterImageConfiguration? = null
     private var selectedProfileImageConfig: ProfileImageConfiguration? = null

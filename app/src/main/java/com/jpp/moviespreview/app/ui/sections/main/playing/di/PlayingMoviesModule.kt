@@ -5,8 +5,8 @@ import com.jpp.moviespreview.app.domain.PageParam
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.MoviesContext
-import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationPresenterDelegate
-import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationPresenterDelegateImpl
+import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationInteractor
+import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationInteractorImpl
 import com.jpp.moviespreview.app.ui.interactors.PaginationInteractor
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 import com.jpp.moviespreview.app.ui.sections.main.di.MainScreenScope
@@ -40,13 +40,13 @@ class PlayingMoviesModule {
     @Provides
     @MainScreenScope
     fun providesPlayingMoviesInteractorDelegate(presenterInteractorDelegate: PresenterInteractorDelegate,
-                                                imageConfigurationPresenterDelegate: ImageConfigurationPresenterDelegate,
+                                                imageConfigurationInteractor: ImageConfigurationInteractor,
                                                 paginationInteractor: PaginationInteractor): PlayingMoviesPresenterInteractor
-            = PlayingMoviesPresenterInteractorImpl(presenterInteractorDelegate, imageConfigurationPresenterDelegate, paginationInteractor)
+            = PlayingMoviesPresenterInteractorImpl(presenterInteractorDelegate, imageConfigurationInteractor, paginationInteractor)
 
     @Provides
     @MainScreenScope
-    fun providesImageConfigurationPresenterDelegate(): ImageConfigurationPresenterDelegate
-            = ImageConfigurationPresenterDelegateImpl()
+    fun providesImageConfigurationPresenterDelegate(): ImageConfigurationInteractor
+            = ImageConfigurationInteractorImpl()
 
 }

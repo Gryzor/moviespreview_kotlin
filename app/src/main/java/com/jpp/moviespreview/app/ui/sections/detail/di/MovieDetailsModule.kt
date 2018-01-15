@@ -5,8 +5,8 @@ import com.jpp.moviespreview.app.domain.MovieCredits
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.MoviesContext
-import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationPresenterDelegate
-import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationPresenterDelegateImpl
+import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationInteractor
+import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationInteractorImpl
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailCreditsPresenter
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailImagesPresenter
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailImagesPresenterImpl
@@ -49,12 +49,12 @@ class MovieDetailsModule {
     @Provides
     @DetailsScope
     fun providesMovieDetailsCreditsPresenterInteractor(presenterInteractorDelegate: PresenterInteractorDelegate,
-                                                       imageConfigurationPresenterDelegate: ImageConfigurationPresenterDelegate): MovieDetailsCreditsPresenterInteractor
-            = MovieDetailsCreditsPresenterInteractorImpl(presenterInteractorDelegate, imageConfigurationPresenterDelegate)
+                                                       imageConfigurationInteractor: ImageConfigurationInteractor): MovieDetailsCreditsPresenterInteractor
+            = MovieDetailsCreditsPresenterInteractorImpl(presenterInteractorDelegate, imageConfigurationInteractor)
 
     @Provides
     @DetailsScope
-    fun providesImageConfigurationPresenterDelegate(): ImageConfigurationPresenterDelegate
-            = ImageConfigurationPresenterDelegateImpl()
+    fun providesImageConfigurationPresenterDelegate(): ImageConfigurationInteractor
+            = ImageConfigurationInteractorImpl()
 
 }

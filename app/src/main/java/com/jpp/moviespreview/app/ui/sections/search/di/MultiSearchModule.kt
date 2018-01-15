@@ -4,8 +4,8 @@ import com.jpp.moviespreview.app.domain.MultiSearchPage
 import com.jpp.moviespreview.app.domain.MultiSearchParam
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
-import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationPresenterDelegate
-import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationPresenterDelegateImpl
+import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationInteractor
+import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationInteractorImpl
 import com.jpp.moviespreview.app.ui.interactors.PaginationInteractor
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 import com.jpp.moviespreview.app.ui.sections.search.*
@@ -38,13 +38,13 @@ class MultiSearchModule {
     @Provides
     @MultiSearchScope
     fun providesPlayingMoviesPresenterInteractor(presenterInteractorDelegate: PresenterInteractorDelegate,
-                                                 imageConfigurationPresenterDelegate: ImageConfigurationPresenterDelegate,
+                                                 imageConfigurationInteractor: ImageConfigurationInteractor,
                                                  paginationInteractor: PaginationInteractor): MultiSearchPresenterInteractor
-            = MultiSearchPresenterInteractorImpl(presenterInteractorDelegate, imageConfigurationPresenterDelegate, paginationInteractor)
+            = MultiSearchPresenterInteractorImpl(presenterInteractorDelegate, imageConfigurationInteractor, paginationInteractor)
 
 
     @Provides
     @MultiSearchScope
-    fun providesImageConfigurationPresenterDelegate(): ImageConfigurationPresenterDelegate
-            = ImageConfigurationPresenterDelegateImpl()
+    fun providesImageConfigurationPresenterDelegate(): ImageConfigurationInteractor
+            = ImageConfigurationInteractorImpl()
 }

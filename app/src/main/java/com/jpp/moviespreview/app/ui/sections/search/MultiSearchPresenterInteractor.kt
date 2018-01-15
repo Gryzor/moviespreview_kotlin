@@ -3,7 +3,7 @@ package com.jpp.moviespreview.app.ui.sections.search
 import com.jpp.moviespreview.app.ui.PosterImageConfiguration
 import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
 import com.jpp.moviespreview.app.ui.UiPage
-import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationPresenterDelegate
+import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationInteractor
 import com.jpp.moviespreview.app.ui.interactors.PaginationInteractor
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 
@@ -24,7 +24,7 @@ interface MultiSearchPresenterInteractor : PresenterInteractorDelegate, Paginati
  * PlayingMoviesPresenterInteractor implementation.
  */
 class MultiSearchPresenterInteractorImpl(private val presenterInteractorDelegate: PresenterInteractorDelegate,
-                                         private val imageConfigPresenterDelegate: ImageConfigurationPresenterDelegate,
+                                         private val imageConfigInteractor: ImageConfigurationInteractor,
                                          private val paginationInteractorImpl: PaginationInteractor) : MultiSearchPresenterInteractor {
 
     override fun managePagination(getAllPages: () -> List<UiPage>, onEndOfPaging: () -> Unit, onNextPage: (Int) -> Unit) {
@@ -40,8 +40,8 @@ class MultiSearchPresenterInteractorImpl(private val presenterInteractorDelegate
     override fun isIdle() = presenterInteractorDelegate.isIdle()
 
     override fun findPosterImageConfigurationForWidth(posterImageConfigs: List<PosterImageConfiguration>, width: Int): PosterImageConfiguration =
-            imageConfigPresenterDelegate.findPosterImageConfigurationForWidth(posterImageConfigs, width)
+            imageConfigInteractor.findPosterImageConfigurationForWidth(posterImageConfigs, width)
 
     override fun findProfileImageConfigurationForHeight(profileImageConfigs: List<ProfileImageConfiguration>, height: Int): ProfileImageConfiguration =
-            imageConfigPresenterDelegate.findProfileImageConfigurationForHeight(profileImageConfigs, height)
+            imageConfigInteractor.findProfileImageConfigurationForHeight(profileImageConfigs, height)
 }
