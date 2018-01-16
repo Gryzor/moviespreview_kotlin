@@ -3,7 +3,7 @@ package com.jpp.moviespreview.app.domain.movie
 import com.jpp.moviespreview.app.data.cache.MoviesCache
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
 import com.jpp.moviespreview.app.domain.MoviePage
-import com.jpp.moviespreview.app.domain.MoviesInTheaterInputParam
+import com.jpp.moviespreview.app.domain.PageParam
 import com.jpp.moviespreview.app.domain.UseCase
 
 /**
@@ -15,10 +15,10 @@ import com.jpp.moviespreview.app.domain.UseCase
  */
 class RetrieveMoviesInTheaterUseCase(private val mapper: MovieDataMapper,
                                      private val api: MoviesPreviewApiWrapper,
-                                     private val moviesCache: MoviesCache) : UseCase<MoviesInTheaterInputParam, MoviePage> {
+                                     private val moviesCache: MoviesCache) : UseCase<PageParam, MoviePage> {
 
 
-    override fun execute(param: MoviesInTheaterInputParam?): MoviePage? {
+    override fun execute(param: PageParam?): MoviePage? {
         if (param == null) {
             throw IllegalArgumentException("The provided param can not be null")
         }

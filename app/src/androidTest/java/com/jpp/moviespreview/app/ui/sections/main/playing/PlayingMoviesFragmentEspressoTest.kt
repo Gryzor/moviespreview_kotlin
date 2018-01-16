@@ -14,7 +14,7 @@ import android.support.v7.widget.RecyclerView
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.TestComponentRule
 import com.jpp.moviespreview.app.completeConfig
-import com.jpp.moviespreview.app.domain.MoviesInTheaterInputParam
+import com.jpp.moviespreview.app.domain.PageParam
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.extentions.MoviesPreviewActivityTestRule
 import com.jpp.moviespreview.app.extentions.launch
@@ -24,7 +24,6 @@ import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailActivity
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
-import com.jpp.moviespreview.app.ui.sections.main.playing.PlayingMoviesFragment
 import com.jpp.moviespreview.app.ui.sections.splash.SplashActivity
 import com.jpp.moviespreview.app.ui.util.EspressoTestActivity
 import com.jpp.moviespreview.app.util.extentions.addFragmentIfNotInStack
@@ -64,7 +63,7 @@ class PlayingMoviesFragmentEspressoTest {
     @Inject
     lateinit var connectivityInteractor: ConnectivityInteractor
     @Inject
-    lateinit var playingMoviesUseCase: UseCase<MoviesInTheaterInputParam, DomainMoviePage>
+    lateinit var playingMoviesUseCase: UseCase<PageParam, DomainMoviePage>
 
 
     @Before
@@ -93,7 +92,7 @@ class PlayingMoviesFragmentEspressoTest {
         val initialPage = 1
         val expectedMoviePage = activityRule.loadDomainPage(initialPage)
 
-        `when`(playingMoviesUseCase.execute(any(MoviesInTheaterInputParam::class.java)))
+        `when`(playingMoviesUseCase.execute(any(PageParam::class.java)))
                 .thenAnswer(MoviePageAnswer(expectedMoviePage, initialPage))
 
 
@@ -141,7 +140,7 @@ class PlayingMoviesFragmentEspressoTest {
         val initialPage = 1
         val expectedMoviePage = activityRule.loadDomainPage(initialPage)
 
-        `when`(playingMoviesUseCase.execute(any(MoviesInTheaterInputParam::class.java)))
+        `when`(playingMoviesUseCase.execute(any(PageParam::class.java)))
                 .thenAnswer(MoviePageAnswer(expectedMoviePage, initialPage))
 
         launchActivityAndAddFragment()
@@ -160,7 +159,7 @@ class PlayingMoviesFragmentEspressoTest {
         onView(withId(R.id.rv_playing_movies))
                 .check(RecyclerViewItemCountAssertion(20))
 
-        verify(playingMoviesUseCase).execute(any(MoviesInTheaterInputParam::class.java))
+        verify(playingMoviesUseCase).execute(any(PageParam::class.java))
     }
 
 
@@ -170,7 +169,7 @@ class PlayingMoviesFragmentEspressoTest {
         moviesContext.completeConfig()
 
         // return null page will cause error verification
-        `when`(playingMoviesUseCase.execute(any(MoviesInTheaterInputParam::class.java))).thenReturn(null)
+        `when`(playingMoviesUseCase.execute(any(PageParam::class.java))).thenReturn(null)
 
         // mock connectivity issues
         `when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(false)
@@ -188,7 +187,7 @@ class PlayingMoviesFragmentEspressoTest {
         moviesContext.completeConfig()
 
         // return null page will cause error verification
-        `when`(playingMoviesUseCase.execute(any(MoviesInTheaterInputParam::class.java))).thenReturn(null)
+        `when`(playingMoviesUseCase.execute(any(PageParam::class.java))).thenReturn(null)
 
         // mock connectivity NO issues
         `when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(true)
@@ -210,7 +209,7 @@ class PlayingMoviesFragmentEspressoTest {
         val expectedMoviePage = activityRule.loadDomainPage(initialPage)
         val expectedSelectedMovie = expectedMoviePage.results[3]
 
-        `when`(playingMoviesUseCase.execute(any(MoviesInTheaterInputParam::class.java)))
+        `when`(playingMoviesUseCase.execute(any(PageParam::class.java)))
                 .thenAnswer(MoviePageAnswer(expectedMoviePage, initialPage))
 
         launchActivityAndAddFragment()
@@ -235,7 +234,7 @@ class PlayingMoviesFragmentEspressoTest {
                                   private val initialPage: Int? = null) : Answer<DomainMoviePage> {
         override fun answer(invocation: InvocationOnMock?): DomainMoviePage? {
             val argument = invocation!!.arguments[0]
-            return if (argument is MoviesInTheaterInputParam) {
+            return if (argument is PageParam) {
                 val page = argument.page
                 if (initialPage != null) {
                     assertEquals(initialPage, page)
@@ -251,7 +250,7 @@ class PlayingMoviesFragmentEspressoTest {
     private class MoviePageAnswerLoader<T : Activity>(private val activityTestRule: MoviesPreviewActivityTestRule<T>) : Answer<DomainMoviePage> {
         override fun answer(invocation: InvocationOnMock?): DomainMoviePage? {
             val argument = invocation!!.arguments[0]
-            return if (argument is MoviesInTheaterInputParam) {
+            return if (argument is PageParam) {
                 val page = argument.page
                 return activityTestRule.loadDomainPage(page)
             } else {

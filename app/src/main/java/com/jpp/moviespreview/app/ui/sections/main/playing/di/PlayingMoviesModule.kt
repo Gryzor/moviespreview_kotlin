@@ -1,10 +1,13 @@
 package com.jpp.moviespreview.app.ui.sections.main.playing.di
 
 import com.jpp.moviespreview.app.domain.MoviePage
-import com.jpp.moviespreview.app.domain.MoviesInTheaterInputParam
+import com.jpp.moviespreview.app.domain.PageParam
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationInteractor
+import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationInteractorImpl
+import com.jpp.moviespreview.app.ui.interactors.PaginationInteractor
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 import com.jpp.moviespreview.app.ui.sections.main.di.MainScreenScope
 import com.jpp.moviespreview.app.ui.sections.main.playing.PlayingMoviesPresenter
@@ -29,14 +32,21 @@ class PlayingMoviesModule {
     @MainScreenScope
     fun providesPlayingMoviesPresenter(moviesContext: MoviesContext,
                                        presenterInteractorDelegate: PlayingMoviesPresenterInteractor,
-                                       playingMoviesUseCase: UseCase<MoviesInTheaterInputParam, MoviePage>,
+                                       playingMoviesUseCase: UseCase<PageParam, MoviePage>,
                                        mapper: DomainToUiDataMapper): PlayingMoviesPresenter
             = PlayingMoviesPresenterImpl(moviesContext, presenterInteractorDelegate, playingMoviesUseCase, mapper)
 
 
     @Provides
     @MainScreenScope
-    fun providesPlayingMoviesInteractorDelegate(presenterInteractorDelegate: PresenterInteractorDelegate): PlayingMoviesPresenterInteractor
-            = PlayingMoviesPresenterInteractorImpl(presenterInteractorDelegate)
+    fun providesPlayingMoviesInteractorDelegate(presenterInteractorDelegate: PresenterInteractorDelegate,
+                                                imageConfigurationInteractor: ImageConfigurationInteractor,
+                                                paginationInteractor: PaginationInteractor): PlayingMoviesPresenterInteractor
+            = PlayingMoviesPresenterInteractorImpl(presenterInteractorDelegate, imageConfigurationInteractor, paginationInteractor)
+
+    @Provides
+    @MainScreenScope
+    fun providesImageConfigurationPresenterDelegate(): ImageConfigurationInteractor
+            = ImageConfigurationInteractorImpl()
 
 }

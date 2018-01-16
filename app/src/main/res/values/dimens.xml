@@ -9,4 +9,6 @@
     <dimen name="movie_image_height">340dp</dimen>
     
     <dimen name="titleTextSize">14dp</dimen>
+
+    <dimen name="multi_search_result_image_size">52dp</dimen>
 </resources>

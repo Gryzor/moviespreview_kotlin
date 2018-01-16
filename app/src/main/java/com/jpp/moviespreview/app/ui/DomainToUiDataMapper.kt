@@ -3,6 +3,9 @@ package com.jpp.moviespreview.app.ui
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.domain.ImageConfiguration.Companion.POSTER
 import com.jpp.moviespreview.app.domain.ImageConfiguration.Companion.PROFILE
+import com.jpp.moviespreview.app.domain.MultiSearchResult.Companion.MOVIE
+import com.jpp.moviespreview.app.domain.MultiSearchResult.Companion.TV
+import com.jpp.moviespreview.app.domain.MultiSearchResult.Companion.UNKNOWN
 import com.jpp.moviespreview.app.util.extentions.filterInList
 import com.jpp.moviespreview.app.util.extentions.mapIf
 import com.jpp.moviespreview.app.domain.CastCharacter as DomainCastCharacter
@@ -11,6 +14,8 @@ import com.jpp.moviespreview.app.domain.Genre as DomainGenre
 import com.jpp.moviespreview.app.domain.Movie as DomainMovie
 import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
 import com.jpp.moviespreview.app.domain.MoviesConfiguration as DomainMovieConfiguration
+import com.jpp.moviespreview.app.domain.MultiSearchPage as DomainSearchPage
+import com.jpp.moviespreview.app.domain.MultiSearchResult as DomainSearchResult
 
 /**
  * Maps domain model to UI model
@@ -185,5 +190,87 @@ class DomainToUiDataMapper {
         cast.mapTo(creditPersonList) { CreditPerson(selectedImageConfiguration.prepareImageUrl(it.profilePath.toString()), it.character, it.name) }
         crew.mapTo(creditPersonList) { CreditPerson(selectedImageConfiguration.prepareImageUrl(it.profilePath.toString()), it.name, it.department) }
         return creditPersonList
+    }
+
+
+    /**
+     * Converts a [DomainSearchPage] into a UI [MultiSearchPage]
+     */
+    fun convertDomainResultPageInUiResultPage(domainResultPage: DomainSearchPage,
+                                              posterImageConfiguration: PosterImageConfiguration,
+                                              profileImageConfiguration: ProfileImageConfiguration,
+                                              genreList: List<MovieGenre>) = with(domainResultPage) {
+        MultiSearchPage(page,
+                convertDomainSearchResultsInUiMultiSearchResults(results, posterImageConfiguration, profileImageConfiguration, genreList),
+                totalPages,
+                totalResults)
+    }
+
+
+    /**
+     * Transforms a list of [DomainSearchResult] into a list of UI [MultiSearchResult]
+     */
+    private fun convertDomainSearchResultsInUiMultiSearchResults(domainSearchResult: List<DomainSearchResult>,
+                                                                 posterImageConfiguration: PosterImageConfiguration,
+                                                                 profileImageConfiguration: ProfileImageConfiguration,
+                                                                 genreList: List<MovieGenre>): List<MultiSearchResult> {
+        return domainSearchResult.mapIf(
+                { it.mediaType != UNKNOWN },
+                {
+                    MultiSearchResult(it.id,
+                            prepareImagePathForResult(it, posterImageConfiguration, profileImageConfiguration),
+                            extractTitleFromSearchResult(it),
+                            getIconForSearchResult(it),
+                            it.mediaType == MOVIE, // details only for movies for the moment
+                            convertDomainSearchResultIntoMovie(it, posterImageConfiguration, genreList))
+                })
+    }
+
+
+    /**
+     * Converts a list of [DomainMovie] into a list of [Movie]s (UI model)
+     */
+    private fun convertDomainSearchResultIntoMovie(domainSearchResult: DomainSearchResult, selectedImageConfiguration: ImageConfiguration, genreList: List<MovieGenre>): Movie? {
+        if (domainSearchResult.mediaType == MOVIE) {
+            return with(domainSearchResult) {
+                Movie(id,
+                        title!!,
+                        originalTitle!!,
+                        overview!!,
+                        releaseDate!!,
+                        originalLanguage!!,
+                        listOf(
+                                selectedImageConfiguration.prepareImageUrl(posterPath ?: "empty"),
+                                selectedImageConfiguration.prepareImageUrl(backdropPath ?: "empty")
+                        ),
+                        getMappedUiGenres(genres!!, genreList),
+                        voteCount!!,
+                        voteAverage!!,
+                        popularity!!)
+            }
+        } else {
+            return null
+        }
+    }
+
+
+    private fun extractTitleFromSearchResult(domainSearchResult: DomainSearchResult) = when (domainSearchResult.mediaType) {
+        MOVIE -> domainSearchResult.title!!
+        else -> domainSearchResult.name!! // case: TV and PERSON
+    }
+
+
+    private fun getIconForSearchResult(domainSearchResult: DomainSearchResult) = when (domainSearchResult.mediaType) {
+        MOVIE -> R.drawable.ic_clapperboard
+        TV -> R.drawable.ic_tv
+        else -> R.drawable.ic_person_black
+    }
+
+    private fun prepareImagePathForResult(domainSearchResult: DomainSearchResult,
+                                          posterImageConfiguration: PosterImageConfiguration,
+                                          profileImageConfiguration: ProfileImageConfiguration) = when (domainSearchResult.mediaType) {
+
+        PROFILE -> profileImageConfiguration.prepareImageUrl(domainSearchResult.profilePath.toString())
+        else -> posterImageConfiguration.prepareImageUrl(domainSearchResult.posterPath.toString())
     }
 }

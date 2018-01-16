@@ -1,5 +1,6 @@
 package com.jpp.moviespreview.app.ui
 
+import android.support.annotation.DrawableRes
 import com.jpp.moviespreview.app.util.AllOpen
 
 /**
@@ -62,6 +63,13 @@ data class Movie(var id: Double,
     fun getPosterPath() = images[0]
 }
 
+interface UiPage {
+
+    fun page(): Int
+
+    fun totalPages(): Int
+}
+
 
 /**
  * Represents a page of Movies for the UI module.
@@ -69,7 +77,11 @@ data class Movie(var id: Double,
 data class MoviePage(val page: Int,
                      val results: List<Movie>,
                      val totalPages: Int,
-                     val totalResults: Int)
+                     val totalResults: Int) : UiPage {
+    override fun page() = page
+
+    override fun totalPages() = totalPages
+}
 
 
 /**
@@ -79,3 +91,27 @@ data class MoviePage(val page: Int,
 data class CreditPerson(var profilePath: String,
                         var title: String,
                         var subTitle: String)
+
+
+/**
+ * Represents a page of results of a search retrieved from the backend.
+ */
+data class MultiSearchPage(val page: Int,
+                           val results: List<MultiSearchResult>,
+                           val totalPages: Int,
+                           val totalResults: Int) : UiPage {
+    override fun page() = page
+
+    override fun totalPages() = totalPages
+}
+
+/**
+ * Represents result item in the result of a multi search
+ */
+data class MultiSearchResult(val id: Double,
+                             val imagePath: String,
+                             val name: String,
+                             @DrawableRes val icon: Int,
+                             val hasDetails: Boolean,
+                             val movieDetails: Movie?)
+

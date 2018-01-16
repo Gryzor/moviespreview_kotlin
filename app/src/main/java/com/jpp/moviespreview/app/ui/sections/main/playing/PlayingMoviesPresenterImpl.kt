@@ -1,6 +1,6 @@
 package com.jpp.moviespreview.app.ui.sections.main.playing
 
-import com.jpp.moviespreview.app.domain.MoviesInTheaterInputParam
+import com.jpp.moviespreview.app.domain.PageParam
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.*
 import com.jpp.moviespreview.app.domain.Genre as DomainGenre
@@ -13,7 +13,7 @@ import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
  */
 class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
                                  private val interactorDelegate: PlayingMoviesPresenterInteractor,
-                                 private val playingMoviesUseCase: UseCase<MoviesInTheaterInputParam, DomainMoviePage>,
+                                 private val playingMoviesUseCase: UseCase<PageParam, DomainMoviePage>,
                                  private val mapper: DomainToUiDataMapper) : PlayingMoviesPresenter {
 
 
@@ -29,10 +29,6 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
     override fun linkView(view: PlayingMoviesView) {
         playingMoviesView = view
         loadOrRetrieveMovies()
-    }
-
-    override fun refreshData() {
-        refreshMovieData()
     }
 
 
@@ -52,22 +48,12 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
         }
     }
 
-    private fun refreshMovieData() {
-        if (moviesContext.selectedMovie != null) {
-            playingMoviesView.updateMovie(moviesContext.selectedMovie!!)
-            moviesContext.selectedMovie = null
-        }
-    }
-
 
     override fun getNextMoviePage() {
         with(moviesContext) {
             if (isConfigCompleted()) {
                 if (interactorDelegate.isIdle()) {
-                    val param = createNextUseCaseParam()
-                    if (param != null) {
-                        executeUseCase(param)
-                    }
+                    createNextUseCaseParam({ executeUseCase(it) })
                 }
             } else {
                 playingMoviesView.backToSplashScreen()
@@ -81,28 +67,17 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
 
 
     /**
-     * Creates the [MoviesInTheaterInputParam] that is going to be used for the next
+     * Creates the [PageParam] that is going to be used for the next
      * use case execution. If the scrolling has reached the last possible position,
      * it asks the view to show the end of page and returns null.
      */
-    fun createNextUseCaseParam(): MoviesInTheaterInputParam? {
+    fun createNextUseCaseParam(manager: (PageParam) -> Unit) {
         with(moviesContext) {
-            var lastMoviePageIndex = 0 // by default, always get the first page
-            var lastMoviePage: MoviePage? = null
-
-            if (getAllMoviePages().isNotEmpty()) {
-                lastMoviePage = getAllMoviePages().last()
-                lastMoviePageIndex = lastMoviePage.page
-            }
-
-            val nextPage = lastMoviePageIndex + 1
-
-            if (lastMoviePage != null && nextPage > lastMoviePage.totalPages) {
-                playingMoviesView.showEndOfPaging()
-                return null
-            }
-
-            return MoviesInTheaterInputParam(nextPage, mapper.convertUiGenresToDomainGenres(movieGenres!!))
+            interactorDelegate.managePagination(
+                    { getAllMoviePages() },
+                    { playingMoviesView.showEndOfPaging() },
+                    { manager(PageParam(it, mapper.convertUiGenresToDomainGenres(movieGenres!!))) }
+            )
         }
     }
 
@@ -153,7 +128,7 @@ class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
     /**
      * Executes the use case to retrieve the movie page.
      */
-    private fun executeUseCase(param: MoviesInTheaterInputParam) {
+    private fun executeUseCase(param: PageParam) {
         interactorDelegate.executeBackgroundJob(
                 {
                     showLoadingIfNeeded()

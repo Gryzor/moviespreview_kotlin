@@ -7,6 +7,8 @@ import com.jpp.moviespreview.app.ui.sections.detail.di.MovieDetailsComponent
 import com.jpp.moviespreview.app.ui.sections.detail.di.MovieDetailsModule
 import com.jpp.moviespreview.app.ui.sections.main.playing.di.PlayingMoviesComponent
 import com.jpp.moviespreview.app.ui.sections.main.playing.di.PlayingMoviesModule
+import com.jpp.moviespreview.app.ui.sections.search.di.MultiSearchComponent
+import com.jpp.moviespreview.app.ui.sections.search.di.MultiSearchModule
 import com.jpp.moviespreview.app.ui.sections.splash.di.SplashComponent
 import com.jpp.moviespreview.app.ui.sections.splash.di.SplashModule
 import dagger.Component
@@ -23,4 +25,5 @@ interface AppComponent {
     fun plus(splashModule: SplashModule): SplashComponent
     fun plus(playingMovies: PlayingMoviesModule): PlayingMoviesComponent
     fun plus(movieDetails: MovieDetailsModule): MovieDetailsComponent
+    fun plus(multiSearch: MultiSearchModule): MultiSearchComponent
 }

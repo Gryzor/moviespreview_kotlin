@@ -66,37 +66,86 @@ data class MoviePage(val page: Int,
 
 
 /**
- * Represents the input received by the [RetrieveMoviesInTheaterUseCase]
+ * Represents the input received by the UseCases that supports
+ * pagination.
  */
-data class MoviesInTheaterInputParam(val page: Int,
-                                     val genres: List<Genre>)
+data class PageParam(val page: Int,
+                     val genres: List<Genre>)
+
+/**
+ * Represents the input of the multi search use case.
+ */
+data class MultiSearchParam(val query: String,
+                            val page: Int,
+                            val genres: List<Genre>)
 
 
 /**
  * Represents a character that is present in the cast of a [Movie].
  */
-data class CastCharacter(var castId: Double,
-                         var character: String,
-                         var creditId: String,
-                         var gender: Int,
-                         var name: String,
-                         var order: Int,
-                         var profilePath: String?)
+data class CastCharacter(val castId: Double,
+                         val character: String,
+                         val creditId: String,
+                         val gender: Int,
+                         val name: String,
+                         val order: Int,
+                         val profilePath: String?)
 
 /**
  * Represents a person that is part of a crew of a [Movie].
  */
-data class CrewPerson(var creditId: String,
-                      var department: String,
-                      var gender: Int,
-                      var id: Double,
-                      var job: String,
-                      var name: String,
-                      var profilePath: String?)
+data class CrewPerson(val creditId: String,
+                      val department: String,
+                      val gender: Int,
+                      val id: Double,
+                      val job: String,
+                      val name: String,
+                      val profilePath: String?)
 
 /**
  * Represents the credits of a [Movie]
  */
-data class MovieCredits(var id: Double,
-                        var cast: List<CastCharacter>,
-                        var crew: List<CrewPerson>)
+data class MovieCredits(val id: Double,
+                        val cast: List<CastCharacter>,
+                        val crew: List<CrewPerson>)
+
+
+/**
+ * Represents a page of results of a search retrieved from the backend.
+ */
+data class MultiSearchPage(val page: Int,
+                           val results: List<MultiSearchResult>,
+                           val totalPages: Int,
+                           val totalResults: Int,
+                           val query: String)
+
+/**
+ * Represents an item int the result of a multi search
+ */
+data class MultiSearchResult(val id: Double,
+                             val posterPath: String?,
+                             val profilePath: String?,
+                             @MediaType val mediaType: Long,
+                             val name: String?,
+                             val title: String?,
+                             val originalTitle: String?,
+                             val overview: String?,
+                             val releaseDate: String?,
+                             val originalLanguage: String?,
+                             val backdropPath: String?,
+                             val genres: List<Genre>?,
+                             val voteCount: Double?,
+                             val voteAverage: Float?,
+                             val popularity: Float?) {
+
+    companion object {
+        @IntDef(MOVIE, TV, PERSON, UNKNOWN)
+        @Retention(AnnotationRetention.SOURCE)
+        annotation class MediaType
+
+        const val MOVIE = 0L
+        const val TV = 1L
+        const val PERSON = 2L
+        const val UNKNOWN = 3L
+    }
+}

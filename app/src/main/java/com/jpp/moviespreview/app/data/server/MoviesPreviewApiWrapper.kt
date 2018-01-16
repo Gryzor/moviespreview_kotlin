@@ -1,9 +1,6 @@
 package com.jpp.moviespreview.app.data.server
 
-import com.jpp.moviespreview.app.data.Genres
-import com.jpp.moviespreview.app.data.MovieCredits
-import com.jpp.moviespreview.app.data.MoviePage
-import com.jpp.moviespreview.app.data.MoviesConfiguration
+import com.jpp.moviespreview.app.data.*
 import com.jpp.moviespreview.app.util.AllOpen
 
 /**
@@ -34,7 +31,13 @@ class MoviesPreviewApiWrapper(private val apiInstance: MoviesPreviewApi) {
 
 
     /**
-     *
+     * Retrieves the movie credits from the provided [movieId]
      */
     fun getMovieCredits(movieId: Double): MovieCredits? = apiInstance.getMovieCredits(movieId).execute().body()
+
+
+    /**
+     * Executes a multi search with the provided parameters.
+     */
+    fun multiSearch(query: String, page: Int): MultiSearchPage? = apiInstance.multiSearch(query, page).execute().body()
 }

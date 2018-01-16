@@ -24,10 +24,14 @@ class EspressoDomainModule {
 
     @Provides
     @Singleton
-    fun providesRetrieveMoviesInTheaterUseCase(): UseCase<MoviesInTheaterInputParam, MoviePage> = mock()
+    fun providesRetrieveMoviesInTheaterUseCase(): UseCase<PageParam, MoviePage> = mock()
 
 
     @Provides
     @Singleton
     fun providesRetrieveMoviesCreditUseCase(): UseCase<Movie, MovieCredits> = mock()
+
+    @Provides
+    @Singleton
+    fun providesMultiSearchUseCase(): UseCase<MultiSearchParam, MultiSearchPage> = mock()
 }

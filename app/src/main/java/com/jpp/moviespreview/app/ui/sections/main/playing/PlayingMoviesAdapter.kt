@@ -8,9 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.Movie
-import com.jpp.moviespreview.app.util.extentions.getPositionForElement
 import com.jpp.moviespreview.app.util.extentions.inflate
-import com.jpp.moviespreview.app.util.extentions.loadImageUrl
 import com.jpp.moviespreview.app.util.extentions.loadImageUrlWithCallback
 import kotlinx.android.synthetic.main.movie_list_item.view.*
 
@@ -28,11 +26,6 @@ class PlayingMoviesAdapter(private val listener: (Movie, ImageView) -> Unit,
         val currentSize = itemCount
         moviesList.addAll(movies)
         notifyItemRangeChanged(currentSize, itemCount)
-    }
-
-    fun refreshMovie(movie: Movie) {
-        val position = moviesList.getPositionForElement { current: Movie -> current.id == movie.id }
-        notifyItemChanged(position)
     }
 
 
