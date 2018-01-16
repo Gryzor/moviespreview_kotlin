@@ -76,7 +76,8 @@ data class PageParam(val page: Int,
  * Represents the input of the multi search use case.
  */
 data class MultiSearchParam(val query: String,
-                            val page: Int)
+                            val page: Int,
+                            val genres: List<Genre>)
 
 
 /**
@@ -115,25 +116,36 @@ data class MovieCredits(val id: Double,
 data class MultiSearchPage(val page: Int,
                            val results: List<MultiSearchResult>,
                            val totalPages: Int,
-                           val totalResults: Int)
+                           val totalResults: Int,
+                           val query: String)
 
 /**
  * Represents an item int the result of a multi search
  */
 data class MultiSearchResult(val id: Double,
                              val posterPath: String?,
+                             val profilePath: String?,
                              @MediaType val mediaType: Long,
                              val name: String?,
-                             val title: String?) {
+                             val title: String?,
+                             val originalTitle: String?,
+                             val overview: String?,
+                             val releaseDate: String?,
+                             val originalLanguage: String?,
+                             val backdropPath: String?,
+                             val genres: List<Genre>?,
+                             val voteCount: Double?,
+                             val voteAverage: Float?,
+                             val popularity: Float?) {
 
     companion object {
-        @IntDef(MOVIE, TV, PERSON, UNKNWON)
+        @IntDef(MOVIE, TV, PERSON, UNKNOWN)
         @Retention(AnnotationRetention.SOURCE)
         annotation class MediaType
 
         const val MOVIE = 0L
         const val TV = 1L
         const val PERSON = 2L
-        const val UNKNWON = 3L
+        const val UNKNOWN = 3L
     }
 }

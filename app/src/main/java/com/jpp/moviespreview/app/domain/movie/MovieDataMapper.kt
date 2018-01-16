@@ -26,7 +26,7 @@ open class MovieDataMapper {
     /**
      * Converts a list of [DataMovie] into a list of domain [Movie]s
      */
-    fun convertDataMoviesIntoDomainMovies(dataMovies: List<DataMovie>, genres: List<Genre>): List<Movie> {
+    private fun convertDataMoviesIntoDomainMovies(dataMovies: List<DataMovie>, genres: List<Genre>): List<Movie> {
         return dataMovies.mapTo(ArrayList()) {
             Movie(it.id,
                     it.title,

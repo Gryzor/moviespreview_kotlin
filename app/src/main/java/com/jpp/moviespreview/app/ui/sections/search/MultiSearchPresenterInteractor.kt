@@ -1,29 +1,31 @@
-package com.jpp.moviespreview.app.ui.sections.main.playing
+package com.jpp.moviespreview.app.ui.sections.search
 
 import com.jpp.moviespreview.app.ui.PosterImageConfiguration
+import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
 import com.jpp.moviespreview.app.ui.UiPage
 import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationInteractor
 import com.jpp.moviespreview.app.ui.interactors.PaginationInteractor
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 
 /**
- * Interactor definition for the playing movies presenter.
- *
- * Created by jpp on 12/26/17.
+ * Created by jpp on 1/9/18.
  */
-interface PlayingMoviesPresenterInteractor : PresenterInteractorDelegate, PaginationInteractor {
+interface MultiSearchPresenterInteractor : PresenterInteractorDelegate, PaginationInteractor {
+
+    fun findProfileImageConfigurationForHeight(profileImageConfigs: List<ProfileImageConfiguration>,
+                                               height: Int): ProfileImageConfiguration
 
     fun findPosterImageConfigurationForWidth(posterImageConfigs: List<PosterImageConfiguration>,
                                              width: Int): PosterImageConfiguration
-
 }
+
 
 /**
  * PlayingMoviesPresenterInteractor implementation.
  */
-class PlayingMoviesPresenterInteractorImpl(private val presenterInteractorDelegate: PresenterInteractorDelegate,
-                                           private val imageConfigInteractor: ImageConfigurationInteractor,
-                                           private val paginationInteractorImpl: PaginationInteractor) : PlayingMoviesPresenterInteractor {
+class MultiSearchPresenterInteractorImpl(private val presenterInteractorDelegate: PresenterInteractorDelegate,
+                                         private val imageConfigInteractor: ImageConfigurationInteractor,
+                                         private val paginationInteractorImpl: PaginationInteractor) : MultiSearchPresenterInteractor {
 
     override fun managePagination(getAllPages: () -> List<UiPage>, onEndOfPaging: () -> Unit, onNextPage: (Int) -> Unit) {
         paginationInteractorImpl.managePagination(getAllPages, onEndOfPaging, onNextPage)
@@ -39,4 +41,7 @@ class PlayingMoviesPresenterInteractorImpl(private val presenterInteractorDelega
 
     override fun findPosterImageConfigurationForWidth(posterImageConfigs: List<PosterImageConfiguration>, width: Int): PosterImageConfiguration =
             imageConfigInteractor.findPosterImageConfigurationForWidth(posterImageConfigs, width)
+
+    override fun findProfileImageConfigurationForHeight(profileImageConfigs: List<ProfileImageConfiguration>, height: Int): ProfileImageConfiguration =
+            imageConfigInteractor.findProfileImageConfigurationForHeight(profileImageConfigs, height)
 }

@@ -41,6 +41,17 @@ fun View.setVisible() {
 }
 
 /**
+ * Sets the underlying view to visible if [check] condition is fulfilled.
+ */
+fun View.setVisibleIf(check: () -> Boolean) {
+    if(check()){
+        this.visibility = View.VISIBLE
+    } else {
+        this.visibility = View.INVISIBLE
+    }
+}
+
+/**
  * Loads an image retrieved from the provided [imageUrl]
  * into the ImageView.
  */
@@ -71,11 +82,14 @@ fun ImageView.loadImageUrlWithCallback(imageUrl: String,
             .into(CallbackTarget(this, callback))
 }
 
-fun ImageView.loadCircularImageView(imageUrl: String) {
+fun ImageView.loadCircularImageView(imageUrl: String,
+                                    placeholder: Int = R.drawable.ic_app_icon_black,
+                                    error: Int = R.drawable.ic_person_black) {
     Glide.with(ctx)
             .load(imageUrl)
             .asBitmap()
-            .error(R.drawable.ic_person_black)
+            .error(error)
+            .placeholder(placeholder)
             .centerCrop()
             .into(CircularImageViewTransformation(this))
 }

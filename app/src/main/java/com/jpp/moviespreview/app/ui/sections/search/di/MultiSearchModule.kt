@@ -1,9 +1,14 @@
 package com.jpp.moviespreview.app.ui.sections.search.di
 
-import com.jpp.moviespreview.app.ui.sections.search.MultiSearchPresenter
-import com.jpp.moviespreview.app.ui.sections.search.MultiSearchPresenterImpl
-import com.jpp.moviespreview.app.ui.sections.search.QuerySubmitManager
-import com.jpp.moviespreview.app.ui.sections.search.QuerySubmitManagerImpl
+import com.jpp.moviespreview.app.domain.MultiSearchPage
+import com.jpp.moviespreview.app.domain.MultiSearchParam
+import com.jpp.moviespreview.app.domain.UseCase
+import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
+import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationInteractor
+import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationInteractorImpl
+import com.jpp.moviespreview.app.ui.interactors.PaginationInteractor
+import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
+import com.jpp.moviespreview.app.ui.sections.search.*
 import dagger.Module
 import dagger.Provides
 
@@ -23,5 +28,23 @@ class MultiSearchModule {
 
     @Provides
     @MultiSearchScope
-    fun providesMultiSearchPresenter(querySubmitManager: QuerySubmitManager): MultiSearchPresenter = MultiSearchPresenterImpl(querySubmitManager)
+    fun providesMultiSearchPresenter(multiSearchContext: MultiSearchContext,
+                                     interactorDelegate: MultiSearchPresenterInteractor,
+                                     mapper: DomainToUiDataMapper,
+                                     querySubmitManager: QuerySubmitManager,
+                                     useCase: UseCase<MultiSearchParam, MultiSearchPage>): MultiSearchPresenter
+            = MultiSearchPresenterImpl(multiSearchContext, interactorDelegate, mapper, querySubmitManager, useCase)
+
+    @Provides
+    @MultiSearchScope
+    fun providesPlayingMoviesPresenterInteractor(presenterInteractorDelegate: PresenterInteractorDelegate,
+                                                 imageConfigurationInteractor: ImageConfigurationInteractor,
+                                                 paginationInteractor: PaginationInteractor): MultiSearchPresenterInteractor
+            = MultiSearchPresenterInteractorImpl(presenterInteractorDelegate, imageConfigurationInteractor, paginationInteractor)
+
+
+    @Provides
+    @MultiSearchScope
+    fun providesImageConfigurationPresenterDelegate(): ImageConfigurationInteractor
+            = ImageConfigurationInteractorImpl()
 }

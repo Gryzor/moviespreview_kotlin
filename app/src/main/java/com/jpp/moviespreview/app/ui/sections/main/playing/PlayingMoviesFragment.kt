@@ -2,8 +2,6 @@ package com.jpp.moviespreview.app.ui.sections.main.playing
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.view.ViewCompat
-import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -68,18 +66,9 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
         rv_playing_movies.endlessScrolling({ playingMoviesPresenter.getNextMoviePage() })
     }
 
-    override fun onResume() {
-        super.onResume()
-        playingMoviesPresenter.refreshData()
-    }
-
     override fun showMoviePage(moviePage: MoviePage) {
         loading_movies_view.hide()
         adapter.appendMovies(moviePage.results)
-    }
-
-    override fun updateMovie(movie: Movie) {
-        adapter.refreshMovie(movie)
     }
 
     override fun backToSplashScreen() {
