@@ -5,6 +5,7 @@ apply plugin: 'kotlin-android-extensions'
 //Kotlin Annotation Processing (KAPT) plugin
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-allopen'
+apply plugin: 'io.fabric'
 
 android {
     signingConfigs {
@@ -76,6 +77,7 @@ dependencies {
     final glide_version = '3.8.0'
     final mockito_nhaarman_version = '1.5.0'
     final rxJava_version = '1.2.3'
+
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
     // Google libs
@@ -84,7 +86,6 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$support_version"
     compile "com.android.support:design:$support_version"
     compile "com.android.support:palette-v7:$support_version"
-
 
     // Kotlin libs
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -151,10 +152,16 @@ dependencies {
     testCompile "org.mockito:mockito-inline:$mockito_version"
     testCompile "com.nhaarman:mockito-kotlin-kt1.1:$mockito_nhaarman_version"
 
-    // to mock final classes only in jvm tests
+    compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
+        transitive = true
+    }
+    compile 'com.google.firebase:firebase-core:11.8.0'
+
 }
 
 // used to be able to mock not-open classes in kotlin
 allOpen {
     annotation("com.jpp.moviespreview.app.util.AllOpen")
 }
+
+apply plugin: 'com.google.gms.google-services'
