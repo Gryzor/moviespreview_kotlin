@@ -3,6 +3,8 @@ package com.jpp.moviespreview.app
 import com.jpp.moviespreview.app.data.DataModule
 import com.jpp.moviespreview.app.domain.DomainModule
 import com.jpp.moviespreview.app.ui.UiModule
+import com.jpp.moviespreview.app.ui.sections.about.di.AboutComponent
+import com.jpp.moviespreview.app.ui.sections.about.di.AboutModule
 import com.jpp.moviespreview.app.ui.sections.detail.di.MovieDetailsComponent
 import com.jpp.moviespreview.app.ui.sections.detail.di.MovieDetailsModule
 import com.jpp.moviespreview.app.ui.sections.main.playing.di.PlayingMoviesComponent
@@ -26,4 +28,5 @@ interface AppComponent {
     fun plus(playingMovies: PlayingMoviesModule): PlayingMoviesComponent
     fun plus(movieDetails: MovieDetailsModule): MovieDetailsComponent
     fun plus(multiSearch: MultiSearchModule): MultiSearchComponent
+    fun plus(about: AboutModule): AboutComponent
 }
