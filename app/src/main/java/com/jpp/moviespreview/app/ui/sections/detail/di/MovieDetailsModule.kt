@@ -7,15 +7,11 @@ import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationInteractor
 import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationInteractorImpl
-import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailCreditsPresenter
-import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailImagesPresenter
-import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailImagesPresenterImpl
-import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailPresenter
 import com.jpp.moviespreview.app.ui.sections.detail.body.MovieDetailPresenterImpl
 import com.jpp.moviespreview.app.ui.sections.detail.credits.MovieDetailCreditsPresenterImpl
-import com.jpp.moviespreview.app.ui.sections.detail.credits.MovieDetailsCreditsPresenterInteractor
 import com.jpp.moviespreview.app.ui.sections.detail.credits.MovieDetailsCreditsPresenterInteractorImpl
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
+import com.jpp.moviespreview.app.ui.sections.detail.*
 import dagger.Module
 import dagger.Provides
 

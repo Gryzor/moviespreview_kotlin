@@ -2,6 +2,8 @@ package com.jpp.moviespreview.app.ui.sections.detail
 
 import com.jpp.moviespreview.app.ui.CreditPerson
 import com.jpp.moviespreview.app.ui.MovieGenre
+import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
+import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 
 /************************************************************
  ******** Contract definition for the details body **********
@@ -47,4 +49,11 @@ interface MovieDetailCreditsView {
 
 interface MovieDetailCreditsPresenter {
     fun linkView(view: MovieDetailCreditsView)
+}
+
+interface MovieDetailsCreditsPresenterInteractor : PresenterInteractorDelegate {
+
+    fun findProfileImageConfigurationForHeight(profileImageConfigs: List<ProfileImageConfiguration>,
+                                               height: Int): ProfileImageConfiguration
+
 }

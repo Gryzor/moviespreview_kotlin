@@ -7,4 +7,10 @@
         android:icon="@android:drawable/ic_menu_search"
         android:title="@string/search_movies_menu_title"
         app:showAsAction="always" />
+
+
+    <item
+        android:id="@+id/action_about"
+        android:title="@string/about_menu_item"
+        app:showAsAction="never" />
 </menu>
