@@ -22,4 +22,5 @@
     <string name="about_text">Movies Preview is an application developed to verify some development ideas and to have an example of how
                               some things can be done in the Android world.\n
                               It provides to the user access to The Movie DB, browsing the information available in the database. </string>
+    <string name="about_version">v %1$s</string>
 </resources>

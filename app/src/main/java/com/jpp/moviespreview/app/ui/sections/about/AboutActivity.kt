@@ -33,6 +33,6 @@ class AboutActivity : AppCompatActivity(), AboutView {
     }
 
     override fun showAppVersion(appVersion: String) {
-        about_screen_version_text_view.text = appVersion
+        about_screen_version_text_view.text = getString(R.string.about_version, appVersion)
     }
 }
