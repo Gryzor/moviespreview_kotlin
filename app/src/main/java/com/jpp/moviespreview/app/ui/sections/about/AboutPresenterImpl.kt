@@ -7,6 +7,11 @@ class AboutPresenterImpl(private val aboutInteractor: AboutInteractor) : AboutPr
 
     override fun linkView(aboutView: AboutView) {
         aboutView.showAppVersion(aboutInteractor.getAppVersion())
+        aboutView.showActions(aboutInteractor.getActions())
+    }
+
+    override fun onActionSelected(action: AboutAction) {
+        //TODO
     }
 
 }

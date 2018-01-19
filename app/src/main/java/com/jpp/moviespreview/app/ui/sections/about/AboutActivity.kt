@@ -2,6 +2,7 @@ package com.jpp.moviespreview.app.ui.sections.about
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.util.extentions.app
 import kotlinx.android.synthetic.main.about_activity.*
@@ -34,5 +35,11 @@ class AboutActivity : AppCompatActivity(), AboutView {
 
     override fun showAppVersion(appVersion: String) {
         about_screen_version_text_view.text = getString(R.string.about_version, appVersion)
+    }
+
+    override fun showActions(actions: List<AboutAction>) {
+        val adapter = AboutActionsAdapter(actions, { presenter.onActionSelected(it) })
+        rv_about_screen.layoutManager = LinearLayoutManager(this)
+        rv_about_screen.adapter = adapter
     }
 }

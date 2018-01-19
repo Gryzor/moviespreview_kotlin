@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
     android:padding="10dp">
 
 
     <ImageView
         android:id="@+id/about_item_image_view"
-        android:layout_width="@dimen/multi_search_result_image_size"
-        android:layout_height="@dimen/multi_search_result_image_size"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:src="@drawable/ic_app_icon_black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,7 +19,7 @@
 
     <TextView
         android:id="@+id/about_title_text_view"
-        style="@style/MoviesPreviewTextAppearanceInverse.Title"
+        style="@style/MoviesPreviewTextAppearanceInverse"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
