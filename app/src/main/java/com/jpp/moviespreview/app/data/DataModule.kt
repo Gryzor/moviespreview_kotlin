@@ -5,6 +5,8 @@ import android.content.Context
 import com.jpp.moviespreview.BuildConfig
 import com.jpp.moviespreview.app.data.cache.*
 import com.jpp.moviespreview.app.data.cache.db.MoviesDataBase
+import com.jpp.moviespreview.app.data.cache.file.AssetLoader
+import com.jpp.moviespreview.app.data.cache.file.AssetLoaderImpl
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApi
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
 import dagger.Module
@@ -79,4 +81,8 @@ class DataModule {
     fun providesMoviesCache(mapper: CacheDataMapper,
                             moviesDataBase: MoviesDataBase,
                             cacheTimestampUtils: CacheTimestampUtils): MoviesCache = MoviesCacheImpl(mapper, moviesDataBase, cacheTimestampUtils)
+
+    @Provides
+    @Singleton
+    fun providesAssetLoader(context: Context): AssetLoader = AssetLoaderImpl(context)
 }

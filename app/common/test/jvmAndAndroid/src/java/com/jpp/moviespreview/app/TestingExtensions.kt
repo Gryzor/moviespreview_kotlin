@@ -179,8 +179,3 @@ fun DataPageStubs.Companion.stubDataMovieList() = listOf(
 inline fun <reified T : Any> mock() = Mockito.mock(T::class.java)
 
 
-/**
- * Helper class to load an object from GSON
- */
-inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object : TypeToken<T>() {}.type)!!
-

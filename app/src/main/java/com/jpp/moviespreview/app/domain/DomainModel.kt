@@ -149,3 +149,17 @@ data class MultiSearchResult(val id: Double,
         const val UNKNOWN = 3L
     }
 }
+
+
+/**
+ * Represents a License description for the
+ * libraries used by the application.
+ */
+data class License(val id: Int,
+                   val name: String,
+                   val url: String)
+
+/**
+ * Represents the list of all [License] used by the application.
+ */
+data class Licenses(val licenses: List<License>)

@@ -1,0 +1,9 @@
+{
+  "licenses": [
+    {
+      "id": 1,
+      "name":"Android Compatibility Library v7",
+      "url": "file:///android_asset/open_source_licenses.html"
+    }
+  ]
+}
