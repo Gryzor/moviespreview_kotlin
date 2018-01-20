@@ -15,21 +15,24 @@ class LicensesPresenterImpl(private val moviesContext: MoviesContext,
                             private val mapper: DomainToUiDataMapper,
                             private val backgroundInteractor: BackgroundInteractor) : LicensesPresenter {
 
+    private lateinit var viewInstance: LicensesView
+
     override fun linkView(licencesView: LicensesView) {
+        viewInstance = licencesView
         with(moviesContext) {
             if (licenses == null) {
-                executeUseCase(licencesView)
+                executeUseCase()
             } else {
-                licencesView.showLicences(licenses!!)
+                viewInstance.showLicences(licenses!!)
             }
         }
     }
 
     override fun onLicenseSelected(license: License) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        viewInstance.showLicenseDetail(license)
     }
 
-    private fun executeUseCase(licencesView: LicensesView) {
+    private fun executeUseCase() {
         backgroundInteractor.executeBackgroundJob(
                 {
                     useCase.execute()
@@ -37,9 +40,9 @@ class LicensesPresenterImpl(private val moviesContext: MoviesContext,
                 {
                     if (it != null) {
                         moviesContext.licenses = mapper.convertDomainLicensesIntoUiLicenses(it)
-                        licencesView.showLicences(moviesContext.licenses!!)
+                        viewInstance.showLicences(moviesContext.licenses!!)
                     } else {
-                        licencesView.showErrorLoadingLicenses()
+                        viewInstance.showErrorLoadingLicenses()
                     }
                 })
     }

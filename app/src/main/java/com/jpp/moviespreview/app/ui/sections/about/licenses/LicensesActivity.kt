@@ -12,6 +12,8 @@ import kotlinx.android.synthetic.main.licences_activity.*
 import javax.inject.Inject
 
 /**
+ * Activity used to show the licenses list of all the libraries used by the application
+ *
  * Created by jpp on 1/20/18.
  */
 class LicensesActivity : AppCompatActivity(), LicensesView {
@@ -47,5 +49,11 @@ class LicensesActivity : AppCompatActivity(), LicensesView {
 
     override fun showErrorLoadingLicenses() {
         showUnexpectedError { finish() }
+    }
+
+    override fun showLicenseDetail(license: License) {
+        with(license) {
+            LicensesDialogFragment.newInstance(name, url).show(supportFragmentManager, "TAG")
+        }
     }
 }
