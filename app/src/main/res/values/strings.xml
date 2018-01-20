@@ -27,6 +27,7 @@
     <string name="share_app_action">Share app</string>
     <string name="brows_code_action">Browse app code</string>
     <string name="open_source_action">Open source licenses</string>
+    <string name="share_app_text">Hey check out this app: %1$s </string>
 
 
 

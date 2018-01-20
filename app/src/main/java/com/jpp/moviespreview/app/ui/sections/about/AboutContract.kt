@@ -9,6 +9,10 @@ import android.support.annotation.IntDef
 interface AboutView {
     fun showAppVersion(appVersion: String)
     fun showActions(actions: List<AboutAction>)
+    fun onRateApplicationSelected()
+    fun onShareApplicationSelected()
+    fun navigateToAppCode()
+    fun navigateToLicenses()
 }
 
 interface AboutPresenter {
