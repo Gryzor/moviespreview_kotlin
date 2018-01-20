@@ -9,8 +9,8 @@ import com.jpp.moviespreview.app.domain.configuration.ConfigurationDataMapper
 import com.jpp.moviespreview.app.domain.configuration.RetrieveConfigurationUseCase
 import com.jpp.moviespreview.app.domain.genre.GenreDataMapper
 import com.jpp.moviespreview.app.domain.genre.RetrieveGenresUseCase
-import com.jpp.moviespreview.app.domain.licenses.LicencesDataMapper
-import com.jpp.moviespreview.app.domain.licenses.RetrieveLicencesUseCase
+import com.jpp.moviespreview.app.domain.licenses.LicensesDataMapper
+import com.jpp.moviespreview.app.domain.licenses.RetrieveLicensesUseCase
 import com.jpp.moviespreview.app.domain.movie.MovieDataMapper
 import com.jpp.moviespreview.app.domain.movie.RetrieveMoviesInTheaterUseCase
 import com.jpp.moviespreview.app.domain.movie.credits.CreditsDataMapper
@@ -60,7 +60,7 @@ class DomainModule {
     @Provides
     @Singleton
     fun providesRetrieveLicencesUseCase(assetLoader: AssetLoader): UseCase<Any, Licenses>
-            = RetrieveLicencesUseCase(assetLoader, LicencesDataMapper())
+            = RetrieveLicensesUseCase(assetLoader, LicensesDataMapper())
 
     @Provides
     @Singleton

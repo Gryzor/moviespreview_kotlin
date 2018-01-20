@@ -21,7 +21,7 @@ interface AssetLoader {
 class AssetLoaderImpl(private val context: Context) : AssetLoader {
 
     private companion object {
-        val LICENSES_FILE_LOCATION = "licences.json"
+        val LICENSES_FILE_LOCATION = "licenses.json"
         val GSON_LOADER by lazy { Gson() }
     }
 

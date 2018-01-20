@@ -9,8 +9,8 @@ import com.jpp.moviespreview.app.domain.UseCase
  *
  * Created by jpp on 1/20/18.
  */
-class RetrieveLicencesUseCase(private val assetLoader: AssetLoader,
-                              private val mapper: LicencesDataMapper) : UseCase<Any, Licenses> {
+class RetrieveLicensesUseCase(private val assetLoader: AssetLoader,
+                              private val mapper: LicensesDataMapper) : UseCase<Any, Licenses> {
 
 
     override fun execute(param: Any?): Licenses? {

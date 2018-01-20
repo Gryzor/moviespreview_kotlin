@@ -13,6 +13,7 @@ class MoviesContext {
     var profileImageConfig: List<ProfileImageConfiguration>? = null
     var movieGenres: List<MovieGenre>? = null
     var selectedMovie: Movie? = null
+    var licenses: List<License>? = null
     private var moviePages = ArrayList<MoviePage>()
     private val movieCredits = HashMap<Movie, List<CreditPerson>>()
 

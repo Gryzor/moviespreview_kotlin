@@ -9,6 +9,7 @@ import android.support.customtabs.CustomTabsIntent
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import com.jpp.moviespreview.R
+import com.jpp.moviespreview.app.ui.sections.about.licenses.LicensesActivity
 import com.jpp.moviespreview.app.util.extentions.app
 import kotlinx.android.synthetic.main.about_activity.*
 import javax.inject.Inject
@@ -79,7 +80,7 @@ class AboutActivity : AppCompatActivity(), AboutView {
     }
 
     override fun navigateToLicenses() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        startActivity(Intent(this, LicensesActivity::class.java))
     }
 
 

@@ -10,7 +10,7 @@ import com.jpp.moviespreview.app.data.License as DataLicence
  *
  * Created by jpp on 1/20/18.
  */
-class LicencesDataMapper {
+class LicensesDataMapper {
 
 
     /**
