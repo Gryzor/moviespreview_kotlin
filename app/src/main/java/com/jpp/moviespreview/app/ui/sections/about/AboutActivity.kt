@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.support.customtabs.CustomTabsIntent
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import com.jpp.moviespreview.R
@@ -69,7 +70,12 @@ class AboutActivity : AppCompatActivity(), AboutView {
     }
 
     override fun navigateToAppCode() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val navigateIntentBuilder = CustomTabsIntent.Builder()
+        navigateIntentBuilder.setToolbarColor(resources.getColor(R.color.colorPrimary))
+        navigateIntentBuilder.setStartAnimations(this, R.anim.activity_enter_transition, R.anim.activity_exit_transition)
+        navigateIntentBuilder.setExitAnimations(this, R.anim.activity_enter_transition, R.anim.activity_exit_transition)
+        val navigateIntent = navigateIntentBuilder.build()
+        navigateIntent.launchUrl(this, Uri.parse("https://github.com/perettijuan/moviespreview_kotlin"))
     }
 
     override fun navigateToLicenses() {

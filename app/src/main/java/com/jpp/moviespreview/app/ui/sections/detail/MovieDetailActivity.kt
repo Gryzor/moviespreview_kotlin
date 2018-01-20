@@ -40,13 +40,6 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailImagesView {
                 activity.startActivity(intent, options.toBundle())
             }
         }
-
-
-        fun navigateWithoutTransition(activity: AppCompatActivity) {
-            val intent = Intent(activity, MovieDetailActivity::class.java)
-            activity.startActivity(intent)
-            activity.overridePendingTransition(R.anim.activity_enter_transition, 0)
-        }
     }
 
 
