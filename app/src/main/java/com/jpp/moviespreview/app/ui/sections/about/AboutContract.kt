@@ -13,6 +13,7 @@ interface AboutView {
     fun onShareApplicationSelected()
     fun navigateToAppCode()
     fun navigateToLicenses()
+    fun navigateToApiTermsOfUse()
 }
 
 interface AboutPresenter {
@@ -36,7 +37,7 @@ data class AboutAction(val title: String,
                        @DrawableRes val icon: Int,
                        @ActionType val type: Long) {
     companion object {
-        @IntDef(RATE_APP, SHARE_APP, BROWSE_CODE, LICENSES)
+        @IntDef(RATE_APP, SHARE_APP, BROWSE_CODE, LICENSES, THE_MOVIE_DB_TERMS_OF_USE)
         @Retention(AnnotationRetention.SOURCE)
         annotation class ActionType
 
@@ -44,5 +45,6 @@ data class AboutAction(val title: String,
         const val SHARE_APP = 1L
         const val BROWSE_CODE = 2L
         const val LICENSES = 3L
+        const val THE_MOVIE_DB_TERMS_OF_USE = 4L
     }
 }

@@ -19,9 +19,12 @@ import javax.inject.Inject
  */
 class AboutActivity : AppCompatActivity(), AboutView {
 
+
     companion object {
         val APP_WEB_URL = "https://play.google.com/store/apps/details"
         val APP_MARKET_URI = "market://details"
+        val CODE_REPOSITORY_URL = "https://github.com/perettijuan/moviespreview_kotlin"
+        val API_TERM_OF_USE_URL = "https://www.themoviedb.org/documentation/api/terms-of-use?"
     }
 
     private val component by lazy { app.aboutComponent() }
@@ -71,18 +74,26 @@ class AboutActivity : AppCompatActivity(), AboutView {
     }
 
     override fun navigateToAppCode() {
-        val navigateIntentBuilder = CustomTabsIntent.Builder()
-        navigateIntentBuilder.setToolbarColor(resources.getColor(R.color.colorPrimary))
-        navigateIntentBuilder.setStartAnimations(this, R.anim.activity_enter_transition, R.anim.activity_exit_transition)
-        navigateIntentBuilder.setExitAnimations(this, R.anim.activity_enter_transition, R.anim.activity_exit_transition)
-        val navigateIntent = navigateIntentBuilder.build()
-        navigateIntent.launchUrl(this, Uri.parse("https://github.com/perettijuan/moviespreview_kotlin"))
+        navigateInnerBrowser(CODE_REPOSITORY_URL)
     }
 
     override fun navigateToLicenses() {
         startActivity(Intent(this, LicensesActivity::class.java))
     }
 
+    override fun navigateToApiTermsOfUse() {
+        navigateInnerBrowser(API_TERM_OF_USE_URL)
+    }
+
+
+    private fun navigateInnerBrowser(uriString: String) {
+        val navigateIntentBuilder = CustomTabsIntent.Builder()
+        navigateIntentBuilder.setToolbarColor(resources.getColor(R.color.colorPrimary))
+        navigateIntentBuilder.setStartAnimations(this, R.anim.activity_enter_transition, R.anim.activity_exit_transition)
+        navigateIntentBuilder.setExitAnimations(this, R.anim.activity_enter_transition, R.anim.activity_exit_transition)
+        val navigateIntent = navigateIntentBuilder.build()
+        navigateIntent.launchUrl(this, Uri.parse(uriString))
+    }
 
     private fun rateIntentForUrl(url: String): Intent {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(String.format("%s?id=%s", url, packageName)))

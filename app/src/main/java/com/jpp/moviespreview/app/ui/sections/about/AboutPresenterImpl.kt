@@ -19,6 +19,7 @@ class AboutPresenterImpl(private val aboutInteractor: AboutInteractor) : AboutPr
             AboutAction.SHARE_APP -> viewInstance.onShareApplicationSelected()
             AboutAction.LICENSES -> viewInstance.navigateToLicenses()
             AboutAction.BROWSE_CODE -> viewInstance.navigateToAppCode()
+            AboutAction.THE_MOVIE_DB_TERMS_OF_USE -> viewInstance.navigateToApiTermsOfUse()
         }
     }
 
