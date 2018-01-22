@@ -8,19 +8,6 @@ import com.jpp.moviespreview.app.ui.interactors.PaginationInteractor
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 
 /**
- * Created by jpp on 1/9/18.
- */
-interface MultiSearchPresenterInteractor : PresenterInteractorDelegate, PaginationInteractor {
-
-    fun findProfileImageConfigurationForHeight(profileImageConfigs: List<ProfileImageConfiguration>,
-                                               height: Int): ProfileImageConfiguration
-
-    fun findPosterImageConfigurationForWidth(posterImageConfigs: List<PosterImageConfiguration>,
-                                             width: Int): PosterImageConfiguration
-}
-
-
-/**
  * PlayingMoviesPresenterInteractor implementation.
  */
 class MultiSearchPresenterInteractorImpl(private val presenterInteractorDelegate: PresenterInteractorDelegate,

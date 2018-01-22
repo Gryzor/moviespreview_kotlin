@@ -16,4 +16,19 @@
     <!-- Search -->
     <string name="search_movies_menu_title">Search movies</string>
     <string name="search_hint">Search movies, tv shows and characters</string>
+
+    <!-- About -->
+    <string name="about_menu_item">About</string>
+    <string name="about_text">Movies Preview is an application developed to verify some development ideas and to have an example of how
+                              some things can be done in the Android world.\n
+                              It provides to the user access to The Movie DB, browsing the information available in the database. </string>
+    <string name="about_version">v %1$s</string>
+    <string name="rate_app_action">Rate app</string>
+    <string name="share_app_action">Share app</string>
+    <string name="brows_code_action">Browse app code</string>
+    <string name="open_source_action">Open source licenses</string>
+    <string name="share_app_text">Hey check out this app: %1$s </string>
+    <string name="the_movie_db_terms_of_use">The Movie DB Terms of Use</string>
+
+
 </resources>

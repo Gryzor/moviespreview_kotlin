@@ -6,17 +6,6 @@ import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationInteractor
 import com.jpp.moviespreview.app.ui.interactors.PaginationInteractor
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 
-/**
- * Interactor definition for the playing movies presenter.
- *
- * Created by jpp on 12/26/17.
- */
-interface PlayingMoviesPresenterInteractor : PresenterInteractorDelegate, PaginationInteractor {
-
-    fun findPosterImageConfigurationForWidth(posterImageConfigs: List<PosterImageConfiguration>,
-                                             width: Int): PosterImageConfiguration
-
-}
 
 /**
  * PlayingMoviesPresenterInteractor implementation.

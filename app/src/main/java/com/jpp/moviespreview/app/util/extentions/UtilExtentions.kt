@@ -1,5 +1,7 @@
 package com.jpp.moviespreview.app.util.extentions
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.util.*
 
 /**
@@ -17,3 +19,9 @@ fun String.transformToInt(): Int? {
     val scanner = Scanner(this).useDelimiter("[^0-9]+")
     return scanner.nextInt()
 }
+
+
+/**
+ * Helper class to load an object from GSON
+ */
+inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object : TypeToken<T>() {}.type)!!

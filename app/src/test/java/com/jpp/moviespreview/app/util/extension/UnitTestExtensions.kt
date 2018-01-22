@@ -1,7 +1,7 @@
 package com.jpp.moviespreview.app.util.extension
 
 import com.google.gson.Gson
-import com.jpp.moviespreview.app.fromJson
+import com.jpp.moviespreview.app.util.extentions.fromJson
 
 /**
  * Created by jpp on 11/8/17.

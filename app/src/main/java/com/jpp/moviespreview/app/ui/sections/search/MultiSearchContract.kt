@@ -1,6 +1,10 @@
 package com.jpp.moviespreview.app.ui.sections.search
 
 import com.jpp.moviespreview.app.ui.MultiSearchResult
+import com.jpp.moviespreview.app.ui.PosterImageConfiguration
+import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
+import com.jpp.moviespreview.app.ui.interactors.PaginationInteractor
+import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 
 /**
  * Contains the MVP contract for themulti search section
@@ -52,4 +56,17 @@ interface QueryTextView {
 interface QueryTextListener {
     fun onQueryTextSubmit(query: String?): Boolean
     fun onQueryTextChange(newText: String?): Boolean
+}
+
+
+/**
+ * Defines an interactor to provide support to the multi search section.
+ */
+interface MultiSearchPresenterInteractor : PresenterInteractorDelegate, PaginationInteractor {
+
+    fun findProfileImageConfigurationForHeight(profileImageConfigs: List<ProfileImageConfiguration>,
+                                               height: Int): ProfileImageConfiguration
+
+    fun findPosterImageConfigurationForWidth(posterImageConfigs: List<PosterImageConfiguration>,
+                                             width: Int): PosterImageConfiguration
 }

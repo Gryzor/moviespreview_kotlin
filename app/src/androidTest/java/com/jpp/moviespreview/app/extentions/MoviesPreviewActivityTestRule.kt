@@ -14,7 +14,7 @@ import com.jpp.moviespreview.app.domain.genre.GenreDataMapper
 import com.jpp.moviespreview.app.domain.movie.MovieDataMapper
 import com.jpp.moviespreview.app.domain.movie.credits.CreditsDataMapper
 import com.jpp.moviespreview.app.domain.search.MultiSearchDataMapper
-import com.jpp.moviespreview.app.fromJson
+import com.jpp.moviespreview.app.util.extentions.fromJson
 import com.jpp.moviespreview.app.data.MovieCredits as DataMovieCredits
 import com.jpp.moviespreview.app.domain.MovieCredits as DomainMovieCredits
 import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
@@ -54,7 +54,7 @@ class MoviesPreviewActivityTestRule<T : Activity>(activityClass: Class<T>) : Act
     /**
      * Loads a DOMAIN [DomainMultiSearchPage]
      */
-    fun loadDomainMultiSearchResult(page: Int, query:String): DomainMultiSearchPage
+    fun loadDomainMultiSearchResult(page: Int, query: String): DomainMultiSearchPage
             = MultiSearchDataMapper(MovieDataMapper()).convertDataSearchPageIntoDomainSearchResult(loadMultiSearchDataPage(page), query, loadDomainGenres())
 
     /**********************

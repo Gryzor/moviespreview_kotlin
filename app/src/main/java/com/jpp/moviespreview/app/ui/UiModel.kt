@@ -115,3 +115,12 @@ data class MultiSearchResult(val id: Double,
                              val hasDetails: Boolean,
                              val movieDetails: Movie?)
 
+/**
+ * Represents a License description for the
+ * libraries used by the application.
+ */
+data class License(val id: Int,
+                   val name: String,
+                   val url: String)
+
+

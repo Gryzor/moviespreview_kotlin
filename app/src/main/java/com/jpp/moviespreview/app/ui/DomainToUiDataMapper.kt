@@ -16,6 +16,8 @@ import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
 import com.jpp.moviespreview.app.domain.MoviesConfiguration as DomainMovieConfiguration
 import com.jpp.moviespreview.app.domain.MultiSearchPage as DomainSearchPage
 import com.jpp.moviespreview.app.domain.MultiSearchResult as DomainSearchResult
+import com.jpp.moviespreview.app.domain.Licenses as DomainLicenses
+import com.jpp.moviespreview.app.domain.License as DomainLicense
 
 /**
  * Maps domain model to UI model
@@ -272,5 +274,11 @@ class DomainToUiDataMapper {
 
         PROFILE -> profileImageConfiguration.prepareImageUrl(domainSearchResult.profilePath.toString())
         else -> posterImageConfiguration.prepareImageUrl(domainSearchResult.posterPath.toString())
+    }
+
+    fun convertDomainLicensesIntoUiLicenses(domainLicenses: DomainLicenses): List<License> {
+        return domainLicenses.licenses.mapTo(ArrayList()) {
+            License(it.id, it.name, it.url)
+        }
     }
 }

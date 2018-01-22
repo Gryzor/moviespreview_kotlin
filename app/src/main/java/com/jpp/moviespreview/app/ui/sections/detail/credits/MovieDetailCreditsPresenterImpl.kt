@@ -8,6 +8,7 @@ import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailCreditsPresenter
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailCreditsView
+import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailsCreditsPresenterInteractor
 
 /**
  * Created by jpp on 12/20/17.

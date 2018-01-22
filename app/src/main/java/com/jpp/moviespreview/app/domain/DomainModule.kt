@@ -3,11 +3,14 @@ package com.jpp.moviespreview.app.domain
 import com.jpp.moviespreview.app.data.cache.MoviesCache
 import com.jpp.moviespreview.app.data.cache.MoviesConfigurationCache
 import com.jpp.moviespreview.app.data.cache.MoviesGenreCache
+import com.jpp.moviespreview.app.data.cache.file.AssetLoader
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
 import com.jpp.moviespreview.app.domain.configuration.ConfigurationDataMapper
 import com.jpp.moviespreview.app.domain.configuration.RetrieveConfigurationUseCase
 import com.jpp.moviespreview.app.domain.genre.GenreDataMapper
 import com.jpp.moviespreview.app.domain.genre.RetrieveGenresUseCase
+import com.jpp.moviespreview.app.domain.licenses.LicensesDataMapper
+import com.jpp.moviespreview.app.domain.licenses.RetrieveLicensesUseCase
 import com.jpp.moviespreview.app.domain.movie.MovieDataMapper
 import com.jpp.moviespreview.app.domain.movie.RetrieveMoviesInTheaterUseCase
 import com.jpp.moviespreview.app.domain.movie.credits.CreditsDataMapper
@@ -53,6 +56,11 @@ class DomainModule {
     @Singleton
     fun providesMultiSearchUseCase(api: MoviesPreviewApiWrapper, movieDataMapper: MovieDataMapper): UseCase<MultiSearchParam, MultiSearchPage>
             = MultiSearchUseCase(MultiSearchDataMapper(movieDataMapper), api)
+
+    @Provides
+    @Singleton
+    fun providesRetrieveLicencesUseCase(assetLoader: AssetLoader): UseCase<Any, Licenses>
+            = RetrieveLicensesUseCase(assetLoader, LicensesDataMapper())
 
     @Provides
     @Singleton

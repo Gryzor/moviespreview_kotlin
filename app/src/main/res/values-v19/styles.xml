@@ -7,4 +7,8 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
+    <style name="AppTheme.NoActionBar.Inverse.NoTranslucent" parent="AppTheme.NoActionBar.Inverse">
+        <item name="android:windowTranslucentStatus">false</item>
+    </style>
+
 </resources>
