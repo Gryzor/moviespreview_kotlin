@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.License
 import com.jpp.moviespreview.app.util.extentions.inflate
 import org.jetbrains.anko.find
@@ -25,7 +26,9 @@ class LicensesAdapter(private val items: List<License>,
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bindLicense(license: License, listener: (License) -> Unit) {
-            itemView.find<TextView>(android.R.id.text1).text = license.name
+            val textView = itemView.find<TextView>(android.R.id.text1)
+            textView.setTextAppearance(itemView.context, R.style.MoviesPreviewTextAppearanceInverse_Small)
+            textView.text = license.name
             itemView.setOnClickListener { listener(license) }
         }
 
