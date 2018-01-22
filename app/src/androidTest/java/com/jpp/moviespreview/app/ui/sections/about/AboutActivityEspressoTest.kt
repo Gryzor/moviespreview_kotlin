@@ -9,6 +9,7 @@ import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import android.support.test.espresso.intent.Intents.*
+import android.support.test.espresso.intent.matcher.IntentMatchers
 import android.support.test.espresso.intent.matcher.IntentMatchers.*
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
@@ -18,6 +19,7 @@ import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.extentions.MoviesPreviewActivityTestRule
 import com.jpp.moviespreview.app.extentions.launch
 import com.jpp.moviespreview.app.ui.sections.about.AboutActivity.Companion.APP_MARKET_URI
+import com.jpp.moviespreview.app.ui.sections.about.licenses.LicensesActivity
 import com.jpp.moviespreview.app.utils.RecyclerViewItemCountAssertion
 import org.junit.Rule
 import org.junit.Test
@@ -47,7 +49,7 @@ class AboutActivityEspressoTest {
                 .check(matches(withText(expectedText)))
 
         onView(withId(R.id.rv_about_screen))
-                .check(RecyclerViewItemCountAssertion(4))
+                .check(RecyclerViewItemCountAssertion(5))
     }
 
 
@@ -91,6 +93,61 @@ class AboutActivityEspressoTest {
         intended(hasAction(Intent.ACTION_SEND))
         intended(hasExtra(Intent.EXTRA_TEXT, expectedUrl))
         intended(hasType("text/plain"))
+        release()
+    }
+
+
+    @Test
+    fun onBrowseAppCodeSelected() {
+        init()
+
+        activityRule.launch(Intent())
+
+        // intercept intent launched to avoid blocking the UI with the selection dialog
+        val intentResult = Instrumentation.ActivityResult(Activity.RESULT_OK, Intent())
+        intending(anyIntent()).respondWith(intentResult)
+
+        onView(withId(R.id.rv_about_screen))
+                .perform(actionOnItemAtPosition<RecyclerView.ViewHolder>(2, click()))
+
+        val expectedUrl = Uri.parse(AboutActivity.CODE_REPOSITORY_URL)
+
+        intended(hasAction(Intent.ACTION_VIEW))
+        intended(hasData(expectedUrl))
+        release()
+    }
+
+    @Test
+    fun onLicensesSelected() {
+        init()
+
+        activityRule.launch(Intent())
+
+
+        onView(withId(R.id.rv_about_screen))
+                .perform(actionOnItemAtPosition<RecyclerView.ViewHolder>(3, click()))
+
+        intended(IntentMatchers.hasComponent(LicensesActivity::class.java.name))
+        release()
+    }
+
+    @Test
+    fun onTheMovieDbApiTermsOfUseSelected() {
+        init()
+
+        activityRule.launch(Intent())
+
+        // intercept intent launched to avoid blocking the UI with the selection dialog
+        val intentResult = Instrumentation.ActivityResult(Activity.RESULT_OK, Intent())
+        intending(anyIntent()).respondWith(intentResult)
+
+        onView(withId(R.id.rv_about_screen))
+                .perform(actionOnItemAtPosition<RecyclerView.ViewHolder>(4, click()))
+
+        val expectedUrl = Uri.parse(AboutActivity.API_TERM_OF_USE_URL)
+
+        intended(hasAction(Intent.ACTION_VIEW))
+        intended(hasData(expectedUrl))
         release()
     }
 }
