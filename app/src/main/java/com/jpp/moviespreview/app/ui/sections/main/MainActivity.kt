@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
         addMainFragment()
+        supportActionBar!!.title = getString(R.string.now_in_theatres)
     }
 
 
