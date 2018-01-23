@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="movie_action_icon_size">18dp</dimen>
+    <dimen name="movie_item_max_height">400dp</dimen>
+    <dimen name="default_vertical_recycler_view_space">8dp</dimen>
+    <dimen name="movie_details_vertical_spacing">10dp</dimen>
+    <dimen name="credits_list_item_image_view_height">42dp</dimen>
+
+    <dimen name="movie_image_height">340dp</dimen>
+    
+    <dimen name="titleTextSize">14dp</dimen>
+
+    <dimen name="multi_search_result_image_size">52dp</dimen>
+</resources>

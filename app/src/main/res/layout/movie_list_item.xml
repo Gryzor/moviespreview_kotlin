@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:maxHeight="@dimen/movie_item_max_height">
+
+
+    <ImageView
+        android:id="@+id/iv_movie_item"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view_movie_item_bottom_background"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/iv_movie_item_popularity"
+        android:layout_width="@dimen/movie_action_icon_size"
+        android:layout_height="@dimen/movie_action_icon_size"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_popularity"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_movie_item_vote_count"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txt_movie_item_popularity" />
+
+    <TextView
+        android:id="@+id/txt_movie_item_popularity"
+        style="@style/MoviesPreviewTextAppearance.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_movie_item_vote_count"
+        app:layout_constraintStart_toEndOf="@+id/iv_movie_item_popularity"
+        tools:text="2019" />
+
+    <ImageView
+        android:id="@+id/iv_movie_item_vote"
+        android:layout_width="@dimen/movie_action_icon_size"
+        android:layout_height="@dimen/movie_action_icon_size"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:src="@drawable/ic_thumb_up_unselected"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_movie_item_vote_count"
+        app:layout_constraintEnd_toStartOf="@+id/txt_movie_item_vote_count"
+        app:layout_constraintTop_toTopOf="@+id/txt_movie_item_vote_count" />
+
+    <TextView
+        android:id="@+id/txt_movie_item_vote_count"
+        style="@style/MoviesPreviewTextAppearance.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        tools:text="300111" />
+
+
+</android.support.constraint.ConstraintLayout>

@@ -1,11 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.jpp.moviespreview">
+    package="com.jpp.moviespreview">
 
-  <application
-    android:allowBackup="true"
-    android:icon="@mipmap/ic_launcher"
-    android:label="@string/app_name"
-    android:roundIcon="@mipmap/ic_launcher_round"
-    android:supportsRtl="true"
-    android:theme="@style/AppTheme"></application>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:name=".app.MoviesPreviewApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".app.ui.sections.splash.SplashActivity"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".app.ui.sections.main.MainActivity" />
+        <activity
+            android:name=".app.ui.sections.detail.MovieDetailActivity"
+            android:parentActivityName=".app.ui.sections.main.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar.Inverse">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".app.ui.sections.main.MainActivity" />
+        </activity>
+        <activity
+            android:name=".app.ui.sections.search.MultiSearchActivity"
+            android:parentActivityName=".app.ui.sections.main.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar.Inverse.NoTranslucent">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".app.ui.sections.main.MainActivity" />
+        </activity>
+        <activity
+            android:name=".app.ui.sections.about.AboutActivity"
+            android:parentActivityName=".app.ui.sections.main.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".app.ui.sections.main.MainActivity" />
+        </activity>
+        <activity android:name=".app.ui.sections.about.licenses.LicensesActivity"
+            android:parentActivityName=".app.ui.sections.about.AboutActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".app.ui.sections.about.AboutActivity" />
+        </activity>
+    </application>
 </manifest>

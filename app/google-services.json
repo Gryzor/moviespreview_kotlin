@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "35661991360",
+    "firebase_url": "https://moviespreviewkotlin.firebaseio.com",
+    "project_id": "moviespreviewkotlin",
+    "storage_bucket": "moviespreviewkotlin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:35661991360:android:9b97e859ac2de01e",
+        "android_client_info": {
+          "package_name": "com.jpp.moviespreview"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "35661991360-ed9mcot2ucs5is0an4rmjgjvg48e93q2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jpp.moviespreview",
+            "certificate_hash": "08fcae2ba168bbc84de57f8e13d48e8a4a5fd383"
+          }
+        },
+        {
+          "client_id": "35661991360-6ed6rh0u3ap262ln6erb3baj60k9fb5r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvKoI5kzwhi3VKDXKSCRjWvcv1QymwPQc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "35661991360-6ed6rh0u3ap262ln6erb3baj60k9fb5r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
