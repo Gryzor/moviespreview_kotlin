@@ -3,8 +3,8 @@ package com.jpp.moviespreview.app.data.cache
 import com.jpp.moviespreview.app.data.cache.db.Timestamp
 import com.jpp.moviespreview.app.data.cache.db.TimestampDao
 import com.jpp.moviespreview.app.mock
-import junit.framework.Assert.assertFalse
-import junit.framework.Assert.assertTrue
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.verify

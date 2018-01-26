@@ -36,7 +36,6 @@ class RetrieveConfigurationUseCaseTest {
         `when`(mConfigurationCache.isMoviesConfigurationOutOfDate()).thenReturn(true)
         val moviesConfiguration: MoviesConfiguration = mock()
         `when`(api.getLastMovieConfiguration()).thenReturn(moviesConfiguration)
-        val timestamp = 2000L
 
         subject.execute()
 

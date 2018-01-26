@@ -4,7 +4,7 @@ import com.jpp.moviespreview.app.domain.MultiSearchResult.Companion.UNKNOWN
 import com.jpp.moviespreview.app.domain.movie.MovieDataMapper
 import com.jpp.moviespreview.app.mock
 import com.jpp.moviespreview.app.util.extension.loadObjectFromJsonFile
-import junit.framework.Assert.assertEquals
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import com.jpp.moviespreview.app.data.Genre as DataGenre

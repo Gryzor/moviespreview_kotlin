@@ -5,7 +5,7 @@ import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
 import com.jpp.moviespreview.app.domain.MoviePage
 import com.jpp.moviespreview.app.domain.PageParam
 import com.jpp.moviespreview.app.mock
-import junit.framework.Assert.*
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.`when`

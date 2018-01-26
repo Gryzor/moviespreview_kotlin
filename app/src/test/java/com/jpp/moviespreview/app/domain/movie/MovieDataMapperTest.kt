@@ -3,8 +3,8 @@ package com.jpp.moviespreview.app.domain.movie
 import com.jpp.moviespreview.app.domain.Genre
 import com.jpp.moviespreview.app.DataPageStubs
 import com.jpp.moviespreview.app.stubDataMoviePage
-import junit.framework.Assert.assertEquals
-import junit.framework.Assert.assertNotNull
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 
 import org.junit.Test
 

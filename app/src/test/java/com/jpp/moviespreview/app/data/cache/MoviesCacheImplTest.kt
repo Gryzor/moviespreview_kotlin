@@ -7,7 +7,7 @@ import com.jpp.moviespreview.app.data.cache.db.*
 import com.jpp.moviespreview.app.mock
 import com.jpp.moviespreview.app.util.extension.loadObjectFromJsonFile
 import com.nhaarman.mockito_kotlin.verify
-import junit.framework.Assert.*
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.`when`
@@ -69,7 +69,7 @@ class MoviesCacheImplTest {
         val result = subject.getMoviePage(dataMoviePage.page)
 
         //-- verify
-        assertNull(result)
+        assertNotNull(result)
         assertEquals(dataMoviePage.results.size, result!!.results.size)
         assertEquals(dataMoviePage.total_pages, result.total_pages)
         assertEquals(dataMoviePage.total_results, result.total_results)

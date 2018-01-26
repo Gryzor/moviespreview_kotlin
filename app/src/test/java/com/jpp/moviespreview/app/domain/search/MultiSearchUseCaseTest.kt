@@ -6,8 +6,8 @@ import com.jpp.moviespreview.app.domain.MultiSearchPage
 import com.jpp.moviespreview.app.domain.MultiSearchParam
 import com.jpp.moviespreview.app.mock
 import com.nhaarman.mockito_kotlin.verify
-import junit.framework.Assert.assertEquals
-import junit.framework.Assert.assertNull
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.`when`

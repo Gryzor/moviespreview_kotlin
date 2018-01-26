@@ -1,8 +1,8 @@
 package com.jpp.moviespreview.app.ui.interactors
 
 import com.jpp.moviespreview.app.ui.UiPage
-import junit.framework.Assert.assertEquals
-import junit.framework.Assert.fail
+import org.junit.Assert.assertEquals
+import org.junit.Assert.fail
 import org.junit.Test
 
 /**
