@@ -69,7 +69,7 @@ class MoviesCacheImplTest {
         val result = subject.getMoviePage(dataMoviePage.page)
 
         //-- verify
-        assertNotNull(result)
+        assertNull(result)
         assertEquals(dataMoviePage.results.size, result!!.results.size)
         assertEquals(dataMoviePage.total_pages, result.total_pages)
         assertEquals(dataMoviePage.total_results, result.total_results)

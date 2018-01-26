@@ -41,4 +41,4 @@ before_install:
 
 
 script:
-- "./gradlew clean build test -PdisablePreDex --stacktrace"
+- "./gradlew clean assembleDebug test -PdisablePreDex --stacktrace"
