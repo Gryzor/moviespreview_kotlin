@@ -5,6 +5,7 @@ import com.jpp.moviespreview.app.data.MovieCredits
 import com.jpp.moviespreview.app.data.MoviePage
 import com.jpp.moviespreview.app.data.cache.db.*
 import com.jpp.moviespreview.app.mock
+import com.jpp.moviespreview.app.util.extension.fuzzyAssert
 import com.jpp.moviespreview.app.util.extension.loadObjectFromJsonFile
 import com.nhaarman.mockito_kotlin.verify
 import org.junit.Assert.*
@@ -116,7 +117,7 @@ class MoviesCacheImplTest {
 
         // -- verify
         assertNotNull(restoredCredits)
-        assertEquals(dataMovieCredit.id, restoredCredits!!.id)
+        fuzzyAssert(dataMovieCredit.id, restoredCredits!!.id)
         assertEquals(dataMovieCredit.cast.size, restoredCredits.cast.size)
         assertEquals(dataMovieCredit.crew.size, restoredCredits.crew.size)
     }
