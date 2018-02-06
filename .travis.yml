@@ -4,27 +4,16 @@ sudo: false
 
 env:
   matrix:
-    - ANDROID_TARGET=android-19 ANDROID_ABI=armeabi-v7a
-    - ANDROID_TARGET=android-21 ANDROID_ABI=armeabi-v7a
-  global:   #Optional
-    - ADB_INSTALL_TIMEOUT=10    #Time out to 10 mins
+    - ANDROID_TARGET=android-19  ANDROID_ABI=armeabi-v7a
 
 android:
-    update_sdk: true  #Check for the updates each time you run the build.
-    components:
-        - platform-tools
-        - tools
-        - build-tools-25.0.0    #Build tool version
-        - android-25            #targate api version
-
-         # Additional components - not sure if needed for this project
-        - extra-google-google_play_services
-        - extra-google-m2repository
-        - extra-android-m2repository
-
-        #system images for emulator
-        - sys-img-armeabi-v7a-android-19
-        - sys-img-armeabi-v7a-android-21
+  components:
+    - build-tools-19.0.3
+    - $ANDROID_TARGET
+    - sys-img-armeabi-v7a-$ANDROID_TARGET
+    - extra-android-support
+    - extra-android-m2repository
+    - extra-google-m2repository
 
 before_cache:
     - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -36,16 +25,11 @@ cache:
     - $HOME/.gradle/wrapper     #Cache the gradle
 
 before_script:
-    - chmod +x gradlew      #Grant permissions
-    - android list targets
-    - echo no | android create avd --force --name test --target $ANDROID_TARGET --abi $ANDROID_ABI    #Create AVD for given api
-    - emulator -avd test -no-skin -no-audio -no-window &    #Start emulator
+  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
+  - emulator -avd test -no-skin -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
 
 
 script:
-    - echo "Travis branch is $TRAVIS_BRANCH"    #Print out which branch it is.
-    - echo "Travis branch is in pull request $TRAVIS_PULL+REQUEST"    #Print out pull request number.
-    - android-wait-for-emulator             #Run wait for the emulator script.
-    - adb devices                           #Display list of devices
-    - adb shell input keyevent 82 &
     - ./gradlew connectedAndroidTest -PdisablePreDex --stacktrace   #TODO define unit tests
