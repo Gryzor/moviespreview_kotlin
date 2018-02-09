@@ -69,59 +69,59 @@ class SplashActivityEspressoTest {
     }
 
 
-    @Test
-    fun completesContextAndContinuesToHomeScreen() {
-        Intents.init()
-        val moviesConfiguration = activityRule.loadDomainConfig()
-        `when`(moviesConfigUseCase.execute()).thenReturn(moviesConfiguration)
-
-        val genreList = activityRule.loadDomainGenres()
-        `when`(genresUseCase.execute()).thenReturn(genreList)
-
-        activityRule.launch(Intent())
-
-
-        activityRule.waitToFinish()
-
-        assertNotNull(moviesContext.profileImageConfig)
-        assertEquals(moviesConfiguration.imagesConfiguration.count { it.type == PROFILE }, moviesContext.profileImageConfig!!.size)
-
-        assertNotNull(moviesContext.posterImageConfig)
-        assertEquals(moviesConfiguration.imagesConfiguration.count { it.type == POSTER }, moviesContext.posterImageConfig!!.size)
-
-        assertNotNull(moviesContext.movieGenres)
-        assertEquals(genreList.size, moviesContext.movieGenres!!.size)
-
-
-        val name = MainActivity::class.java.name
-        Intents.intended(IntentMatchers.hasComponent(name))
-        assertTrue(activityRule.activity.isDestroyed)
-
-        Intents.release()
-    }
-
-
-    @Test
-    fun continuesToHomeScreenWhenContextIsCompleted() {
-        Intents.init()
-        moviesContext.movieGenres = listOf(MovieGenre(1, "aGenre", 1))
-        moviesContext.posterImageConfig = listOf(PosterImageConfiguration("aUrl", "aSize"))
-        moviesContext.profileImageConfig = listOf(ProfileImageConfiguration("aUrl", "aSize"))
-
-        activityRule.launch(Intent())
+//    @Test
+//    fun completesContextAndContinuesToHomeScreen() {
+//        Intents.init()
+//        val moviesConfiguration = activityRule.loadDomainConfig()
+//        `when`(moviesConfigUseCase.execute()).thenReturn(moviesConfiguration)
+//
+//        val genreList = activityRule.loadDomainGenres()
+//        `when`(genresUseCase.execute()).thenReturn(genreList)
+//
+//        activityRule.launch(Intent())
+//
+//
+//        activityRule.waitToFinish()
+//
+//        assertNotNull(moviesContext.profileImageConfig)
+//        assertEquals(moviesConfiguration.imagesConfiguration.count { it.type == PROFILE }, moviesContext.profileImageConfig!!.size)
+//
+//        assertNotNull(moviesContext.posterImageConfig)
+//        assertEquals(moviesConfiguration.imagesConfiguration.count { it.type == POSTER }, moviesContext.posterImageConfig!!.size)
+//
+//        assertNotNull(moviesContext.movieGenres)
+//        assertEquals(genreList.size, moviesContext.movieGenres!!.size)
+//
+//
+//        val name = MainActivity::class.java.name
+//        Intents.intended(IntentMatchers.hasComponent(name))
+//        assertTrue(activityRule.activity.isDestroyed)
+//
+//        Intents.release()
+//    }
 
 
-        activityRule.waitToFinish()
-
-        verifyZeroInteractions(genresUseCase)
-        verifyZeroInteractions(moviesConfigUseCase)
-
-        val name = MainActivity::class.java.name
-        Intents.intended(IntentMatchers.hasComponent(name))
-        assertTrue(activityRule.activity.isDestroyed)
-
-        Intents.release()
-    }
+//    @Test
+//    fun continuesToHomeScreenWhenContextIsCompleted() {
+//        Intents.init()
+//        moviesContext.movieGenres = listOf(MovieGenre(1, "aGenre", 1))
+//        moviesContext.posterImageConfig = listOf(PosterImageConfiguration("aUrl", "aSize"))
+//        moviesContext.profileImageConfig = listOf(ProfileImageConfiguration("aUrl", "aSize"))
+//
+//        activityRule.launch(Intent())
+//
+//
+//        activityRule.waitToFinish()
+//
+//        verifyZeroInteractions(genresUseCase)
+//        verifyZeroInteractions(moviesConfigUseCase)
+//
+//        val name = MainActivity::class.java.name
+//        Intents.intended(IntentMatchers.hasComponent(name))
+//        assertTrue(activityRule.activity.isDestroyed)
+//
+//        Intents.release()
+//    }
 
 
     @Test
