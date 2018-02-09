@@ -21,16 +21,18 @@ class RetrieveMovieCreditsUseCase(private val mapper: CreditsDataMapper,
             throw IllegalArgumentException("The provided movie can not be null")
         }
 
-        val dataMovie = mapper.convertDomainMovieIntoDataMovie(param)
-
-        return if (moviesCache.isMovieCreditsOutOfDate(dataMovie)) {
-            api.getMovieCredits(dataMovie.id)?.let {
-                moviesCache.saveMovieCredits(it)
-                mapper.convertDataMovieCreditsIntoDomainMovieCredits(it)
-            }
-        } else {
-            moviesCache.getMovieCreditForMovie(dataMovie)?.let {
-                mapper.convertDataMovieCreditsIntoDomainMovieCredits(it)
+        with(mapper) {
+            convertDomainMovieIntoDataMovie(param).let { dataMovie ->
+                return if (moviesCache.isMovieCreditsOutOfDate(dataMovie)) {
+                    api.getMovieCredits(dataMovie.id)?.let {
+                        moviesCache.saveMovieCredits(it)
+                        mapper.convertDataMovieCreditsIntoDomainMovieCredits(it)
+                    }
+                } else {
+                    moviesCache.getMovieCreditForMovie(dataMovie)?.let {
+                        mapper.convertDataMovieCreditsIntoDomainMovieCredits(it)
+                    }
+                }
             }
         }
     }
