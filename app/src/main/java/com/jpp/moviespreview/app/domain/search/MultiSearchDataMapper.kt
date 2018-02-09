@@ -31,33 +31,29 @@ class MultiSearchDataMapper(private val movieDataMapper: MovieDataMapper) {
     /**
      * Converts a list of [DataResult] into a list of domain [MultiSearchResult]
      */
-    private fun convertDataSearchResultsIntoDomainSearchResults(dataSearchResults: List<DataResult>, genres: List<Genre>): List<MultiSearchResult> {
-        return dataSearchResults.mapTo(ArrayList()) {
-            MultiSearchResult(it.id,
-                    it.poster_path,
-                    it.profile_path,
-                    mapMediaType(it.media_type),
-                    it.name,
-                    it.title,
-                    it.original_title,
-                    it.overview,
-                    it.release_date,
-                    it.original_language,
-                    it.backdrop_path,
-                    mapGenresIdToDomainGenres(it.genre_ids, genres),
-                    it.vote_count,
-                    it.vote_average,
-                    it.popularity)
-        }
+    private fun convertDataSearchResultsIntoDomainSearchResults(dataSearchResults: List<DataResult>, genres: List<Genre>): List<MultiSearchResult> = dataSearchResults.mapTo(ArrayList()) {
+        MultiSearchResult(it.id,
+                it.poster_path,
+                it.profile_path,
+                mapMediaType(it.media_type),
+                it.name,
+                it.title,
+                it.original_title,
+                it.overview,
+                it.release_date,
+                it.original_language,
+                it.backdrop_path,
+                mapGenresIdToDomainGenres(it.genre_ids, genres),
+                it.vote_count,
+                it.vote_average,
+                it.popularity)
     }
 
-    fun mapGenresIdToDomainGenres(genreIds: List<Int>?, genres: List<Genre>): List<Genre>? {
-        return if (genreIds != null) {
-            movieDataMapper.mapGenresIdToDomainGenres(genreIds, genres)
-        } else {
-            null
-        }
-    }
+    private fun mapGenresIdToDomainGenres(genreIds: List<Int>?, genres: List<Genre>): List<Genre>? =
+            genreIds?.let {
+                movieDataMapper.mapGenresIdToDomainGenres(genreIds, genres)
+            }
+
 
     private fun mapMediaType(mediaType: String): Long = when (mediaType) {
         "movie" -> MOVIE
