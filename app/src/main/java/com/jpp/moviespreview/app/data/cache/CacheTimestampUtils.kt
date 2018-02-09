@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.support.annotation.VisibleForTesting
 import com.jpp.moviespreview.app.data.cache.db.Timestamp
 import com.jpp.moviespreview.app.data.cache.db.TimestampDao
+import com.jpp.moviespreview.app.util.extentions.whenNotNull
 
 /**
  * Timestamp utility class for the cache module.
@@ -52,7 +53,7 @@ class CacheTimestampUtils(private val helper: CacheTimeUtilsHelper) {
     @SuppressLint("VisibleForTests")
     fun isConfigurationTimestampOutdated(timestampDao: TimestampDao): Boolean {
         val retrievesMoviesConfigurationTimestamp = timestampDao.getTimestamp(moviesConfigurationId)
-        return isTimestampOutdated(retrievesMoviesConfigurationTimestamp, helper.cacheConfigurationRefreshTime())
+        return isTimestampOutdated(retrievesMoviesConfigurationTimestamp, helper.cacheConfigurationRefreshTime()) ?: true
     }
 
     /**
@@ -61,7 +62,7 @@ class CacheTimestampUtils(private val helper: CacheTimeUtilsHelper) {
     @SuppressLint("VisibleForTests")
     fun isMoviesGenreTimestampOutdated(timestampDao: TimestampDao): Boolean {
         val retrievesMoviesGenresTimestamp = timestampDao.getTimestamp(moviesGenresId)
-        return isTimestampOutdated(retrievesMoviesGenresTimestamp, helper.cacheGenresRefreshTime())
+        return isTimestampOutdated(retrievesMoviesGenresTimestamp, helper.cacheGenresRefreshTime()) ?: true
     }
 
 
@@ -71,7 +72,7 @@ class CacheTimestampUtils(private val helper: CacheTimeUtilsHelper) {
     @SuppressLint("VisibleForTests")
     fun isMoviePageTimestampOutdated(timestampDao: TimestampDao, page: Int): Boolean {
         val moviesPageTimestamp = timestampDao.getTimestamp(moviesPageId, page)
-        return isTimestampOutdated(moviesPageTimestamp, helper.cacheMoviesPageRefreshTime())
+        return isTimestampOutdated(moviesPageTimestamp, helper.cacheMoviesPageRefreshTime()) ?: true
     }
 
     /**
@@ -80,23 +81,20 @@ class CacheTimestampUtils(private val helper: CacheTimeUtilsHelper) {
     @SuppressLint("VisibleForTests")
     fun isMovieCreditsTimestampOutdated(timestampDao: TimestampDao, movieId: Int): Boolean {
         val creditsTimestamp = timestampDao.getTimestamp(moviesCreditId, movieId)
-        return isTimestampOutdated(creditsTimestamp, helper.cacheCreditsMovieRefreshTime())
+        return isTimestampOutdated(creditsTimestamp, helper.cacheCreditsMovieRefreshTime()) ?: true
     }
 
 
     /**
      * Determinate if the provided [timestamp] is outdated based on the [refreshTime].
+     * Will return
      */
     @VisibleForTesting
-    fun isTimestampOutdated(timestamp: Timestamp?, refreshTime: Long): Boolean {
-        var outdated = true
+    fun isTimestampOutdated(timestamp: Timestamp?, refreshTime: Long): Boolean? = whenNotNull(timestamp,
+            {
+                return (currentTimeInMillis() - it.lastUpdate) > refreshTime
+            }
+    )
 
-        if (timestamp != null) {
-            val now = currentTimeInMillis()
-            outdated = (now - timestamp.lastUpdate) > refreshTime
-        }
-
-        return outdated
-    }
 
 }

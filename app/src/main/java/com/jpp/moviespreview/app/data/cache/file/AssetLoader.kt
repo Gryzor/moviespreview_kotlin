@@ -26,18 +26,14 @@ class AssetLoaderImpl(private val context: Context) : AssetLoader {
     }
 
 
-    override fun loadLicences(): Licenses? {
-        val loadedLicences: Licenses?
-        loadedLicences = try {
-            val input = context.assets.open(LICENSES_FILE_LOCATION)
-            val size = input.available()
-            val buffer = ByteArray(size)
-            input.read(buffer)
-            input.close()
-            GSON_LOADER.fromJson(String(buffer))
-        } catch (e: IOException) {
-            null
-        }
-        return loadedLicences
+    override fun loadLicences(): Licenses? = try {
+        val input = context.assets.open(LICENSES_FILE_LOCATION)
+        val size = input.available()
+        val buffer = ByteArray(size)
+        input.read(buffer)
+        input.close()
+        GSON_LOADER.fromJson(String(buffer))
+    } catch (e: IOException) {
+        null
     }
 }

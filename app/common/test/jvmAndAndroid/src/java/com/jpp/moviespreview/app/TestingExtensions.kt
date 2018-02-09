@@ -1,13 +1,12 @@
 package com.jpp.moviespreview.app
 
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.domain.Genre
 import com.jpp.moviespreview.app.ui.MovieGenre
 import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.PosterImageConfiguration
 import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
+import org.junit.Assert.fail
 import org.mockito.Mockito
 import com.jpp.moviespreview.app.data.Movie as DataMovie
 import com.jpp.moviespreview.app.data.MoviePage as DataMoviePage
@@ -177,5 +176,23 @@ fun DataPageStubs.Companion.stubDataMovieList() = listOf(
  * Mocks a given type.
  */
 inline fun <reified T : Any> mock() = Mockito.mock(T::class.java)
+
+/**
+ * Helper function to assert a condition to true if it's not null
+ */
+fun assertTrueIfNotNull(condition: Boolean?) {
+    if (condition != null && !condition) {
+        fail()
+    }
+}
+
+/**
+ * Helper function to assert a condition to false if it's not null
+ */
+fun assertFalseIfNotNull(condition: Boolean?) {
+    if (condition != null && condition) {
+        fail()
+    }
+}
 
 

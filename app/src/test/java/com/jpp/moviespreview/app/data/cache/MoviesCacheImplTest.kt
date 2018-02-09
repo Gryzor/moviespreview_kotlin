@@ -147,8 +147,8 @@ class MoviesCacheImplTest {
         val dataMovieCredit = loadObjectFromJsonFile<MovieCredits>(MoviesCacheImplTest::class.java.classLoader, "data_movie_credits.json")
         val currentTimestamp: Timestamp = mock()
         `when`(cacheTimestampUtils.createMovieCreditTimestamp(dataMovieCredit.id.toInt())).thenReturn(currentTimestamp)
-        val cacheCharacters: List<CastCharacter> = mock()
-        val cacheCrew: List<CrewPerson> = mock()
+        val cacheCharacters: ArrayList<CastCharacter> = mock()
+        val cacheCrew: ArrayList<CrewPerson> = mock()
         `when`(mapper.convertDataCharacterIntoCacheCharacter(dataMovieCredit.cast, dataMovieCredit.id)).thenReturn(cacheCharacters)
         `when`(mapper.convertDataCrewIntoCacheCrew(dataMovieCredit.crew, dataMovieCredit.id)).thenReturn(cacheCrew)
 

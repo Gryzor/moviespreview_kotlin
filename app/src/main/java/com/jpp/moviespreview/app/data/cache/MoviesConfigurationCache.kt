@@ -35,10 +35,11 @@ class MoviesConfigurationCacheImpl(private val mapper: CacheDataMapper,
                                    private val cacheTimestampUtils: CacheTimestampUtils) : MoviesConfigurationCache {
 
 
-    override fun getLastMovieConfiguration(): MoviesConfiguration? {
-        return database.imageConfigDao().getLastImageConfig()?.let {
-            val imageSizes = database.imageConfigDao().getImageSizesForConfig(it.id)
-            mapper.convertCacheImageConfigurationToDataMoviesConfiguration(it, imageSizes!!)
+    override fun getLastMovieConfiguration() = with(database) {
+        imageConfigDao().getLastImageConfig()?.let {
+            imageConfigDao().getImageSizesForConfig(it.id)?.let { imageSizes ->
+                mapper.convertCacheImageConfigurationToDataMoviesConfiguration(it, imageSizes)
+            }
         }
     }
 
@@ -47,17 +48,21 @@ class MoviesConfigurationCacheImpl(private val mapper: CacheDataMapper,
 
 
     override fun saveMoviesConfig(moviesConfig: MoviesConfiguration) {
-        // 1 -> insert timestamp
-        val currentTimestamp = cacheTimestampUtils.createMoviesConfigurationTimestamp()
-        database.timestampDao().insertTimestamp(currentTimestamp)
+        with(database) {
+            // 1 -> insert timestamp
+            cacheTimestampUtils.createMoviesConfigurationTimestamp().let {
+                timestampDao().insertTimestamp(it)
+            }
 
-        // 2 -> insert images configuration
-        val cacheImageConfig = mapper.convertMoviesConfigurationToCacheModel(moviesConfig)
-        val parentId = database.imageConfigDao().insertImageConfig(cacheImageConfig)
-
-        // 3 -> insert image posterSizes
-        val imageSizes = mapper.convertImagesConfigurationToCacheModel(parentId, moviesConfig)
-        database.imageConfigDao().insertAllImageSize(imageSizes)
+            // 2 -> insert images configuration
+            mapper.convertMoviesConfigurationToCacheModel(moviesConfig).let {
+                imageConfigDao().insertImageConfig(it).let { parentId ->
+                    // 3 -> insert image posterSizes
+                    mapper.convertImagesConfigurationToCacheModel(parentId, moviesConfig).let {
+                        database.imageConfigDao().insertAllImageSize(it)
+                    }
+                }
+            }
+        }
     }
-
 }
