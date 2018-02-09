@@ -20,10 +20,8 @@ class LicensesDataMapper {
         Licenses(convertDataLicenseListIntoDomainLicenceList(licenses))
     }
 
-    private fun convertDataLicenseListIntoDomainLicenceList(dataLicenceList: List<DataLicence>): List<License> {
-        return dataLicenceList.mapTo(ArrayList()) {
-            License(it.id, it.name, it.url)
-        }
+    private fun convertDataLicenseListIntoDomainLicenceList(dataLicenceList: List<DataLicence>): List<License> = dataLicenceList.mapTo(ArrayList()) {
+        License(it.id, it.name, it.url)
     }
 
 
