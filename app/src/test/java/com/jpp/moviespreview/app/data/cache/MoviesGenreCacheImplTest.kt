@@ -1,8 +1,5 @@
 package com.jpp.moviespreview.app.data.cache
 
-import com.jpp.moviespreview.app.data.cache.CacheDataMapper
-import com.jpp.moviespreview.app.data.cache.CacheTimestampUtils
-import com.jpp.moviespreview.app.data.cache.MoviesGenreCacheImpl
 import com.jpp.moviespreview.app.data.cache.db.Genre
 import com.jpp.moviespreview.app.data.cache.db.GenresDao
 import com.jpp.moviespreview.app.data.cache.db.MoviesDataBase

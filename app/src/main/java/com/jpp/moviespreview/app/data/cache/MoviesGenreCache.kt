@@ -37,16 +37,21 @@ class MoviesGenreCacheImpl(private val mapper: CacheDataMapper,
     override fun isMoviesGenresOutOfDate() =
             cacheTimestampUtils.isMoviesGenreTimestampOutdated(database.timestampDao())
 
-    override fun getLastGenreList(): List<Genre>? {
-        return database.genresDao().getAllGenres()?.let {
+    override fun getLastGenreList() = with(database) {
+        genresDao().getAllGenres()?.let {
             mapper.convertCacheGenresIntoDataGenres(it)
         }
     }
 
     override fun saveGenreList(genres: List<Genre>) {
-        val genresTimestamp = cacheTimestampUtils.createMovieGenresTimestamp()
-        database.timestampDao().insertTimestamp(genresTimestamp)
+        with(database) {
+            cacheTimestampUtils.createMovieGenresTimestamp().let {
+                database.timestampDao().insertTimestamp(it)
+            }
 
-        database.genresDao().insertAllGenres(mapper.convertDataGenresIntoCacheGenres(genres))
+            mapper.convertDataGenresIntoCacheGenres(genres).let {
+                database.genresDao().insertAllGenres(it)
+            }
+        }
     }
 }
