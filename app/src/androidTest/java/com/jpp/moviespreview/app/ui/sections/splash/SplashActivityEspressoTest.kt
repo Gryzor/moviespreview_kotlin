@@ -69,6 +69,9 @@ class SplashActivityEspressoTest {
     }
 
 
+    /*TODO Find a workaround for these tests. The problem is that the MainActivity is being
+      started, without info in the context, causing a failure, the dialog is shown
+      and then the test hangs.*/
 //    @Test
 //    fun completesContextAndContinuesToHomeScreen() {
 //        Intents.init()
