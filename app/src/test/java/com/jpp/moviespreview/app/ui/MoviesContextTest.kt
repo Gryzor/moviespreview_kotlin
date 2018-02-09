@@ -4,8 +4,8 @@ package com.jpp.moviespreview.app.ui
 import com.jpp.moviespreview.app.mockMovieGenres
 import com.jpp.moviespreview.app.mockPosterImageConfig
 import com.jpp.moviespreview.app.mockProfileImageConfig
-import junit.framework.Assert.assertFalse
-import junit.framework.Assert.assertTrue
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 

@@ -6,8 +6,8 @@ import com.jpp.moviespreview.app.domain.Movie
 import com.jpp.moviespreview.app.domain.MovieCredits
 import com.jpp.moviespreview.app.mock
 import com.nhaarman.mockito_kotlin.verify
-import junit.framework.Assert.assertNotNull
-import junit.framework.Assert.assertNull
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.`when`

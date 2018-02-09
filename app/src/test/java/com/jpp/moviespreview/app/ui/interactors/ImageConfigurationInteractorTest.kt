@@ -2,7 +2,7 @@ package com.jpp.moviespreview.app.ui.interactors
 
 import com.jpp.moviespreview.app.mockPosterImageConfig
 import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
-import junit.framework.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 /**
@@ -19,7 +19,7 @@ class ImageConfigurationInteractorTest {
         val targetWidth = 520
         val expected = mockPosterImageConfig[5]
         val actual = subject.findPosterImageConfigurationForWidth(mockPosterImageConfig, targetWidth)
-        Assert.assertEquals(expected, actual)
+        assertEquals(expected, actual)
     }
 
     @Test
@@ -28,7 +28,7 @@ class ImageConfigurationInteractorTest {
         val targetWidth = 1520
         val expected = mockPosterImageConfig[6]
         val actual = subject.findPosterImageConfigurationForWidth(mockPosterImageConfig, targetWidth)
-        Assert.assertEquals(expected, actual)
+        assertEquals(expected, actual)
     }
 
     @Test
@@ -44,7 +44,7 @@ class ImageConfigurationInteractorTest {
         val height = 350
         val expected = profileImageConfigs[3]
         val actual = subject.findProfileImageConfigurationForHeight(profileImageConfigs, height)
-        Assert.assertEquals(actual, expected)
+        assertEquals(actual, expected)
     }
 
 
@@ -61,7 +61,7 @@ class ImageConfigurationInteractorTest {
         val height = 300
         val expected = profileImageConfigs[3]
         val actual = subject.findProfileImageConfigurationForHeight(profileImageConfigs, height)
-        Assert.assertEquals(actual, expected)
+        assertEquals(actual, expected)
     }
 
 
@@ -78,7 +78,7 @@ class ImageConfigurationInteractorTest {
         val height = 850
         val expected = profileImageConfigs[5]
         val actual = subject.findProfileImageConfigurationForHeight(profileImageConfigs, height)
-        Assert.assertEquals(actual, expected)
+        assertEquals(actual, expected)
     }
 
 
