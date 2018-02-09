@@ -14,11 +14,9 @@ class MultiSearchUseCase(private val mapper: MultiSearchDataMapper,
                          private val api: MoviesPreviewApiWrapper) : UseCase<MultiSearchParam, MultiSearchPage> {
 
     override fun execute(param: MultiSearchParam?): MultiSearchPage? {
-        if (param == null) {
-            throw IllegalArgumentException("The provided param can not be null")
-        }
+        val page = param?.page ?: throw IllegalArgumentException("The provided param can not be null")
 
-        return api.multiSearch(param.query, param.page)?.let {
+        return api.multiSearch(param.query, page)?.let {
             mapper.convertDataSearchPageIntoDomainSearchResult(it, param.query, param.genres)
         }
     }
