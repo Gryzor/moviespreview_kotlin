@@ -142,7 +142,6 @@ class MoviesCacheImpl(private val mapper: CacheDataMapper,
                     convertDataCrewIntoCacheCrew(crew, id).let {
                         crewPersonDao().insertCrew(it)
                     }
-
                 }
             }
         }
