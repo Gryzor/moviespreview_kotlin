@@ -43,14 +43,14 @@ class MoviesConfigurationCacheImplTest {
         assertNull(lastImageConfig)
     }
 
-    @Test(expected = NullPointerException::class)
-    fun getLastMovieConfiguration_whenImageSizesIsNull_throwsException() {
+    @Test
+    fun getLastMovieConfiguration_whenImageSizesIsNull_returnsNull() {
         val lastImageConfig: ImageConfig = mock()
         `when`(imageConfigDao.getLastImageConfig()).thenReturn(lastImageConfig)
         val id = 12L
         `when`(lastImageConfig.id).thenReturn(id)
         `when`(imageConfigDao.getImageSizesForConfig(id)).thenReturn(null)
-        subject.getLastMovieConfiguration()
+        assertNull(subject.getLastMovieConfiguration())
     }
 
     @Test
