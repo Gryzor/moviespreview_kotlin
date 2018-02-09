@@ -50,11 +50,8 @@ class CacheDataMapper {
     /**
      * Inner helper method
      */
-    private fun convertImageSizes(parentId: Long, imageSizes: List<String>, imageType: Int): MutableList<ImageSize> {
-        val dataImageSizes = ArrayList<ImageSize>()
-        imageSizes.mapTo(dataImageSizes) { ImageSize(it, parentId, imageType) }
-        return dataImageSizes
-    }
+    private fun convertImageSizes(parentId: Long, imageSizes: List<String>, imageType: Int): MutableList<ImageSize> =
+            imageSizes.mapTo(ArrayList()) { ImageSize(it, parentId, imageType) }
 
 
     /**
@@ -67,19 +64,18 @@ class CacheDataMapper {
     /**
      * Inner helper method
      */
-    private fun convertCacheImageSizeToImageDataConfiguration(baseUrl: String, cacheImageSizes: List<ImageSize>): ImagesConfiguration {
-        val posterSizes = cacheImageSizes.mapNotNull { mapImageSizeTo(it, IMAGE_TYPE_POSTER) }
-        val profileSizes = cacheImageSizes.mapNotNull { mapImageSizeTo(it, IMAGE_TYPE_PROFILE) }
-        return ImagesConfiguration(baseUrl, posterSizes, profileSizes)
-    }
+    private fun convertCacheImageSizeToImageDataConfiguration(baseUrl: String, cacheImageSizes: List<ImageSize>) =
+            ImagesConfiguration(baseUrl,
+                    cacheImageSizes.mapNotNull { mapImageSizeTo(it, IMAGE_TYPE_POSTER) },
+                    cacheImageSizes.mapNotNull { mapImageSizeTo(it, IMAGE_TYPE_PROFILE) })
 
-    private fun mapImageSizeTo(imageSize: ImageSize, imageType: Int): String? {
-        return if (imageSize.imageType == imageType) {
-            imageSize.size
-        } else {
-            null
-        }
-    }
+
+    private fun mapImageSizeTo(imageSize: ImageSize, imageType: Int) =
+            if (imageSize.imageType == imageType) {
+                imageSize.size
+            } else {
+                null
+            }
 
 
     /*********************************************
@@ -90,19 +86,15 @@ class CacheDataMapper {
     /**
      * Converts from [Genre] database model into data model [DataGenre]
      */
-    fun convertCacheGenresIntoDataGenres(cacheGenres: List<Genre>): List<DataGenre> {
-        return cacheGenres.mapTo(ArrayList()) {
-            DataGenre(it.id, it.name)
-        }
+    fun convertCacheGenresIntoDataGenres(cacheGenres: List<Genre>) = cacheGenres.mapTo(ArrayList()) {
+        DataGenre(it.id, it.name)
     }
 
     /**
      * Converts from [DataGenre] data model into [Genre] database model
      */
-    fun convertDataGenresIntoCacheGenres(dataGenres: List<DataGenre>): List<Genre> {
-        return dataGenres.mapTo(ArrayList()) {
-            Genre(it.id, it.name)
-        }
+    fun convertDataGenresIntoCacheGenres(dataGenres: List<DataGenre>) = dataGenres.mapTo(ArrayList()) {
+        Genre(it.id, it.name)
     }
 
 
@@ -125,10 +117,8 @@ class CacheDataMapper {
     /**
      * Converts a cache [Movie] into a [DataMovie]
      */
-    fun convertCacheMovieInDataMovie(cacheMovie: Movie, cacheGenres: List<GenresByMovies>?) = with(cacheMovie) {
-        if (cacheGenres == null) {
-            null
-        } else {
+    fun convertCacheMovieInDataMovie(cacheMovie: Movie, cacheGenres: List<GenresByMovies>?): DataMovie? = with(cacheMovie) {
+        cacheGenres?.let {
             DataMovie(id,
                     title,
                     originalTile,
@@ -162,22 +152,20 @@ class CacheDataMapper {
     /**
      * Converts from [DataMovie] into [Movie]
      */
-    fun convertDataMoviesIntoCacheMovie(dataMovies: List<DataMovie>, dataMoviePage: DataMoviePage): List<Movie> {
-        return dataMovies.mapTo(ArrayList()) {
-            Movie(it.id,
-                    it.title,
-                    it.original_title,
-                    it.overview,
-                    it.release_date,
-                    it.original_language,
-                    it.poster_path,
-                    it.backdrop_path,
-                    it.vote_count,
-                    it.vote_average,
-                    it.popularity,
-                    dataMoviePage.page
-            )
-        }
+    fun convertDataMoviesIntoCacheMovie(dataMovies: List<DataMovie>, dataMoviePage: DataMoviePage) = dataMovies.mapTo(ArrayList()) {
+        Movie(it.id,
+                it.title,
+                it.original_title,
+                it.overview,
+                it.release_date,
+                it.original_language,
+                it.poster_path,
+                it.backdrop_path,
+                it.vote_count,
+                it.vote_average,
+                it.popularity,
+                dataMoviePage.page
+        )
     }
 
 
@@ -188,63 +176,55 @@ class CacheDataMapper {
     /**
      * Converts a list of cache [CastCharacter] into a list of [DataCastCharacter]
      */
-    fun convertCacheCharacterIntoDataCharacter(cacheCreditCharacters: List<CastCharacter>): List<DataCastCharacter> {
-        return cacheCreditCharacters.mapTo(ArrayList()) {
-            DataCastCharacter(it.id,
-                    it.character,
-                    it.creditId,
-                    it.gender,
-                    it.name,
-                    it.order,
-                    it.profilePath ?: "empty")
-        }
+    fun convertCacheCharacterIntoDataCharacter(cacheCreditCharacters: List<CastCharacter>) = cacheCreditCharacters.mapTo(ArrayList()) {
+        DataCastCharacter(it.id,
+                it.character,
+                it.creditId,
+                it.gender,
+                it.name,
+                it.order,
+                it.profilePath ?: "empty")
     }
 
 
     /**
      * Converts a list of cache [CrewPerson] into a list of [DataCrewPerson]
      */
-    fun convertCacheCrewIntoDataCrew(cacheCrew: List<CrewPerson>): List<DataCrewPerson> {
-        return cacheCrew.mapTo(ArrayList()) {
-            DataCrewPerson(it.creditId,
-                    it.department,
-                    it.gender, it.id,
-                    it.job,
-                    it.name,
-                    it.profilePath ?: "empty")
-        }
+    fun convertCacheCrewIntoDataCrew(cacheCrew: List<CrewPerson>) = cacheCrew.mapTo(ArrayList()) {
+        DataCrewPerson(it.creditId,
+                it.department,
+                it.gender, it.id,
+                it.job,
+                it.name,
+                it.profilePath ?: "empty")
     }
 
     /**
      * Converts a list of [DataCastCharacter] into a list of cache [CastCharacter]
      */
-    fun convertDataCharacterIntoCacheCharacter(dataCharacters: List<DataCastCharacter>, movieId: Double): List<CastCharacter> {
-        return dataCharacters.mapTo(ArrayList()) {
-            CastCharacter(it.cast_id,
-                    it.character,
-                    it.credit_id,
-                    it.gender,
-                    it.name,
-                    it.order,
-                    it.profile_path,
-                    movieId)
-        }
+    fun convertDataCharacterIntoCacheCharacter(dataCharacters: List<DataCastCharacter>, movieId: Double) = dataCharacters.mapTo(ArrayList()) {
+        CastCharacter(it.cast_id,
+                it.character,
+                it.credit_id,
+                it.gender,
+                it.name,
+                it.order,
+                it.profile_path,
+                movieId)
     }
 
     /**
      * Converts a list of [DataCrewPerson] into a list of cache [CrewPerson]
      */
-    fun convertDataCrewIntoCacheCrew(dataCrew: List<DataCrewPerson>, movieId: Double): List<CrewPerson> {
-        return dataCrew.mapTo(ArrayList()) {
-            CrewPerson(it.id,
-                    it.department,
-                    it.gender,
-                    it.credit_id,
-                    it.job,
-                    it.name,
-                    it.profile_path,
-                    movieId)
-        }
+    fun convertDataCrewIntoCacheCrew(dataCrew: List<DataCrewPerson>, movieId: Double) = dataCrew.mapTo(ArrayList()) {
+        CrewPerson(it.id,
+                it.department,
+                it.gender,
+                it.credit_id,
+                it.job,
+                it.name,
+                it.profile_path,
+                movieId)
     }
 
 }
