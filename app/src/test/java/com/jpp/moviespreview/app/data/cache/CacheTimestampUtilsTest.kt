@@ -1,10 +1,11 @@
 package com.jpp.moviespreview.app.data.cache
 
+import com.jpp.moviespreview.app.assertFalseIfNotNull
+import com.jpp.moviespreview.app.assertTrueIfNotNull
 import com.jpp.moviespreview.app.data.cache.db.Timestamp
 import com.jpp.moviespreview.app.data.cache.db.TimestampDao
 import com.jpp.moviespreview.app.mock
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.verify
@@ -29,13 +30,13 @@ class CacheTimestampUtilsTest {
     fun isTimestampOutdated() {
         val oneDayTimestamp = Timestamp(1, System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1))
         // a one day timestamp should be outdated if refresh time is two hours
-        assertTrue(subject.isTimestampOutdated(oneDayTimestamp, TimeUnit.HOURS.toMillis(2)))
+        assertTrueIfNotNull(subject.isTimestampOutdated(oneDayTimestamp, TimeUnit.HOURS.toMillis(2)))
 
         // a one day timestamp should NOT be outdated if refresh time is 28 hours
-        assertFalse(subject.isTimestampOutdated(oneDayTimestamp, TimeUnit.HOURS.toMillis(28)))
+        assertFalseIfNotNull(subject.isTimestampOutdated(oneDayTimestamp, TimeUnit.HOURS.toMillis(28)))
 
-        // null check -> outdated
-        assertTrue(subject.isTimestampOutdated(null, TimeUnit.DAYS.toMillis(1)))
+        // null check -> null
+        assertNull(subject.isTimestampOutdated(null, TimeUnit.DAYS.toMillis(1)))
     }
 
 

@@ -25,3 +25,8 @@ fun String.transformToInt(): Int? {
  * Helper class to load an object from GSON
  */
 inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object : TypeToken<T>() {}.type)!!
+
+/**
+ * Extension function to execute a [callback] when the provided [input] is not null.
+ */
+inline fun <T : Any, R> whenNotNull(input: T?, callback: (T) -> R): R? = input?.let(callback)
