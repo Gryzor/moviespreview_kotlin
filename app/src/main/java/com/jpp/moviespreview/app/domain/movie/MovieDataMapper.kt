@@ -26,32 +26,26 @@ open class MovieDataMapper {
     /**
      * Converts a list of [DataMovie] into a list of domain [Movie]s
      */
-    private fun convertDataMoviesIntoDomainMovies(dataMovies: List<DataMovie>, genres: List<Genre>): List<Movie> {
-        return dataMovies.mapTo(ArrayList()) {
-            Movie(it.id,
-                    it.title,
-                    it.original_title,
-                    it.overview,
-                    it.release_date,
-                    it.original_language,
-                    it.poster_path ?: "empty", // might be null, assign empty as default value
-                    it.backdrop_path ?: "empty", // might be null, assign empty as default value
-                    mapGenresIdToDomainGenres(it.genre_ids, genres),
-                    it.vote_count,
-                    it.vote_average,
-                    it.popularity)
-        }
+    private fun convertDataMoviesIntoDomainMovies(dataMovies: List<DataMovie>, genres: List<Genre>): List<Movie> = dataMovies.mapTo(ArrayList()) {
+        Movie(it.id,
+                it.title,
+                it.original_title,
+                it.overview,
+                it.release_date,
+                it.original_language,
+                it.poster_path ?: "empty", // might be null, assign empty as default value
+                it.backdrop_path ?: "empty", // might be null, assign empty as default value
+                mapGenresIdToDomainGenres(it.genre_ids, genres),
+                it.vote_count,
+                it.vote_average,
+                it.popularity)
     }
 
 
     /**
      * Maps a list of genre ids into the corresponding Genre list
      */
-    fun mapGenresIdToDomainGenres(genreIds: List<Int>, genres: List<Genre>): List<Genre> {
-        val result = ArrayList<Genre>()
-        genres.filterTo(result) { genreIds.contains(it.id) }
-        return result
-    }
+    fun mapGenresIdToDomainGenres(genreIds: List<Int>, genres: List<Genre>): List<Genre> = genres.filterTo(ArrayList()) { genreIds.contains(it.id) }
 
 
     /**
