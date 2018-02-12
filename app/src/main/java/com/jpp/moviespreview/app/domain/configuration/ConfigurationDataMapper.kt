@@ -22,19 +22,17 @@ class ConfigurationDataMapper {
     }
 
 
-    private fun convertImagesConfigurationFromDataModel(imagesConfiguration: DataImagesConfiguration): List<ImageConfiguration> {
-        val imageConfigurations = ArrayList<ImageConfiguration>()
-        with(imagesConfiguration) {
-            //map poster sizes
-            poster_sizes.mapTo(imageConfigurations) {
-                ImageConfiguration(base_url, it, POSTER)
+    private fun convertImagesConfigurationFromDataModel(imagesConfiguration: DataImagesConfiguration): List<ImageConfiguration> =
+            with(imagesConfiguration) {
+                //map poster sizes
+                poster_sizes.mapTo(ArrayList()) {
+                    ImageConfiguration(base_url, it, POSTER)
+                }.let {
+                    // map profile pictures
+                    profile_sizes.mapTo(it) {
+                        ImageConfiguration(base_url, it, PROFILE)
+                    }
+                }
             }
-            // map profile pictures
-            profile_sizes.mapTo(imageConfigurations) {
-                ImageConfiguration(base_url, it, PROFILE)
-            }
-        }
-        return imageConfigurations
-    }
 
 }

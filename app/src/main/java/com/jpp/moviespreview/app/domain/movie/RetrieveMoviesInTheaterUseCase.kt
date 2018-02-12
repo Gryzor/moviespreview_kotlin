@@ -19,17 +19,14 @@ class RetrieveMoviesInTheaterUseCase(private val mapper: MovieDataMapper,
 
 
     override fun execute(param: PageParam?): MoviePage? {
-        if (param == null) {
-            throw IllegalArgumentException("The provided param can not be null")
-        }
-
-        return if (moviesCache.isMoviePageOutOfDate(param.page)) {
-            api.getNowPlaying(param.page)?.let {
+        val page = param?.page ?: throw IllegalArgumentException("The provided param can not be null")
+        return if (moviesCache.isMoviePageOutOfDate(page)) {
+            api.getNowPlaying(page)?.let {
                 moviesCache.saveMoviePage(it)
                 mapper.convertDataMoviePageIntoDomainMoviePage(it, param.genres)
             }
         } else {
-            moviesCache.getMoviePage(param.page)?.let {
+            moviesCache.getMoviePage(page)?.let {
                 mapper.convertDataMoviePageIntoDomainMoviePage(it, param.genres)
             }
         }

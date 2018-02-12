@@ -10,10 +10,8 @@ import com.jpp.moviespreview.app.data.Genre as DataGenre
  */
 class GenreDataMapper {
 
-    fun convertGenreListFromDataModel(dataModelGenreList: List<DataGenre>): List<Genre> {
-        return dataModelGenreList.mapTo(ArrayList()) {
-            Genre(it.id, it.name)
-        }
+    fun convertGenreListFromDataModel(dataModelGenreList: List<DataGenre>): List<Genre> = dataModelGenreList.mapTo(ArrayList()) {
+        Genre(it.id, it.name)
     }
 
 }
