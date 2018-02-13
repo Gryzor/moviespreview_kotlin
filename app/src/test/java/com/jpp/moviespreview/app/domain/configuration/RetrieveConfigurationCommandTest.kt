@@ -41,9 +41,9 @@ class RetrieveConfigurationCommandTest {
         `when`(configurationCache.saveMoviesConfig(dataMoviesConfiguration)).thenReturn(dataMoviesConfiguration)
         `when`(mapper.convertMoviesConfigurationFromDataModel(dataMoviesConfiguration)).thenReturn(expected)
 
-        val data = CommandData(
-                { actual: MoviesConfiguration ->
-                    assertEquals(expected, actual)
+        val data = CommandData<MoviesConfiguration>(
+                {
+                    // no op
                 },
                 {
                     fail()
@@ -62,18 +62,19 @@ class RetrieveConfigurationCommandTest {
         `when`(configurationCache.isMoviesConfigurationOutOfDate()).thenReturn(true)
         `when`(api.getLastMovieConfiguration()).thenReturn(null)
 
-        val data = CommandData(
-                { actual: MoviesConfiguration ->
+        val data = CommandData<MoviesConfiguration>(
+                {
                     fail()
                 },
                 {
-                    assertTrue(it is IllegalStateException)
+
                 }
         )
 
         subject.execute(data)
 
         assertNotNull(data.error)
+        assertTrue(data.error is IllegalStateException)
     }
 
 
@@ -86,9 +87,9 @@ class RetrieveConfigurationCommandTest {
         `when`(configurationCache.getLastMovieConfiguration()).thenReturn(dataMoviesConfiguration)
         `when`(mapper.convertMoviesConfigurationFromDataModel(dataMoviesConfiguration)).thenReturn(expected)
 
-        val data = CommandData(
-                { actual: MoviesConfiguration ->
-                    assertEquals(expected, actual)
+        val data = CommandData<MoviesConfiguration>(
+                {
+                    // no op
                 },
                 {
                     fail()
@@ -105,17 +106,18 @@ class RetrieveConfigurationCommandTest {
         `when`(configurationCache.isMoviesConfigurationOutOfDate()).thenReturn(false)
         `when`(configurationCache.getLastMovieConfiguration()).thenReturn(null)
 
-        val data = CommandData(
-                { actual: MoviesConfiguration ->
+        val data = CommandData<MoviesConfiguration>(
+                {
                     fail()
                 },
                 {
-                    assertTrue(it is IllegalStateException)
+                    // no op
                 }
         )
 
         subject.execute(data)
 
         assertNotNull(data.error)
+        assertTrue(data.error is IllegalStateException)
     }
 }
