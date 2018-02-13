@@ -30,7 +30,7 @@ import kotlin.reflect.KProperty
  * Because the default Observer delegate forces type declaration when defining the delegated
  * property and I want this delegate to be defined by the Commands definitions.
  */
-class CommandDelegate<T>(private val observer: (T) -> Unit) {
+class CommandDelegate<T>(private val observer: () -> Unit) {
 
     private var value: T? = null
 
@@ -39,7 +39,7 @@ class CommandDelegate<T>(private val observer: (T) -> Unit) {
 
     operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
         this.value = value
-        observer(value)
+        observer()
     }
 }
 
@@ -50,8 +50,8 @@ class CommandDelegate<T>(private val observer: (T) -> Unit) {
  * [valueObserver] will be executed when the [value] of this class is set.
  * [errorObserver] will be executed when the [error] of this class is set.
  */
-class CommandData<T>(valueObserver: (T) -> Unit,
-                     errorObserver: (Exception) -> Unit) {
+class CommandData<T>(valueObserver: () -> Unit,
+                     errorObserver: () -> Unit) {
     var value: T by CommandDelegate(valueObserver)
     var error: Exception by CommandDelegate(errorObserver)
 }

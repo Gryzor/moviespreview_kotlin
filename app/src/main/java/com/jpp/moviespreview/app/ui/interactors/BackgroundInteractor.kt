@@ -10,6 +10,7 @@ import org.jetbrains.anko.uiThread
  *
  * Created by jpp on 10/7/17.
  */
+@Deprecated("In favor of BackgroundExecutor")
 interface BackgroundInteractor {
 
     /**

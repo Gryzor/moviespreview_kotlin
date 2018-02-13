@@ -6,6 +6,7 @@ import com.jpp.moviespreview.app.data.cache.MoviesGenreCache
 import com.jpp.moviespreview.app.data.cache.file.AssetLoader
 import com.jpp.moviespreview.app.data.server.MoviesPreviewApiWrapper
 import com.jpp.moviespreview.app.domain.configuration.ConfigurationDataMapper
+import com.jpp.moviespreview.app.domain.configuration.RetrieveConfigurationCommand
 import com.jpp.moviespreview.app.domain.configuration.RetrieveConfigurationUseCase
 import com.jpp.moviespreview.app.domain.genre.GenreDataMapper
 import com.jpp.moviespreview.app.domain.genre.RetrieveGenresUseCase
@@ -65,4 +66,10 @@ class DomainModule {
     @Provides
     @Singleton
     fun providesMovieDataMapper() = MovieDataMapper()
+
+
+    @Provides
+    @Singleton
+    fun providesRetrieveConfigurationCommand(apiInstance: MoviesPreviewApiWrapper, configurationCache: MoviesConfigurationCache): Command<Any, MoviesConfiguration>
+            = RetrieveConfigurationCommand(ConfigurationDataMapper(), apiInstance, configurationCache)
 }

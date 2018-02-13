@@ -6,11 +6,9 @@ import com.jpp.moviespreview.app.domain.CommandData
 import com.jpp.moviespreview.app.domain.MoviesConfiguration
 import com.jpp.moviespreview.app.mock
 import com.nhaarman.mockito_kotlin.verify
-import org.junit.Assert
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import com.jpp.moviespreview.app.data.MoviesConfiguration as DataMoviesConfiguration
 
@@ -44,8 +42,7 @@ class RetrieveConfigurationCommandTest {
         `when`(mapper.convertMoviesConfigurationFromDataModel(dataMoviesConfiguration)).thenReturn(expected)
 
         val data = CommandData(
-                {
-                    actual: MoviesConfiguration ->
+                { actual: MoviesConfiguration ->
                     assertEquals(expected, actual)
                 },
                 {
@@ -66,8 +63,7 @@ class RetrieveConfigurationCommandTest {
         `when`(api.getLastMovieConfiguration()).thenReturn(null)
 
         val data = CommandData(
-                {
-                    actual: MoviesConfiguration ->
+                { actual: MoviesConfiguration ->
                     fail()
                 },
                 {
@@ -91,8 +87,7 @@ class RetrieveConfigurationCommandTest {
         `when`(mapper.convertMoviesConfigurationFromDataModel(dataMoviesConfiguration)).thenReturn(expected)
 
         val data = CommandData(
-                {
-                    actual: MoviesConfiguration ->
+                { actual: MoviesConfiguration ->
                     assertEquals(expected, actual)
                 },
                 {
@@ -111,8 +106,7 @@ class RetrieveConfigurationCommandTest {
         `when`(configurationCache.getLastMovieConfiguration()).thenReturn(null)
 
         val data = CommandData(
-                {
-                    actual: MoviesConfiguration ->
+                { actual: MoviesConfiguration ->
                     fail()
                 },
                 {
