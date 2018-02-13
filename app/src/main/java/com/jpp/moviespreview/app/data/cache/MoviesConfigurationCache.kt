@@ -15,7 +15,7 @@ interface MoviesConfigurationCache {
     /**
      * Saves the provided movie configuration, using the provided updateDate as timestamp for it.
      */
-    fun saveMoviesConfig(moviesConfig: MoviesConfiguration)
+    fun saveMoviesConfig(moviesConfig: MoviesConfiguration): MoviesConfiguration
 
     /**
      * Determinate if the last movies configuration stored is out of date.
@@ -47,7 +47,7 @@ class MoviesConfigurationCacheImpl(private val mapper: CacheDataMapper,
     override fun isMoviesConfigurationOutOfDate() = cacheTimestampUtils.isConfigurationTimestampOutdated(database.timestampDao())
 
 
-    override fun saveMoviesConfig(moviesConfig: MoviesConfiguration) {
+    override fun saveMoviesConfig(moviesConfig: MoviesConfiguration): MoviesConfiguration {
         with(database) {
             // 1 -> insert timestamp
             cacheTimestampUtils.createMoviesConfigurationTimestamp().let {
@@ -64,5 +64,6 @@ class MoviesConfigurationCacheImpl(private val mapper: CacheDataMapper,
                 }
             }
         }
+        return moviesConfig
     }
 }
