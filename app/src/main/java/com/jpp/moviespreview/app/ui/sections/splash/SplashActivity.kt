@@ -1,9 +1,9 @@
 package com.jpp.moviespreview.app.ui.sections.splash
 
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import com.jpp.moviespreview.app.di.HasActivitySubcomponentBuilders
+import com.jpp.moviespreview.app.di.InjectedActivity
 import com.jpp.moviespreview.app.ui.sections.main.MainActivity
-import com.jpp.moviespreview.app.util.extentions.app
+import com.jpp.moviespreview.app.ui.sections.splash.di.SplashActivityComponent
 import com.jpp.moviespreview.app.util.extentions.showNoNetworkConnectionAlert
 import com.jpp.moviespreview.app.util.extentions.showUnexpectedError
 import org.jetbrains.anko.startActivity
@@ -18,18 +18,17 @@ import javax.inject.Inject
  *
  * Created by jpp on 10/4/17.
  */
-class SplashActivity : AppCompatActivity(), SplashView {
+class SplashActivity : InjectedActivity(), SplashView {
 
 
-    private val component by lazy { app.splashComponent() }
+    override fun injectMembers(hasActivitySubcomponentBuilders: HasActivitySubcomponentBuilders) {
+        (hasActivitySubcomponentBuilders.getActivityComponentBuilder(SplashActivity::class.java) as SplashActivityComponent.Builder)
+                .activityModule(SplashActivityComponent.SplashActivityModule(this)).build().injectMembers(this)
+    }
+
 
     @Inject
     lateinit var splashPresenter: SplashPresenter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        component.inject(this)
-    }
 
     override fun onResume() {
         super.onResume()
