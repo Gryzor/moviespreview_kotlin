@@ -1,6 +1,8 @@
 package com.jpp.moviespreview.app
 
 import android.app.Application
+import android.os.StrictMode
+import com.jpp.moviespreview.BuildConfig
 import com.jpp.moviespreview.app.data.DataModule
 import com.jpp.moviespreview.app.domain.DomainModule
 import com.jpp.moviespreview.app.ui.UiModule
@@ -26,6 +28,13 @@ open class MoviesPreviewApp : Application() {
 
 
     override fun onCreate() {
+        if (BuildConfig.DEBUG) {
+            StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder()
+                    .detectAll()
+                    .build())
+        }
+
+
         super.onCreate()
         appComponent = DaggerAppComponent
                 .builder()
