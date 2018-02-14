@@ -5,6 +5,8 @@ import dagger.MapKey
 import kotlin.reflect.KClass
 
 /**
+ * Used for multibinding to construct maps.
+ *
  * Created by jpp on 2/14/18.
  */
 @MapKey

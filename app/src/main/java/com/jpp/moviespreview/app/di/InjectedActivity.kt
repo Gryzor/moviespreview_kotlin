@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity
 import com.jpp.moviespreview.app.MoviesPreviewApp
 
 /**
+ * Base Activity that is injected by the DI system.
+ *
  * Created by jpp on 2/14/18.
  */
 abstract class InjectedActivity : AppCompatActivity() {

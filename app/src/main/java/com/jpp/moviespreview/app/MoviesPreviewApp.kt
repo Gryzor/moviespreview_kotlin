@@ -18,8 +18,6 @@ import com.jpp.moviespreview.app.ui.sections.main.playing.di.PlayingMoviesCompon
 import com.jpp.moviespreview.app.ui.sections.main.playing.di.PlayingMoviesModule
 import com.jpp.moviespreview.app.ui.sections.search.di.MultiSearchComponent
 import com.jpp.moviespreview.app.ui.sections.search.di.MultiSearchModule
-import com.jpp.moviespreview.app.ui.sections.splash.di.SplashComponent
-import com.jpp.moviespreview.app.ui.sections.splash.di.SplashModule
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -57,16 +55,13 @@ open class MoviesPreviewApp : Application(), HasActivitySubcomponentBuilders {
     }
 
 
-    override fun getActivityComponentBuilder(activityClass: Class<out Activity>): ActivityComponentBuilder<*, *> {
-        return activityComponentBuilders[activityClass]!!.get()
-    }
+    override fun getActivityComponentBuilder(activityClass: Class<out Activity>): ActivityComponentBuilder<*, *> =
+            activityComponentBuilders[activityClass]!!.get()
 
 
     companion object {
-
-        operator fun get(context: Context): HasActivitySubcomponentBuilders {
-            return context.applicationContext as HasActivitySubcomponentBuilders
-        }
+        operator fun get(context: Context): HasActivitySubcomponentBuilders =
+                context.applicationContext as HasActivitySubcomponentBuilders
     }
 
 

@@ -5,15 +5,16 @@ import dagger.Module
 import dagger.Provides
 
 /**
+ * Dagger Module base class to provide activities.
+ *
  * Created by jpp on 2/14/18.
  */
-@Module abstract class ActivityModule<out T : Activity>(protected val activity: T) {
+@Module
+abstract class ActivityModule<out T : Activity>(protected val activity: T) {
 
 
     @Provides
     @ActivityScope
-    fun provideActivity(): T {
-        return activity
-    }
+    fun provideActivity(): T = activity
 
 }

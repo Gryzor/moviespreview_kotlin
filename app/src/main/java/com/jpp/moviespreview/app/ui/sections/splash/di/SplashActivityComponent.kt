@@ -17,6 +17,9 @@ import dagger.Provides
 import dagger.Subcomponent
 
 /**
+ * [ActivityComponent] for the splash module.
+ *
+ *
  * Created by jpp on 2/14/18.
  */
 @ActivityScope
