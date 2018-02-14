@@ -1,6 +1,6 @@
 package com.jpp.moviespreview.app.domain
 
-import kotlin.reflect.KProperty
+import com.jpp.moviespreview.app.util.extentions.DelegatesExt
 
 /**
  * Contract definition for the commands executed by the domain module.
@@ -15,33 +15,9 @@ import kotlin.reflect.KProperty
  * Resuming:
  * [Command] - Executes an action that alters the state of the system.
  * [CommandData] - Defines the system that the Commands can alter.
- * [CommandDelegate] - Delegation mechanism to notify any clients of the framework when the
- *                     system is changed.
  *
  * Created by jpp on 2/12/18.
  */
-
-
-/**
- * A Delegate (Kotlin delegates : https://kotlinlang.org/docs/reference/delegated-properties.html)
- * that executes an action ([observer]) when the property is set.
- *
- * Why don't use the default Observer Delegate provided by Kotlin?
- * Because the default Observer delegate forces type declaration when defining the delegated
- * property and I want this delegate to be defined by the Commands definitions.
- */
-class CommandDelegate<T>(private val observer: () -> Unit) {
-
-    private var value: T? = null
-
-    operator fun getValue(thisRef: Any?, property: KProperty<*>): T =
-            value ?: throw UnsupportedOperationException("Property not set")
-
-    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-        this.value = value
-        observer()
-    }
-}
 
 
 /**
@@ -52,8 +28,8 @@ class CommandDelegate<T>(private val observer: () -> Unit) {
  */
 class CommandData<T>(valueObserver: () -> Unit,
                      errorObserver: () -> Unit) {
-    var value: T by CommandDelegate(valueObserver)
-    var error: Exception by CommandDelegate(errorObserver)
+    var value: T? by DelegatesExt.observerDelegate(valueObserver)
+    var error: Exception? by DelegatesExt.observerDelegate(errorObserver)
 }
 
 /**

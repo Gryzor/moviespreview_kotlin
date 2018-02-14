@@ -1,9 +1,10 @@
 package com.jpp.moviespreview.app.ui.sections.splash
 
 import com.jpp.moviespreview.app.ui.Error
+import com.jpp.moviespreview.app.ui.MovieGenre
 import com.jpp.moviespreview.app.ui.PosterImageConfiguration
 import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
-import kotlin.properties.Delegates
+import com.jpp.moviespreview.app.util.extentions.DelegatesExt
 
 /**
  * Definition of the contract for the MVP implementation at the
@@ -31,12 +32,12 @@ interface SplashPresenterInteractor {
  * The [SplashPresenter] will ask to the [SplashPresenterInteractor] to execute an action and store
  * the results in this class.
  * The [SplashPresenterInteractor] will execute the action(s) and will set each property of this class.
- * Once the work is done, [isCompleted] is called which, in time, will notify the [SplashPresenter]
- * about the completion of the work using the [onCompleted] function.
+ * Using the property delegation system ([ObservableTypedDelegate]) the presenter is notified
+ * about each property set on this class.
  */
-class SplashData(private val onCompleted: (Boolean) -> Unit) {
-    var isCompleted by Delegates.observable(false) { _, _, new -> onCompleted(new) }
-    var posterConfig: List<PosterImageConfiguration>? = null
-    var profileConfig: List<ProfileImageConfiguration>? = null
-    var error: Error? = null
+class SplashData(onValueSetObserver: () -> Unit = {}) {
+    var posterConfig: List<PosterImageConfiguration>? by DelegatesExt.observerDelegate(onValueSetObserver)
+    var profileConfig: List<ProfileImageConfiguration>? by DelegatesExt.observerDelegate(onValueSetObserver)
+    var movieGenres: List<MovieGenre>? by DelegatesExt.observerDelegate(onValueSetObserver)
+    var error: Error? by DelegatesExt.observerDelegate(onValueSetObserver)
 }
