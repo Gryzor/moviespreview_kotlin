@@ -38,6 +38,7 @@ class RetrieveConfigurationCommand(private val mapper: ConfigurationDataMapper,
         if (isMoviesConfigurationOutOfDate()) {
             api.getLastMovieConfiguration()?.let {
                 saveMoviesConfig(it)
+                return it
             }
         } else {
             getLastMovieConfiguration()

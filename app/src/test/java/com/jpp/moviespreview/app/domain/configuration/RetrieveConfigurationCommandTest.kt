@@ -38,7 +38,6 @@ class RetrieveConfigurationCommandTest {
 
         `when`(configurationCache.isMoviesConfigurationOutOfDate()).thenReturn(true)
         `when`(api.getLastMovieConfiguration()).thenReturn(dataMoviesConfiguration)
-        `when`(configurationCache.saveMoviesConfig(dataMoviesConfiguration)).thenReturn(dataMoviesConfiguration)
         `when`(mapper.convertMoviesConfigurationFromDataModel(dataMoviesConfiguration)).thenReturn(expected)
 
         val data = CommandData<MoviesConfiguration>(
@@ -58,7 +57,7 @@ class RetrieveConfigurationCommandTest {
 
 
     @Test
-    fun execute_whenLastConfigIsOld_andDataRetrievedFromApiIsNull_returnsNull() {
+    fun execute_whenLastConfigIsOld_andDataRetrievedFromApiIsNull_reportsFail() {
         `when`(configurationCache.isMoviesConfigurationOutOfDate()).thenReturn(true)
         `when`(api.getLastMovieConfiguration()).thenReturn(null)
 
