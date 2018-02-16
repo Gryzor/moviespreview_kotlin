@@ -9,8 +9,11 @@ import com.jpp.moviespreview.app.ui.interactors.BackgroundExecutor
  */
 class BackgroundExecutorForTesting : BackgroundExecutor {
 
+    var backgroundExecuted = false
+
     override fun executeBackgroundJob(backgroundJob: () -> Unit) {
         backgroundJob()
+        backgroundExecuted = true
     }
 
     override fun executeUiJob(uiJob: () -> Unit) {

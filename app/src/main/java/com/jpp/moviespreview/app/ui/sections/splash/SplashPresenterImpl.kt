@@ -4,6 +4,7 @@ import com.jpp.moviespreview.app.ui.Error
 import com.jpp.moviespreview.app.ui.MoviesContext
 import com.jpp.moviespreview.app.ui.interactors.BackgroundExecutor
 import com.jpp.moviespreview.app.util.extentions.whenNotNull
+import com.jpp.moviespreview.app.util.extentions.whenNull
 
 /**
  * Presenter for the splash screen.
@@ -37,9 +38,9 @@ class SplashPresenterImpl(private val moviesContext: MoviesContext,
 
     private fun observeData() {
         with(splashData) {
-            whenNotNull(posterConfig, { moviesContext.posterImageConfig = it })
-            whenNotNull(profileConfig, { moviesContext.profileImageConfig = it })
-            whenNotNull(movieGenres, { moviesContext.movieGenres = it })
+            whenNotNull(posterConfig, { posterConfig -> whenNull((moviesContext.posterImageConfig), { moviesContext.posterImageConfig = posterConfig }) })
+            whenNotNull(profileConfig, { profileConfig -> whenNull(moviesContext.profileImageConfig, { moviesContext.profileImageConfig = profileConfig }) })
+            whenNotNull(movieGenres, { movieGenres -> whenNull(moviesContext.movieGenres, { moviesContext.movieGenres = movieGenres }) })
             whenNotNull(error, { processError(it) })
         }
         backgroundExecutor.executeUiJob { continueToHomeIfConfigReady() }
@@ -55,9 +56,9 @@ class SplashPresenterImpl(private val moviesContext: MoviesContext,
     private fun processError(error: Error) {
         with(error) {
             if (type == Error.NO_CONNECTION) {
-                splashViewInstance.showUnexpectedError()
-            } else {
                 splashViewInstance.showNotConnectedToNetwork()
+            } else {
+                splashViewInstance.showUnexpectedError()
             }
         }
     }
