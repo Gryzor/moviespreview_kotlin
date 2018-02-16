@@ -13,25 +13,20 @@ import com.jpp.moviespreview.app.TestComponentRule
 import com.jpp.moviespreview.app.extentions.MoviesPreviewActivityTestRule
 import com.jpp.moviespreview.app.extentions.launch
 import com.jpp.moviespreview.app.mock
-import com.jpp.moviespreview.app.ui.MoviesContext
-import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 import com.jpp.moviespreview.app.ui.sections.splash.di.SplashActivityComponent
 import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.doAnswer
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.`when`
-import javax.inject.Inject
 import com.jpp.moviespreview.app.domain.Genre as DomainGenre
 import com.jpp.moviespreview.app.domain.MoviesConfiguration as DomainMoviesConfiguration
 
 
 /**
- * Espresso tests are to verify the UI module.
- *
- * This test exercises the View, the Presenter and the Mapper for the
- * Splash section.
+ * Espresso tests to exercise [SplashActivity].
  *
  * Created by jpp on 10/13/17.
  */
@@ -45,11 +40,6 @@ class SplashActivityEspressoTest {
     @get:Rule
     val testComponentRule = TestComponentRule()
 
-
-    @Inject
-    lateinit var moviesContext: MoviesContext
-    @Inject
-    lateinit var connectivityInteractor: ConnectivityInteractor
 
     private val splashPresenter: SplashPresenter = mock()
     private val builder: SplashActivityComponent.Builder = mock()
@@ -66,7 +56,6 @@ class SplashActivityEspressoTest {
         app.putActivityComponentBuilder(builder, SplashActivity::class.java)
 
         testComponentRule.testComponent?.inject(this)
-
     }
 
 
@@ -129,9 +118,11 @@ class SplashActivityEspressoTest {
 
 
     @Test
-    fun appShowsConnectivityErrorWhenRetrievingMoviesConfigAndNoConnection() {
-//        `when`(moviesConfigUseCase.execute()).thenReturn(null)
-//        `when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(false)
+    fun appShowsConnectivityError() {
+        doAnswer {
+            val viewInstance = it.arguments[0] as SplashView
+            viewInstance.showNotConnectedToNetwork()
+        }.`when`(splashPresenter).linkView(any())
 
         activityRule.launch(Intent())
 
@@ -141,45 +132,15 @@ class SplashActivityEspressoTest {
 
 
     @Test
-    fun appShowsConnectivityErrorWhenRetrievingGenresAndNoConnection() {
-//        //config OK
-//        val moviesConfiguration = activityRule.loadDomainConfig()
-//        `when`(moviesConfigUseCase.execute()).thenReturn(moviesConfiguration)
-//        // no genres
-//        `when`(genresUseCase.execute()).thenReturn(null)
-//        // no connectivity
-//        `when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(false)
-//
-//        activityRule.launch(Intent())
-//
-//        onView(withText(R.string.alert_no_network_connection_message))
-//                .check(matches(isDisplayed()))
-    }
+    fun appShowsUnexpectedError() {
+        doAnswer {
+            val viewInstance = it.arguments[0] as SplashView
+            viewInstance.showUnexpectedError()
+        }.`when`(splashPresenter).linkView(any())
 
-    @Test
-    fun appShowsUnexpectedErrorWhenRetrievingMoviesConfig() {
-//        `when`(moviesConfigUseCase.execute()).thenReturn(null)
-//        `when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(true)
-//
-//        activityRule.launch(Intent())
-//
-//        onView(withText(R.string.alert_unexpected_error_message))
-//                .check(matches(isDisplayed()))
-    }
+        activityRule.launch(Intent())
 
-    @Test
-    fun appShowsUnexpectedErrorWhenRetrievingGenres() {
-//        //config OK
-//        val moviesConfiguration = activityRule.loadDomainConfig()
-//        `when`(moviesConfigUseCase.execute()).thenReturn(moviesConfiguration)
-//        // no genres
-//        `when`(genresUseCase.execute()).thenReturn(null)
-//
-//        `when`(connectivityInteractor.isConnectedToNetwork()).thenReturn(true)
-//
-//        activityRule.launch(Intent())
-//
-//        onView(withText(R.string.alert_unexpected_error_message))
-//                .check(matches(isDisplayed()))
+        onView(withText(R.string.alert_unexpected_error_message))
+                .check(matches(isDisplayed()))
     }
 }

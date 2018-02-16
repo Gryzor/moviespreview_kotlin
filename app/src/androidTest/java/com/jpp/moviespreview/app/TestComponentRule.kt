@@ -13,6 +13,7 @@ import org.junit.runners.model.Statement
  *
  * Created by jpp on 10/14/17.
  */
+@Deprecated("Remove this once that all EspressoTest are modified to use multibinding injection")
 class TestComponentRule : TestRule {
 
     var testComponent: EspressoAppComponent? = null
