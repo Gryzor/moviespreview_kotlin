@@ -1,6 +1,7 @@
 package com.jpp.moviespreview.app
 
 import com.jpp.moviespreview.app.data.EspressoDataModule
+import com.jpp.moviespreview.app.di.ActivityBindingModule
 import com.jpp.moviespreview.app.domain.EspressoDomainModule
 import com.jpp.moviespreview.app.ui.EspressoUiModule
 import com.jpp.moviespreview.app.ui.sections.detail.body.MovieDetailsFragmentEspressoTests
@@ -15,7 +16,7 @@ import javax.inject.Singleton
  * Created by jpp on 10/13/17.
  */
 @Singleton
-@Component(modules = arrayOf(EspressoAppModule::class, EspressoUiModule::class, EspressoDataModule::class, EspressoDomainModule::class))
+@Component(modules = arrayOf(ActivityBindingModule::class, EspressoAppModule::class, EspressoUiModule::class, EspressoDataModule::class, EspressoDomainModule::class))
 interface EspressoAppComponent : AppComponent {
 
     fun inject(splashActivityEspressoTest: SplashActivityEspressoTest)

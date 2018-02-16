@@ -1,6 +1,5 @@
 package com.jpp.moviespreview.app.domain
 
-import com.jpp.moviespreview.app.data.cache.file.AssetLoader
 import com.jpp.moviespreview.app.mock
 import dagger.Module
 import dagger.Provides
@@ -39,4 +38,13 @@ class EspressoDomainModule {
     @Provides
     @Singleton
     fun providesRetrieveLicencesUseCase(): UseCase<Any, Licenses> = mock()
+
+    @Provides
+    @Singleton
+    fun providesRetrieveConfigurationCommand(): Command<Any, MoviesConfiguration> = mock()
+
+    @Provides
+    @Singleton
+    fun providesRetrieveGenresCommand(): Command<Any, List<Genre>> = mock()
+
 }
