@@ -1,6 +1,7 @@
 package com.jpp.moviespreview.app.ui
 
 import android.support.annotation.DrawableRes
+import android.support.annotation.IntDef
 import com.jpp.moviespreview.app.util.AllOpen
 
 /**
@@ -123,4 +124,20 @@ data class License(val id: Int,
                    val name: String,
                    val url: String)
 
+
+/**
+ * Defines the types of errors that can be detected at UI level.
+ */
+data class Error(@Type val type: Long) {
+
+    companion object {
+
+        @IntDef(NO_CONNECTION, UNKNOWN)
+        @Retention(AnnotationRetention.SOURCE)
+        annotation class Type
+
+        const val NO_CONNECTION = 0L
+        const val UNKNOWN = 1L
+    }
+}
 

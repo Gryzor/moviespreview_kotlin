@@ -1,5 +1,6 @@
 package com.jpp.moviespreview.app.ui
 
+import com.jpp.moviespreview.app.BackgroundExecutorForTesting
 import com.jpp.moviespreview.app.BackgroundInteractorForTesting
 import com.jpp.moviespreview.app.mock
 import com.jpp.moviespreview.app.ui.interactors.*
@@ -23,6 +24,10 @@ class EspressoUiModule {
     @Singleton
     @Provides
     fun providesBackgroundInteractor(): BackgroundInteractor = BackgroundInteractorForTesting()
+
+    @Singleton
+    @Provides
+    fun providesBackgroundExecutor(): BackgroundExecutor = BackgroundExecutorForTesting()
 
     @Singleton
     @Provides

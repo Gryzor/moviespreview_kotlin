@@ -30,3 +30,8 @@ inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, obje
  * Extension function to execute a [callback] when the provided [input] is not null.
  */
 inline fun <T : Any, R> whenNotNull(input: T?, callback: (T) -> R): R? = input?.let(callback)
+
+/**
+ * Extension function to execute a [callback] when the provided [input] is null.
+ */
+inline fun <T : Any, R> whenNull(input: T?, callback: () -> R) = input?.let { } ?: run { callback() }

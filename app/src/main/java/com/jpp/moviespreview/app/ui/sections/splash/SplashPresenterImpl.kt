@@ -1,12 +1,10 @@
 package com.jpp.moviespreview.app.ui.sections.splash
 
-import com.jpp.moviespreview.app.domain.Genre
-import com.jpp.moviespreview.app.domain.MoviesConfiguration
-import com.jpp.moviespreview.app.domain.UseCase
-import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
+import com.jpp.moviespreview.app.ui.Error
 import com.jpp.moviespreview.app.ui.MoviesContext
-import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
-import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
+import com.jpp.moviespreview.app.ui.interactors.BackgroundExecutor
+import com.jpp.moviespreview.app.util.extentions.whenNotNull
+import com.jpp.moviespreview.app.util.extentions.whenNull
 
 /**
  * Presenter for the splash screen.
@@ -18,68 +16,50 @@ import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
  * Created by jpp on 10/4/17.
  */
 class SplashPresenterImpl(private val moviesContext: MoviesContext,
-                          private val backgroundInteractor: BackgroundInteractor,
-                          private val mapper: DomainToUiDataMapper,
-                          private val connectivityInteractor: ConnectivityInteractor,
-                          private val moviesConfigurationUseCase: UseCase<Any, MoviesConfiguration>,
-                          private val moviesGenresUseCase: UseCase<Any, List<Genre>>) : SplashPresenter {
+                          private val backgroundExecutor: BackgroundExecutor,
+                          private val interactor: SplashPresenterInteractor) : SplashPresenter {
 
-    private lateinit var splashView: SplashView
+    private lateinit var splashViewInstance: SplashView
+    private val splashData by lazy {
+        SplashData({ observeData() })
+    }
 
 
     override fun linkView(splashView: SplashView) {
-        this.splashView = splashView
-
-        if (moviesContext.isConfigCompleted()) {
-            splashView.continueToHome()
-        } else {
-            retrieveConfig()
+        with(moviesContext) {
+            if (isConfigCompleted()) {
+                splashView.continueToHome()
+            } else {
+                splashViewInstance = splashView
+                backgroundExecutor.executeBackgroundJob { interactor.retrieveConfiguration(splashData) }
+            }
         }
     }
 
-    private fun retrieveConfig() {
-        backgroundInteractor
-                .executeBackgroundJob({ moviesConfigurationUseCase.execute() },
-                        { processMoviesConfig(it) })
-
-        backgroundInteractor
-                .executeBackgroundJob({ moviesGenresUseCase.execute() },
-                        { processGenresConfig(it) })
-
-    }
-
-    private fun processMoviesConfig(moviesConfiguration: MoviesConfiguration?) {
-        if (moviesConfiguration != null) {
-            moviesContext.posterImageConfig = mapper.convertPosterImageConfigurations(moviesConfiguration)
-            moviesContext.profileImageConfig = mapper.convertProfileImageConfigurations(moviesConfiguration)
-            continueToHomeIfConfigReady()
-        } else {
-            processError()
+    private fun observeData() {
+        with(splashData) {
+            whenNotNull(posterConfig, { posterConfig -> whenNull((moviesContext.posterImageConfig), { moviesContext.posterImageConfig = posterConfig }) })
+            whenNotNull(profileConfig, { profileConfig -> whenNull(moviesContext.profileImageConfig, { moviesContext.profileImageConfig = profileConfig }) })
+            whenNotNull(movieGenres, { movieGenres -> whenNull(moviesContext.movieGenres, { moviesContext.movieGenres = movieGenres }) })
+            whenNotNull(error, { processError(it) })
         }
+        backgroundExecutor.executeUiJob { continueToHomeIfConfigReady() }
     }
-
-    private fun processGenresConfig(genres: List<Genre>?) {
-        if (genres != null) {
-            moviesContext.movieGenres = mapper.convertDomainGenresIntoUiGenres(genres)
-            continueToHomeIfConfigReady()
-        } else {
-            processError()
-        }
-    }
-
 
     private fun continueToHomeIfConfigReady() {
         if (moviesContext.isConfigCompleted()) {
-            splashView.continueToHome()
+            splashViewInstance.continueToHome()
         }
     }
 
 
-    private fun processError() {
-        if (connectivityInteractor.isConnectedToNetwork()) {
-            splashView.showUnexpectedError()
-        } else {
-            splashView.showNotConnectedToNetwork()
+    private fun processError(error: Error) {
+        with(error) {
+            if (type == Error.NO_CONNECTION) {
+                splashViewInstance.showNotConnectedToNetwork()
+            } else {
+                splashViewInstance.showUnexpectedError()
+            }
         }
     }
 }

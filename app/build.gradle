@@ -24,7 +24,7 @@ android {
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.jpp.moviespreview.app.MoviesPreviewTestRunner"
         com.android.ddmlib.DdmPreferences.setTimeOut(60000) // for espresso builds
     }
     buildTypes {

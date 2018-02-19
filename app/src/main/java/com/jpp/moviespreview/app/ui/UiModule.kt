@@ -24,7 +24,6 @@ class UiModule {
     fun providesMultiSearchContext(moviesContext: MoviesContext) = MultiSearchContext(moviesContext)
 
 
-
     @Singleton
     @Provides
     fun providesDomainToUiDataMapper() = DomainToUiDataMapper()
@@ -32,6 +31,10 @@ class UiModule {
     @Singleton
     @Provides
     fun providesBackgroundInteractor(): BackgroundInteractor = BackgroundInteractorImpl()
+
+    @Singleton
+    @Provides
+    fun providesBackgroundExecutor(): BackgroundExecutor = BackgroundExecutorImpl()
 
 
     @Singleton
