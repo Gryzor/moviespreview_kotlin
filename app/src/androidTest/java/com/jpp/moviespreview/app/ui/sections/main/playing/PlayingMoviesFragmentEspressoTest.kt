@@ -19,12 +19,10 @@ import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.extentions.MoviesPreviewActivityTestRule
 import com.jpp.moviespreview.app.extentions.launch
 import com.jpp.moviespreview.app.extentions.rotate
-import com.jpp.moviespreview.app.extentions.waitToFinish
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
-import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.ApplicationMoviesContext
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailActivity
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
-import com.jpp.moviespreview.app.ui.sections.splash.SplashActivity
 import com.jpp.moviespreview.app.ui.util.EspressoTestActivity
 import com.jpp.moviespreview.app.util.extentions.addFragmentIfNotInStack
 import com.jpp.moviespreview.app.utils.RecyclerViewItemCountAssertion
@@ -59,7 +57,7 @@ class PlayingMoviesFragmentEspressoTest {
     val testComponentRule = TestComponentRule()
 
     @Inject
-    lateinit var moviesContext: MoviesContext
+    lateinit var moviesContext: ApplicationMoviesContext
     @Inject
     lateinit var connectivityInteractor: ConnectivityInteractor
     @Inject

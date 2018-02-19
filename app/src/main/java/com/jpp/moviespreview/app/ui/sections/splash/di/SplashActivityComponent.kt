@@ -8,7 +8,7 @@ import com.jpp.moviespreview.app.domain.Command
 import com.jpp.moviespreview.app.domain.Genre
 import com.jpp.moviespreview.app.domain.MoviesConfiguration
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
-import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.ApplicationMoviesContext
 import com.jpp.moviespreview.app.ui.interactors.BackgroundExecutor
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 import com.jpp.moviespreview.app.ui.sections.splash.*
@@ -34,7 +34,7 @@ interface SplashActivityComponent : ActivityComponent<SplashActivity> {
 
         @Provides
         @ActivityScope
-        fun providesSplashPresenter(moviesContext: MoviesContext,
+        fun providesSplashPresenter(moviesContext: ApplicationMoviesContext,
                                     backgroundExecutor: BackgroundExecutor,
                                     interactor: SplashPresenterInteractor): SplashPresenter
                 = SplashPresenterImpl(moviesContext, backgroundExecutor, interactor)

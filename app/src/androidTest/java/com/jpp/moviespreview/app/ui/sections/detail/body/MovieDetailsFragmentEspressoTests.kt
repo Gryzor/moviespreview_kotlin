@@ -13,8 +13,7 @@ import com.jpp.moviespreview.app.extentions.launch
 import com.jpp.moviespreview.app.mock
 import com.jpp.moviespreview.app.mockMovieGenres
 import com.jpp.moviespreview.app.ui.Movie
-import com.jpp.moviespreview.app.ui.MoviesContext
-import com.jpp.moviespreview.app.ui.sections.detail.body.MovieDetailsFragment
+import com.jpp.moviespreview.app.ui.ApplicationMoviesContext
 import com.jpp.moviespreview.app.ui.util.EspressoTestActivity
 import com.jpp.moviespreview.app.util.extentions.addFragmentIfNotInStack
 import com.jpp.moviespreview.app.utils.RecyclerViewItemCountAssertion
@@ -39,7 +38,7 @@ class MovieDetailsFragmentEspressoTests {
     val testComponentRule = TestComponentRule()
 
     @Inject
-    lateinit var moviesContext: MoviesContext
+    lateinit var moviesContext: ApplicationMoviesContext
 
     private lateinit var selectedMovie: Movie
 

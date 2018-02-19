@@ -4,7 +4,7 @@ import com.jpp.moviespreview.app.domain.MoviePage
 import com.jpp.moviespreview.app.domain.PageParam
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
-import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.ApplicationMoviesContext
 import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationInteractor
 import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationInteractorImpl
 import com.jpp.moviespreview.app.ui.interactors.PaginationInteractor
@@ -30,7 +30,7 @@ class PlayingMoviesModule {
 
     @Provides
     @MainScreenScope
-    fun providesPlayingMoviesPresenter(moviesContext: MoviesContext,
+    fun providesPlayingMoviesPresenter(moviesContext: ApplicationMoviesContext,
                                        presenterInteractorDelegate: PlayingMoviesPresenterInteractor,
                                        playingMoviesUseCase: UseCase<PageParam, MoviePage>,
                                        mapper: DomainToUiDataMapper): PlayingMoviesPresenter

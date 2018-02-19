@@ -4,7 +4,7 @@ import android.content.Context
 import com.jpp.moviespreview.app.domain.Licenses
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
-import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.ApplicationMoviesContext
 import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
 import com.jpp.moviespreview.app.ui.sections.about.AboutInteractor
 import com.jpp.moviespreview.app.ui.sections.about.AboutInteractorImpl
@@ -35,7 +35,7 @@ class AboutModule {
 
     @AboutScope
     @Provides
-    fun providesLicencesPresenter(moviesContext: MoviesContext,
+    fun providesLicencesPresenter(moviesContext: ApplicationMoviesContext,
                                   useCase: UseCase<Any, Licenses>,
                                   domainToUiDataMapper: DomainToUiDataMapper,
                                   backgroundInteractor: BackgroundInteractor): LicensesPresenter = LicensesPresenterImpl(moviesContext, useCase, domainToUiDataMapper, backgroundInteractor)

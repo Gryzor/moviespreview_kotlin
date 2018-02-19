@@ -1,11 +1,11 @@
 package com.jpp.moviespreview.app.ui.sections.detail
 
-import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.ApplicationMoviesContext
 
 /**
  * Presenter to control the images section of the Movies detail view.
  */
-class MovieDetailImagesPresenterImpl(private val moviesContext: MoviesContext)
+class MovieDetailImagesPresenterImpl(private val moviesContext: ApplicationMoviesContext)
     : MovieDetailImagesPresenter {
 
     private lateinit var view: MovieDetailImagesView

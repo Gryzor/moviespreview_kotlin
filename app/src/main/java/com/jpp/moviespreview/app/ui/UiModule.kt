@@ -17,11 +17,11 @@ class UiModule {
 
     @Singleton
     @Provides
-    fun providesMoviesContext() = MoviesContext()
+    fun providesMoviesContext() = ApplicationMoviesContext()
 
     @Singleton
     @Provides
-    fun providesMultiSearchContext(moviesContext: MoviesContext) = MultiSearchContext(moviesContext)
+    fun providesMultiSearchContext(moviesContext: ApplicationMoviesContext) = MultiSearchContext(moviesContext)
 
 
     @Singleton

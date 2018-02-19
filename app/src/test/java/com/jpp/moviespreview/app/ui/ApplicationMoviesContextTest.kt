@@ -12,13 +12,13 @@ import org.junit.Test
 /**
  * Created by jpp on 10/27/17.
  */
-class MoviesContextTest {
+class ApplicationMoviesContextTest {
 
-    private lateinit var subject: MoviesContext
+    private lateinit var subject: ApplicationMoviesContext
 
     @Before
     fun setUp() {
-        subject = MoviesContext()
+        subject = ApplicationMoviesContext()
     }
 
     @Test

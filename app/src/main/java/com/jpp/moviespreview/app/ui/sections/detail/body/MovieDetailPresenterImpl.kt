@@ -1,6 +1,6 @@
 package com.jpp.moviespreview.app.ui.sections.detail.body
 
-import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.ApplicationMoviesContext
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailPresenter
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailView
 
@@ -10,7 +10,7 @@ import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailView
  *
  * Created by jpp on 11/4/17.
  */
-class MovieDetailPresenterImpl(private val moviesContext: MoviesContext) : MovieDetailPresenter {
+class MovieDetailPresenterImpl(private val moviesContext: ApplicationMoviesContext) : MovieDetailPresenter {
 
 
     private lateinit var view: MovieDetailView

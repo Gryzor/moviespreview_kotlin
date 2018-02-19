@@ -4,7 +4,7 @@ import com.jpp.moviespreview.app.domain.Movie
 import com.jpp.moviespreview.app.domain.MovieCredits
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
-import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.ApplicationMoviesContext
 import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationInteractor
 import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationInteractorImpl
 import com.jpp.moviespreview.app.ui.sections.detail.body.MovieDetailPresenterImpl
@@ -25,18 +25,18 @@ class MovieDetailsModule {
 
     @Provides
     @DetailsScope
-    fun providesMovieDetailImagesPresenter(moviesContext: MoviesContext): MovieDetailImagesPresenter =
+    fun providesMovieDetailImagesPresenter(moviesContext: ApplicationMoviesContext): MovieDetailImagesPresenter =
             MovieDetailImagesPresenterImpl(moviesContext)
 
 
     @Provides
     @DetailsScope
-    fun providesMovieDetailsPresenter(moviesContext: MoviesContext): MovieDetailPresenter
+    fun providesMovieDetailsPresenter(moviesContext: ApplicationMoviesContext): MovieDetailPresenter
             = MovieDetailPresenterImpl(moviesContext)
 
     @Provides
     @DetailsScope
-    fun providesMovieDetailsCreditsPresenter(moviesContext: MoviesContext,
+    fun providesMovieDetailsCreditsPresenter(moviesContext: ApplicationMoviesContext,
                                              presenterInteractorDelegate: MovieDetailsCreditsPresenterInteractor,
                                              useCase: UseCase<Movie, MovieCredits>,
                                              mapper: DomainToUiDataMapper): MovieDetailCreditsPresenter

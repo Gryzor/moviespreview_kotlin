@@ -11,7 +11,7 @@ import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
  *
  * Created by jpp on 10/23/17.
  */
-class PlayingMoviesPresenterImpl(private val moviesContext: MoviesContext,
+class PlayingMoviesPresenterImpl(private val moviesContext: ApplicationMoviesContext,
                                  private val interactorDelegate: PlayingMoviesPresenterInteractor,
                                  private val playingMoviesUseCase: UseCase<PageParam, DomainMoviePage>,
                                  private val mapper: DomainToUiDataMapper) : PlayingMoviesPresenter {

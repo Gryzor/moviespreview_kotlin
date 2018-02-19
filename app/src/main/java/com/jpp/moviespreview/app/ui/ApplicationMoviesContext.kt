@@ -1,12 +1,12 @@
 package com.jpp.moviespreview.app.ui
 
 /**
- * Contains the context of the application in terms of
- * what needs to show information to the user.
+ * Application scoped component (Singleton) that contains all
+ * the structures that are needed for the application execution.
  *
  * Created by jpp on 10/11/17.
  */
-class MoviesContext {
+class ApplicationMoviesContext {
 
 
     var posterImageConfig: List<PosterImageConfiguration>? = null

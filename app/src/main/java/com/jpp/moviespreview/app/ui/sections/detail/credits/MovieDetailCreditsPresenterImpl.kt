@@ -4,7 +4,7 @@ import com.jpp.moviespreview.app.domain.Movie
 import com.jpp.moviespreview.app.domain.MovieCredits
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
-import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.ApplicationMoviesContext
 import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailCreditsPresenter
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailCreditsView
@@ -13,7 +13,7 @@ import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailsCreditsPresenter
 /**
  * Created by jpp on 12/20/17.
  */
-class MovieDetailCreditsPresenterImpl(private val moviesContext: MoviesContext,
+class MovieDetailCreditsPresenterImpl(private val moviesContext: ApplicationMoviesContext,
                                       private val interactorDelegate: MovieDetailsCreditsPresenterInteractor,
                                       private val useCase: UseCase<Movie, MovieCredits>,
                                       private val mapper: DomainToUiDataMapper) : MovieDetailCreditsPresenter {

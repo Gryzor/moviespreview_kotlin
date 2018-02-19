@@ -19,7 +19,7 @@ class EspressoUiModule {
 
     @Singleton
     @Provides
-    fun providesMoviesContext() = MoviesContext()
+    fun providesMoviesContext() = ApplicationMoviesContext()
 
     @Singleton
     @Provides
@@ -45,7 +45,7 @@ class EspressoUiModule {
 
     @Singleton
     @Provides
-    fun providesMultiSearchContext(moviesContext: MoviesContext) = MultiSearchContext(moviesContext)
+    fun providesMultiSearchContext(moviesContext: ApplicationMoviesContext) = MultiSearchContext(moviesContext)
 
     @Singleton
     @Provides
