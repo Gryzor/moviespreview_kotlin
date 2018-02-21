@@ -1,6 +1,6 @@
 package com.jpp.moviespreview.app.ui.sections.splash
 
-import com.jpp.moviespreview.app.di.activity.HasActivitySubcomponentBuilders
+import com.jpp.moviespreview.app.di.HasSubcomponentBuilders
 import com.jpp.moviespreview.app.di.activity.InjectedActivity
 import com.jpp.moviespreview.app.ui.sections.main.MainActivity
 import com.jpp.moviespreview.app.ui.sections.splash.di.SplashActivityComponent
@@ -21,8 +21,8 @@ import javax.inject.Inject
 class SplashActivity : InjectedActivity(), SplashView {
 
 
-    override fun injectMembers(hasActivitySubcomponentBuilders: HasActivitySubcomponentBuilders) {
-        (hasActivitySubcomponentBuilders.getActivityComponentBuilder(SplashActivity::class.java) as SplashActivityComponent.Builder)
+    override fun injectMembers(hasSubcomponentBuilders: HasSubcomponentBuilders) {
+        (hasSubcomponentBuilders.getActivityComponentBuilder(SplashActivity::class.java) as SplashActivityComponent.Builder)
                 .activityModule(SplashActivityComponent.SplashActivityModule(this)).build().injectMembers(this)
     }
 

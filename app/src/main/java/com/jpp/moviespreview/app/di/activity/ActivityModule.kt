@@ -5,7 +5,7 @@ import dagger.Module
 import dagger.Provides
 
 /**
- * Dagger Module base class to provide activities.
+ * Dagger Module base class to provide Activity dependencies.
  *
  * Created by jpp on 2/14/18.
  */

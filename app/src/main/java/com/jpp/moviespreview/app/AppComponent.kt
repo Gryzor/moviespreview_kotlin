@@ -2,6 +2,7 @@ package com.jpp.moviespreview.app
 
 import com.jpp.moviespreview.app.data.DataModule
 import com.jpp.moviespreview.app.di.activity.ActivityBindingModule
+import com.jpp.moviespreview.app.di.fragment.FragmentBindingModule
 import com.jpp.moviespreview.app.domain.DomainModule
 import com.jpp.moviespreview.app.ui.UiModule
 import com.jpp.moviespreview.app.ui.sections.about.di.AboutComponent
@@ -21,7 +22,14 @@ import javax.inject.Singleton
  * Created by jpp on 10/4/17.
  */
 @Singleton
-@Component(modules = arrayOf(ActivityBindingModule::class, AppModule::class, DataModule::class, DomainModule::class, UiModule::class))
+@Component(modules = [
+    (ActivityBindingModule::class),
+    (FragmentBindingModule::class),
+    (AppModule::class),
+    (DataModule::class),
+    (DomainModule::class),
+    (UiModule::class)
+])
 interface AppComponent {
 
     fun inject(application: MoviesPreviewApp): MoviesPreviewApp

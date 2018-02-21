@@ -13,7 +13,7 @@ import dagger.multibindings.IntoMap
  *
  * Created by jpp on 2/14/18.
  */
-@Module(subcomponents = arrayOf(SplashActivityComponent::class))
+@Module(subcomponents = [(SplashActivityComponent::class)])
 abstract class ActivityBindingModule {
 
     @Binds

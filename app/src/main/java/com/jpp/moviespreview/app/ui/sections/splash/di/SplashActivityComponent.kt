@@ -23,7 +23,7 @@ import dagger.Subcomponent
  * Created by jpp on 2/14/18.
  */
 @ActivityScope
-@Subcomponent(modules = arrayOf(SplashActivityComponent.SplashActivityModule::class))
+@Subcomponent(modules = [(SplashActivityComponent.SplashActivityModule::class)])
 interface SplashActivityComponent : ActivityComponent<SplashActivity> {
 
     @Subcomponent.Builder
