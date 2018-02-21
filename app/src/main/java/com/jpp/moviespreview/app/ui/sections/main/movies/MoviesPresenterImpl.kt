@@ -1,6 +1,8 @@
 package com.jpp.moviespreview.app.ui.sections.main.movies
 
 import com.jpp.moviespreview.app.ui.Error
+import com.jpp.moviespreview.app.ui.MoviesContextHandler
+import com.jpp.moviespreview.app.ui.PosterImageConfiguration
 import com.jpp.moviespreview.app.ui.interactors.BackgroundExecutor
 import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationManager
 import com.jpp.moviespreview.app.ui.interactors.PaginationController
@@ -47,9 +49,30 @@ class MoviesPresenterImpl(private val moviesContextHandler: MoviesContextHandler
 
     private fun configureInteractorAndGetFirstMoviePage() {
         with(moviesContextHandler) {
-            val selectedImageConfig = imageConfigManager.findPosterImageConfigurationForWidth(getPosterImageConfigs(), moviesView.getScreenWidth())
-            interactor.configure(moviesData, getMovieGenres(), selectedImageConfig)
-            getNextMoviePage()
+            getMovieGenres()?.let {
+                val selectedImageConfig = getPosterImageConfiguration()
+                interactor.configure(moviesData, it, selectedImageConfig)
+                getNextMoviePage()
+            } ?: run {
+                // should never happen, since this is executed with executeBlockIfConfigIsCompleted()
+                throw IllegalStateException("Movies context should be completed at this point")
+            }
+        }
+    }
+
+
+    /**
+     * Finds and return the [PosterImageConfiguration] for the current screen
+     * configuration.
+     */
+    private fun getPosterImageConfiguration(): PosterImageConfiguration {
+        with(moviesContextHandler) {
+            getPosterImageConfigs()?.let {
+                return imageConfigManager.findPosterImageConfigurationForWidth(it, moviesView.getScreenWidth())
+            } ?: run {
+                // should never happen, since this is executed with executeBlockIfConfigIsCompleted()
+                throw IllegalStateException("Movies context should be completed at this point")
+            }
         }
     }
 
@@ -67,6 +90,11 @@ class MoviesPresenterImpl(private val moviesContextHandler: MoviesContextHandler
         }
     }
 
+
+    /**
+     * Asks the [MoviesView] to show loading view if there
+     * are no movies currently on screen.
+     */
     private fun showLoadingIfNeeded() {
         with(moviesView) {
             if (isShowingMovies()) {
@@ -76,6 +104,9 @@ class MoviesPresenterImpl(private val moviesContextHandler: MoviesContextHandler
     }
 
 
+    /**
+     * Observes the data that will be updated by the Command.
+     */
     private fun observeData() {
         with(moviesData) {
             whenNotNull(lastMoviePage, {

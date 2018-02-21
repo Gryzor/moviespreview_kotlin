@@ -34,6 +34,10 @@ class UiModule {
 
     @Singleton
     @Provides
+    fun providesMoviesContextHandler(moviesContext: ApplicationMoviesContext): MoviesContextHandler = MoviesContextHandlerImpl(moviesContext)
+
+    @Singleton
+    @Provides
     fun providesBackgroundExecutor(): BackgroundExecutor = BackgroundExecutorImpl()
 
 
@@ -44,8 +48,7 @@ class UiModule {
     @Singleton
     @Provides
     fun providePresenterInteractorDelegate(backgroundInteractor: BackgroundInteractor,
-                                           connectivityInteractor: ConnectivityInteractor): PresenterInteractorDelegate
-            = PresenterInteractorDelegateImpl(backgroundInteractor, connectivityInteractor)
+                                           connectivityInteractor: ConnectivityInteractor): PresenterInteractorDelegate = PresenterInteractorDelegateImpl(backgroundInteractor, connectivityInteractor)
 
 
     @Singleton

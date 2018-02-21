@@ -48,39 +48,7 @@ interface MoviesPresenterInteractor {
     fun retrieveMoviePage(page: Int)
 }
 
-/**
- * Handles the context in which the [MoviesPresenter] works.
- */
-interface MoviesContextHandler {
 
-    /**
-     * Provides a copy of the list of [MoviePage] in the context.
-     */
-    fun getAllMoviePages(): List<MoviePage>
-
-    /**
-     * True if the context configuration is completed,
-     * false any other case.
-     */
-    fun isConfigCompleted(): Boolean
-
-
-    /**
-     * Retrieves a copy of the [MovieGenre] list in the context.
-     */
-    fun getMovieGenres(): List<MovieGenre>
-
-
-    /**
-     * Retrieves a copy of the [PosterImageConfiguration] list in the context.
-     */
-    fun getPosterImageConfigs(): List<PosterImageConfiguration>
-
-    /**
-     * Adds the provided [moviePage] to the movies context.
-     */
-    fun addMoviePage(moviePage: MoviePage)
-}
 
 /**
  * Defines a communication channel between [MoviesPresenter] and [MoviesPresenterInteractor].

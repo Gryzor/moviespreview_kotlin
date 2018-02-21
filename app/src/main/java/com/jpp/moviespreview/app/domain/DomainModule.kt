@@ -14,6 +14,7 @@ import com.jpp.moviespreview.app.domain.genre.RetrieveGenresUseCase
 import com.jpp.moviespreview.app.domain.licenses.LicensesDataMapper
 import com.jpp.moviespreview.app.domain.licenses.RetrieveLicensesUseCase
 import com.jpp.moviespreview.app.domain.movie.MovieDataMapper
+import com.jpp.moviespreview.app.domain.movie.RetrieveMoviesInTheaterCommand
 import com.jpp.moviespreview.app.domain.movie.RetrieveMoviesInTheaterUseCase
 import com.jpp.moviespreview.app.domain.movie.credits.CreditsDataMapper
 import com.jpp.moviespreview.app.domain.movie.credits.RetrieveMovieCreditsUseCase
@@ -33,36 +34,36 @@ class DomainModule {
 
     @Provides
     @Singleton
-    fun provideRetrieveMovieGenresUseCase(apiInstance: MoviesPreviewApiWrapper, genresCache: MoviesGenreCache): UseCase<Any, List<Genre>>
-            = RetrieveGenresUseCase(GenreDataMapper(), apiInstance, genresCache)
+    fun provideRetrieveMovieGenresUseCase(apiInstance: MoviesPreviewApiWrapper,
+                                          genresCache: MoviesGenreCache): UseCase<Any, List<Genre>> = RetrieveGenresUseCase(GenreDataMapper(), apiInstance, genresCache)
 
     @Provides
     @Singleton
-    fun provideRetrieveConfigurationUseCase(apiInstance: MoviesPreviewApiWrapper, configurationCache: MoviesConfigurationCache): UseCase<Any, MoviesConfiguration>
-            = RetrieveConfigurationUseCase(ConfigurationDataMapper(), apiInstance, configurationCache)
-
-
-    @Provides
-    @Singleton
-    fun providesRetrieveMoviesInTheaterUseCase(api: MoviesPreviewApiWrapper, moviesCache: MoviesCache, movieDataMapper: MovieDataMapper): UseCase<PageParam, MoviePage>
-            = RetrieveMoviesInTheaterUseCase(movieDataMapper, api, moviesCache)
+    fun provideRetrieveConfigurationUseCase(apiInstance: MoviesPreviewApiWrapper,
+                                            configurationCache: MoviesConfigurationCache): UseCase<Any, MoviesConfiguration> = RetrieveConfigurationUseCase(ConfigurationDataMapper(), apiInstance, configurationCache)
 
 
     @Provides
     @Singleton
-    fun providesRetrieveMoviesCreditUseCase(api: MoviesPreviewApiWrapper, moviesCache: MoviesCache): UseCase<Movie, MovieCredits>
-            = RetrieveMovieCreditsUseCase(CreditsDataMapper(), api, moviesCache)
+    fun providesRetrieveMoviesInTheaterUseCase(api: MoviesPreviewApiWrapper,
+                                               moviesCache: MoviesCache,
+                                               movieDataMapper: MovieDataMapper): UseCase<PageParam, MoviePage> = RetrieveMoviesInTheaterUseCase(movieDataMapper, api, moviesCache)
 
 
     @Provides
     @Singleton
-    fun providesMultiSearchUseCase(api: MoviesPreviewApiWrapper, movieDataMapper: MovieDataMapper): UseCase<MultiSearchParam, MultiSearchPage>
-            = MultiSearchUseCase(MultiSearchDataMapper(movieDataMapper), api)
+    fun providesRetrieveMoviesCreditUseCase(api: MoviesPreviewApiWrapper,
+                                            moviesCache: MoviesCache): UseCase<Movie, MovieCredits> = RetrieveMovieCreditsUseCase(CreditsDataMapper(), api, moviesCache)
+
 
     @Provides
     @Singleton
-    fun providesRetrieveLicencesUseCase(assetLoader: AssetLoader): UseCase<Any, Licenses>
-            = RetrieveLicensesUseCase(assetLoader, LicensesDataMapper())
+    fun providesMultiSearchUseCase(api: MoviesPreviewApiWrapper,
+                                   movieDataMapper: MovieDataMapper): UseCase<MultiSearchParam, MultiSearchPage> = MultiSearchUseCase(MultiSearchDataMapper(movieDataMapper), api)
+
+    @Provides
+    @Singleton
+    fun providesRetrieveLicencesUseCase(assetLoader: AssetLoader): UseCase<Any, Licenses> = RetrieveLicensesUseCase(assetLoader, LicensesDataMapper())
 
     @Provides
     @Singleton
@@ -71,11 +72,20 @@ class DomainModule {
 
     @Provides
     @Singleton
-    fun providesRetrieveConfigurationCommand(apiInstance: MoviesPreviewApiWrapper, configurationCache: MoviesConfigurationCache): Command<Any, MoviesConfiguration>
-            = RetrieveConfigurationCommand(ConfigurationDataMapper(), apiInstance, configurationCache)
+    fun providesRetrieveConfigurationCommand(apiInstance: MoviesPreviewApiWrapper,
+                                             configurationCache: MoviesConfigurationCache): Command<Any, MoviesConfiguration> = RetrieveConfigurationCommand(ConfigurationDataMapper(), apiInstance, configurationCache)
 
     @Provides
     @Singleton
-    fun providesRetrieveGenresCommand(apiInstance: MoviesPreviewApiWrapper, genresCache: MoviesGenreCache): Command<Any, List<Genre>>
-            = RetrieveGenresCommand(GenreDataMapper(), apiInstance, genresCache)
+    fun providesRetrieveGenresCommand(apiInstance: MoviesPreviewApiWrapper,
+                                      genresCache: MoviesGenreCache): Command<Any, List<Genre>> = RetrieveGenresCommand(GenreDataMapper(), apiInstance, genresCache)
+
+
+    @Provides
+    @Singleton
+    fun providesRetrieveMoviesInTheaterCommand(mapper: MovieDataMapper,
+                                               api: MoviesPreviewApiWrapper,
+                                               moviesCache: MoviesCache)
+            : Command<PageParam, MoviePage> = RetrieveMoviesInTheaterCommand(mapper, api, moviesCache)
+
 }
