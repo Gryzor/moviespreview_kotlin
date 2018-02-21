@@ -6,8 +6,8 @@ import android.content.Context
 import android.os.StrictMode
 import com.jpp.moviespreview.BuildConfig
 import com.jpp.moviespreview.app.data.DataModule
-import com.jpp.moviespreview.app.di.ActivityComponentBuilder
-import com.jpp.moviespreview.app.di.HasActivitySubcomponentBuilders
+import com.jpp.moviespreview.app.di.activity.ActivityComponentBuilder
+import com.jpp.moviespreview.app.di.activity.HasActivitySubcomponentBuilders
 import com.jpp.moviespreview.app.domain.DomainModule
 import com.jpp.moviespreview.app.ui.UiModule
 import com.jpp.moviespreview.app.ui.sections.about.di.AboutComponent

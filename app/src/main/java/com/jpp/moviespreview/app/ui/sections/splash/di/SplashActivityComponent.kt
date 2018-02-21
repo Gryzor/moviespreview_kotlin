@@ -1,9 +1,9 @@
 package com.jpp.moviespreview.app.ui.sections.splash.di
 
-import com.jpp.moviespreview.app.di.ActivityComponent
-import com.jpp.moviespreview.app.di.ActivityComponentBuilder
-import com.jpp.moviespreview.app.di.ActivityModule
-import com.jpp.moviespreview.app.di.ActivityScope
+import com.jpp.moviespreview.app.di.activity.ActivityComponent
+import com.jpp.moviespreview.app.di.activity.ActivityComponentBuilder
+import com.jpp.moviespreview.app.di.activity.ActivityModule
+import com.jpp.moviespreview.app.di.activity.ActivityScope
 import com.jpp.moviespreview.app.domain.Command
 import com.jpp.moviespreview.app.domain.Genre
 import com.jpp.moviespreview.app.domain.MoviesConfiguration

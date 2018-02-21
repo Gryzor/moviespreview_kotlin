@@ -1,7 +1,7 @@
 package com.jpp.moviespreview.app
 
 import android.app.Activity
-import com.jpp.moviespreview.app.di.ActivityComponentBuilder
+import com.jpp.moviespreview.app.di.activity.ActivityComponentBuilder
 import java.util.*
 import javax.inject.Provider
 

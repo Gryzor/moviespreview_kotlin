@@ -1,4 +1,4 @@
-package com.jpp.moviespreview.app.di
+package com.jpp.moviespreview.app.di.activity
 
 import android.app.Activity
 import dagger.MembersInjector

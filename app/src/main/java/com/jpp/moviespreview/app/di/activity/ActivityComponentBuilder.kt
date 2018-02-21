@@ -1,4 +1,4 @@
-package com.jpp.moviespreview.app.di
+package com.jpp.moviespreview.app.di.activity
 
 /**
  * Based on http://frogermcs.github.io/activities-multibinding-in-dagger-2/

@@ -1,7 +1,7 @@
 package com.jpp.moviespreview.app
 
 import com.jpp.moviespreview.app.data.EspressoDataModule
-import com.jpp.moviespreview.app.di.ActivityBindingModule
+import com.jpp.moviespreview.app.di.activity.ActivityBindingModule
 import com.jpp.moviespreview.app.domain.EspressoDomainModule
 import com.jpp.moviespreview.app.ui.EspressoUiModule
 import com.jpp.moviespreview.app.ui.sections.detail.body.MovieDetailsFragmentEspressoTests

@@ -75,7 +75,7 @@ class MoviesPresenterTest {
 //        `when`(imageConfigManager.findPosterImageConfigurationForWidth(posterImageConfigs, screenWidth)).thenReturn(selectedPosterImageConfiguration)
 
         `when`(moviesContextHandler.isConfigCompleted()).thenReturn(true)
-        
+
 
 
         verify(moviesPresenterInteractor).configure(any(), any(), any())

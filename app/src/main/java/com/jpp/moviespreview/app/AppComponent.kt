@@ -1,7 +1,7 @@
 package com.jpp.moviespreview.app
 
 import com.jpp.moviespreview.app.data.DataModule
-import com.jpp.moviespreview.app.di.ActivityBindingModule
+import com.jpp.moviespreview.app.di.activity.ActivityBindingModule
 import com.jpp.moviespreview.app.domain.DomainModule
 import com.jpp.moviespreview.app.ui.UiModule
 import com.jpp.moviespreview.app.ui.sections.about.di.AboutComponent

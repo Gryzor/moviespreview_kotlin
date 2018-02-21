@@ -1,4 +1,4 @@
-package com.jpp.moviespreview.app.di
+package com.jpp.moviespreview.app.di.activity
 
 import com.jpp.moviespreview.app.ui.sections.splash.SplashActivity
 import com.jpp.moviespreview.app.ui.sections.splash.di.SplashActivityComponent

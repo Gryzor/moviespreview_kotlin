@@ -1,7 +1,7 @@
 package com.jpp.moviespreview.app.ui.sections.splash
 
-import com.jpp.moviespreview.app.di.HasActivitySubcomponentBuilders
-import com.jpp.moviespreview.app.di.InjectedActivity
+import com.jpp.moviespreview.app.di.activity.HasActivitySubcomponentBuilders
+import com.jpp.moviespreview.app.di.activity.InjectedActivity
 import com.jpp.moviespreview.app.ui.sections.main.MainActivity
 import com.jpp.moviespreview.app.ui.sections.splash.di.SplashActivityComponent
 import com.jpp.moviespreview.app.util.extentions.showNoNetworkConnectionAlert

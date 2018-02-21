@@ -1,4 +1,4 @@
-package com.jpp.moviespreview.app.di
+package com.jpp.moviespreview.app.di.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
