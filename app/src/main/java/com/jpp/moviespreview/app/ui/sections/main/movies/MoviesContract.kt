@@ -22,6 +22,13 @@ import com.jpp.moviespreview.app.util.extentions.DelegatesExt
  */
 interface MoviesView {
     fun showMoviePage(moviePage: MoviePage)
+    fun backToSplashScreen()
+    fun showEndOfPaging()
+    fun getScreenWidth(): Int
+    fun showUnexpectedError()
+    fun showNotConnectedToNetwork()
+    fun isShowingMovies(): Boolean
+    fun showLoading()
 }
 
 /**
@@ -29,6 +36,7 @@ interface MoviesView {
  */
 interface MoviesPresenter {
     fun linkView(moviesView: MoviesView)
+    fun getNextMoviePage()
 }
 
 /**
@@ -41,11 +49,38 @@ interface MoviesPresenterInteractor {
 }
 
 /**
- * Provider definition to manage the movies in the context of the current
- * screen shown.
+ * Interactor definition to allow the [MoviesPresenter] to interact with the application's movies
+ * context.
  */
-interface MoviesInContextProvider {
+interface MoviesContextInteractor {
+
+    /**
+     * Provides a copy of the list of [MoviePage] in the context.
+     */
     fun getAllMoviePages(): List<MoviePage>
+
+    /**
+     * True if the context configuration is completed,
+     * false any other case.
+     */
+    fun isConfigCompleted(): Boolean
+
+
+    /**
+     * Retrieves a copy of the [MovieGenre] list in the context.
+     */
+    fun getMovieGenres(): List<MovieGenre>
+
+
+    /**
+     * Retrieves a copy of the [PosterImageConfiguration] list in the context.
+     */
+    fun getPosterImageConfigs(): List<PosterImageConfiguration>
+
+    /**
+     * Adds the provided [moviePage] to the movies context.
+     */
+    fun addMoviePage(moviePage: MoviePage)
 }
 
 /**
