@@ -1,7 +1,7 @@
 package com.jpp.moviespreview.app.ui.sections.detail.credits
 
 import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
-import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationInteractor
+import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationManager
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailsCreditsPresenterInteractor
 
@@ -12,7 +12,7 @@ import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailsCreditsPresenter
  */
 
 class MovieDetailsCreditsPresenterInteractorImpl(private val presenterInteractorDelegate: PresenterInteractorDelegate,
-                                                 private val imageConfigInteractor: ImageConfigurationInteractor)
+                                                 private val imageConfigManager: ImageConfigurationManager)
     : MovieDetailsCreditsPresenterInteractor {
 
     override fun isConnectedToNetwork() = presenterInteractorDelegate.isConnectedToNetwork()
@@ -25,5 +25,5 @@ class MovieDetailsCreditsPresenterInteractorImpl(private val presenterInteractor
 
 
     override fun findProfileImageConfigurationForHeight(profileImageConfigs: List<ProfileImageConfiguration>, height: Int)
-            = imageConfigInteractor.findProfileImageConfigurationForHeight(profileImageConfigs, height)
+            = imageConfigManager.findProfileImageConfigurationForHeight(profileImageConfigs, height)
 }

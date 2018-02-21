@@ -2,18 +2,18 @@ package com.jpp.moviespreview.app.ui.sections.main.movies
 
 import com.jpp.moviespreview.app.ui.Error
 import com.jpp.moviespreview.app.ui.interactors.BackgroundExecutor
-import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationInteractor
-import com.jpp.moviespreview.app.ui.interactors.PaginationInteractor
+import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationManager
+import com.jpp.moviespreview.app.ui.interactors.PaginationController
 import com.jpp.moviespreview.app.util.extentions.whenNotNull
 
 /**
  * Created by jpp on 2/19/18.
  */
-class MoviesPresenterImpl(private val moviesContextInteractor: MoviesContextInteractor,
+class MoviesPresenterImpl(private val moviesContextHandler: MoviesContextHandler,
                           private val backgroundExecutor: BackgroundExecutor,
                           private var interactor: MoviesPresenterInteractor,
-                          private val paginationInteractor: PaginationInteractor,
-                          private val imageConfigInteractor: ImageConfigurationInteractor) : MoviesPresenter {
+                          private val paginationController: PaginationController,
+                          private val imageConfigManager: ImageConfigurationManager) : MoviesPresenter {
 
 
     private lateinit var moviesView: MoviesView
@@ -22,7 +22,7 @@ class MoviesPresenterImpl(private val moviesContextInteractor: MoviesContextInte
     override fun linkView(moviesView: MoviesView) {
         this.moviesView = moviesView
         executeBlockIfConfigIsCompleted {
-            with(moviesContextInteractor.getAllMoviePages()) {
+            with(moviesContextHandler.getAllMoviePages()) {
                 when (size) {
                     0 -> configureInteractorAndGetFirstMoviePage()
                     else -> forEach { moviesView.showMoviePage(it) }
@@ -34,8 +34,8 @@ class MoviesPresenterImpl(private val moviesContextInteractor: MoviesContextInte
 
     override fun getNextMoviePage() {
         executeBlockIfConfigIsCompleted {
-            paginationInteractor.managePagination(
-                    { moviesContextInteractor.getAllMoviePages() },
+            paginationController.controlPagination(
+                    { moviesContextHandler.getAllMoviePages() },
                     { moviesView.showEndOfPaging() },
                     {
                         showLoadingIfNeeded()
@@ -46,8 +46,8 @@ class MoviesPresenterImpl(private val moviesContextInteractor: MoviesContextInte
     }
 
     private fun configureInteractorAndGetFirstMoviePage() {
-        with(moviesContextInteractor) {
-            val selectedImageConfig = imageConfigInteractor.findPosterImageConfigurationForWidth(getPosterImageConfigs(), moviesView.getScreenWidth())
+        with(moviesContextHandler) {
+            val selectedImageConfig = imageConfigManager.findPosterImageConfigurationForWidth(getPosterImageConfigs(), moviesView.getScreenWidth())
             interactor.configure(moviesData, getMovieGenres(), selectedImageConfig)
             getNextMoviePage()
         }
@@ -60,7 +60,7 @@ class MoviesPresenterImpl(private val moviesContextInteractor: MoviesContextInte
      * load all the needed resources into the context.
      */
     private fun executeBlockIfConfigIsCompleted(block: () -> Unit) {
-        if (moviesContextInteractor.isConfigCompleted()) {
+        if (moviesContextHandler.isConfigCompleted()) {
             block()
         } else {
             moviesView.backToSplashScreen()
@@ -80,7 +80,7 @@ class MoviesPresenterImpl(private val moviesContextInteractor: MoviesContextInte
         with(moviesData) {
             whenNotNull(lastMoviePage, {
                 backgroundExecutor.executeUiJob {
-                    moviesContextInteractor.addMoviePage(it)
+                    moviesContextHandler.addMoviePage(it)
                     moviesView.showMoviePage(it)
                 }
             })

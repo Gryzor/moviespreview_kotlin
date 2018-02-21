@@ -3,7 +3,7 @@ package com.jpp.moviespreview.app.ui.sections.main.playing
 import com.jpp.moviespreview.app.ui.Movie
 import com.jpp.moviespreview.app.ui.MoviePage
 import com.jpp.moviespreview.app.ui.PosterImageConfiguration
-import com.jpp.moviespreview.app.ui.interactors.PaginationInteractor
+import com.jpp.moviespreview.app.ui.interactors.PaginationController
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 
 /**
@@ -33,7 +33,7 @@ interface PlayingMoviesPresenter {
 /**
  * Interactor definition for the playing movies presenter.
  */
-interface PlayingMoviesPresenterInteractor : PresenterInteractorDelegate, PaginationInteractor {
+interface PlayingMoviesPresenterController : PresenterInteractorDelegate, PaginationController {
 
     fun findPosterImageConfigurationForWidth(posterImageConfigs: List<PosterImageConfiguration>,
                                              width: Int): PosterImageConfiguration

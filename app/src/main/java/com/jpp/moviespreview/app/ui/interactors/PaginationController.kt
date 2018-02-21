@@ -3,23 +3,23 @@ package com.jpp.moviespreview.app.ui.interactors
 import com.jpp.moviespreview.app.ui.UiPage
 
 /**
- * Interactor to handle pagination in those views where the feature is required
+ * Controls the pagination of a large list of [UiPage]s.
  *
  * Created by jpp on 1/15/18.
  */
-interface PaginationInteractor {
+interface PaginationController {
 
-    fun managePagination(getAllPages: () -> List<UiPage>,
-                         onEndOfPaging: () -> Unit,
-                         onNextPage: (Int) -> Unit)
+    fun controlPagination(getAllPages: () -> List<UiPage>,
+                          onEndOfPaging: () -> Unit,
+                          onNextPage: (Int) -> Unit)
 }
 
-class PaginationInteractorImpl : PaginationInteractor {
+class PaginationControllerImpl : PaginationController {
 
 
-    override fun managePagination(getAllPages: () -> List<UiPage>,
-                                  onEndOfPaging: () -> Unit,
-                                  onNextPage: (Int) -> Unit) {
+    override fun controlPagination(getAllPages: () -> List<UiPage>,
+                                   onEndOfPaging: () -> Unit,
+                                   onNextPage: (Int) -> Unit) {
         var lastPageIndex = 0
         var lastPage: UiPage? = null
 

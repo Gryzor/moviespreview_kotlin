@@ -49,10 +49,9 @@ interface MoviesPresenterInteractor {
 }
 
 /**
- * Interactor definition to allow the [MoviesPresenter] to interact with the application's movies
- * context.
+ * Handles the context in which the [MoviesPresenter] works.
  */
-interface MoviesContextInteractor {
+interface MoviesContextHandler {
 
     /**
      * Provides a copy of the list of [MoviePage] in the context.

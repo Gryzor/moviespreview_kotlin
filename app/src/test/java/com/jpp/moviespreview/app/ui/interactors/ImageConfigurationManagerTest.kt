@@ -8,9 +8,9 @@ import org.junit.Test
 /**
  * Created by jpp on 1/15/18.
  */
-class ImageConfigurationInteractorTest {
+class ImageConfigurationManagerTest {
 
-    private val subject = ImageConfigurationInteractorImpl()
+    private val subject = ImageConfigurationManagerImpl()
 
 
     @Test

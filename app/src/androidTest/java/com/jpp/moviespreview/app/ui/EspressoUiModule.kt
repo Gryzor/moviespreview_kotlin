@@ -49,5 +49,5 @@ class EspressoUiModule {
 
     @Singleton
     @Provides
-    fun providesPaginationInteractor(): PaginationInteractor = PaginationInteractorImpl()
+    fun providesPaginationManager(): PaginationController = PaginationControllerImpl()
 }

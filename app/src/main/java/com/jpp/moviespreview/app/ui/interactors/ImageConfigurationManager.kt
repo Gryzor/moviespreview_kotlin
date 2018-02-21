@@ -6,11 +6,18 @@ import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
 import com.jpp.moviespreview.app.util.extentions.transformToInt
 
 /**
+ * Manages the images configurations for the provided properties.
+ *
  * Created by jpp on 1/9/18.
  */
-interface ImageConfigurationInteractor {
+interface ImageConfigurationManager {
 
 
+    /**
+     * Finds a suitable [ProfileImageConfiguration] for the provided [height].
+     * If none is appropriate, the last [ProfileImageConfiguration] in the [profileImageConfigs]
+     * list is returned.
+     */
     fun findProfileImageConfigurationForHeight(profileImageConfigs: List<ProfileImageConfiguration>,
                                                height: Int): ProfileImageConfiguration
 
@@ -24,8 +31,7 @@ interface ImageConfigurationInteractor {
 }
 
 
-
-class ImageConfigurationInteractorImpl : ImageConfigurationInteractor {
+class ImageConfigurationManagerImpl : ImageConfigurationManager {
 
     private var selectedPosterImageConfig: PosterImageConfiguration? = null
     private var selectedProfileImageConfig: ProfileImageConfiguration? = null

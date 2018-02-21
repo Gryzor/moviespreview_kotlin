@@ -12,7 +12,7 @@ import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
  * Created by jpp on 10/23/17.
  */
 class PlayingMoviesPresenterImpl(private val moviesContext: ApplicationMoviesContext,
-                                 private val interactorDelegate: PlayingMoviesPresenterInteractor,
+                                 private val interactorDelegate: PlayingMoviesPresenterController,
                                  private val playingMoviesUseCase: UseCase<PageParam, DomainMoviePage>,
                                  private val mapper: DomainToUiDataMapper) : PlayingMoviesPresenter {
 
@@ -73,7 +73,7 @@ class PlayingMoviesPresenterImpl(private val moviesContext: ApplicationMoviesCon
      */
     fun createNextUseCaseParam(manager: (PageParam) -> Unit) {
         with(moviesContext) {
-            interactorDelegate.managePagination(
+            interactorDelegate.controlPagination(
                     { getAllMoviePages() },
                     { playingMoviesView.showEndOfPaging() },
                     { manager(PageParam(it, mapper.convertUiGenresToDomainGenres(movieGenres!!))) }

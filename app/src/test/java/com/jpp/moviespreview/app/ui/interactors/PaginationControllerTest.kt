@@ -8,13 +8,13 @@ import org.junit.Test
 /**
  * Created by jpp on 1/15/18.
  */
-class PaginationInteractorTest {
+class PaginationControllerTest {
 
-    private val subject = PaginationInteractorImpl()
+    private val subject = PaginationControllerImpl()
 
     @Test
     fun managePaginationCallNextPage() {
-        subject.managePagination(
+        subject.controlPagination(
                 {
                     listOf(TestUiPage(1, 6),
                             TestUiPage(2, 6),
@@ -33,7 +33,7 @@ class PaginationInteractorTest {
 
     @Test
     fun managePaginationWithFirstPage() {
-        subject.managePagination(
+        subject.controlPagination(
                 {
                     listOf()
                 },
@@ -50,7 +50,7 @@ class PaginationInteractorTest {
 
     @Test
     fun managePaginationCallsEndOfPage() {
-        subject.managePagination(
+        subject.controlPagination(
                 {
                     listOf(TestUiPage(1, 6),
                             TestUiPage(2, 6),

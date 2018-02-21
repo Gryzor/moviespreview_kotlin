@@ -50,5 +50,5 @@ class UiModule {
 
     @Singleton
     @Provides
-    fun providesPaginationInteractor(): PaginationInteractor = PaginationInteractorImpl()
+    fun providesPaginationManager(): PaginationController = PaginationControllerImpl()
 }
