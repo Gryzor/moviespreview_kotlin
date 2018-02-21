@@ -8,8 +8,8 @@ import com.jpp.moviespreview.app.ui.Error
 import com.jpp.moviespreview.app.ui.MovieGenre
 import com.jpp.moviespreview.app.ui.PosterImageConfiguration
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
+import com.jpp.moviespreview.app.util.extentions.whenFalse
 import com.jpp.moviespreview.app.util.extentions.whenNotNull
-import com.jpp.moviespreview.app.util.extentions.whenNull
 import com.jpp.moviespreview.app.domain.Genre as DomainGenre
 import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
 
@@ -30,10 +30,10 @@ class MoviesPresenterInteractorImpl(private val mapper: DomainToUiDataMapper,
 
 
     override fun configure(data: MoviesData, movieGenres: List<MovieGenre>, posterImageConfiguration: PosterImageConfiguration) {
-        whenNull(domainMovieGenres, { domainMovieGenres = mapper.convertUiGenresIntoDomainGenres(movieGenres) })
-        whenNull(moviesData, { moviesData = data })
-        whenNull(uiMovieGenres, { uiMovieGenres = movieGenres })
-        whenNull(posterImageConfiguration, { this.posterImageConfiguration = posterImageConfiguration })
+        whenFalse(this::domainMovieGenres.isInitialized, { domainMovieGenres = mapper.convertUiGenresIntoDomainGenres(movieGenres) })
+        whenFalse(this::moviesData.isInitialized, { moviesData = data })
+        whenFalse(this::uiMovieGenres.isInitialized, { uiMovieGenres = movieGenres })
+        whenFalse(this::posterImageConfiguration.isInitialized, { this.posterImageConfiguration = posterImageConfiguration })
     }
 
     override fun retrieveMoviePage(page: Int) {
@@ -42,18 +42,16 @@ class MoviesPresenterInteractorImpl(private val mapper: DomainToUiDataMapper,
     }
 
     private fun verifyConfigAndFailIfNot() {
-        whenNull(domainMovieGenres, { throw IllegalStateException("You need to configure this object before interacting with it.") })
-        whenNull(moviesData, { throw IllegalStateException("You need to configure this object before interacting with it.") })
-        whenNull(uiMovieGenres, { throw IllegalStateException("You need to configure this object before interacting with it.") })
-        whenNull(posterImageConfiguration, { throw IllegalStateException("You need to configure this object before interacting with it.") })
+        whenFalse(this::domainMovieGenres.isInitialized, { throw IllegalStateException("You need to configure this object before interacting with it.") })
+        whenFalse(this::moviesData.isInitialized, { throw IllegalStateException("You need to configure this object before interacting with it.") })
+        whenFalse(this::uiMovieGenres.isInitialized, { throw IllegalStateException("You need to configure this object before interacting with it.") })
+        whenFalse(this::posterImageConfiguration.isInitialized, { throw IllegalStateException("You need to configure this object before interacting with it.") })
     }
 
 
     private fun onPageRetrieveSuccess() {
-        with(mapper) {
-            whenNotNull(commandData.value) {
-                moviesData.lastMoviePage = convertDomainMoviePageToUiMoviePage(it, posterImageConfiguration, uiMovieGenres)
-            }
+        whenNotNull(commandData.value) {
+            moviesData.lastMoviePage = mapper.convertDomainMoviePageToUiMoviePage(it, posterImageConfiguration, uiMovieGenres)
         }
     }
 
