@@ -1,4 +1,4 @@
-package com.jpp.moviespreview.app.ui.sections.main.playing
+package com.jpp.moviespreview.app.ui.sections.main.movies
 
 import android.support.v4.graphics.ColorUtils
 import android.support.v7.graphics.Palette
@@ -12,8 +12,8 @@ import com.jpp.moviespreview.app.util.extentions.inflate
 import com.jpp.moviespreview.app.util.extentions.loadImageUrlWithCallback
 import kotlinx.android.synthetic.main.movie_list_item.view.*
 
-class PlayingMoviesAdapter(private val listener: (Movie, ImageView) -> Unit,
-                           private val moviesList: MutableList<Movie> = mutableListOf()) : RecyclerView.Adapter<PlayingMoviesAdapter.ViewHolder>() {
+class MoviesListAdapter(private val listener: (Movie, ImageView) -> Unit,
+                        private val moviesList: MutableList<Movie> = mutableListOf()) : RecyclerView.Adapter<MoviesListAdapter.ViewHolder>() {
 
 
     override fun getItemCount() = moviesList.size

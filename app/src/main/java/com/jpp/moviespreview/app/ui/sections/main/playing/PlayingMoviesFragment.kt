@@ -13,6 +13,7 @@ import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.Movie
 import com.jpp.moviespreview.app.ui.MoviePage
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailActivity
+import com.jpp.moviespreview.app.ui.sections.main.movies.MoviesListAdapter
 import com.jpp.moviespreview.app.ui.sections.splash.SplashActivity
 import com.jpp.moviespreview.app.util.extentions.*
 import kotlinx.android.synthetic.main.playing_movies_fragment.*
@@ -29,7 +30,7 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
 
 
     private val adapter by lazy {
-        PlayingMoviesAdapter(
+        MoviesListAdapter(
                 { movie: Movie, viewPager: ImageView ->
                     playingMoviesPresenter.onMovieSelected(movie)
                     showMovieDetails(viewPager)

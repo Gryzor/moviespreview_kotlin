@@ -1,9 +1,6 @@
 package com.jpp.moviespreview.app.ui.sections.main.movies
 
-import com.jpp.moviespreview.app.ui.Error
-import com.jpp.moviespreview.app.ui.MovieGenre
-import com.jpp.moviespreview.app.ui.MoviePage
-import com.jpp.moviespreview.app.ui.PosterImageConfiguration
+import com.jpp.moviespreview.app.ui.*
 import com.jpp.moviespreview.app.util.extentions.DelegatesExt
 
 /**
@@ -37,6 +34,7 @@ interface MoviesView {
 interface MoviesPresenter {
     fun linkView(moviesView: MoviesView)
     fun getNextMoviePage()
+    fun onMovieSelected(movie: Movie)
 }
 
 /**

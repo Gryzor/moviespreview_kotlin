@@ -1,11 +1,13 @@
 package com.jpp.moviespreview.app.ui.sections.main.movies
 
 import com.jpp.moviespreview.app.ui.Error
+import com.jpp.moviespreview.app.ui.Movie
 import com.jpp.moviespreview.app.ui.MoviesContextHandler
 import com.jpp.moviespreview.app.ui.PosterImageConfiguration
 import com.jpp.moviespreview.app.ui.interactors.BackgroundExecutor
 import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationManager
 import com.jpp.moviespreview.app.ui.interactors.PaginationController
+import com.jpp.moviespreview.app.util.extentions.whenFalse
 import com.jpp.moviespreview.app.util.extentions.whenNotNull
 
 /**
@@ -46,6 +48,11 @@ class MoviesPresenterImpl(private val moviesContextHandler: MoviesContextHandler
             )
         }
     }
+
+    override fun onMovieSelected(movie: Movie) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
 
     private fun configureInteractorAndGetFirstMoviePage() {
         with(moviesContextHandler) {
@@ -97,9 +104,7 @@ class MoviesPresenterImpl(private val moviesContextHandler: MoviesContextHandler
      */
     private fun showLoadingIfNeeded() {
         with(moviesView) {
-            if (isShowingMovies()) {
-                showLoading()
-            }
+            whenFalse(isShowingMovies(), { showLoading() })
         }
     }
 
