@@ -35,6 +35,7 @@ class MoviesListAdapter(private val listener: (Movie, ImageView) -> Unit,
             with(movie) {
                 itemView.txt_movie_item_popularity.text = popularity.toString()
                 itemView.txt_movie_item_vote_count.text = voteCount.toString()
+                itemView.iv_movie_item.setImageResource(R.drawable.ic_app_icon_black)
                 itemView.iv_movie_item.loadImageUrlWithCallback(movie.getPosterPath(), {
                     Palette.from(it).generate {
                         /*
