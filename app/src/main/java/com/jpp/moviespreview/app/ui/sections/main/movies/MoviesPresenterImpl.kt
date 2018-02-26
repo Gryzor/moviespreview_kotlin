@@ -11,6 +11,11 @@ import com.jpp.moviespreview.app.util.extentions.whenFalse
 import com.jpp.moviespreview.app.util.extentions.whenNotNull
 
 /**
+ * [MoviesPresenter] implementation.
+ * Responsibilities:
+ *  1 - Retrieve movies pages.
+ *  2 - Store the pages in the context.
+ *  3 - Notify the UI about new data to show.
  * Created by jpp on 2/19/18.
  */
 class MoviesPresenterImpl(private val moviesContextHandler: MoviesContextHandler,
@@ -128,6 +133,9 @@ class MoviesPresenterImpl(private val moviesContextHandler: MoviesContextHandler
         }
     }
 
+    /**
+     * Process the errors detected while retrieving the movies.
+     */
     private fun processError(error: Error) {
         with(error) {
             if (type == Error.NO_CONNECTION) {

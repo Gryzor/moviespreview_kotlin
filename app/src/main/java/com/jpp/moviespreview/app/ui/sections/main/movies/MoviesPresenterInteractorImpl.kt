@@ -14,6 +14,12 @@ import com.jpp.moviespreview.app.domain.Genre as DomainGenre
 import com.jpp.moviespreview.app.domain.MoviePage as DomainMoviePage
 
 /**
+ * [MoviesPresenterInteractor] implementation. Interacts with the domain layer to retrieve
+ * movie pages.
+ * It's important to call [configure] before doing something with this interactor.
+ * When [retrieveMoviePage] is called, it will execute the command and retrieve the [DomainMoviePage]
+ * identified by the provided page number.
+ * Will notify it's client using the provided [MoviesData] callback.
  * Created by jpp on 2/19/18.
  */
 class MoviesPresenterInteractorImpl(private val mapper: DomainToUiDataMapper,
