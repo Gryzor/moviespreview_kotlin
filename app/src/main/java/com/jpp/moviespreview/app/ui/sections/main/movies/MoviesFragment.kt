@@ -19,6 +19,11 @@ import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 
 /**
+ * [MoviesView] implementation.
+ *
+ * It's implemented using a Fragment since the idea is to re-use all of this
+ * functionality to show different sections of the application.
+ *
  * Created by jpp on 2/21/18.
  */
 class MoviesFragment : InjectedFragment(), MoviesView {

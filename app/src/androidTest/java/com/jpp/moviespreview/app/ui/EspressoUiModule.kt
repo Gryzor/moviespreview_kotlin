@@ -50,4 +50,8 @@ class EspressoUiModule {
     @Singleton
     @Provides
     fun providesPaginationManager(): PaginationController = PaginationControllerImpl()
+
+    @Singleton
+    @Provides
+    fun providesMoviesContextHandler(): MoviesContextHandler = mock()
 }

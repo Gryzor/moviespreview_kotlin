@@ -143,4 +143,19 @@ class SplashActivityEspressoTest {
         onView(withText(R.string.alert_unexpected_error_message))
                 .check(matches(isDisplayed()))
     }
+
+
+
+    /**
+     * Provides injection for [SplashPresenter]
+     *
+     * Created by jpp on 2/14/18.
+     */
+    class EspressoSplashActivityComponent(private val splashPresenterInstance: SplashPresenter) : SplashActivityComponent {
+        override fun injectMembers(instance: SplashActivity?) {
+            instance?.let {
+                it.splashPresenter = splashPresenterInstance
+            }
+        }
+    }
 }

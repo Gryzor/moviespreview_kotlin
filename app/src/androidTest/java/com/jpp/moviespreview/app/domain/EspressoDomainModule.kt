@@ -47,4 +47,7 @@ class EspressoDomainModule {
     @Singleton
     fun providesRetrieveGenresCommand(): Command<Any, List<Genre>> = mock()
 
+    @Provides
+    @Singleton
+    fun providesRetrieveMoviesInTheaterCommand(): Command<PageParam, MoviePage> = mock()
 }
