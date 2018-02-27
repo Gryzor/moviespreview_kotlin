@@ -37,9 +37,6 @@ class SplashActivityEspressoTest {
     @get:Rule
     @JvmField
     val activityRule = MoviesPreviewActivityTestRule(SplashActivity::class.java)
-    @get:Rule
-    val testComponentRule = TestComponentRule()
-
 
     private val splashPresenter: SplashPresenter = mock()
     private val builder: SplashActivityComponent.Builder = mock()
@@ -55,7 +52,6 @@ class SplashActivityEspressoTest {
         val app = InstrumentationRegistry.getTargetContext().applicationContext as EspressoMoviesPreviewApp
         app.putActivityComponentBuilder(builder, SplashActivity::class.java)
 
-        testComponentRule.testComponent?.inject(this)
     }
 
 
@@ -142,5 +138,20 @@ class SplashActivityEspressoTest {
 
         onView(withText(R.string.alert_unexpected_error_message))
                 .check(matches(isDisplayed()))
+    }
+
+
+
+    /**
+     * Provides injection for [SplashPresenter]
+     *
+     * Created by jpp on 2/14/18.
+     */
+    class EspressoSplashActivityComponent(private val splashPresenterInstance: SplashPresenter) : SplashActivityComponent {
+        override fun injectMembers(instance: SplashActivity?) {
+            instance?.let {
+                it.splashPresenter = splashPresenterInstance
+            }
+        }
     }
 }

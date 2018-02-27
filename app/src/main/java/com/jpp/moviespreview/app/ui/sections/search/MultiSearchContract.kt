@@ -3,7 +3,7 @@ package com.jpp.moviespreview.app.ui.sections.search
 import com.jpp.moviespreview.app.ui.MultiSearchResult
 import com.jpp.moviespreview.app.ui.PosterImageConfiguration
 import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
-import com.jpp.moviespreview.app.ui.interactors.PaginationInteractor
+import com.jpp.moviespreview.app.ui.interactors.PaginationController
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 
 /**
@@ -62,7 +62,7 @@ interface QueryTextListener {
 /**
  * Defines an interactor to provide support to the multi search section.
  */
-interface MultiSearchPresenterInteractor : PresenterInteractorDelegate, PaginationInteractor {
+interface MultiSearchPresenterController : PresenterInteractorDelegate, PaginationController {
 
     fun findProfileImageConfigurationForHeight(profileImageConfigs: List<ProfileImageConfiguration>,
                                                height: Int): ProfileImageConfiguration

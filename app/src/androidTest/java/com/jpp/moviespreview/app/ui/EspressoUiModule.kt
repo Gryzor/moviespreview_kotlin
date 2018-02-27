@@ -19,7 +19,7 @@ class EspressoUiModule {
 
     @Singleton
     @Provides
-    fun providesMoviesContext() = MoviesContext()
+    fun providesMoviesContext() = ApplicationMoviesContext()
 
     @Singleton
     @Provides
@@ -45,9 +45,13 @@ class EspressoUiModule {
 
     @Singleton
     @Provides
-    fun providesMultiSearchContext(moviesContext: MoviesContext) = MultiSearchContext(moviesContext)
+    fun providesMultiSearchContext(moviesContext: ApplicationMoviesContext) = MultiSearchContext(moviesContext)
 
     @Singleton
     @Provides
-    fun providesPaginationInteractor(): PaginationInteractor = PaginationInteractorImpl()
+    fun providesPaginationManager(): PaginationController = PaginationControllerImpl()
+
+    @Singleton
+    @Provides
+    fun providesMoviesContextHandler(): MoviesContextHandler = mock()
 }

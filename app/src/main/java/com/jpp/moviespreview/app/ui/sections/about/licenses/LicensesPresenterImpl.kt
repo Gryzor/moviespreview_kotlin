@@ -4,13 +4,13 @@ import com.jpp.moviespreview.app.domain.Licenses
 import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.License
-import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.ApplicationMoviesContext
 import com.jpp.moviespreview.app.ui.interactors.BackgroundInteractor
 
 /**
  * Created by jpp on 1/20/18.
  */
-class LicensesPresenterImpl(private val moviesContext: MoviesContext,
+class LicensesPresenterImpl(private val moviesContext: ApplicationMoviesContext,
                             private val useCase: UseCase<Any, Licenses>,
                             private val mapper: DomainToUiDataMapper,
                             private val backgroundInteractor: BackgroundInteractor) : LicensesPresenter {

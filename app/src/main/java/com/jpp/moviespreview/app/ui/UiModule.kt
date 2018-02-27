@@ -17,11 +17,11 @@ class UiModule {
 
     @Singleton
     @Provides
-    fun providesMoviesContext() = MoviesContext()
+    fun providesMoviesContext() = ApplicationMoviesContext()
 
     @Singleton
     @Provides
-    fun providesMultiSearchContext(moviesContext: MoviesContext) = MultiSearchContext(moviesContext)
+    fun providesMultiSearchContext(moviesContext: ApplicationMoviesContext) = MultiSearchContext(moviesContext)
 
 
     @Singleton
@@ -31,6 +31,10 @@ class UiModule {
     @Singleton
     @Provides
     fun providesBackgroundInteractor(): BackgroundInteractor = BackgroundInteractorImpl()
+
+    @Singleton
+    @Provides
+    fun providesMoviesContextHandler(moviesContext: ApplicationMoviesContext): MoviesContextHandler = MoviesContextHandlerImpl(moviesContext)
 
     @Singleton
     @Provides
@@ -44,11 +48,10 @@ class UiModule {
     @Singleton
     @Provides
     fun providePresenterInteractorDelegate(backgroundInteractor: BackgroundInteractor,
-                                           connectivityInteractor: ConnectivityInteractor): PresenterInteractorDelegate
-            = PresenterInteractorDelegateImpl(backgroundInteractor, connectivityInteractor)
+                                           connectivityInteractor: ConnectivityInteractor): PresenterInteractorDelegate = PresenterInteractorDelegateImpl(backgroundInteractor, connectivityInteractor)
 
 
     @Singleton
     @Provides
-    fun providesPaginationInteractor(): PaginationInteractor = PaginationInteractorImpl()
+    fun providesPaginationManager(): PaginationController = PaginationControllerImpl()
 }

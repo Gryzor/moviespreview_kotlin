@@ -2,9 +2,7 @@ package com.jpp.moviespreview.app.util.extentions
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
-import android.support.v4.view.ViewPager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -44,7 +42,7 @@ fun View.setVisible() {
  * Sets the underlying view to visible if [check] condition is fulfilled.
  */
 fun View.setVisibleIf(check: () -> Boolean) {
-    if(check()){
+    if (check()) {
         this.visibility = View.VISIBLE
     } else {
         this.visibility = View.INVISIBLE
@@ -158,43 +156,4 @@ private class EndlessScrollListener(val threshold: Int,
             }
         }
     }
-}
-
-/**
- * Extension function for [ViewPager] to listen for changes in the page selected an receive a notification
- * with the position of the currently selected position.
- */
-fun ViewPager.pageChangeUpdate(onPageChanged: (Int) -> Unit) {
-
-    addOnPageChangeListener(ViewPagerPageChangeListener(onPageChanged))
-
-}
-
-/**
- * [ViewPager.OnPageChangeListener] that executes [onPageChanged] when a new page is selected
- */
-private class ViewPagerPageChangeListener(val onPageChanged: (Int) -> Unit) : ViewPager.OnPageChangeListener {
-
-
-    override fun onPageScrollStateChanged(state: Int) {
-        // no op
-    }
-
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-        // no op
-    }
-
-    override fun onPageSelected(position: Int) {
-        onPageChanged(position)
-    }
-}
-
-/**
- * Extension function for [ViewPager] to set the current item in a delayed way.
- * The reason for this code is that if we try to call setCurrentItem in a ViewPager that
- * has not been renderer, we never get the proper positioning.
- * This way, we make sure to set the current item once that the ViewPager has been rendered.
- */
-fun ViewPager.setCurrentItemDelayed(currentItem: Int) {
-    post { setCurrentItem(currentItem, false) }
 }

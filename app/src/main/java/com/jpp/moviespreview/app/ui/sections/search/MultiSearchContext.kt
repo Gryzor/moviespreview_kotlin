@@ -2,7 +2,7 @@ package com.jpp.moviespreview.app.ui.sections.search
 
 import com.jpp.moviespreview.app.domain.MultiSearchParam
 import com.jpp.moviespreview.app.ui.Movie
-import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.ApplicationMoviesContext
 import com.jpp.moviespreview.app.ui.MultiSearchPage
 import com.jpp.moviespreview.app.ui.MultiSearchResult
 
@@ -12,7 +12,7 @@ import com.jpp.moviespreview.app.ui.MultiSearchResult
  *
  * Created by jpp on 1/10/18.
  */
-class MultiSearchContext(private val context: MoviesContext) {
+class MultiSearchContext(private val context: ApplicationMoviesContext) {
 
     var onGoingQueryParam: MultiSearchParam? = null
     private var searchPages = ArrayList<MultiSearchPage>()

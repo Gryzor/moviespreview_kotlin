@@ -1,7 +1,7 @@
 package com.jpp.moviespreview.app.ui.sections.splash
 
 import com.jpp.moviespreview.app.ui.Error
-import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.ApplicationMoviesContext
 import com.jpp.moviespreview.app.ui.interactors.BackgroundExecutor
 import com.jpp.moviespreview.app.util.extentions.whenNotNull
 import com.jpp.moviespreview.app.util.extentions.whenNull
@@ -15,7 +15,7 @@ import com.jpp.moviespreview.app.util.extentions.whenNull
  *
  * Created by jpp on 10/4/17.
  */
-class SplashPresenterImpl(private val moviesContext: MoviesContext,
+class SplashPresenterImpl(private val moviesContext: ApplicationMoviesContext,
                           private val backgroundExecutor: BackgroundExecutor,
                           private val interactor: SplashPresenterInteractor) : SplashPresenter {
 

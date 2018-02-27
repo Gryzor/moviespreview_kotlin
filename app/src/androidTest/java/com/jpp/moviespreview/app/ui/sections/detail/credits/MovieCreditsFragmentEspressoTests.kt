@@ -15,16 +15,14 @@ import com.jpp.moviespreview.app.extentions.launch
 import com.jpp.moviespreview.app.extentions.rotate
 import com.jpp.moviespreview.app.mock
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
-import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.ApplicationMoviesContext
 import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
-import com.jpp.moviespreview.app.ui.sections.detail.credits.MovieCreditsFragment
 import com.jpp.moviespreview.app.ui.util.EspressoTestActivity
 import com.jpp.moviespreview.app.util.extentions.addFragmentIfNotInStack
 import com.jpp.moviespreview.app.utils.RecyclerViewItemCountAssertion
 import com.nhaarman.mockito_kotlin.verify
 import junit.framework.Assert.assertNotNull
 import org.hamcrest.Matchers.not
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -52,7 +50,7 @@ class MovieCreditsFragmentEspressoTests {
     @Inject
     lateinit var useCase: UseCase<DomainMovie, MovieCredits>
     @Inject
-    lateinit var moviesContext: MoviesContext
+    lateinit var moviesContext: ApplicationMoviesContext
     @Inject
     lateinit var mapper: DomainToUiDataMapper
 

@@ -7,7 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.ui.sections.about.AboutActivity
-import com.jpp.moviespreview.app.ui.sections.main.playing.PlayingMoviesFragment
+import com.jpp.moviespreview.app.ui.sections.main.movies.MoviesFragment
 import com.jpp.moviespreview.app.ui.sections.search.MultiSearchActivity
 import com.jpp.moviespreview.app.util.extentions.addFragmentIfNotInStack
 
@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun addMainFragment() {
         //TODO refactor this to support full screen capabilities
-        addFragmentIfNotInStack(R.id.main_content, PlayingMoviesFragment.newInstance(), PlayingMoviesFragment.TAG)
+        addFragmentIfNotInStack(R.id.main_content, MoviesFragment.newInstance(), MoviesFragment.TAG)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

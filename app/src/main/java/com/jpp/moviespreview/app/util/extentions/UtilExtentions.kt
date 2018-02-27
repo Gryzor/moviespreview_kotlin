@@ -34,4 +34,23 @@ inline fun <T : Any, R> whenNotNull(input: T?, callback: (T) -> R): R? = input?.
 /**
  * Extension function to execute a [callback] when the provided [input] is null.
  */
-inline fun <T : Any, R> whenNull(input: T?, callback: () -> R) = input?.let { } ?: run { callback() }
+inline fun <T : Any, R> whenNull(input: T?, callback: () -> R) = input?.let { }
+        ?: run { callback() }
+
+/**
+ * Extension function to execute a [block] when the given [condition] is false.
+ */
+inline fun whenFalse(condition: Boolean, block: () -> Unit) {
+    if (!condition) {
+        block()
+    }
+}
+
+/**
+ * Extension function to execute a [block] when the given [condition] is true.
+ */
+inline fun whenTrue(condition: Boolean, block: () -> Unit) {
+    if (condition) {
+        block()
+    }
+}

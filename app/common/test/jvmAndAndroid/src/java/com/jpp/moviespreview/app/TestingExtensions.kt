@@ -3,7 +3,7 @@ package com.jpp.moviespreview.app
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.domain.Genre
 import com.jpp.moviespreview.app.ui.MovieGenre
-import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.ApplicationMoviesContext
 import com.jpp.moviespreview.app.ui.PosterImageConfiguration
 import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
 import org.junit.Assert.fail
@@ -51,9 +51,9 @@ fun mockMovieGenres() = listOf(
 /**
  * Completes the configuration of the context with mocked data.
  */
-fun MoviesContext.completeConfig(posterImageConfigMockList: List<PosterImageConfiguration> = mockPosterImageConfig(),
-                                 profileImageConfigurationList: List<ProfileImageConfiguration> = mockProfileImageConfig(),
-                                 movieGenreMockList: List<MovieGenre> = mockMovieGenres()) {
+fun ApplicationMoviesContext.completeConfig(posterImageConfigMockList: List<PosterImageConfiguration> = mockPosterImageConfig(),
+                                            profileImageConfigurationList: List<ProfileImageConfiguration> = mockProfileImageConfig(),
+                                            movieGenreMockList: List<MovieGenre> = mockMovieGenres()) {
     posterImageConfig = posterImageConfigMockList
     profileImageConfig = profileImageConfigurationList
     movieGenres = movieGenreMockList

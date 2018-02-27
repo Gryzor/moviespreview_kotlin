@@ -17,7 +17,7 @@ import org.mockito.Mockito.spy
  */
 class SplashPresenterTest {
 
-    private lateinit var moviesContext: MoviesContext
+    private lateinit var moviesContext: ApplicationMoviesContext
     private lateinit var backgroundExcutor: BackgroundExecutorForTesting
     private lateinit var interactor: SplashPresenterInteractor
     private lateinit var splashView: SplashView
@@ -28,7 +28,7 @@ class SplashPresenterTest {
     fun setUp() {
         backgroundExcutor = BackgroundExecutorForTesting()
 
-        moviesContext = spy(MoviesContext::class.java)
+        moviesContext = spy(ApplicationMoviesContext::class.java)
         interactor = mock()
         splashView = mock()
 

@@ -19,7 +19,7 @@ import com.jpp.moviespreview.app.domain.MultiSearchResult as DomainSearchResult
  * Created by jpp on 1/6/18.
  */
 class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContext,
-                               private val interactorDelegate: MultiSearchPresenterInteractor,
+                               private val interactorDelegate: MultiSearchPresenterController,
                                private val mapper: DomainToUiDataMapper,
                                private val querySubmitManager: QuerySubmitManager,
                                private val useCase: UseCase<MultiSearchParam, MultiSearchPage>) : MultiSearchPresenter {
@@ -141,7 +141,7 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
 
     private fun createNextUseCaseParam(query: String, manager: (MultiSearchParam) -> Unit) {
         with(multiSearchContext) {
-            interactorDelegate.managePagination(
+            interactorDelegate.controlPagination(
                     { getAllSearchPages() },
                     { viewInstance.showEndOfPaging() },
                     { manager(MultiSearchParam(query, it, mapper.convertUiGenresToDomainGenres(getUIMovieGenres()!!))) }

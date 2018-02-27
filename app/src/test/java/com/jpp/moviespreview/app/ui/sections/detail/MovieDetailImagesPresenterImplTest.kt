@@ -2,7 +2,7 @@ package com.jpp.moviespreview.app.ui.sections.detail
 
 import com.jpp.moviespreview.app.mock
 import com.jpp.moviespreview.app.ui.Movie
-import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.ApplicationMoviesContext
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.`when`
@@ -16,7 +16,7 @@ import org.mockito.Mockito.verify
  */
 class MovieDetailImagesPresenterImplTest {
 
-    private lateinit var moviesContext: MoviesContext
+    private lateinit var moviesContext: ApplicationMoviesContext
     private lateinit var selectedMovie: Movie
     private lateinit var subject: MovieDetailImagesPresenterImpl
     private lateinit var movieDetailImagesView: MovieDetailImagesView

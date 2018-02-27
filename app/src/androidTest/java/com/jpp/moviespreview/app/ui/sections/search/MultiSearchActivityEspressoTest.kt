@@ -21,7 +21,7 @@ import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.extentions.MoviesPreviewActivityTestRule
 import com.jpp.moviespreview.app.extentions.launch
 import com.jpp.moviespreview.app.extentions.rotate
-import com.jpp.moviespreview.app.ui.MoviesContext
+import com.jpp.moviespreview.app.ui.ApplicationMoviesContext
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailActivity
 import com.jpp.moviespreview.app.utils.RecyclerViewItemCountAssertion
@@ -58,7 +58,7 @@ class MultiSearchActivityEspressoTest {
     val testComponentRule = TestComponentRule()
 
     @Inject
-    lateinit var moviesContext: MoviesContext
+    lateinit var moviesContext: ApplicationMoviesContext
     @Inject
     lateinit var useCase: UseCase<MultiSearchParam, MultiSearchPage>
     @Inject
