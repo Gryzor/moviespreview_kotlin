@@ -9,8 +9,6 @@ import com.jpp.moviespreview.app.ui.sections.about.di.AboutComponent
 import com.jpp.moviespreview.app.ui.sections.about.di.AboutModule
 import com.jpp.moviespreview.app.ui.sections.detail.di.MovieDetailsComponent
 import com.jpp.moviespreview.app.ui.sections.detail.di.MovieDetailsModule
-import com.jpp.moviespreview.app.ui.sections.main.playing.di.PlayingMoviesComponent
-import com.jpp.moviespreview.app.ui.sections.main.playing.di.PlayingMoviesModule
 import com.jpp.moviespreview.app.ui.sections.search.di.MultiSearchComponent
 import com.jpp.moviespreview.app.ui.sections.search.di.MultiSearchModule
 import dagger.Component
@@ -34,7 +32,6 @@ interface AppComponent {
 
     fun inject(application: MoviesPreviewApp): MoviesPreviewApp
 
-    fun plus(playingMovies: PlayingMoviesModule): PlayingMoviesComponent
     fun plus(movieDetails: MovieDetailsModule): MovieDetailsComponent
     fun plus(multiSearch: MultiSearchModule): MultiSearchComponent
     fun plus(about: AboutModule): AboutComponent
