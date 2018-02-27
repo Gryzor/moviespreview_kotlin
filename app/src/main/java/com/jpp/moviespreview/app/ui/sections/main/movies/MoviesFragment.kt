@@ -15,7 +15,6 @@ import com.jpp.moviespreview.app.ui.sections.main.movies.di.MoviesFragmentCompon
 import com.jpp.moviespreview.app.ui.sections.splash.SplashActivity
 import com.jpp.moviespreview.app.util.extentions.*
 import kotlinx.android.synthetic.main.movies_fragment.*
-import kotlinx.android.synthetic.main.playing_movies_fragment.*
 import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 

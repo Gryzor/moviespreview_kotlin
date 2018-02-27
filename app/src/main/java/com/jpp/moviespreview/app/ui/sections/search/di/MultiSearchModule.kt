@@ -37,7 +37,7 @@ class MultiSearchModule {
 
     @Provides
     @MultiSearchScope
-    fun providesPlayingMoviesPresenterInteractor(presenterInteractorDelegate: PresenterInteractorDelegate,
+    fun providesMultiSearchPresenterController(presenterInteractorDelegate: PresenterInteractorDelegate,
                                                  imageConfigurationManager: ImageConfigurationManager,
                                                  paginationController: PaginationController): MultiSearchPresenterController
             = MultiSearchPresenterControllerImpl(presenterInteractorDelegate, imageConfigurationManager, paginationController)

@@ -8,7 +8,7 @@ import com.jpp.moviespreview.app.ui.interactors.PaginationController
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 
 /**
- * PlayingMoviesPresenterController implementation.
+ * MultiSearchPresenterController implementation.
  */
 class MultiSearchPresenterControllerImpl(private val presenterInteractorDelegate: PresenterInteractorDelegate,
                                          private val imageConfigManager: ImageConfigurationManager,
