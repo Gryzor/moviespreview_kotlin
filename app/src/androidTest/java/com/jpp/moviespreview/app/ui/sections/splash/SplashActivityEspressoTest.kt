@@ -37,9 +37,6 @@ class SplashActivityEspressoTest {
     @get:Rule
     @JvmField
     val activityRule = MoviesPreviewActivityTestRule(SplashActivity::class.java)
-    @get:Rule
-    val testComponentRule = TestComponentRule()
-
 
     private val splashPresenter: SplashPresenter = mock()
     private val builder: SplashActivityComponent.Builder = mock()
@@ -55,7 +52,6 @@ class SplashActivityEspressoTest {
         val app = InstrumentationRegistry.getTargetContext().applicationContext as EspressoMoviesPreviewApp
         app.putActivityComponentBuilder(builder, SplashActivity::class.java)
 
-        testComponentRule.testComponent?.inject(this)
     }
 
 

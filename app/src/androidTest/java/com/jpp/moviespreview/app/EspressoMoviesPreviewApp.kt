@@ -1,8 +1,9 @@
 package com.jpp.moviespreview.app
 
 import android.app.Activity
+import android.support.v4.app.Fragment
 import com.jpp.moviespreview.app.di.activity.ActivityComponentBuilder
-import java.util.*
+import com.jpp.moviespreview.app.di.fragment.FragmentComponentBuilder
 import javax.inject.Provider
 
 /**
@@ -14,10 +15,30 @@ import javax.inject.Provider
  */
 class EspressoMoviesPreviewApp : MoviesPreviewApp() {
 
+
+    /**
+     * Replaces the [ActivityComponentBuilder] instance of the application class with the
+     * provided [builder].
+     * Convenience method to provide builders that will allow injecting mocked objects into
+     * Espresso tests.
+     */
     fun putActivityComponentBuilder(builder: ActivityComponentBuilder<*, *>, cls: Class<out Activity>) {
         val activityComponentBuilders = HashMap(this.activityComponentBuilders)
-        activityComponentBuilders.put(cls, Provider { builder })
+        activityComponentBuilders[cls] = Provider { builder }
         this.activityComponentBuilders = activityComponentBuilders
+    }
+
+
+    /**
+     * Replaces the [FragmentComponentBuilder] instance of the application class with the provided
+     * [builder].
+     * This is a convenience method to inject builders that will allow the injection of mocked
+     * objects into the Espresso tests.
+     */
+    fun putFragmentCompoentBuilder(builder: FragmentComponentBuilder<*, *>, cls: Class<out Fragment>) {
+        val fragmentComponentBuilders = HashMap(this.fragmentComponentBuilders)
+        fragmentComponentBuilders[cls] = Provider { builder }
+        this.fragmentComponentBuilders = fragmentComponentBuilders
     }
 
 }

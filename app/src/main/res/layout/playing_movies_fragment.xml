@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.wang.avi.AVLoadingIndicatorView
-        android:id="@+id/loading_movies_view"
+        android:id="@+id/loading_playing_movies_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:indicatorColor="@color/colorPrimary"

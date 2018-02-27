@@ -14,6 +14,7 @@ import com.jpp.moviespreview.app.ui.MoviePage
 import com.jpp.moviespreview.app.ui.sections.main.movies.di.MoviesFragmentComponent
 import com.jpp.moviespreview.app.ui.sections.splash.SplashActivity
 import com.jpp.moviespreview.app.util.extentions.*
+import kotlinx.android.synthetic.main.movies_fragment.*
 import kotlinx.android.synthetic.main.playing_movies_fragment.*
 import org.jetbrains.anko.startActivity
 import javax.inject.Inject
@@ -58,10 +59,10 @@ class MoviesFragment : InjectedFragment(), MoviesView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val layoutManager = LinearLayoutManager(view.ctx)
-        rv_playing_movies.layoutManager = layoutManager
-        rv_playing_movies.addItemDecoration(DividerItemDecoration(view.ctx, layoutManager.orientation))
-        rv_playing_movies.adapter = listAdapter
-        rv_playing_movies.endlessScrolling({ moviesPresenter.getNextMoviePage() })
+        rv_movies.layoutManager = layoutManager
+        rv_movies.addItemDecoration(DividerItemDecoration(view.ctx, layoutManager.orientation))
+        rv_movies.adapter = listAdapter
+        rv_movies.endlessScrolling({ moviesPresenter.getNextMoviePage() })
     }
 
 

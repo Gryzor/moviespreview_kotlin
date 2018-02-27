@@ -68,7 +68,7 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
     }
 
     override fun showMoviePage(moviePage: MoviePage) {
-        loading_movies_view.hide()
+        loading_playing_movies_view.hide()
         adapter.appendMovies(moviePage.results)
     }
 
@@ -92,7 +92,7 @@ class PlayingMoviesFragment : Fragment(), PlayingMoviesView {
     }
 
     override fun showInitialLoading() {
-        loading_movies_view.show()
+        loading_playing_movies_view.show()
     }
 
     private fun showMovieDetails(transitionView: ImageView) {
