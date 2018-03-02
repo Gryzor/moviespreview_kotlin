@@ -34,6 +34,12 @@ interface MoviesContextHandler {
      * Adds the provided [moviePage] to the movies context.
      */
     fun addMoviePage(moviePage: MoviePage)
+
+
+    /**
+     * Retrieves the [Movie] that has been selected from the home scree.
+     */
+    fun getSelectedMovie(): Movie?
 }
 
 
@@ -55,6 +61,7 @@ class MoviesContextHandlerImpl(private val moviesContext: ApplicationMoviesConte
         moviesContext.addMoviePage(moviePage)
     }
 
+    override fun getSelectedMovie(): Movie? = moviesContext.selectedMovie
 }
 
 

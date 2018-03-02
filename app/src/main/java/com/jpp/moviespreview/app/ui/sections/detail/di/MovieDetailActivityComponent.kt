@@ -4,7 +4,7 @@ import com.jpp.moviespreview.app.di.activity.ActivityComponent
 import com.jpp.moviespreview.app.di.activity.ActivityComponentBuilder
 import com.jpp.moviespreview.app.di.activity.ActivityModule
 import com.jpp.moviespreview.app.di.activity.ActivityScope
-import com.jpp.moviespreview.app.ui.ApplicationMoviesContext
+import com.jpp.moviespreview.app.ui.MoviesContextHandler
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailActivity
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailImagesPresenter
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailImagesPresenterImpl
@@ -31,7 +31,7 @@ interface MovieDetailActivityComponent : ActivityComponent<MovieDetailActivity> 
 
         @Provides
         @ActivityScope
-        fun providesMovieDetailImagesPresenter(moviesContext: ApplicationMoviesContext): MovieDetailImagesPresenter =
-                MovieDetailImagesPresenterImpl(moviesContext)
+        fun providesMovieDetailImagesPresenter(moviesContextHandler: MoviesContextHandler): MovieDetailImagesPresenter =
+                MovieDetailImagesPresenterImpl(moviesContextHandler)
     }
 }

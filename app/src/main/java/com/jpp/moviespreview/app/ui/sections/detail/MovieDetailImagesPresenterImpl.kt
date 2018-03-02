@@ -1,11 +1,11 @@
 package com.jpp.moviespreview.app.ui.sections.detail
 
-import com.jpp.moviespreview.app.ui.ApplicationMoviesContext
+import com.jpp.moviespreview.app.ui.MoviesContextHandler
 
 /**
  * Presenter to control the images section of the Movies detail view.
  */
-class MovieDetailImagesPresenterImpl(private val moviesContext: ApplicationMoviesContext)
+class MovieDetailImagesPresenterImpl(private val moviesContextHandler: MoviesContextHandler)
     : MovieDetailImagesPresenter {
 
     private lateinit var view: MovieDetailImagesView
@@ -14,7 +14,7 @@ class MovieDetailImagesPresenterImpl(private val moviesContext: ApplicationMovie
     override fun linkView(movieDetailView: MovieDetailImagesView) {
         view = movieDetailView
 
-        moviesContext.selectedMovie?.let {
+        moviesContextHandler.getSelectedMovie()?.let {
             view.showMovieImage(it.getPosterPath())
             view.showMovieTitle(it.title)
         } ?: view.showMovieNotSelected()
