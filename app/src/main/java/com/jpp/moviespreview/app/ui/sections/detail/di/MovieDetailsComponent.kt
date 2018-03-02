@@ -13,7 +13,5 @@ import dagger.Subcomponent
 @DetailsScope
 @Subcomponent(modules = arrayOf(MovieDetailsModule::class))
 interface MovieDetailsComponent {
-
-    fun inject(movieDetailsBodyFragment: MovieDetailsFragment)
     fun inject(movieCreditsFragment: MovieCreditsFragment)
 }

@@ -26,10 +26,7 @@ class MovieDetailsModule {
 
 
 
-    @Provides
-    @DetailsScope
-    fun providesMovieDetailsPresenter(moviesContext: ApplicationMoviesContext): MovieDetailPresenter
-            = MovieDetailPresenterImpl(moviesContext)
+
 
     @Provides
     @DetailsScope

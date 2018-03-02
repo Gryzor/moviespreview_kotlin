@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jpp.moviespreview.R
+import com.jpp.moviespreview.app.di.HasSubcomponentBuilders
+import com.jpp.moviespreview.app.di.fragment.InjectedFragment
 import com.jpp.moviespreview.app.ui.MovieGenre
 import com.jpp.moviespreview.app.ui.recyclerview.SimpleDividerItemDecoration
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailPresenter
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailView
-import com.jpp.moviespreview.app.util.extentions.app
+import com.jpp.moviespreview.app.ui.sections.detail.body.di.MovieDetailsFragmentComponent
 import kotlinx.android.synthetic.main.movie_details_fragment.*
 import javax.inject.Inject
 
@@ -21,7 +23,13 @@ import javax.inject.Inject
  *
  * Created by jpp on 12/13/17.
  */
-class MovieDetailsFragment : Fragment(), MovieDetailView {
+class MovieDetailsFragment : InjectedFragment(), MovieDetailView {
+
+
+    override fun injectMembers(hasSubcomponentBuilders: HasSubcomponentBuilders) {
+        (hasSubcomponentBuilders.getFragmentComponentBuilder(MovieDetailsFragment::class.java) as MovieDetailsFragmentComponent.Builder)
+                .fragmentModule(MovieDetailsFragmentComponent.MovieDetailsFragmentModule(this)).build().injectMembers(this)
+    }
 
     companion object {
         // Factory method to follow the Fragment.newInstance() Android pattern
@@ -33,7 +41,6 @@ class MovieDetailsFragment : Fragment(), MovieDetailView {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        activity.app.movieDetailsComponent().inject(this)
         presenter.linkView(this)
     }
 

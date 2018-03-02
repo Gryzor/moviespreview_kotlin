@@ -28,6 +28,11 @@ import javax.inject.Inject
  */
 class MoviesFragment : InjectedFragment(), MoviesView {
 
+    override fun injectMembers(hasSubcomponentBuilders: HasSubcomponentBuilders) {
+        (hasSubcomponentBuilders.getFragmentComponentBuilder(MoviesFragment::class.java) as MoviesFragmentComponent.Builder)
+                .fragmentModule(MoviesFragmentComponent.MoviesFragmentModule(this)).build().injectMembers(this)
+    }
+
     companion object {
         const val TAG = "MoviesFragment"
         // Factory method to follow the Fragment.newInstance() Android pattern
@@ -93,11 +98,5 @@ class MoviesFragment : InjectedFragment(), MoviesView {
 
     override fun showLoading() {
         loading_movies_view.show()
-    }
-
-
-    override fun injectMembers(hasSubcomponentBuilders: HasSubcomponentBuilders) {
-        (hasSubcomponentBuilders.getFragmentComponentBuilder(MoviesFragment::class.java) as MoviesFragmentComponent.Builder)
-                .fragmentModule(MoviesFragmentComponent.MoviesFragmentModule(this)).build().injectMembers(this)
     }
 }
