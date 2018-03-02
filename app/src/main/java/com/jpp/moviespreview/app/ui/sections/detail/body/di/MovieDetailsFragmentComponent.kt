@@ -4,7 +4,7 @@ import com.jpp.moviespreview.app.di.fragment.FragmentComponent
 import com.jpp.moviespreview.app.di.fragment.FragmentComponentBuilder
 import com.jpp.moviespreview.app.di.fragment.FragmentModule
 import com.jpp.moviespreview.app.di.fragment.FragmentScope
-import com.jpp.moviespreview.app.ui.ApplicationMoviesContext
+import com.jpp.moviespreview.app.ui.MoviesContextHandler
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailPresenter
 import com.jpp.moviespreview.app.ui.sections.detail.body.MovieDetailPresenterImpl
 import com.jpp.moviespreview.app.ui.sections.detail.body.MovieDetailsFragment
@@ -30,7 +30,7 @@ interface MovieDetailsFragmentComponent : FragmentComponent<MovieDetailsFragment
 
         @Provides
         @FragmentScope
-        fun providesMovieDetailsPresenter(moviesContext: ApplicationMoviesContext): MovieDetailPresenter = MovieDetailPresenterImpl(moviesContext)
+        fun providesMovieDetailsPresenter(moviesContextHandler: MoviesContextHandler): MovieDetailPresenter = MovieDetailPresenterImpl(moviesContextHandler)
 
     }
 
