@@ -23,10 +23,7 @@ import dagger.Provides
 @Module
 class MovieDetailsModule {
 
-    @Provides
-    @DetailsScope
-    fun providesMovieDetailImagesPresenter(moviesContext: ApplicationMoviesContext): MovieDetailImagesPresenter =
-            MovieDetailImagesPresenterImpl(moviesContext)
+
 
 
     @Provides

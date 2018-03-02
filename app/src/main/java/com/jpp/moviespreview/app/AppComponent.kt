@@ -32,7 +32,6 @@ interface AppComponent {
 
     fun inject(application: MoviesPreviewApp): MoviesPreviewApp
 
-    fun plus(movieDetails: MovieDetailsModule): MovieDetailsComponent
     fun plus(multiSearch: MultiSearchModule): MultiSearchComponent
     fun plus(about: AboutModule): AboutComponent
 }
