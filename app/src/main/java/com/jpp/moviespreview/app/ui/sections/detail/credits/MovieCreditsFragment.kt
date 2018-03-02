@@ -8,9 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jpp.moviespreview.R
+import com.jpp.moviespreview.app.di.HasSubcomponentBuilders
+import com.jpp.moviespreview.app.di.fragment.InjectedFragment
 import com.jpp.moviespreview.app.ui.CreditPerson
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailCreditsPresenter
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailCreditsView
+import com.jpp.moviespreview.app.ui.sections.detail.credits.di.MovieCreditsFragmentComponenet
 import com.jpp.moviespreview.app.util.extentions.app
 import com.jpp.moviespreview.app.util.extentions.ctx
 import com.jpp.moviespreview.app.util.extentions.setVisible
@@ -20,7 +23,13 @@ import javax.inject.Inject
 /**
  * Created by jpp on 12/20/17.
  */
-class MovieCreditsFragment : Fragment(), MovieDetailCreditsView {
+class MovieCreditsFragment : InjectedFragment(), MovieDetailCreditsView {
+
+
+    override fun injectMembers(hasSubcomponentBuilders: HasSubcomponentBuilders) {
+        (hasSubcomponentBuilders.getFragmentComponentBuilder(MovieCreditsFragment::class.java) as MovieCreditsFragmentComponenet.Builder)
+                .fragmentModule(MovieCreditsFragmentComponenet.MovieCreditsFragmentModule(this)).build().injectMembers(this)
+    }
 
     companion object {
         // Factory method to follow the Fragment.newInstance() Android pattern
@@ -33,7 +42,6 @@ class MovieCreditsFragment : Fragment(), MovieDetailCreditsView {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        activity.app.movieDetailsComponent().inject(this)
         presenter.linkView(this)
     }
 

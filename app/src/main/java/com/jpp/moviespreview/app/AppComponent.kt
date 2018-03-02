@@ -7,8 +7,6 @@ import com.jpp.moviespreview.app.domain.DomainModule
 import com.jpp.moviespreview.app.ui.UiModule
 import com.jpp.moviespreview.app.ui.sections.about.di.AboutComponent
 import com.jpp.moviespreview.app.ui.sections.about.di.AboutModule
-import com.jpp.moviespreview.app.ui.sections.detail.di.MovieDetailsComponent
-import com.jpp.moviespreview.app.ui.sections.detail.di.MovieDetailsModule
 import com.jpp.moviespreview.app.ui.sections.search.di.MultiSearchComponent
 import com.jpp.moviespreview.app.ui.sections.search.di.MultiSearchModule
 import dagger.Component

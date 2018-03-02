@@ -2,6 +2,8 @@ package com.jpp.moviespreview.app.di.fragment
 
 import com.jpp.moviespreview.app.ui.sections.detail.body.MovieDetailsFragment
 import com.jpp.moviespreview.app.ui.sections.detail.body.di.MovieDetailsFragmentComponent
+import com.jpp.moviespreview.app.ui.sections.detail.credits.MovieCreditsFragment
+import com.jpp.moviespreview.app.ui.sections.detail.credits.di.MovieCreditsFragmentComponenet
 import com.jpp.moviespreview.app.ui.sections.main.movies.MoviesFragment
 import com.jpp.moviespreview.app.ui.sections.main.movies.di.MoviesFragmentComponent
 import dagger.Binds
@@ -16,7 +18,8 @@ import dagger.multibindings.IntoMap
  * Created by jpp on 2/21/18.
  */
 @Module(subcomponents = [(MoviesFragmentComponent::class),
-    (MovieDetailsFragmentComponent::class)])
+    (MovieDetailsFragmentComponent::class),
+    (MovieCreditsFragmentComponenet::class)])
 abstract class FragmentBindingModule {
 
     @Binds
@@ -28,5 +31,11 @@ abstract class FragmentBindingModule {
     @IntoMap
     @FragmentKey(MovieDetailsFragment::class)
     abstract fun movieDetailsFragmentComponentBuilder(impl: MovieDetailsFragmentComponent.Builder): FragmentComponentBuilder<*, *>
+
+    @Binds
+    @IntoMap
+    @FragmentKey(MovieCreditsFragment::class)
+    abstract fun movieCreditsFragmentComponentBuilder(impl: MovieCreditsFragmentComponenet.Builder): FragmentComponentBuilder<*, *>
+
 
 }

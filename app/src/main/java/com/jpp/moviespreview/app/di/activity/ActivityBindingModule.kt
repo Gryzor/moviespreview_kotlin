@@ -2,7 +2,6 @@ package com.jpp.moviespreview.app.di.activity
 
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailActivity
 import com.jpp.moviespreview.app.ui.sections.detail.di.MovieDetailActivityComponent
-import com.jpp.moviespreview.app.ui.sections.detail.di.MovieDetailsComponent
 import com.jpp.moviespreview.app.ui.sections.splash.SplashActivity
 import com.jpp.moviespreview.app.ui.sections.splash.di.SplashActivityComponent
 import dagger.Binds
