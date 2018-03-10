@@ -105,7 +105,7 @@ class RetrieveGenresCommandTest {
     }
 
     @Test
-    fun execute_whenLastConfigIsStillValid_andDataRetievedFromCacheIsNull() {
+    fun execute_whenLastConfigIsStillValid_andDataRetrievedFromCacheIsNull() {
         `when`(genreCache.isMoviesGenresOutOfDate()).thenReturn(false)
         `when`(genreCache.getLastGenreList()).thenReturn(null)
 
