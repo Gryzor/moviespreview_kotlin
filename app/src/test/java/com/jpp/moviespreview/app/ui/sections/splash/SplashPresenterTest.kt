@@ -21,6 +21,7 @@ class SplashPresenterTest {
     private lateinit var backgroundExcutor: BackgroundExecutorForTesting
     private lateinit var interactor: SplashPresenterInteractor
     private lateinit var splashView: SplashView
+    private lateinit var flowResolver: FlowResolver
     private lateinit var subject: SplashPresenter
 
 
@@ -31,8 +32,9 @@ class SplashPresenterTest {
         moviesContext = spy(ApplicationMoviesContext::class.java)
         interactor = mock()
         splashView = mock()
+        flowResolver = mock()
 
-        subject = SplashPresenterImpl(moviesContext, backgroundExcutor, interactor)
+        subject = SplashPresenterImpl(moviesContext, backgroundExcutor, interactor, flowResolver)
     }
 
 
@@ -42,7 +44,7 @@ class SplashPresenterTest {
 
         subject.linkView(splashView)
 
-        verify(splashView).continueToHome()
+        verify(flowResolver).goToMainScreen()
     }
 
     @Test
@@ -76,7 +78,7 @@ class SplashPresenterTest {
         verify(moviesContext).posterImageConfig = expectedPosterImageConfig
         verify(moviesContext).profileImageConfig = expectedProfileImageConfig
         verify(moviesContext).movieGenres = expectedMovieGenres
-        verify(splashView).continueToHome()
+        verify(flowResolver).goToMainScreen()
     }
 
 

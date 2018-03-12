@@ -9,7 +9,6 @@ import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.test.runner.AndroidJUnit4
 import com.jpp.moviespreview.R
 import com.jpp.moviespreview.app.EspressoMoviesPreviewApp
-import com.jpp.moviespreview.app.TestComponentRule
 import com.jpp.moviespreview.app.extentions.MoviesPreviewActivityTestRule
 import com.jpp.moviespreview.app.extentions.launch
 import com.jpp.moviespreview.app.mock
@@ -55,64 +54,6 @@ class SplashActivityEspressoTest {
     }
 
 
-    /*TODO Find a workaround for these tests. The problem is that the MainActivity is being
-      started, without info in the context, causing a failure, the dialog is shown
-      and then the test hangs.*/
-//    @Test
-//    fun completesContextAndContinuesToHomeScreen() {
-//        Intents.init()
-//        val moviesConfiguration = activityRule.loadDomainConfig()
-//        `when`(moviesConfigUseCase.execute()).thenReturn(moviesConfiguration)
-//
-//        val genreList = activityRule.loadDomainGenres()
-//        `when`(genresUseCase.execute()).thenReturn(genreList)
-//
-//        activityRule.launch(Intent())
-//
-//
-//        activityRule.waitToFinish()
-//
-//        assertNotNull(moviesContext.profileImageConfig)
-//        assertEquals(moviesConfiguration.imagesConfiguration.count { it.type == PROFILE }, moviesContext.profileImageConfig!!.size)
-//
-//        assertNotNull(moviesContext.posterImageConfig)
-//        assertEquals(moviesConfiguration.imagesConfiguration.count { it.type == POSTER }, moviesContext.posterImageConfig!!.size)
-//
-//        assertNotNull(moviesContext.movieGenres)
-//        assertEquals(genreList.size, moviesContext.movieGenres!!.size)
-//
-//
-//        val name = MainActivity::class.java.name
-//        Intents.intended(IntentMatchers.hasComponent(name))
-//        assertTrue(activityRule.activity.isDestroyed)
-//
-//        Intents.release()
-//    }
-
-
-//    @Test
-//    fun continuesToHomeScreenWhenContextIsCompleted() {
-//        Intents.init()
-//        moviesContext.movieGenres = listOf(MovieGenre(1, "aGenre", 1))
-//        moviesContext.posterImageConfig = listOf(PosterImageConfiguration("aUrl", "aSize"))
-//        moviesContext.profileImageConfig = listOf(ProfileImageConfiguration("aUrl", "aSize"))
-//
-//        activityRule.launch(Intent())
-//
-//
-//        activityRule.waitToFinish()
-//
-//        verifyZeroInteractions(genresUseCase)
-//        verifyZeroInteractions(moviesConfigUseCase)
-//
-//        val name = MainActivity::class.java.name
-//        Intents.intended(IntentMatchers.hasComponent(name))
-//        assertTrue(activityRule.activity.isDestroyed)
-//
-//        Intents.release()
-//    }
-
-
     @Test
     fun appShowsConnectivityError() {
         doAnswer {
@@ -139,7 +80,6 @@ class SplashActivityEspressoTest {
         onView(withText(R.string.alert_unexpected_error_message))
                 .check(matches(isDisplayed()))
     }
-
 
 
     /**
