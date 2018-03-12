@@ -3,6 +3,7 @@ package com.jpp.moviespreview.app.ui.sections.detail.body
 import com.jpp.moviespreview.app.ui.MoviesContextHandler
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailPresenter
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailView
+import com.jpp.moviespreview.app.util.extentions.whenNotNull
 
 /**
  * Presenter implementation for the movies details section
@@ -13,15 +14,14 @@ import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailView
 class MovieDetailPresenterImpl(private val moviesContextHandler: MoviesContextHandler) : MovieDetailPresenter {
 
 
-    private lateinit var view: MovieDetailView
-
     override fun linkView(movieDetailView: MovieDetailView) {
-        view = movieDetailView
-        moviesContextHandler.getSelectedMovie()?.let {
-            view.showMovieOverview(it.overview)
-            view.showMovieGenres(it.genres)
-            view.showMovieVoteCount(it.voteCount)
-            view.showMoviePopularity(it.popularity)
-        } // no else -> MovieDetailImagesPresenterImpl handles it
+        with(movieDetailView) {
+            whenNotNull(moviesContextHandler.getSelectedMovie(), {
+                showMovieOverview(it.overview)
+                showMovieGenres(it.genres)
+                showMovieVoteCount(it.voteCount)
+                showMoviePopularity(it.popularity)
+            }) // no else -> MovieDetailImagesPresenterImpl handles it
+        }
     }
 }

@@ -8,15 +8,12 @@ import com.jpp.moviespreview.app.ui.MoviesContextHandler
 class MovieDetailImagesPresenterImpl(private val moviesContextHandler: MoviesContextHandler)
     : MovieDetailImagesPresenter {
 
-    private lateinit var view: MovieDetailImagesView
-
-
     override fun linkView(movieDetailView: MovieDetailImagesView) {
-        view = movieDetailView
-
-        moviesContextHandler.getSelectedMovie()?.let {
-            view.showMovieImage(it.getPosterPath())
-            view.showMovieTitle(it.title)
-        } ?: view.showMovieNotSelected()
+        with(movieDetailView) {
+            moviesContextHandler.getSelectedMovie()?.let {
+                showMovieImage(it.getPosterPath())
+                showMovieTitle(it.title)
+            } ?: showMovieNotSelected()
+        }
     }
 }

@@ -62,8 +62,7 @@ class MoviesPresenterImpl(private val moviesContextHandler: MoviesContextHandler
     private fun configureInteractorAndGetFirstMoviePage() {
         with(moviesContextHandler) {
             getMovieGenres()?.let {
-                val selectedImageConfig = getPosterImageConfiguration()
-                interactor.configure(moviesData, it, selectedImageConfig)
+                interactor.configure(moviesData, it, getPosterImageConfiguration())
                 getNextMoviePage()
             } ?: run {
                 // should never happen, since this is executed with executeBlockIfConfigIsCompleted()
@@ -95,10 +94,9 @@ class MoviesPresenterImpl(private val moviesContextHandler: MoviesContextHandler
      * load all the needed resources into the context.
      */
     private fun executeBlockIfConfigIsCompleted(block: () -> Unit) {
-        if (moviesContextHandler.isConfigCompleted()) {
-            block()
-        } else {
-            moviesView.backToSplashScreen()
+        when (moviesContextHandler.isConfigCompleted()) {
+            true -> block()
+            false -> moviesView.backToSplashScreen()
         }
     }
 
@@ -138,12 +136,10 @@ class MoviesPresenterImpl(private val moviesContextHandler: MoviesContextHandler
      */
     private fun processError(error: Error) {
         with(error) {
-            if (type == Error.NO_CONNECTION) {
-                moviesView.showNotConnectedToNetwork()
-            } else {
-                moviesView.showUnexpectedError()
+            when (type) {
+                Error.NO_CONNECTION -> moviesView.showNotConnectedToNetwork()
+                else -> moviesView.showUnexpectedError()
             }
         }
     }
-
 }

@@ -1,9 +1,8 @@
 package com.jpp.moviespreview.app.ui.sections.detail
 
-import com.jpp.moviespreview.app.ui.CreditPerson
-import com.jpp.moviespreview.app.ui.MovieGenre
-import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
+import com.jpp.moviespreview.app.ui.*
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
+import com.jpp.moviespreview.app.util.extentions.DelegatesExt
 
 /************************************************************
  ******** Contract definition for the details body **********
@@ -51,9 +50,23 @@ interface MovieDetailCreditsPresenter {
     fun linkView(view: MovieDetailCreditsView)
 }
 
-interface MovieDetailsCreditsPresenterInteractor : PresenterInteractorDelegate {
+/**
+ * Interactor for the Movie credits section. It takes care of interacting with the domain
+ * layer and adapts the data from domain to UI layer.
+ */
+interface MovieDetailCreditsInteractor {
+    fun retrieveMovieCredits(creditsData: CreditsData, movie: Movie, profileImageConfig: ProfileImageConfiguration)
+}
 
-    fun findProfileImageConfigurationForHeight(profileImageConfigs: List<ProfileImageConfiguration>,
-                                               height: Int): ProfileImageConfiguration
 
+/**
+ * Defines a communication channel between the [MovieDetailCreditsPresenter] and the [MovieDetailCreditsInteractor].
+ * The presenter will ask the interactor to do something and store the results in this class.
+ * The interactor will execute the action(s) and will set each property of this class.
+ * Using the property delegation system ([ObservableTypedDelegate]) the presenter is notified
+ * about each property set on this class.
+ */
+class CreditsData(onValueSetObserver: () -> Unit = {}) {
+    var credits: List<CreditPerson>? by DelegatesExt.observerDelegate(onValueSetObserver)
+    var error: Error? by DelegatesExt.observerDelegate(onValueSetObserver)
 }

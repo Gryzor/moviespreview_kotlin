@@ -9,6 +9,9 @@ import com.jpp.moviespreview.app.ui.sections.detail.body.MovieDetailsFragment
 import com.jpp.moviespreview.app.ui.sections.detail.credits.MovieCreditsFragment
 
 /**
+ * Simple [FragmentStatePagerAdapter] to create the fragments that are part of the movies credits
+ * section.
+ *
  * Created by jpp on 12/13/17.
  */
 class MovieDetailsViewPagerAdapter(fm: FragmentManager, private val resources: Resources) : FragmentStatePagerAdapter(fm) {
