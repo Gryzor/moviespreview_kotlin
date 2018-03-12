@@ -1,7 +1,6 @@
 package com.jpp.moviespreview.app.ui.sections.detail.credits
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -13,8 +12,7 @@ import com.jpp.moviespreview.app.di.fragment.InjectedFragment
 import com.jpp.moviespreview.app.ui.CreditPerson
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailCreditsPresenter
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailCreditsView
-import com.jpp.moviespreview.app.ui.sections.detail.credits.di.MovieCreditsFragmentComponenet
-import com.jpp.moviespreview.app.util.extentions.app
+import com.jpp.moviespreview.app.ui.sections.detail.credits.di.MovieCreditsFragmentComponent
 import com.jpp.moviespreview.app.util.extentions.ctx
 import com.jpp.moviespreview.app.util.extentions.setVisible
 import kotlinx.android.synthetic.main.movie_credits_fragment.*
@@ -27,8 +25,8 @@ class MovieCreditsFragment : InjectedFragment(), MovieDetailCreditsView {
 
 
     override fun injectMembers(hasSubcomponentBuilders: HasSubcomponentBuilders) {
-        (hasSubcomponentBuilders.getFragmentComponentBuilder(MovieCreditsFragment::class.java) as MovieCreditsFragmentComponenet.Builder)
-                .fragmentModule(MovieCreditsFragmentComponenet.MovieCreditsFragmentModule(this)).build().injectMembers(this)
+        (hasSubcomponentBuilders.getFragmentComponentBuilder(MovieCreditsFragment::class.java) as MovieCreditsFragmentComponent.Builder)
+                .fragmentModule(MovieCreditsFragmentComponent.MovieCreditsFragmentModule(this)).build().injectMembers(this)
     }
 
     companion object {

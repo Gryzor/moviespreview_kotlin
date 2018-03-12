@@ -28,11 +28,11 @@ import dagger.Subcomponent
  * Created by jpp on 3/2/18.
  */
 @FragmentScope
-@Subcomponent(modules = [(MovieCreditsFragmentComponenet.MovieCreditsFragmentModule::class)])
-interface MovieCreditsFragmentComponenet : FragmentComponent<MovieCreditsFragment> {
+@Subcomponent(modules = [(MovieCreditsFragmentComponent.MovieCreditsFragmentModule::class)])
+interface MovieCreditsFragmentComponent : FragmentComponent<MovieCreditsFragment> {
 
     @Subcomponent.Builder
-    interface Builder : FragmentComponentBuilder<MovieCreditsFragmentModule, MovieCreditsFragmentComponenet>
+    interface Builder : FragmentComponentBuilder<MovieCreditsFragmentModule, MovieCreditsFragmentComponent>
 
     @Module
     class MovieCreditsFragmentModule internal constructor(fragment: MovieCreditsFragment) : FragmentModule<MovieCreditsFragment>(fragment) {
@@ -51,7 +51,7 @@ interface MovieCreditsFragmentComponenet : FragmentComponent<MovieCreditsFragmen
         @FragmentScope
         fun providesMovieDetailCreditsInteractor(mapper: DomainToUiDataMapper,
                                                  connectivityInteractor: ConnectivityInteractor,
-                                                 retrieveMovieCreditsCommand: Command<Movie, MovieCredits>)
+                                                 retrieveMovieCreditsCommand: Command<@JvmSuppressWildcards Movie, MovieCredits>)
                 : MovieDetailCreditsInteractor = MovieDetailCreditsInteractorImpl(mapper, connectivityInteractor, retrieveMovieCreditsCommand)
 
         @Provides

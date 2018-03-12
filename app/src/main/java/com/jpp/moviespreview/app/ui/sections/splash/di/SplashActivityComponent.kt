@@ -7,8 +7,10 @@ import com.jpp.moviespreview.app.di.activity.ActivityScope
 import com.jpp.moviespreview.app.domain.Command
 import com.jpp.moviespreview.app.domain.Genre
 import com.jpp.moviespreview.app.domain.MoviesConfiguration
-import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.ApplicationMoviesContext
+import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
+import com.jpp.moviespreview.app.ui.FlowResolver
+import com.jpp.moviespreview.app.ui.FlowResolverImpl
 import com.jpp.moviespreview.app.ui.interactors.BackgroundExecutor
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 import com.jpp.moviespreview.app.ui.sections.splash.*
@@ -36,16 +38,22 @@ interface SplashActivityComponent : ActivityComponent<SplashActivity> {
         @ActivityScope
         fun providesSplashPresenter(moviesContext: ApplicationMoviesContext,
                                     backgroundExecutor: BackgroundExecutor,
-                                    interactor: SplashPresenterInteractor): SplashPresenter
-                = SplashPresenterImpl(moviesContext, backgroundExecutor, interactor)
+                                    interactor: SplashPresenterInteractor,
+                                    flowResolver: FlowResolver)
+                : SplashPresenter = SplashPresenterImpl(moviesContext, backgroundExecutor, interactor, flowResolver)
 
         @Provides
         @ActivityScope
         fun providesSplashPresenterInteractor(mapper: DomainToUiDataMapper,
                                               connectivityInteractor: ConnectivityInteractor,
                                               retrieveConfigurationCommand: Command<Any, MoviesConfiguration>,
-                                              retrieveGenresCommand: Command<Any, List<Genre>>): SplashPresenterInteractor
-                = SplashPresenterInteractorImpl(mapper, connectivityInteractor, retrieveConfigurationCommand, retrieveGenresCommand)
+                                              retrieveGenresCommand: Command<Any, List<Genre>>)
+                : SplashPresenterInteractor = SplashPresenterInteractorImpl(mapper, connectivityInteractor, retrieveConfigurationCommand, retrieveGenresCommand)
+
+
+        @Provides
+        @ActivityScope
+        fun providesFlowResolver(): FlowResolver = FlowResolverImpl(activity)
     }
 
 }

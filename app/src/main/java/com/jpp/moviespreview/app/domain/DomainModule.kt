@@ -91,9 +91,8 @@ class DomainModule {
 
     @Provides
     @Singleton
-    fun providesRetrieveMovieCreditsCommand(mapper: CreditsDataMapper,
-                                            api: MoviesPreviewApiWrapper,
+    fun providesRetrieveMovieCreditsCommand(api: MoviesPreviewApiWrapper,
                                             moviesCache: MoviesCache)
-            : Command<Movie, MovieCredits> = RetrieveMovieCreditsCommand(mapper, api, moviesCache)
+            : Command<Movie, MovieCredits> = RetrieveMovieCreditsCommand(CreditsDataMapper(), api, moviesCache)
 
 }

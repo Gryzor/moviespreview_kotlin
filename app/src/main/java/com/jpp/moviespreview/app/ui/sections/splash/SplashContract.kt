@@ -13,7 +13,6 @@ import com.jpp.moviespreview.app.util.extentions.DelegatesExt
  * Created by jpp on 10/4/17.
  */
 interface SplashView {
-    fun continueToHome()
     fun showUnexpectedError()
     fun showNotConnectedToNetwork()
 }
