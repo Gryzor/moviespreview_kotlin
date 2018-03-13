@@ -2,9 +2,7 @@ package com.jpp.moviespreview.app.ui.sections.main.movies
 
 import com.jpp.moviespreview.app.BackgroundExecutorForTesting
 import com.jpp.moviespreview.app.mock
-import com.jpp.moviespreview.app.ui.Error
-import com.jpp.moviespreview.app.ui.MoviePage
-import com.jpp.moviespreview.app.ui.MoviesContextHandler
+import com.jpp.moviespreview.app.ui.*
 import com.jpp.moviespreview.app.ui.interactors.BackgroundExecutor
 import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationManager
 import com.jpp.moviespreview.app.util.StubPaginationController
@@ -29,6 +27,7 @@ class MoviesPresenterTest {
     private lateinit var paginationController: StubPaginationController
     private lateinit var imageConfigManager: ImageConfigurationManager
     private lateinit var moviesView: MoviesView
+    private lateinit var flowResolver: FlowResolver
 
     private lateinit var subject: MoviesPresenter
 
@@ -38,12 +37,13 @@ class MoviesPresenterTest {
         moviesPresenterInteractor = mock()
         imageConfigManager = mock()
         moviesView = mock()
+        flowResolver = mock()
 
         paginationController = StubPaginationController()
         backgroundExecutor = BackgroundExecutorForTesting()
 
 
-        subject = MoviesPresenterImpl(moviesContextHandler, backgroundExecutor, moviesPresenterInteractor, paginationController, imageConfigManager)
+        subject = MoviesPresenterImpl(moviesContextHandler, backgroundExecutor, moviesPresenterInteractor, paginationController, imageConfigManager, flowResolver)
     }
 
 
@@ -53,7 +53,7 @@ class MoviesPresenterTest {
 
         subject.linkView(moviesView)
 
-        verify(moviesView).backToSplashScreen()
+        verify(flowResolver).goToSplashScreen()
     }
 
     @Test // tests rotation of the view
@@ -97,7 +97,7 @@ class MoviesPresenterTest {
         subject.getNextMoviePage()
 
         // 2 times = one for link, one for getNextMoviePage
-        verify(moviesView, times(2)).backToSplashScreen()
+        verify(flowResolver, times(2)).goToSplashScreen()
     }
 
     @Test
@@ -115,7 +115,7 @@ class MoviesPresenterTest {
 
         // 2 times = one for link, one for getNextMoviePage
         verify(moviesPresenterInteractor, times(2)).retrieveMoviePage(expectedPage)
-        verify(moviesView,  times(2)).showLoading()
+        verify(moviesView, times(2)).showLoading()
     }
 
 
@@ -141,7 +141,7 @@ class MoviesPresenterTest {
 
         // 2 times = one for link, one for getNextMoviePage
         verify(moviesPresenterInteractor, times(0)).retrieveMoviePage(expectedPage)
-        verify(moviesView,  times(2)).showEndOfPaging()
+        verify(moviesView, times(2)).showEndOfPaging()
     }
 
 
@@ -234,6 +234,17 @@ class MoviesPresenterTest {
         verify(moviesContextHandler, never()).addMoviePage(expectedMoviePage)
         verify(moviesView, never()).showMoviePage(expectedMoviePage)
         verify(moviesView, times(2)).showUnexpectedError()
+    }
+
+
+    @Test
+    fun onMovieSelected_setsMovieInContext_andStartsDetailScreen() {
+        val movie: Movie = mock()
+
+        subject.onMovieSelected(movie)
+
+        verify(moviesContextHandler).setSelectedMovie(movie)
+        verify(flowResolver).goToDetailsScreen()
     }
 
 

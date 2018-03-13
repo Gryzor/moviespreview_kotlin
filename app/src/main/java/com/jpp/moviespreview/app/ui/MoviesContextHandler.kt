@@ -40,6 +40,11 @@ interface MoviesContextHandler {
     fun addMoviePage(moviePage: MoviePage)
 
     /**
+     * Puts the provided [movie] as the selected one in the context of the app
+     */
+    fun setSelectedMovie(movie: Movie)
+
+    /**
      * Retrieves the [Movie] that has been selected from the home scree.
      */
     fun getSelectedMovie(): Movie?
@@ -54,7 +59,6 @@ interface MoviesContextHandler {
 
 
 class MoviesContextHandlerImpl(private val moviesContext: ApplicationMoviesContext) : MoviesContextHandler {
-
 
     override fun getAllMoviePages(): List<MoviePage> = moviesContext.getAllMoviePages()
 
@@ -77,6 +81,10 @@ class MoviesContextHandlerImpl(private val moviesContext: ApplicationMoviesConte
     override fun getSelectedMovie(): Movie? = moviesContext.selectedMovie
 
     override fun getCreditsForMovie(movie: Movie): List<CreditPerson>? = moviesContext.getCreditsForMovie(movie)
+
+    override fun setSelectedMovie(movie: Movie) {
+        moviesContext.selectedMovie = movie
+    }
 }
 
 

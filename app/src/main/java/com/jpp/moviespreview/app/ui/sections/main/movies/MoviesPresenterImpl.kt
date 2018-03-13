@@ -1,9 +1,6 @@
 package com.jpp.moviespreview.app.ui.sections.main.movies
 
-import com.jpp.moviespreview.app.ui.Error
-import com.jpp.moviespreview.app.ui.Movie
-import com.jpp.moviespreview.app.ui.MoviesContextHandler
-import com.jpp.moviespreview.app.ui.PosterImageConfiguration
+import com.jpp.moviespreview.app.ui.*
 import com.jpp.moviespreview.app.ui.interactors.BackgroundExecutor
 import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationManager
 import com.jpp.moviespreview.app.ui.interactors.PaginationController
@@ -22,8 +19,8 @@ class MoviesPresenterImpl(private val moviesContextHandler: MoviesContextHandler
                           private val backgroundExecutor: BackgroundExecutor,
                           private var interactor: MoviesPresenterInteractor,
                           private val paginationController: PaginationController,
-                          private val imageConfigManager: ImageConfigurationManager) : MoviesPresenter {
-
+                          private val imageConfigManager: ImageConfigurationManager,
+                          private val flowResolver: FlowResolver) : MoviesPresenter {
 
     private lateinit var moviesView: MoviesView
     private val moviesData by lazy { MoviesData({ observeData() }) }
@@ -55,7 +52,8 @@ class MoviesPresenterImpl(private val moviesContextHandler: MoviesContextHandler
     }
 
     override fun onMovieSelected(movie: Movie) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        moviesContextHandler.setSelectedMovie(movie)
+        flowResolver.goToDetailsScreen()
     }
 
 
@@ -96,7 +94,7 @@ class MoviesPresenterImpl(private val moviesContextHandler: MoviesContextHandler
     private fun executeBlockIfConfigIsCompleted(block: () -> Unit) {
         when (moviesContextHandler.isConfigCompleted()) {
             true -> block()
-            false -> moviesView.backToSplashScreen()
+            false -> flowResolver.goToSplashScreen()
         }
     }
 

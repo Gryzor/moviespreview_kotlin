@@ -12,10 +12,8 @@ import com.jpp.moviespreview.app.di.HasSubcomponentBuilders
 import com.jpp.moviespreview.app.di.fragment.InjectedFragment
 import com.jpp.moviespreview.app.ui.MoviePage
 import com.jpp.moviespreview.app.ui.sections.main.movies.di.MoviesFragmentComponent
-import com.jpp.moviespreview.app.ui.sections.splash.SplashActivity
 import com.jpp.moviespreview.app.util.extentions.*
 import kotlinx.android.synthetic.main.movies_fragment.*
-import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 
 /**
@@ -73,11 +71,6 @@ class MoviesFragment : InjectedFragment(), MoviesView {
     override fun showMoviePage(moviePage: MoviePage) {
         loading_movies_view.hide()
         listAdapter.appendMovies(moviePage.results)
-    }
-
-    override fun backToSplashScreen() {
-        activity.startActivity<SplashActivity>()
-        activity.finish()
     }
 
     override fun showEndOfPaging() {
