@@ -35,7 +35,7 @@ class EspressoMoviesPreviewApp : MoviesPreviewApp() {
      * This is a convenience method to inject builders that will allow the injection of mocked
      * objects into the Espresso tests.
      */
-    fun putFragmentCompoentBuilder(builder: FragmentComponentBuilder<*, *>, cls: Class<out Fragment>) {
+    fun putFragmentComponentBuilder(builder: FragmentComponentBuilder<*, *>, cls: Class<out Fragment>) {
         val fragmentComponentBuilders = HashMap(this.fragmentComponentBuilders)
         fragmentComponentBuilders[cls] = Provider { builder }
         this.fragmentComponentBuilders = fragmentComponentBuilders
