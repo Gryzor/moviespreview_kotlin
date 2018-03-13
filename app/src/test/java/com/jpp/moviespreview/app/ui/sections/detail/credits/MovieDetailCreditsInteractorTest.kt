@@ -1,11 +1,12 @@
-package com.jpp.moviespreview.app.ui.sections.detail
+package com.jpp.moviespreview.app.ui.sections.detail.credits
 
 import com.jpp.moviespreview.app.domain.Command
 import com.jpp.moviespreview.app.domain.CommandData
 import com.jpp.moviespreview.app.mock
 import com.jpp.moviespreview.app.ui.*
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
-import com.jpp.moviespreview.app.ui.sections.detail.credits.MovieDetailCreditsInteractorImpl
+import com.jpp.moviespreview.app.ui.sections.detail.CreditsData
+import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailCreditsInteractor
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.doAnswer
 import com.nhaarman.mockito_kotlin.verify
