@@ -19,6 +19,9 @@ import kotlinx.android.synthetic.main.movie_credits_fragment.*
 import javax.inject.Inject
 
 /**
+ * Fragment that shows the credits of a given view.
+ * It implements [MovieDetailCreditsView] as the View part of the credits MVP implementation.
+ *
  * Created by jpp on 12/20/17.
  */
 class MovieCreditsFragment : InjectedFragment(), MovieDetailCreditsView {
