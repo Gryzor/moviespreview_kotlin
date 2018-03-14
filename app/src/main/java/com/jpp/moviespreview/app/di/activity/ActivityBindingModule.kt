@@ -1,5 +1,7 @@
 package com.jpp.moviespreview.app.di.activity
 
+import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailActivity
+import com.jpp.moviespreview.app.ui.sections.detail.di.MovieDetailActivityComponent
 import com.jpp.moviespreview.app.ui.sections.splash.SplashActivity
 import com.jpp.moviespreview.app.ui.sections.splash.di.SplashActivityComponent
 import dagger.Binds
@@ -13,12 +15,17 @@ import dagger.multibindings.IntoMap
  *
  * Created by jpp on 2/14/18.
  */
-@Module(subcomponents = [(SplashActivityComponent::class)])
+@Module(subcomponents = [(SplashActivityComponent::class), (MovieDetailActivityComponent::class)])
 abstract class ActivityBindingModule {
 
     @Binds
     @IntoMap
     @ActivityKey(SplashActivity::class)
     abstract fun splashActivityComponentBuilder(impl: SplashActivityComponent.Builder): ActivityComponentBuilder<*, *>
+
+    @Binds
+    @IntoMap
+    @ActivityKey(MovieDetailActivity::class)
+    abstract fun movieDetailActivityComponentBuilder(impl: MovieDetailActivityComponent.Builder): ActivityComponentBuilder<*, *>
 
 }

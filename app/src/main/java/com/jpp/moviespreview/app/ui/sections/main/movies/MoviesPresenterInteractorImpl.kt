@@ -64,10 +64,9 @@ class MoviesPresenterInteractorImpl(private val mapper: DomainToUiDataMapper,
 
     private fun onPageRetrieveFail() {
         with(connectivityInteractor) {
-            if (isConnectedToNetwork()) {
-                moviesData.error = Error(Error.UNKNOWN)
-            } else {
-                moviesData.error = Error(Error.NO_CONNECTION)
+            when (isConnectedToNetwork()) {
+                true -> moviesData.error = Error(Error.UNKNOWN)
+                else -> moviesData.error = Error(Error.NO_CONNECTION)
             }
         }
     }

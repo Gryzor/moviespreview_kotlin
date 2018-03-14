@@ -1,5 +1,6 @@
 package com.jpp.moviespreview.app.ui.sections.detail
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -11,6 +12,9 @@ import android.transition.Slide
 import android.view.MenuItem
 import android.widget.ImageView
 import com.jpp.moviespreview.R
+import com.jpp.moviespreview.app.di.HasSubcomponentBuilders
+import com.jpp.moviespreview.app.di.activity.InjectedActivity
+import com.jpp.moviespreview.app.ui.sections.detail.di.MovieDetailActivityComponent
 import com.jpp.moviespreview.app.util.extentions.app
 import com.jpp.moviespreview.app.util.extentions.loadImageUrlWithCallback
 import kotlinx.android.synthetic.main.movie_detail_activity.*
@@ -22,7 +26,14 @@ import javax.inject.Inject
  *
  * Created by jpp on 11/11/17.
  */
-class MovieDetailActivity : AppCompatActivity(), MovieDetailImagesView {
+class MovieDetailActivity : InjectedActivity(), MovieDetailImagesView {
+
+
+    override fun injectMembers(hasSubcomponentBuilders: HasSubcomponentBuilders) {
+        (hasSubcomponentBuilders.getActivityComponentBuilder(MovieDetailActivity::class.java) as MovieDetailActivityComponent.Builder)
+                .activityModule(MovieDetailActivityComponent.MovieDetailActivityModule(this)).build().injectMembers(this)
+    }
+
 
     companion object {
 
@@ -43,8 +54,6 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailImagesView {
     }
 
 
-    private val component by lazy { app.movieDetailsComponent() }
-
     @Inject
     lateinit var imagesPresenter: MovieDetailImagesPresenter
 
@@ -61,8 +70,6 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailImagesView {
 
         setSupportActionBar(movie_details_toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-
-        component.inject(this)
     }
 
     override fun onResume() {
@@ -106,6 +113,7 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailImagesView {
     }
 
 
+    @SuppressLint("NewApi")
     private fun initActivityTransition() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val slideTransition = Slide()

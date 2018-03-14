@@ -12,10 +12,8 @@ import com.jpp.moviespreview.app.di.HasSubcomponentBuilders
 import com.jpp.moviespreview.app.di.fragment.InjectedFragment
 import com.jpp.moviespreview.app.ui.MoviePage
 import com.jpp.moviespreview.app.ui.sections.main.movies.di.MoviesFragmentComponent
-import com.jpp.moviespreview.app.ui.sections.splash.SplashActivity
 import com.jpp.moviespreview.app.util.extentions.*
 import kotlinx.android.synthetic.main.movies_fragment.*
-import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 
 /**
@@ -27,6 +25,11 @@ import javax.inject.Inject
  * Created by jpp on 2/21/18.
  */
 class MoviesFragment : InjectedFragment(), MoviesView {
+
+    override fun injectMembers(hasSubcomponentBuilders: HasSubcomponentBuilders) {
+        (hasSubcomponentBuilders.getFragmentComponentBuilder(MoviesFragment::class.java) as MoviesFragmentComponent.Builder)
+                .fragmentModule(MoviesFragmentComponent.MoviesFragmentModule(this)).build().injectMembers(this)
+    }
 
     companion object {
         const val TAG = "MoviesFragment"
@@ -70,11 +73,6 @@ class MoviesFragment : InjectedFragment(), MoviesView {
         listAdapter.appendMovies(moviePage.results)
     }
 
-    override fun backToSplashScreen() {
-        activity.startActivity<SplashActivity>()
-        activity.finish()
-    }
-
     override fun showEndOfPaging() {
         // do nothing for the moment
     }
@@ -93,11 +91,5 @@ class MoviesFragment : InjectedFragment(), MoviesView {
 
     override fun showLoading() {
         loading_movies_view.show()
-    }
-
-
-    override fun injectMembers(hasSubcomponentBuilders: HasSubcomponentBuilders) {
-        (hasSubcomponentBuilders.getFragmentComponentBuilder(MoviesFragment::class.java) as MoviesFragmentComponent.Builder)
-                .fragmentModule(MoviesFragmentComponent.MoviesFragmentModule(this)).build().injectMembers(this)
     }
 }

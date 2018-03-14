@@ -1,9 +1,6 @@
 package com.jpp.moviespreview.app.ui.sections.main.movies
 
-import com.jpp.moviespreview.app.ui.Error
-import com.jpp.moviespreview.app.ui.Movie
-import com.jpp.moviespreview.app.ui.MoviesContextHandler
-import com.jpp.moviespreview.app.ui.PosterImageConfiguration
+import com.jpp.moviespreview.app.ui.*
 import com.jpp.moviespreview.app.ui.interactors.BackgroundExecutor
 import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationManager
 import com.jpp.moviespreview.app.ui.interactors.PaginationController
@@ -22,8 +19,8 @@ class MoviesPresenterImpl(private val moviesContextHandler: MoviesContextHandler
                           private val backgroundExecutor: BackgroundExecutor,
                           private var interactor: MoviesPresenterInteractor,
                           private val paginationController: PaginationController,
-                          private val imageConfigManager: ImageConfigurationManager) : MoviesPresenter {
-
+                          private val imageConfigManager: ImageConfigurationManager,
+                          private val flowResolver: FlowResolver) : MoviesPresenter {
 
     private lateinit var moviesView: MoviesView
     private val moviesData by lazy { MoviesData({ observeData() }) }
@@ -55,15 +52,15 @@ class MoviesPresenterImpl(private val moviesContextHandler: MoviesContextHandler
     }
 
     override fun onMovieSelected(movie: Movie) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        moviesContextHandler.setSelectedMovie(movie)
+        flowResolver.goToDetailsScreen()
     }
 
 
     private fun configureInteractorAndGetFirstMoviePage() {
         with(moviesContextHandler) {
             getMovieGenres()?.let {
-                val selectedImageConfig = getPosterImageConfiguration()
-                interactor.configure(moviesData, it, selectedImageConfig)
+                interactor.configure(moviesData, it, getPosterImageConfiguration())
                 getNextMoviePage()
             } ?: run {
                 // should never happen, since this is executed with executeBlockIfConfigIsCompleted()
@@ -95,10 +92,9 @@ class MoviesPresenterImpl(private val moviesContextHandler: MoviesContextHandler
      * load all the needed resources into the context.
      */
     private fun executeBlockIfConfigIsCompleted(block: () -> Unit) {
-        if (moviesContextHandler.isConfigCompleted()) {
-            block()
-        } else {
-            moviesView.backToSplashScreen()
+        when (moviesContextHandler.isConfigCompleted()) {
+            true -> block()
+            false -> flowResolver.goToSplashScreen()
         }
     }
 
@@ -138,12 +134,10 @@ class MoviesPresenterImpl(private val moviesContextHandler: MoviesContextHandler
      */
     private fun processError(error: Error) {
         with(error) {
-            if (type == Error.NO_CONNECTION) {
-                moviesView.showNotConnectedToNetwork()
-            } else {
-                moviesView.showUnexpectedError()
+            when (type) {
+                Error.NO_CONNECTION -> moviesView.showNotConnectedToNetwork()
+                else -> moviesView.showUnexpectedError()
             }
         }
     }
-
 }

@@ -8,6 +8,8 @@ import com.jpp.moviespreview.app.domain.Command
 import com.jpp.moviespreview.app.domain.MoviePage
 import com.jpp.moviespreview.app.domain.PageParam
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
+import com.jpp.moviespreview.app.ui.FlowResolver
+import com.jpp.moviespreview.app.ui.FlowResolverImpl
 import com.jpp.moviespreview.app.ui.MoviesContextHandler
 import com.jpp.moviespreview.app.ui.interactors.*
 import com.jpp.moviespreview.app.ui.sections.main.movies.*
@@ -37,8 +39,9 @@ interface MoviesFragmentComponent : FragmentComponent<MoviesFragment> {
                                     backgroundExecutor: BackgroundExecutor,
                                     interactor: MoviesPresenterInteractor,
                                     paginationController: PaginationController,
-                                    imageConfigManager: ImageConfigurationManager): MoviesPresenter =
-                MoviesPresenterImpl(moviesContextHandler, backgroundExecutor, interactor, paginationController, imageConfigManager)
+                                    imageConfigManager: ImageConfigurationManager,
+                                    flowResolver: FlowResolver): MoviesPresenter =
+                MoviesPresenterImpl(moviesContextHandler, backgroundExecutor, interactor, paginationController, imageConfigManager, flowResolver)
 
         @Provides
         @FragmentScope
@@ -52,6 +55,14 @@ interface MoviesFragmentComponent : FragmentComponent<MoviesFragment> {
                                               retrieveMoviePageCommand: Command<@JvmSuppressWildcards PageParam, MoviePage>): MoviesPresenterInteractor =
                 MoviesPresenterInteractorImpl(mapper, connectivityInteractor, retrieveMoviePageCommand)
 
-    }
 
+        /*
+         * IMPORTANT: this can be injected this way (using the fragment's activity) because
+         * MoviesFragment is injecting the dependencies in onActivityCreated.
+         * If this changes, the provider method will have to be updated.
+         */
+        @Provides
+        @FragmentScope
+        fun providesFlowResolver(): FlowResolver = FlowResolverImpl(fragment.activity)
+    }
 }

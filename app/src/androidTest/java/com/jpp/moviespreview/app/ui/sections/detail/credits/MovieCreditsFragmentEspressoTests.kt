@@ -1,34 +1,32 @@
 package com.jpp.moviespreview.app.ui.sections.detail.credits
 
 import android.content.Intent
+import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.assertion.ViewAssertions
-import android.support.test.espresso.matcher.ViewMatchers
+import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
+import android.support.test.espresso.matcher.ViewMatchers.withId
 import com.jpp.moviespreview.R
-import com.jpp.moviespreview.app.TestComponentRule
-import com.jpp.moviespreview.app.completeConfig
-import com.jpp.moviespreview.app.domain.MovieCredits
-import com.jpp.moviespreview.app.domain.UseCase
+import com.jpp.moviespreview.app.EspressoMoviesPreviewApp
 import com.jpp.moviespreview.app.extentions.MoviesPreviewActivityTestRule
 import com.jpp.moviespreview.app.extentions.launch
-import com.jpp.moviespreview.app.extentions.rotate
 import com.jpp.moviespreview.app.mock
+import com.jpp.moviespreview.app.mockProfileImageConfig
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
-import com.jpp.moviespreview.app.ui.ApplicationMoviesContext
-import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
+import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailCreditsPresenter
+import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailCreditsView
+import com.jpp.moviespreview.app.ui.sections.detail.credits.di.MovieCreditsFragmentComponent
 import com.jpp.moviespreview.app.ui.util.EspressoTestActivity
 import com.jpp.moviespreview.app.util.extentions.addFragmentIfNotInStack
+import com.jpp.moviespreview.app.util.extentions.whenNotNull
 import com.jpp.moviespreview.app.utils.RecyclerViewItemCountAssertion
-import com.nhaarman.mockito_kotlin.verify
-import junit.framework.Assert.assertNotNull
-import org.hamcrest.Matchers.not
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.doAnswer
+import org.hamcrest.CoreMatchers.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.`when`
-import org.mockito.Mockito.any
-import javax.inject.Inject
 import com.jpp.moviespreview.app.domain.Movie as DomainMovie
 import com.jpp.moviespreview.app.domain.MovieCredits as DomainMovieCredits
 import com.jpp.moviespreview.app.ui.Movie as UiMovie
@@ -44,114 +42,89 @@ class MovieCreditsFragmentEspressoTests {
     @get:Rule
     @JvmField
     val activityRule = MoviesPreviewActivityTestRule(EspressoTestActivity::class.java)
-    @get:Rule
-    val testComponentRule = TestComponentRule()
 
-    @Inject
-    lateinit var useCase: UseCase<DomainMovie, MovieCredits>
-    @Inject
-    lateinit var moviesContext: ApplicationMoviesContext
-    @Inject
-    lateinit var mapper: DomainToUiDataMapper
+    private val presenter: MovieDetailCreditsPresenter = mock()
+    private val builder: MovieCreditsFragmentComponent.Builder = mock()
+    private val mockCreditsFragmentComponent by lazy {
+        EspressoMovieCreditsFragmentComponent(presenter)
+    }
 
-    private lateinit var selectedMovie: UiMovie
 
     @Before
     fun setUp() {
-        testComponentRule.testComponent?.inject(this)
-        selectedMovie = mock()
-        moviesContext.completeConfig()
-        createUiMovieFromModel()
+        `when`(builder.build()).thenReturn(mockCreditsFragmentComponent)
+        `when`(builder.fragmentModule(com.nhaarman.mockito_kotlin.any())).thenReturn(builder)
+
+        val app = InstrumentationRegistry.getTargetContext().applicationContext as EspressoMoviesPreviewApp
+        app.putFragmentComponentBuilder(builder, MovieCreditsFragment::class.java)
     }
 
 
     @Test
-    fun onActivityCreatedShowsLoadingWhileRetrievingCredits() {
+    fun showLoading() {
+        doAnswer {
+            val viewInstance = it.arguments[0] as MovieDetailCreditsView
+            viewInstance.showLoading()
+        }.`when`(presenter).linkView(any())
+
+        launchActivityAndAddFragment()
+
+        onView(withId(R.id.loading_credits_view))
+                .check(matches(isDisplayed()))
+    }
+
+
+    @Test
+    fun showMovieCredits() {
         val domainMovieCredits = activityRule.loadDomainMovieCredits()
-        `when`(useCase.execute(any(DomainMovie::class.java))).thenReturn(domainMovieCredits)
+        val selectedImageConfiguration = mockProfileImageConfig()[0]
+        val uiCredits = DomainToUiDataMapper().convertDomainCreditsInUiCredits(domainMovieCredits.cast, domainMovieCredits.crew, selectedImageConfiguration)
+
+        doAnswer {
+            val viewInstance = it.arguments[0] as MovieDetailCreditsView
+            viewInstance.showMovieCredits(uiCredits)
+        }.`when`(presenter).linkView(any())
 
         launchActivityAndAddFragment()
 
         // check all credits are loaded
-        onView(ViewMatchers.withId(R.id.rv_movie_credits))
+        onView(withId(R.id.rv_movie_credits))
                 .check(RecyclerViewItemCountAssertion(129))
 
-        onView(ViewMatchers.withId(R.id.loading_credits_view))
-                .check(ViewAssertions.matches(not(isDisplayed())))
-
-        // only one call
-        verify(useCase).execute(any(DomainMovie::class.java))
-
-        // saves credits
-        assertNotNull(moviesContext.getCreditsForMovie(moviesContext.selectedMovie!!))
+        onView(withId(R.id.loading_credits_view))
+                .check(matches(not(isDisplayed())))
     }
 
 
     @Test
-    fun errorRetrievingMovieCredits() {
-        `when`(useCase.execute(any(DomainMovie::class.java))).thenReturn(null)
+    fun showErrorRetrievingCredits() {
+        doAnswer {
+            val viewInstance = it.arguments[0] as MovieDetailCreditsView
+            viewInstance.showErrorRetrievingCredits()
+        }.`when`(presenter).linkView(any())
 
         launchActivityAndAddFragment()
 
-        onView(ViewMatchers.withId(R.id.movie_credits_error_text_view))
-                .check(ViewAssertions.matches(isDisplayed()))
+        onView(withId(R.id.movie_credits_error_text_view))
+                .check(matches(isDisplayed()))
 
-        onView(ViewMatchers.withId(R.id.loading_credits_view))
-                .check(ViewAssertions.matches(not(isDisplayed())))
+        onView(withId(R.id.loading_credits_view))
+                .check(matches(not(isDisplayed())))
     }
 
-    @Test
-    fun orientationChangeDoesNotRequestNewData() {
-        val domainMovieCredits = activityRule.loadDomainMovieCredits()
-        `when`(useCase.execute(any(DomainMovie::class.java))).thenReturn(domainMovieCredits)
-
-        launchActivityAndAddFragment()
-
-        // sanity check
-        onView(ViewMatchers.withId(R.id.rv_movie_credits))
-                .check(RecyclerViewItemCountAssertion(129))
-        onView(ViewMatchers.withId(R.id.loading_credits_view))
-                .check(ViewAssertions.matches(not(isDisplayed())))
-
-        // rotate 1
-        activityRule.rotate()
-        onView(ViewMatchers.withId(R.id.rv_movie_credits))
-                .check(RecyclerViewItemCountAssertion(129))
-        onView(ViewMatchers.withId(R.id.loading_credits_view))
-                .check(ViewAssertions.matches(not(isDisplayed())))
-
-        // rotate 2
-        activityRule.rotate()
-        onView(ViewMatchers.withId(R.id.rv_movie_credits))
-                .check(RecyclerViewItemCountAssertion(129))
-        onView(ViewMatchers.withId(R.id.loading_credits_view))
-                .check(ViewAssertions.matches(not(isDisplayed())))
-
-        // only one call
-        verify(useCase).execute(any(DomainMovie::class.java))
-
-    }
-
-    /**************************
-     **** HELPER FUNCTIONS ****
-     **************************/
-
-    private fun createUiMovieFromModel() {
-
-        val domainGenres = activityRule.loadDomainGenres()
-        val uiGenres = mapper.convertDomainGenresIntoUiGenres(domainGenres)
-
-        val selectedImageConfiguration = ProfileImageConfiguration("baseUrl", "h200")
-
-        val modelMoviePage = activityRule.loadDomainPage(1)
-        val uiMoviePage = mapper.convertDomainMoviePageToUiMoviePage(modelMoviePage, selectedImageConfiguration, uiGenres)
-        selectedMovie = uiMoviePage.results[0]
-        moviesContext.selectedMovie = selectedMovie
-
-    }
 
     private fun launchActivityAndAddFragment() {
         activityRule.launch(Intent())
         activityRule.activity.addFragmentIfNotInStack(android.R.id.content, MovieCreditsFragment.newInstance(), "Tag")
+    }
+
+
+    class EspressoMovieCreditsFragmentComponent(private val movieDetailCreditsPresenter: MovieDetailCreditsPresenter) : MovieCreditsFragmentComponent {
+        override fun injectMembers(instance: MovieCreditsFragment?) {
+            whenNotNull(instance, {
+                it.presenter = movieDetailCreditsPresenter
+            })
+        }
+
     }
 }

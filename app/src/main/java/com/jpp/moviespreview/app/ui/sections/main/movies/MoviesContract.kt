@@ -19,7 +19,6 @@ import com.jpp.moviespreview.app.util.extentions.DelegatesExt
  */
 interface MoviesView {
     fun showMoviePage(moviePage: MoviePage)
-    fun backToSplashScreen()
     fun showEndOfPaging()
     fun getScreenWidth(): Int
     fun showUnexpectedError()

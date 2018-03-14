@@ -17,6 +17,7 @@ import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
 import com.jpp.moviespreview.app.ui.sections.main.movies.di.MoviesFragmentComponent
 import com.jpp.moviespreview.app.ui.util.EspressoTestActivity
 import com.jpp.moviespreview.app.util.extentions.addFragmentIfNotInStack
+import com.jpp.moviespreview.app.util.extentions.whenNotNull
 import com.jpp.moviespreview.app.utils.RecyclerViewItemCountAssertion
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.doAnswer
@@ -51,21 +52,8 @@ class MoviesFragmentEspressoTest {
         `when`(builder.fragmentModule(any())).thenReturn(builder)
 
         val app = InstrumentationRegistry.getTargetContext().applicationContext as EspressoMoviesPreviewApp
-        app.putFragmentCompoentBuilder(builder, MoviesFragment::class.java)
+        app.putFragmentComponentBuilder(builder, MoviesFragment::class.java)
     }
-
-    /* TODO Find a workaround for these tests. The problem is that the SplashActivity is being */
-//    @Test
-//    fun goesBackToSplashScreenWhenConfigIsNotCompleted() {
-//        // pre:  moviesContext has not been configured
-//        init()
-//
-//        launchActivityAndAddFragment()
-//
-//        activityRule.waitToFinish()
-//        intended(hasComponent(SplashActivity::class.java.name))
-//        release()
-//    }
 
     @Test
     fun showMoviePage() {
@@ -122,9 +110,9 @@ class MoviesFragmentEspressoTest {
     class EspressoMoviesFragmentComponent(private val moviesPresenterInstance: MoviesPresenter) : MoviesFragmentComponent {
 
         override fun injectMembers(instance: MoviesFragment?) {
-            instance?.let {
+            whenNotNull(instance, {
                 it.moviesPresenter = moviesPresenterInstance
-            }
+            })
         }
 
     }

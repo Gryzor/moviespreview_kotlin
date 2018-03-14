@@ -2,11 +2,9 @@ package com.jpp.moviespreview.app.ui.sections.splash
 
 import com.jpp.moviespreview.app.di.HasSubcomponentBuilders
 import com.jpp.moviespreview.app.di.activity.InjectedActivity
-import com.jpp.moviespreview.app.ui.sections.main.MainActivity
 import com.jpp.moviespreview.app.ui.sections.splash.di.SplashActivityComponent
 import com.jpp.moviespreview.app.util.extentions.showNoNetworkConnectionAlert
 import com.jpp.moviespreview.app.util.extentions.showUnexpectedError
-import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 
 /**
@@ -33,11 +31,6 @@ class SplashActivity : InjectedActivity(), SplashView {
     override fun onResume() {
         super.onResume()
         splashPresenter.linkView(this)
-    }
-
-    override fun continueToHome() {
-        startActivity<MainActivity>()
-        finish()
     }
 
     override fun showUnexpectedError() {

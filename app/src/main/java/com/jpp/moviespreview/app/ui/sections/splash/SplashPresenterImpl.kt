@@ -1,7 +1,8 @@
 package com.jpp.moviespreview.app.ui.sections.splash
 
-import com.jpp.moviespreview.app.ui.Error
 import com.jpp.moviespreview.app.ui.ApplicationMoviesContext
+import com.jpp.moviespreview.app.ui.Error
+import com.jpp.moviespreview.app.ui.FlowResolver
 import com.jpp.moviespreview.app.ui.interactors.BackgroundExecutor
 import com.jpp.moviespreview.app.util.extentions.whenNotNull
 import com.jpp.moviespreview.app.util.extentions.whenNull
@@ -17,7 +18,8 @@ import com.jpp.moviespreview.app.util.extentions.whenNull
  */
 class SplashPresenterImpl(private val moviesContext: ApplicationMoviesContext,
                           private val backgroundExecutor: BackgroundExecutor,
-                          private val interactor: SplashPresenterInteractor) : SplashPresenter {
+                          private val interactor: SplashPresenterInteractor,
+                          private val flowResolver: FlowResolver) : SplashPresenter {
 
     private lateinit var splashViewInstance: SplashView
     private val splashData by lazy {
@@ -28,7 +30,7 @@ class SplashPresenterImpl(private val moviesContext: ApplicationMoviesContext,
     override fun linkView(splashView: SplashView) {
         with(moviesContext) {
             if (isConfigCompleted()) {
-                splashView.continueToHome()
+                flowResolver.goToMainScreen()
             } else {
                 splashViewInstance = splashView
                 backgroundExecutor.executeBackgroundJob { interactor.retrieveConfiguration(splashData) }
@@ -48,7 +50,7 @@ class SplashPresenterImpl(private val moviesContext: ApplicationMoviesContext,
 
     private fun continueToHomeIfConfigReady() {
         if (moviesContext.isConfigCompleted()) {
-            splashViewInstance.continueToHome()
+            flowResolver.goToMainScreen()
         }
     }
 

@@ -1,26 +1,36 @@
 package com.jpp.moviespreview.app.ui.sections.detail.credits
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jpp.moviespreview.R
+import com.jpp.moviespreview.app.di.HasSubcomponentBuilders
+import com.jpp.moviespreview.app.di.fragment.InjectedFragment
 import com.jpp.moviespreview.app.ui.CreditPerson
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailCreditsPresenter
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailCreditsView
-import com.jpp.moviespreview.app.util.extentions.app
+import com.jpp.moviespreview.app.ui.sections.detail.credits.di.MovieCreditsFragmentComponent
 import com.jpp.moviespreview.app.util.extentions.ctx
 import com.jpp.moviespreview.app.util.extentions.setVisible
 import kotlinx.android.synthetic.main.movie_credits_fragment.*
 import javax.inject.Inject
 
 /**
+ * Fragment that shows the credits of a given view.
+ * It implements [MovieDetailCreditsView] as the View part of the credits MVP implementation.
+ *
  * Created by jpp on 12/20/17.
  */
-class MovieCreditsFragment : Fragment(), MovieDetailCreditsView {
+class MovieCreditsFragment : InjectedFragment(), MovieDetailCreditsView {
+
+
+    override fun injectMembers(hasSubcomponentBuilders: HasSubcomponentBuilders) {
+        (hasSubcomponentBuilders.getFragmentComponentBuilder(MovieCreditsFragment::class.java) as MovieCreditsFragmentComponent.Builder)
+                .fragmentModule(MovieCreditsFragmentComponent.MovieCreditsFragmentModule(this)).build().injectMembers(this)
+    }
 
     companion object {
         // Factory method to follow the Fragment.newInstance() Android pattern
@@ -33,7 +43,6 @@ class MovieCreditsFragment : Fragment(), MovieDetailCreditsView {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        activity.app.movieDetailsComponent().inject(this)
         presenter.linkView(this)
     }
 
