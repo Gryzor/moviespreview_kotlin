@@ -1,16 +1,18 @@
 package com.jpp.moviespreview.app.ui.sections.search
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import com.jpp.moviespreview.R
+import com.jpp.moviespreview.app.di.HasSubcomponentBuilders
+import com.jpp.moviespreview.app.di.activity.InjectedActivity
 import com.jpp.moviespreview.app.ui.MultiSearchResult
 import com.jpp.moviespreview.app.ui.recyclerview.SimpleDividerItemDecoration
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailActivity
+import com.jpp.moviespreview.app.ui.sections.search.di.MultiSearchActivityComponent
 import com.jpp.moviespreview.app.util.extentions.*
 import kotlinx.android.synthetic.main.multi_search_activity.*
 import javax.inject.Inject
@@ -21,10 +23,14 @@ import javax.inject.Inject
  *
  * Created by jpp on 1/6/18.
  */
-class MultiSearchActivity : AppCompatActivity(), MultiSearchView {
+class MultiSearchActivity : InjectedActivity(), MultiSearchView {
 
 
-    private val component by lazy { app.multiSearchComponent() }
+    override fun injectMembers(hasSubcomponentBuilders: HasSubcomponentBuilders) {
+        (hasSubcomponentBuilders.getActivityComponentBuilder(MultiSearchActivity::class.java) as MultiSearchActivityComponent.Builder)
+                .activityModule(MultiSearchActivityComponent.MultiSearchActivityModule(this)).build().injectMembers(this)
+    }
+
 
     private val adapter by lazy {
         MultiSearchAdapter({ selectedItem: MultiSearchResult, view: ImageView ->
@@ -52,8 +58,6 @@ class MultiSearchActivity : AppCompatActivity(), MultiSearchView {
         search_results_recycler_view.addItemDecoration(SimpleDividerItemDecoration(this))
         search_results_recycler_view.adapter = adapter
         search_results_recycler_view.endlessScrolling({ presenter.getNextSearchPage() })
-
-        component.inject(this)
     }
 
     private fun setupSearchView() {
@@ -72,6 +76,18 @@ class MultiSearchActivity : AppCompatActivity(), MultiSearchView {
     override fun onResume() {
         super.onResume()
         presenter.linkView(this)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> presenter.clearLastSearch()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        presenter.clearLastSearch()
+        super.onBackPressed()
     }
 
     override fun getQueryTextView(): QueryTextView = QueryTextViewImpl(search_view)
@@ -111,17 +127,6 @@ class MultiSearchActivity : AppCompatActivity(), MultiSearchView {
         showNoNetworkConnectionAlert()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> presenter.clearLastSearch()
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    override fun onBackPressed() {
-        presenter.clearLastSearch()
-        super.onBackPressed()
-    }
 
     /*
      * Inner implementation of QueryTextView. It will add itself as OnQueryTextListener of

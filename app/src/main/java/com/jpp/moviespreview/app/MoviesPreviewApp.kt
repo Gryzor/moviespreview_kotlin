@@ -14,8 +14,6 @@ import com.jpp.moviespreview.app.domain.DomainModule
 import com.jpp.moviespreview.app.ui.UiModule
 import com.jpp.moviespreview.app.ui.sections.about.di.AboutComponent
 import com.jpp.moviespreview.app.ui.sections.about.di.AboutModule
-import com.jpp.moviespreview.app.ui.sections.search.di.MultiSearchComponent
-import com.jpp.moviespreview.app.ui.sections.search.di.MultiSearchModule
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -68,8 +66,6 @@ open class MoviesPreviewApp : Application(), HasSubcomponentBuilders {
         operator fun get(context: Context): HasSubcomponentBuilders =
                 context.applicationContext as HasSubcomponentBuilders
     }
-
-    open fun multiSearchComponent(): MultiSearchComponent = appComponent.plus(MultiSearchModule())
 
     open fun aboutComponent(): AboutComponent = appComponent.plus(AboutModule())
 
