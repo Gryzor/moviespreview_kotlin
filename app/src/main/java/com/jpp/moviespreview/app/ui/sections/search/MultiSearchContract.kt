@@ -1,10 +1,9 @@
 package com.jpp.moviespreview.app.ui.sections.search
 
-import com.jpp.moviespreview.app.ui.MultiSearchResult
-import com.jpp.moviespreview.app.ui.PosterImageConfiguration
-import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
+import com.jpp.moviespreview.app.ui.*
 import com.jpp.moviespreview.app.ui.interactors.PaginationController
 import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
+import com.jpp.moviespreview.app.util.extentions.DelegatesExt
 
 /**
  * Contains the MVP contract for themulti search section
@@ -31,6 +30,27 @@ interface MultiSearchPresenter {
     fun onItemSelected(selectedItem: MultiSearchResult)
 }
 
+/**
+ * Interactor definition to manage the interaction between [MultiSearchPresenter]
+ * and the domain module.
+ */
+interface MultiSearchInteractor {
+    fun configure(data: MultiSearchData, movieGenres: List<MovieGenre>, posterImageConfig: PosterImageConfiguration, profileImageConfig: ProfileImageConfiguration)
+    fun search(query: String, page: Int)
+}
+
+
+/**
+ * Defines a communication channel between [MultiSearchPresenter] and [MultiSearchInteractor].
+ * The presenter will ask the interactor to do something and store the results in this class.
+ * The interactor will execute the action(s) and will set each property of this class.
+ * Using the property delegation system ([ObservableTypedDelegate]) the presenter is notified
+ * about each property set on this class.
+ */
+class MultiSearchData(onValueSetObserver: () -> Unit = {}) {
+    var lastSearchPage: MultiSearchPage? by DelegatesExt.observerDelegate(onValueSetObserver)
+    var error: Error? by DelegatesExt.observerDelegate(onValueSetObserver)
+}
 
 /**
  * Manager to handle query submits. It will

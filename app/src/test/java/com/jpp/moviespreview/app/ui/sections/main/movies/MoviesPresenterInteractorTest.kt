@@ -116,7 +116,7 @@ class MoviesPresenterInteractorTest {
 
         assertNull(data.lastMoviePage)
         assertNotNull(data.error)
-        assertEquals(data.error!!.type, Error.NO_CONNECTION)
+        assertEquals(Error.NO_CONNECTION, data.error!!.type)
     }
 
 
@@ -134,7 +134,7 @@ class MoviesPresenterInteractorTest {
 
         assertNull(data.lastMoviePage)
         assertNotNull(data.error)
-        assertEquals(data.error!!.type, Error.UNKNOWN)
+        assertEquals(Error.UNKNOWN, data.error!!.type)
     }
 
     private fun configureSubject() {
