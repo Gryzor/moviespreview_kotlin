@@ -6,7 +6,7 @@ import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 import com.jpp.moviespreview.app.util.extentions.DelegatesExt
 
 /**
- * Contains the MVP contract for themulti search section
+ * Contains the MVP contract for themulti searchFirstPage section
  *
  * Created by jpp on 1/6/18.
  */
@@ -36,7 +36,7 @@ interface MultiSearchPresenter {
  */
 interface MultiSearchInteractor {
     fun configure(data: MultiSearchData, movieGenres: List<MovieGenre>, posterImageConfig: PosterImageConfiguration, profileImageConfig: ProfileImageConfiguration)
-    fun search(query: String, page: Int)
+    fun searchFirstPage(query: String)
 }
 
 
@@ -80,7 +80,7 @@ interface QueryTextListener {
 
 
 /**
- * Defines an interactor to provide support to the multi search section.
+ * Defines an interactor to provide support to the multi searchFirstPage section.
  */
 interface MultiSearchPresenterController : PresenterInteractorDelegate, PaginationController {
 

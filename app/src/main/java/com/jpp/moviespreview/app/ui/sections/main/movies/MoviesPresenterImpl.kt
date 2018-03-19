@@ -111,21 +111,21 @@ class MoviesPresenterImpl(private val moviesContextHandler: MoviesContextHandler
 
 
     /**
-     * Observes the data that will be updated by the Command.
+     * Observes the data that will be updated by the interactor.
      */
     private fun observeData() {
         with(moviesData) {
-            whenNotNull(lastMoviePage, {
+            whenNotNull(lastMoviePage) {
                 backgroundExecutor.executeUiJob {
                     moviesContextHandler.addMoviePage(it)
                     moviesView.showMoviePage(it)
                 }
-            })
-            whenNotNull(error, {
+            }
+            whenNotNull(error) {
                 backgroundExecutor.executeUiJob {
                     processError(it)
                 }
-            })
+            }
         }
     }
 

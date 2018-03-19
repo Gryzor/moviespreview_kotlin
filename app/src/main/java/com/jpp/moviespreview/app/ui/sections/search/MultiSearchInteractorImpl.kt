@@ -4,11 +4,7 @@ import com.jpp.moviespreview.app.domain.Command
 import com.jpp.moviespreview.app.domain.CommandData
 import com.jpp.moviespreview.app.domain.MultiSearchPage
 import com.jpp.moviespreview.app.domain.MultiSearchParam
-import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
-import com.jpp.moviespreview.app.ui.Error
-import com.jpp.moviespreview.app.ui.MovieGenre
-import com.jpp.moviespreview.app.ui.PosterImageConfiguration
-import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
+import com.jpp.moviespreview.app.ui.*
 import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 import com.jpp.moviespreview.app.util.extentions.whenFalse
 import com.jpp.moviespreview.app.util.extentions.whenNotNull
@@ -44,9 +40,9 @@ class MultiSearchInteractorImpl(private val mapper: DomainToUiDataMapper,
         whenFalse(this::profileImageConfig.isInitialized, { this.profileImageConfig = profileImageConfig })
     }
 
-    override fun search(query: String, page: Int) {
+    override fun searchFirstPage(query: String) {
         verifyConfigAndFailIfNot()
-        command.execute(commandData, MultiSearchParam(query, page, domainMovieGenres))
+        command.execute(commandData, MultiSearchParam(query, 1, domainMovieGenres))
     }
 
 
@@ -73,5 +69,4 @@ class MultiSearchInteractorImpl(private val mapper: DomainToUiDataMapper,
             }
         }
     }
-
 }

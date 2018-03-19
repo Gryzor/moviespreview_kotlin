@@ -37,7 +37,7 @@ class MoviesPreviewApiWrapper(private val apiInstance: MoviesPreviewApi) {
 
 
     /**
-     * Executes a multi search with the provided parameters.
+     * Executes a multi searchFirstPage with the provided parameters.
      */
     fun multiSearch(query: String, page: Int): MultiSearchPage? = apiInstance.multiSearch(query, page).execute().body()
 }

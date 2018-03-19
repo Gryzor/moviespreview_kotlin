@@ -53,7 +53,7 @@ interface MoviesPreviewApi {
 
 
     /**
-     * Executes a multi search API call.
+     * Executes a multi searchFirstPage API call.
      * [page] the current page to retrieve.
      * [api_key] the api key provided by themoviedb.
      * [language] Pass a ISO 639-1 value to display translated data for the fields that support it. - Optional.

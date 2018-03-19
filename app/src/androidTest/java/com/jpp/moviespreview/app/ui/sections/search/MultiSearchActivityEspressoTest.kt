@@ -44,7 +44,7 @@ import javax.inject.Inject
  * Espresso tests are to verify the UI module.
  *
  * This test exercises the View, the Presenter and the Mapper for the
- * multi search section.
+ * multi searchFirstPage section.
  *
  * Created by jpp on 1/15/18.
  */

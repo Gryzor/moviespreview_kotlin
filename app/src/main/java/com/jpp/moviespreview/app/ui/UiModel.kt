@@ -95,7 +95,7 @@ data class CreditPerson(var profilePath: String,
 
 
 /**
- * Represents a page of results of a search retrieved from the backend.
+ * Represents a page of results of a searchFirstPage retrieved from the backend.
  */
 data class MultiSearchPage(val page: Int,
                            val results: List<MultiSearchResult>,
@@ -107,7 +107,7 @@ data class MultiSearchPage(val page: Int,
 }
 
 /**
- * Represents result item in the result of a multi search
+ * Represents result item in the result of a multi searchFirstPage
  */
 data class MultiSearchResult(val id: Double,
                              val imagePath: String,

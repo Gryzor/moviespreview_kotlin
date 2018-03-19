@@ -4,21 +4,21 @@ import com.jpp.moviespreview.app.di.activity.ActivityComponent
 import com.jpp.moviespreview.app.di.activity.ActivityComponentBuilder
 import com.jpp.moviespreview.app.di.activity.ActivityModule
 import com.jpp.moviespreview.app.di.activity.ActivityScope
+import com.jpp.moviespreview.app.domain.Command
 import com.jpp.moviespreview.app.domain.MultiSearchPage
 import com.jpp.moviespreview.app.domain.MultiSearchParam
-import com.jpp.moviespreview.app.domain.UseCase
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
+import com.jpp.moviespreview.app.ui.interactors.BackgroundExecutor
+import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
 import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationManager
 import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationManagerImpl
-import com.jpp.moviespreview.app.ui.interactors.PaginationController
-import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 import com.jpp.moviespreview.app.ui.sections.search.*
 import dagger.Module
 import dagger.Provides
 import dagger.Subcomponent
 
 /**
- * [ActivityComponent] for the multi search module.
+ * [ActivityComponent] for the multi searchFirstPage module.
  *
  * Created by jpp on 3/16/18.
  */
@@ -32,6 +32,7 @@ interface MultiSearchActivityComponent : ActivityComponent<MultiSearchActivity> 
 
     @Module
     class MultiSearchActivityModule internal constructor(activity: MultiSearchActivity) : ActivityModule<MultiSearchActivity>(activity) {
+
         @Provides
         @ActivityScope
         fun providesQuerySubmitManager(): QuerySubmitManager = QuerySubmitManagerImpl()
@@ -40,21 +41,22 @@ interface MultiSearchActivityComponent : ActivityComponent<MultiSearchActivity> 
         @Provides
         @ActivityScope
         fun providesMultiSearchPresenter(multiSearchContext: MultiSearchContext,
-                                         interactorDelegate: MultiSearchPresenterController,
-                                         mapper: DomainToUiDataMapper,
                                          querySubmitManager: QuerySubmitManager,
-                                         useCase: UseCase<MultiSearchParam, MultiSearchPage>): MultiSearchPresenter = MultiSearchPresenterImpl(multiSearchContext, interactorDelegate, mapper, querySubmitManager, useCase)
-
-        @Provides
-        @ActivityScope
-        fun providesMultiSearchPresenterController(presenterInteractorDelegate: PresenterInteractorDelegate,
-                                                   imageConfigurationManager: ImageConfigurationManager,
-                                                   paginationController: PaginationController): MultiSearchPresenterController = MultiSearchPresenterControllerImpl(presenterInteractorDelegate, imageConfigurationManager, paginationController)
-
+                                         backgroundExecutor: BackgroundExecutor,
+                                         imageConfigManager: ImageConfigurationManager,
+                                         interactor: MultiSearchInteractor): MultiSearchPresenter =
+                MultiSearchPresenterImpl(multiSearchContext, querySubmitManager, backgroundExecutor, imageConfigManager, interactor)
 
         @Provides
         @ActivityScope
         fun providesImageConfigurationManager(): ImageConfigurationManager = ImageConfigurationManagerImpl()
+
+        @Provides
+        @ActivityScope
+        fun providesInteractor(mapper: DomainToUiDataMapper,
+                               connectivityInteractor: ConnectivityInteractor,
+                               command: Command<@JvmSuppressWildcards MultiSearchParam, MultiSearchPage>): MultiSearchInteractor =
+                MultiSearchInteractorImpl(mapper, connectivityInteractor, command)
     }
 
 }

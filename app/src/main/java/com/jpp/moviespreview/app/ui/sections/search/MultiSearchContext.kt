@@ -2,24 +2,23 @@ package com.jpp.moviespreview.app.ui.sections.search
 
 import com.jpp.moviespreview.app.domain.MultiSearchParam
 import com.jpp.moviespreview.app.ui.Movie
-import com.jpp.moviespreview.app.ui.ApplicationMoviesContext
+import com.jpp.moviespreview.app.ui.MoviesContextHandler
 import com.jpp.moviespreview.app.ui.MultiSearchPage
 import com.jpp.moviespreview.app.ui.MultiSearchResult
 
 /**
- * Multi search is a complex feature. This is a particular context, that will be specific
- * for multi search feature and will survive to activity rotation.
+ * Multi searchFirstPage is a complex feature. This is a particular context, that will be specific
+ * for multi searchFirstPage feature and will survive to activity rotation.
  *
  * Created by jpp on 1/10/18.
  */
-class MultiSearchContext(private val context: ApplicationMoviesContext) {
+class MultiSearchContext(private val moviesContextHandler: MoviesContextHandler) {
 
-    var onGoingQueryParam: MultiSearchParam? = null
     private var searchPages = ArrayList<MultiSearchPage>()
 
-    fun getPosterImageConfigs() = context.posterImageConfig
+    fun getPosterImageConfigs() = moviesContextHandler.getPosterImageConfigs()
 
-    fun getProfileImageConfig() = context.profileImageConfig
+    fun getProfileImageConfig() = moviesContextHandler.getProfileImageConfigs()
 
     fun addSearchPage(multiSearchPage: MultiSearchPage) {
         if (searchPages.contains(multiSearchPage)) {
@@ -28,16 +27,14 @@ class MultiSearchContext(private val context: ApplicationMoviesContext) {
         searchPages.add(multiSearchPage)
     }
 
-    fun getUIMovieGenres() = context.movieGenres
+    fun getUIMovieGenres() = moviesContextHandler.getMovieGenres()
 
     fun clearPages() = searchPages.clear()
 
     fun hasSearchPages() = searchPages.size > 0
 
-    fun getAllSearchPages(): List<MultiSearchPage> = searchPages
-
     fun setSelectedMovie(movie: Movie) {
-        context.selectedMovie = movie
+        moviesContextHandler.setSelectedMovie(movie)
     }
 
     fun getAllSearchResults(): List<MultiSearchResult> {

@@ -79,7 +79,7 @@ data class MovieCredits(val id: Double,
 
 
 /**
- * Represents a page of results of a search retrieved from the backend.
+ * Represents a page of results of a searchFirstPage retrieved from the backend.
  */
 data class MultiSearchPage(val page: Int,
                            val results: List<MultiSearchResult>,
@@ -87,7 +87,7 @@ data class MultiSearchPage(val page: Int,
                            val total_results: Int)
 
 /**
- * Represents an item int the result of a multi search
+ * Represents an item int the result of a multi searchFirstPage
  */
 data class MultiSearchResult(val id: Double,
                              val poster_path: String?,

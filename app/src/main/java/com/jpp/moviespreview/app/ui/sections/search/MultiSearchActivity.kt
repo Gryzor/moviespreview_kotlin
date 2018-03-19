@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.multi_search_activity.*
 import javax.inject.Inject
 
 /**
- * Presents the search user interface for the user to search movies, tv shows
+ * Presents the searchFirstPage user interface for the user to searchFirstPage movies, tv shows
  * and people.
  *
  * Created by jpp on 1/6/18.

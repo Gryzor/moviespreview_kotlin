@@ -99,8 +99,8 @@ class DomainModule {
 
     @Provides
     @Singleton
-    fun providesMultiSearchCommand(mapper: MultiSearchDataMapper,
+    fun providesMultiSearchCommand(movieDataMapper: MovieDataMapper,
                                    api: MoviesPreviewApiWrapper)
-            : Command<MultiSearchParam, MultiSearchPage> = MultiSearchCommand(mapper, api)
+            : Command<MultiSearchParam, MultiSearchPage> = MultiSearchCommand(MultiSearchDataMapper(movieDataMapper), api)
 
 }
