@@ -45,6 +45,10 @@ class MultiSearchInteractorImpl(private val mapper: DomainToUiDataMapper,
         command.execute(commandData, MultiSearchParam(query, 1, domainMovieGenres))
     }
 
+    override fun searchPage(query: String, page: Int) {
+        verifyConfigAndFailIfNot()
+        command.execute(commandData, MultiSearchParam(query, page, domainMovieGenres))
+    }
 
     private fun verifyConfigAndFailIfNot() {
         whenFalse(this::domainMovieGenres.isInitialized, { throw IllegalStateException("You need to configure this object before interacting with it.") })

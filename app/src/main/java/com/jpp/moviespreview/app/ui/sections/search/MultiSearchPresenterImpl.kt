@@ -6,6 +6,7 @@ import com.jpp.moviespreview.app.ui.PosterImageConfiguration
 import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
 import com.jpp.moviespreview.app.ui.interactors.BackgroundExecutor
 import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationManager
+import com.jpp.moviespreview.app.ui.interactors.PaginationController
 import com.jpp.moviespreview.app.util.extentions.whenNotNull
 import com.jpp.moviespreview.app.util.extentions.whenTrue
 import com.jpp.moviespreview.app.domain.MultiSearchPage as DomainSearchPage
@@ -25,6 +26,7 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
                                private val querySubmitManager: QuerySubmitManager,
                                private val backgroundExecutor: BackgroundExecutor,
                                private val imageConfigManager: ImageConfigurationManager,
+                               private val paginationController: PaginationController,
                                private val interactor: MultiSearchInteractor) : MultiSearchPresenter {
 
 
@@ -43,8 +45,11 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
 
 
     override fun getNextSearchPage() {
-
-
+        paginationController.controlPagination(
+                { multiSearchContext.getAllPages() },
+                { viewInstance.showEndOfPaging() },
+                { backgroundExecutor.executeBackgroundJob { interactor.searchPage(multiSearchContext.getAllPages().last().query, it) } }
+        )
     }
 
     override fun clearLastSearch() {

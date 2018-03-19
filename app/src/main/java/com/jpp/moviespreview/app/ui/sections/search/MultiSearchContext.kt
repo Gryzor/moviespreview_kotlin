@@ -1,6 +1,5 @@
 package com.jpp.moviespreview.app.ui.sections.search
 
-import com.jpp.moviespreview.app.domain.MultiSearchParam
 import com.jpp.moviespreview.app.ui.Movie
 import com.jpp.moviespreview.app.ui.MoviesContextHandler
 import com.jpp.moviespreview.app.ui.MultiSearchPage
@@ -26,6 +25,8 @@ class MultiSearchContext(private val moviesContextHandler: MoviesContextHandler)
         }
         searchPages.add(multiSearchPage)
     }
+
+    fun getAllPages(): List<MultiSearchPage> = searchPages
 
     fun getUIMovieGenres() = moviesContextHandler.getMovieGenres()
 

@@ -37,6 +37,7 @@ interface MultiSearchPresenter {
 interface MultiSearchInteractor {
     fun configure(data: MultiSearchData, movieGenres: List<MovieGenre>, posterImageConfig: PosterImageConfiguration, profileImageConfig: ProfileImageConfiguration)
     fun searchFirstPage(query: String)
+    fun searchPage(query: String, page: Int)
 }
 
 

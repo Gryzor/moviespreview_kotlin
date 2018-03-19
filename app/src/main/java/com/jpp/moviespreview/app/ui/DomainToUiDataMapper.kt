@@ -202,7 +202,8 @@ class DomainToUiDataMapper {
                                               posterImageConfiguration: PosterImageConfiguration,
                                               profileImageConfiguration: ProfileImageConfiguration,
                                               genreList: List<MovieGenre>) = with(domainResultPage) {
-        MultiSearchPage(page,
+        MultiSearchPage(query,
+                page,
                 convertDomainSearchResultsInUiMultiSearchResults(results, posterImageConfiguration, profileImageConfiguration, genreList),
                 totalPages,
                 totalResults)

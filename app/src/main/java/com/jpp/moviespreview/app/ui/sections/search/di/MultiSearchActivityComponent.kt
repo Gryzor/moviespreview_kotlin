@@ -8,10 +8,7 @@ import com.jpp.moviespreview.app.domain.Command
 import com.jpp.moviespreview.app.domain.MultiSearchPage
 import com.jpp.moviespreview.app.domain.MultiSearchParam
 import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
-import com.jpp.moviespreview.app.ui.interactors.BackgroundExecutor
-import com.jpp.moviespreview.app.ui.interactors.ConnectivityInteractor
-import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationManager
-import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationManagerImpl
+import com.jpp.moviespreview.app.ui.interactors.*
 import com.jpp.moviespreview.app.ui.sections.search.*
 import dagger.Module
 import dagger.Provides
@@ -44,8 +41,9 @@ interface MultiSearchActivityComponent : ActivityComponent<MultiSearchActivity> 
                                          querySubmitManager: QuerySubmitManager,
                                          backgroundExecutor: BackgroundExecutor,
                                          imageConfigManager: ImageConfigurationManager,
+                                         paginationController: PaginationController,
                                          interactor: MultiSearchInteractor): MultiSearchPresenter =
-                MultiSearchPresenterImpl(multiSearchContext, querySubmitManager, backgroundExecutor, imageConfigManager, interactor)
+                MultiSearchPresenterImpl(multiSearchContext, querySubmitManager, backgroundExecutor, imageConfigManager, paginationController, interactor)
 
         @Provides
         @ActivityScope
