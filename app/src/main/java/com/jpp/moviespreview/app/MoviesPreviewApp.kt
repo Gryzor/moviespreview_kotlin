@@ -3,9 +3,7 @@ package com.jpp.moviespreview.app
 import android.app.Activity
 import android.app.Application
 import android.content.Context
-import android.os.StrictMode
 import android.support.v4.app.Fragment
-import com.jpp.moviespreview.BuildConfig
 import com.jpp.moviespreview.app.data.DataModule
 import com.jpp.moviespreview.app.di.HasSubcomponentBuilders
 import com.jpp.moviespreview.app.di.activity.ActivityComponentBuilder
@@ -34,16 +32,7 @@ open class MoviesPreviewApp : Application(), HasSubcomponentBuilders {
 
 
     override fun onCreate() {
-        if (BuildConfig.DEBUG) {
-            StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder()
-                    .detectAll()
-                    .build())
-        }
-
-
         super.onCreate()
-
-
         appComponent = DaggerAppComponent
                 .builder()
                 .appModule(AppModule(this))

@@ -37,7 +37,7 @@ class MovieDetailActivity : InjectedActivity(), MovieDetailImagesView {
 
     companion object {
 
-        private val EXTRA_TRANSITION_NAME = "com.jpp.moviespreview.app.ui.detail.EXTRA_TRANSITION_NAME"
+        private const val EXTRA_TRANSITION_NAME = "com.jpp.moviespreview.app.ui.detail.EXTRA_TRANSITION_NAME"
 
         fun navigateWithTransition(activity: AppCompatActivity, transitionView: ImageView) {
             val intent = Intent(activity, MovieDetailActivity::class.java)

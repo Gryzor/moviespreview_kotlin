@@ -29,6 +29,10 @@ interface FlowResolver {
     fun goToDetailsScreen()
 }
 
+interface FlowResolverData {
+
+}
+
 
 class FlowResolverImpl(private val activity: Activity) : FlowResolver {
 

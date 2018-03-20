@@ -47,7 +47,7 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
         paginationController.controlPagination(
                 { multiSearchContext.getAllPages() },
                 { viewInstance.showEndOfPaging() },
-                { backgroundExecutor.executeBackgroundJob { interactor.searchPage(multiSearchContext.getAllPages().last().query, it) } }
+                { configureInteractorAndExecuteSearch(multiSearchContext.getAllPages().last().query, it) }
         )
     }
 
@@ -55,6 +55,7 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
         multiSearchContext.clearPages()
         viewInstance.clearPages()
         viewInstance.clearSearch()
+        listenQueryUpdates()
     }
 
     override fun onItemSelected(selectedItem: MultiSearchResult) {
@@ -85,12 +86,16 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
     /**
      * Configures the interactor and retrieves the first page of the search.
      */
-    private fun configureInteractorAndExecuteSearch(query: String) {
+    private fun configureInteractorAndExecuteSearch(query: String, page: Int? = null) {
         with(multiSearchContext) {
             getUIMovieGenres()?.let {
                 interactor.configure(searchData, it, getPosterImageConfiguration(), getProfileImageConfiguration())
                 backgroundExecutor.executeBackgroundJob {
-                    interactor.searchFirstPage(query)
+                    page?.let {
+                        interactor.searchPage(query, page)
+                    } ?: run {
+                        interactor.searchFirstPage(query)
+                    }
                 }
             } ?: run {
                 // should never happen, fail if it does
