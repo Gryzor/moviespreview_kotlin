@@ -80,6 +80,10 @@ interface QueryTextListener {
     fun onQueryTextChange(newText: String?): Boolean
 }
 
+interface SearchFlowResolver {
+    fun showMovieDetails()
+}
+
 
 /**
  * Defines an interactor to provide support to the multi searchFirstPage section.

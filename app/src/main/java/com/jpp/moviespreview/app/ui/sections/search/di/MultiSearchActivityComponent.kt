@@ -42,8 +42,9 @@ interface MultiSearchActivityComponent : ActivityComponent<MultiSearchActivity> 
                                          backgroundExecutor: BackgroundExecutor,
                                          imageConfigManager: ImageConfigurationManager,
                                          paginationController: PaginationController,
+                                         searchFlowResolver: SearchFlowResolver,
                                          interactor: MultiSearchInteractor): MultiSearchPresenter =
-                MultiSearchPresenterImpl(multiSearchContext, querySubmitManager, backgroundExecutor, imageConfigManager, paginationController, interactor)
+                MultiSearchPresenterImpl(multiSearchContext, querySubmitManager, backgroundExecutor, imageConfigManager, paginationController, searchFlowResolver, interactor)
 
         @Provides
         @ActivityScope
@@ -55,6 +56,9 @@ interface MultiSearchActivityComponent : ActivityComponent<MultiSearchActivity> 
                                connectivityInteractor: ConnectivityInteractor,
                                command: Command<@JvmSuppressWildcards MultiSearchParam, MultiSearchPage>): MultiSearchInteractor =
                 MultiSearchInteractorImpl(mapper, connectivityInteractor, command)
-    }
 
+        @Provides
+        @ActivityScope
+        fun providesSearchFlowResolver(): SearchFlowResolver = activity
+    }
 }

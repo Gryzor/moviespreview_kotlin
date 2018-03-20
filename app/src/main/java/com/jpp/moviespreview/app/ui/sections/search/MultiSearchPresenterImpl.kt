@@ -27,6 +27,7 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
                                private val backgroundExecutor: BackgroundExecutor,
                                private val imageConfigManager: ImageConfigurationManager,
                                private val paginationController: PaginationController,
+                               private val searchFlowResolver: SearchFlowResolver,
                                private val interactor: MultiSearchInteractor) : MultiSearchPresenter {
 
     private lateinit var viewInstance: MultiSearchView
@@ -61,7 +62,7 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
     override fun onItemSelected(selectedItem: MultiSearchResult) {
         if (selectedItem.movieDetails != null) {
             multiSearchContext.setSelectedMovie(selectedItem.movieDetails)
-            TODO("Use flow executor")
+            searchFlowResolver.showMovieDetails()
         }
     }
 

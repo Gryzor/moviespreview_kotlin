@@ -23,7 +23,7 @@ import javax.inject.Inject
  *
  * Created by jpp on 1/6/18.
  */
-class MultiSearchActivity : InjectedActivity(), MultiSearchView {
+class MultiSearchActivity : InjectedActivity(), MultiSearchView, SearchFlowResolver {
 
 
     override fun injectMembers(hasSubcomponentBuilders: HasSubcomponentBuilders) {
