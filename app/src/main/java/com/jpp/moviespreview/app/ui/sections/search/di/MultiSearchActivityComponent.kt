@@ -42,7 +42,7 @@ interface MultiSearchActivityComponent : ActivityComponent<MultiSearchActivity> 
                                          backgroundExecutor: BackgroundExecutor,
                                          imageConfigManager: ImageConfigurationManager,
                                          paginationController: PaginationController,
-                                         searchFlowResolver: SearchFlowResolver,
+                                         searchFlowResolver: MultiSearchFlowResolver,
                                          interactor: MultiSearchInteractor): MultiSearchPresenter =
                 MultiSearchPresenterImpl(multiSearchContext, querySubmitManager, backgroundExecutor, imageConfigManager, paginationController, searchFlowResolver, interactor)
 
@@ -59,6 +59,6 @@ interface MultiSearchActivityComponent : ActivityComponent<MultiSearchActivity> 
 
         @Provides
         @ActivityScope
-        fun providesSearchFlowResolver(): SearchFlowResolver = activity
+        fun providesSearchFlowResolver(): MultiSearchFlowResolver = activity
     }
 }

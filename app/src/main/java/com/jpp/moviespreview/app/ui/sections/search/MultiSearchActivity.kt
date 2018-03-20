@@ -21,9 +21,12 @@ import javax.inject.Inject
  * Presents the searchFirstPage user interface for the user to searchFirstPage movies, tv shows
  * and people.
  *
+ * Implements MultiSearchView as the View part of the MVP implementation.
+ * Implements MultiSearchFlowResolver to provide navigation in the search section.
+ *
  * Created by jpp on 1/6/18.
  */
-class MultiSearchActivity : InjectedActivity(), MultiSearchView, SearchFlowResolver {
+class MultiSearchActivity : InjectedActivity(), MultiSearchView, MultiSearchFlowResolver {
 
 
     override fun injectMembers(hasSubcomponentBuilders: HasSubcomponentBuilders) {

@@ -80,7 +80,10 @@ interface QueryTextListener {
     fun onQueryTextChange(newText: String?): Boolean
 }
 
-interface SearchFlowResolver {
+/**
+ * Resolves the flow in the search section
+ */
+interface MultiSearchFlowResolver {
     fun showMovieDetails()
 }
 
