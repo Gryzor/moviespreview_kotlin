@@ -18,6 +18,7 @@ interface MultiSearchView {
     fun getTargetMultiSearchResultImageSize(): Int
     fun showEndOfPaging()
     fun clearPages()
+    fun clearSearch()
     fun showMovieDetails()
     fun showUnexpectedError()
     fun showNotConnectedToNetwork()

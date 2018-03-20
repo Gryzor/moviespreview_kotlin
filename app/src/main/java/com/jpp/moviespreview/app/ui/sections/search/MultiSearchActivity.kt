@@ -111,8 +111,11 @@ class MultiSearchActivity : InjectedActivity(), MultiSearchView {
     }
 
     override fun clearPages() {
-        search_view.setQuery("", false)
         adapter.clear()
+    }
+
+    override fun clearSearch() {
+        search_view.setQuery("", false)
     }
 
     override fun showMovieDetails() {

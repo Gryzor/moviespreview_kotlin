@@ -29,7 +29,6 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
                                private val paginationController: PaginationController,
                                private val interactor: MultiSearchInteractor) : MultiSearchPresenter {
 
-
     private lateinit var viewInstance: MultiSearchView
     private val searchData by lazy { MultiSearchData({ observeData() }) }
 
@@ -55,6 +54,7 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
     override fun clearLastSearch() {
         multiSearchContext.clearPages()
         viewInstance.clearPages()
+        viewInstance.clearSearch()
     }
 
     override fun onItemSelected(selectedItem: MultiSearchResult) {
@@ -74,6 +74,8 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
         with(viewInstance) {
             querySubmitManager.linkQueryTextView(getQueryTextView(),
                     {
+                        multiSearchContext.clearPages()
+                        viewInstance.clearPages()
                         configureInteractorAndExecuteSearch(it)
                     })
         }
