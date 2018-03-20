@@ -11,6 +11,7 @@ import org.jetbrains.anko.startActivity
  *
  * Created by jpp on 3/12/18.
  */
+@Deprecated("In favor of using local section flow resolver. Check MultiSearchFlowResolver")
 interface FlowResolver {
 
     /**

@@ -41,8 +41,7 @@ class MultiSearchInteractorImpl(private val mapper: DomainToUiDataMapper,
     }
 
     override fun searchFirstPage(query: String) {
-        verifyConfigAndFailIfNot()
-        command.execute(commandData, MultiSearchParam(query, 1, domainMovieGenres))
+        searchPage(query, 1)
     }
 
     override fun searchPage(query: String, page: Int) {

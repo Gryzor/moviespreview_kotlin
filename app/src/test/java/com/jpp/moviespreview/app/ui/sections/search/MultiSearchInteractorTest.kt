@@ -68,7 +68,7 @@ class MultiSearchInteractorTest {
 
     @Test(expected = IllegalStateException::class)
     fun searchWhenNotConfigured() {
-        subject.searchFirstPage("query", 1)
+        subject.searchPage("query", 1)
     }
 
 
@@ -94,7 +94,7 @@ class MultiSearchInteractorTest {
         }.`when`(command).execute(any(), any())
 
 
-        subject.searchFirstPage(query, pageNumber)
+        subject.searchPage(query, pageNumber)
 
         assertEquals(expectedSearchPage, searchData.lastSearchPage)
         assertNull(searchData.error)
@@ -111,7 +111,7 @@ class MultiSearchInteractorTest {
             callback.error = mock()
         }.`when`(command).execute(any(), any())
 
-        subject.searchFirstPage("query", 1)
+        subject.searchPage("query", 1)
 
         assertNull(searchData.lastSearchPage)
         assertNotNull(searchData.error)
@@ -129,7 +129,7 @@ class MultiSearchInteractorTest {
             callback.error = mock()
         }.`when`(command).execute(any(), any())
 
-        subject.searchFirstPage("query", 1)
+        subject.searchPage("query", 1)
 
         assertNull(searchData.lastSearchPage)
         assertNotNull(searchData.error)
