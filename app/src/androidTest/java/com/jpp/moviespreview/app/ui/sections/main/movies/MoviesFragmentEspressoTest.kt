@@ -21,11 +21,11 @@ import com.jpp.moviespreview.app.util.extentions.whenNotNull
 import com.jpp.moviespreview.app.utils.RecyclerViewItemCountAssertion
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.doAnswer
+import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.`when`
 
 /**
  * Espresso tests for [MoviesFragment]
@@ -48,8 +48,8 @@ class MoviesFragmentEspressoTest {
 
     @Before
     fun setUp() {
-        `when`(builder.build()).thenReturn(mockMoviesFragmentComponenet)
-        `when`(builder.fragmentModule(any())).thenReturn(builder)
+        whenever(builder.build()).thenReturn(mockMoviesFragmentComponenet)
+        whenever(builder.fragmentModule(any())).thenReturn(builder)
 
         val app = InstrumentationRegistry.getTargetContext().applicationContext as EspressoMoviesPreviewApp
         app.putFragmentComponentBuilder(builder, MoviesFragment::class.java)
@@ -63,7 +63,7 @@ class MoviesFragmentEspressoTest {
         doAnswer {
             val viewInstance = it.arguments[0] as MoviesView
             viewInstance.showMoviePage(uiMoviePage)
-        }.`when`(moviesPresenter).linkView(any())
+        }.whenever(moviesPresenter).linkView(any())
 
         launchActivityAndAddFragment()
 
@@ -78,7 +78,7 @@ class MoviesFragmentEspressoTest {
         doAnswer {
             val viewInstance = it.arguments[0] as MoviesView
             viewInstance.showNotConnectedToNetwork()
-        }.`when`(moviesPresenter).linkView(any())
+        }.whenever(moviesPresenter).linkView(any())
 
         launchActivityAndAddFragment()
 
@@ -92,7 +92,7 @@ class MoviesFragmentEspressoTest {
         doAnswer {
             val viewInstance = it.arguments[0] as MoviesView
             viewInstance.showUnexpectedError()
-        }.`when`(moviesPresenter).linkView(any())
+        }.whenever(moviesPresenter).linkView(any())
 
         launchActivityAndAddFragment()
 

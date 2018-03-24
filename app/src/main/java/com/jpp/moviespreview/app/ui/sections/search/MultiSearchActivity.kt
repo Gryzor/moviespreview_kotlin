@@ -52,7 +52,9 @@ class MultiSearchActivity : InjectedActivity(), MultiSearchView, MultiSearchFlow
         setContentView(R.layout.multi_search_activity)
 
         setSupportActionBar(search_activity_toolbar)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        whenNotNull(supportActionBar) {
+            it.setDisplayHomeAsUpEnabled(true)
+        }
         setupSearchView()
 
 

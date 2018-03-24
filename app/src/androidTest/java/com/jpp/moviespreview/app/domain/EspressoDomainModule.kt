@@ -54,4 +54,8 @@ class EspressoDomainModule {
     @Provides
     @Singleton
     fun providesRetrieveMovieCreditsCommand(): Command<Movie, MovieCredits> = mock()
+
+    @Provides
+    @Singleton
+    fun providesMultiSearchCommand(): Command<MultiSearchParam, MultiSearchPage> = mock()
 }
