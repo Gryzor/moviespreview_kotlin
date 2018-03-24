@@ -1,8 +1,6 @@
 package com.jpp.moviespreview.app.ui.sections.search
 
 import com.jpp.moviespreview.app.ui.*
-import com.jpp.moviespreview.app.ui.interactors.PaginationController
-import com.jpp.moviespreview.app.ui.interactors.PresenterInteractorDelegate
 import com.jpp.moviespreview.app.util.extentions.DelegatesExt
 
 /**
@@ -85,17 +83,4 @@ interface QueryTextListener {
  */
 interface MultiSearchFlowResolver {
     fun showMovieDetails()
-}
-
-
-/**
- * Defines an interactor to provide support to the multi searchFirstPage section.
- */
-interface MultiSearchPresenterController : PresenterInteractorDelegate, PaginationController {
-
-    fun findProfileImageConfigurationForHeight(profileImageConfigs: List<ProfileImageConfiguration>,
-                                               height: Int): ProfileImageConfiguration
-
-    fun findPosterImageConfigurationForWidth(posterImageConfigs: List<PosterImageConfiguration>,
-                                             width: Int): PosterImageConfiguration
 }
