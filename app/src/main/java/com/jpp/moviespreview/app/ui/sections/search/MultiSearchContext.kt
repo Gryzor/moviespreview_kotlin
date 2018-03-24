@@ -13,7 +13,7 @@ import com.jpp.moviespreview.app.ui.MultiSearchResult
  */
 class MultiSearchContext(private val moviesContextHandler: MoviesContextHandler) {
 
-    private var searchPages = ArrayList<MultiSearchPage>()
+    private val searchPages = ArrayList<MultiSearchPage>()
 
     fun getPosterImageConfigs() = moviesContextHandler.getPosterImageConfigs()
 

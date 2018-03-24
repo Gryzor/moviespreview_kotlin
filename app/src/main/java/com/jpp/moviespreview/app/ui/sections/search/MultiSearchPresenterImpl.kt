@@ -37,7 +37,7 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
         viewInstance = multiSearchView
         listenQueryUpdates()
         with(multiSearchContext) {
-            whenTrue(multiSearchContext.hasSearchPages()) {
+            whenTrue(hasSearchPages()) {
                 viewInstance.showResults(getAllSearchResults())
             }
         }
@@ -60,8 +60,8 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
     }
 
     override fun onItemSelected(selectedItem: MultiSearchResult) {
-        if (selectedItem.movieDetails != null) {
-            multiSearchContext.setSelectedMovie(selectedItem.movieDetails)
+        whenNotNull(selectedItem.movieDetails) {
+            multiSearchContext.setSelectedMovie(it)
             searchFlowResolver.showMovieDetails()
         }
     }
