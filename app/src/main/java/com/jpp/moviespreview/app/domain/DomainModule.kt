@@ -19,6 +19,7 @@ import com.jpp.moviespreview.app.domain.movie.RetrieveMoviesInTheaterUseCase
 import com.jpp.moviespreview.app.domain.movie.credits.CreditsDataMapper
 import com.jpp.moviespreview.app.domain.movie.credits.RetrieveMovieCreditsCommand
 import com.jpp.moviespreview.app.domain.movie.credits.RetrieveMovieCreditsUseCase
+import com.jpp.moviespreview.app.domain.search.MultiSearchCommand
 import com.jpp.moviespreview.app.domain.search.MultiSearchDataMapper
 import com.jpp.moviespreview.app.domain.search.MultiSearchUseCase
 import dagger.Module
@@ -94,5 +95,12 @@ class DomainModule {
     fun providesRetrieveMovieCreditsCommand(api: MoviesPreviewApiWrapper,
                                             moviesCache: MoviesCache)
             : Command<Movie, MovieCredits> = RetrieveMovieCreditsCommand(CreditsDataMapper(), api, moviesCache)
+
+
+    @Provides
+    @Singleton
+    fun providesMultiSearchCommand(movieDataMapper: MovieDataMapper,
+                                   api: MoviesPreviewApiWrapper)
+            : Command<MultiSearchParam, MultiSearchPage> = MultiSearchCommand(MultiSearchDataMapper(movieDataMapper), api)
 
 }

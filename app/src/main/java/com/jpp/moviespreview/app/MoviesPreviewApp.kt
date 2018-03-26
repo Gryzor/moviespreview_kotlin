@@ -3,9 +3,7 @@ package com.jpp.moviespreview.app
 import android.app.Activity
 import android.app.Application
 import android.content.Context
-import android.os.StrictMode
 import android.support.v4.app.Fragment
-import com.jpp.moviespreview.BuildConfig
 import com.jpp.moviespreview.app.data.DataModule
 import com.jpp.moviespreview.app.di.HasSubcomponentBuilders
 import com.jpp.moviespreview.app.di.activity.ActivityComponentBuilder
@@ -14,8 +12,6 @@ import com.jpp.moviespreview.app.domain.DomainModule
 import com.jpp.moviespreview.app.ui.UiModule
 import com.jpp.moviespreview.app.ui.sections.about.di.AboutComponent
 import com.jpp.moviespreview.app.ui.sections.about.di.AboutModule
-import com.jpp.moviespreview.app.ui.sections.search.di.MultiSearchComponent
-import com.jpp.moviespreview.app.ui.sections.search.di.MultiSearchModule
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -36,16 +32,7 @@ open class MoviesPreviewApp : Application(), HasSubcomponentBuilders {
 
 
     override fun onCreate() {
-        if (BuildConfig.DEBUG) {
-            StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder()
-                    .detectAll()
-                    .build())
-        }
-
-
         super.onCreate()
-
-
         appComponent = DaggerAppComponent
                 .builder()
                 .appModule(AppModule(this))
@@ -68,8 +55,6 @@ open class MoviesPreviewApp : Application(), HasSubcomponentBuilders {
         operator fun get(context: Context): HasSubcomponentBuilders =
                 context.applicationContext as HasSubcomponentBuilders
     }
-
-    open fun multiSearchComponent(): MultiSearchComponent = appComponent.plus(MultiSearchModule())
 
     open fun aboutComponent(): AboutComponent = appComponent.plus(AboutModule())
 

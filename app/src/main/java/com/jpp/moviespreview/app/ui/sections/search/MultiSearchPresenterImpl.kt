@@ -1,10 +1,14 @@
 package com.jpp.moviespreview.app.ui.sections.search
 
-import com.jpp.moviespreview.app.domain.MultiSearchPage
-import com.jpp.moviespreview.app.domain.MultiSearchParam
-import com.jpp.moviespreview.app.domain.UseCase
-import com.jpp.moviespreview.app.ui.DomainToUiDataMapper
+import com.jpp.moviespreview.app.ui.Error
 import com.jpp.moviespreview.app.ui.MultiSearchResult
+import com.jpp.moviespreview.app.ui.PosterImageConfiguration
+import com.jpp.moviespreview.app.ui.ProfileImageConfiguration
+import com.jpp.moviespreview.app.ui.interactors.BackgroundExecutor
+import com.jpp.moviespreview.app.ui.interactors.ImageConfigurationManager
+import com.jpp.moviespreview.app.ui.interactors.PaginationController
+import com.jpp.moviespreview.app.util.extentions.whenNotNull
+import com.jpp.moviespreview.app.util.extentions.whenTrue
 import com.jpp.moviespreview.app.domain.MultiSearchPage as DomainSearchPage
 import com.jpp.moviespreview.app.domain.MultiSearchResult as DomainSearchResult
 
@@ -19,19 +23,21 @@ import com.jpp.moviespreview.app.domain.MultiSearchResult as DomainSearchResult
  * Created by jpp on 1/6/18.
  */
 class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContext,
-                               private val interactorDelegate: MultiSearchPresenterController,
-                               private val mapper: DomainToUiDataMapper,
                                private val querySubmitManager: QuerySubmitManager,
-                               private val useCase: UseCase<MultiSearchParam, MultiSearchPage>) : MultiSearchPresenter {
-
+                               private val backgroundExecutor: BackgroundExecutor,
+                               private val imageConfigManager: ImageConfigurationManager,
+                               private val paginationController: PaginationController,
+                               private val searchFlowResolver: MultiSearchFlowResolver,
+                               private val interactor: MultiSearchInteractor) : MultiSearchPresenter {
 
     private lateinit var viewInstance: MultiSearchView
+    private val searchData by lazy { MultiSearchData({ observeData() }) }
 
     override fun linkView(multiSearchView: MultiSearchView) {
         viewInstance = multiSearchView
         listenQueryUpdates()
         with(multiSearchContext) {
-            if (hasSearchPages()) {
+            whenTrue(hasSearchPages()) {
                 viewInstance.showResults(getAllSearchResults())
             }
         }
@@ -39,71 +45,27 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
 
 
     override fun getNextSearchPage() {
-        with(multiSearchContext) {
-            if (interactorDelegate.isIdle()) {
-                createNextUseCaseParam(onGoingQueryParam!!.query, {
-                    executeUseCase(it, { viewInstance.appendResults(it) })
-                })
-            }
-        }
+        paginationController.controlPagination(
+                { multiSearchContext.getAllPages() },
+                { viewInstance.showEndOfPaging() },
+                { configureInteractorAndExecuteSearch(multiSearchContext.getAllPages().last().query, it) }
+        )
     }
 
     override fun clearLastSearch() {
         multiSearchContext.clearPages()
         viewInstance.clearPages()
+        viewInstance.clearSearch()
+        listenQueryUpdates()
     }
 
     override fun onItemSelected(selectedItem: MultiSearchResult) {
-        if (selectedItem.movieDetails != null) {
-            multiSearchContext.setSelectedMovie(selectedItem.movieDetails)
-            viewInstance.showMovieDetails()
+        whenNotNull(selectedItem.movieDetails) {
+            multiSearchContext.setSelectedMovie(it)
+            searchFlowResolver.showMovieDetails()
         }
     }
 
-
-    private fun executeUseCase(param: MultiSearchParam, showResult: (List<MultiSearchResult>) -> Unit) {
-        with(multiSearchContext) {
-            if (multiSearchContext.onGoingQueryParam != param) {
-                interactorDelegate.executeBackgroundJob(
-                        {
-                            clearPagesInContextIfQueryChanged(multiSearchContext.onGoingQueryParam?.query, param.query)
-                            multiSearchContext.onGoingQueryParam = param
-                            useCase.execute(param)
-                        },
-                        {
-                            // process only if is for the current query
-                            processIfIsDataFromOngoingCall(it, {
-                                with(multiSearchContext) {
-                                    val uiResults = mapper.convertDomainResultPageInUiResultPage(it, getPosterImageConfiguration(), getProfileImageConfiguration(), getUIMovieGenres()!!)
-                                    multiSearchContext.addSearchPage(uiResults)
-                                    showResult(uiResults.results)
-                                    listenQueryUpdates()
-                                }
-                            })
-
-                            processIfIsError(it, {
-                                processError()
-                            })
-                        }
-                )
-            }
-        }
-    }
-
-
-    /**
-     * Process the detected error by showing an internet connection error
-     * or a unexpected error message.
-     */
-    private fun processError() {
-        with(interactorDelegate) {
-            if (isConnectedToNetwork()) {
-                viewInstance.showUnexpectedError()
-            } else {
-                viewInstance.showNotConnectedToNetwork()
-            }
-        }
-    }
 
     /**
      * Adds a listener to the [querySubmitManager] in order to detect new queries.
@@ -111,46 +73,97 @@ class MultiSearchPresenterImpl(private val multiSearchContext: MultiSearchContex
      * page of the query.
      */
     private fun listenQueryUpdates() {
-        querySubmitManager
-                .linkQueryTextView(
-                        viewInstance.getQueryTextView(),
-                        { query ->
-                            createNextUseCaseParam(query, { executeUseCase(it, { viewInstance.showResults(it) }) })
-                        })
-    }
-
-
-    private fun processIfIsDataFromOngoingCall(result: DomainSearchPage?, func: (DomainSearchPage) -> Unit) {
-        if (multiSearchContext.onGoingQueryParam?.page == result?.page) {
-            func(result!!) // only if result != null
+        with(viewInstance) {
+            querySubmitManager.linkQueryTextView(getQueryTextView(),
+                    {
+                        multiSearchContext.clearPages()
+                        viewInstance.clearPages()
+                        configureInteractorAndExecuteSearch(it)
+                    })
         }
     }
 
 
-    private fun processIfIsError(result: DomainSearchPage?, func: () -> Unit) {
-        if (result == null) {
-            func()
-        }
-    }
-
-    private fun clearPagesInContextIfQueryChanged(queryInContext: String?, newQuery: String) {
-        if (queryInContext != newQuery) {
-            multiSearchContext.clearPages()
-        }
-    }
-
-    private fun createNextUseCaseParam(query: String, manager: (MultiSearchParam) -> Unit) {
+    /**
+     * Configures the interactor and retrieves the first page of the search.
+     */
+    private fun configureInteractorAndExecuteSearch(query: String, page: Int? = null) {
         with(multiSearchContext) {
-            interactorDelegate.controlPagination(
-                    { getAllSearchPages() },
-                    { viewInstance.showEndOfPaging() },
-                    { manager(MultiSearchParam(query, it, mapper.convertUiGenresToDomainGenres(getUIMovieGenres()!!))) }
-            )
+            getUIMovieGenres()?.let {
+                interactor.configure(searchData, it, getPosterImageConfiguration(), getProfileImageConfiguration())
+                backgroundExecutor.executeBackgroundJob {
+                    page?.let {
+                        interactor.searchPage(query, page)
+                    } ?: run {
+                        interactor.searchFirstPage(query)
+                    }
+                }
+            } ?: run {
+                // should never happen, fail if it does
+                throw IllegalStateException("Search context should be completed at this point")
+            }
         }
     }
 
-    private fun getProfileImageConfiguration() = interactorDelegate.findProfileImageConfigurationForHeight(multiSearchContext.getProfileImageConfig()!!, viewInstance.getTargetMultiSearchResultImageSize())
 
-    private fun getPosterImageConfiguration() = interactorDelegate.findPosterImageConfigurationForWidth(multiSearchContext.getPosterImageConfigs()!!, viewInstance.getTargetMultiSearchResultImageSize())
+    /**
+     * Observes the data that will be updated by the interactor.
+     */
+    private fun observeData() {
+        with(searchData) {
+            whenNotNull(lastSearchPage) {
+                backgroundExecutor.executeUiJob {
+                    with(multiSearchContext) {
+                        addSearchPage(it)
+                        viewInstance.showResults(getAllSearchResults())
+                    }
+                }
+            }
+            whenNotNull(error) {
+                processError(it)
+            }
+        }
+    }
 
+    /**
+     * Process the errors detected while retrieving the movies.
+     */
+    private fun processError(error: Error) {
+        with(error) {
+            when (type) {
+                Error.NO_CONNECTION -> viewInstance.showNotConnectedToNetwork()
+                else -> viewInstance.showUnexpectedError()
+            }
+        }
+    }
+
+    /**
+     * Finds and return the [PosterImageConfiguration] for the current screen
+     * configuration.
+     */
+    private fun getPosterImageConfiguration(): PosterImageConfiguration {
+        with(multiSearchContext) {
+            getPosterImageConfigs()?.let {
+                return imageConfigManager.findPosterImageConfigurationForWidth(it, viewInstance.getTargetMultiSearchResultImageSize())
+            } ?: run {
+                // should never happen, fail if it does
+                throw IllegalStateException("Search context should be completed at this point")
+            }
+        }
+    }
+
+    /**
+     * Finds and return the [ProfileImageConfiguration] for the current screen
+     * configuration.
+     */
+    private fun getProfileImageConfiguration(): ProfileImageConfiguration {
+        with(multiSearchContext) {
+            getProfileImageConfig()?.let {
+                return imageConfigManager.findProfileImageConfigurationForHeight(it, viewInstance.getTargetMultiSearchResultImageSize())
+            } ?: run {
+                // should never happen, fail if it does
+                throw IllegalStateException("Search context should be completed at this point")
+            }
+        }
+    }
 }

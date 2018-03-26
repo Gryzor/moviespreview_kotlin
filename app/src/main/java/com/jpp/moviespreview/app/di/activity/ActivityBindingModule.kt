@@ -2,6 +2,8 @@ package com.jpp.moviespreview.app.di.activity
 
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailActivity
 import com.jpp.moviespreview.app.ui.sections.detail.di.MovieDetailActivityComponent
+import com.jpp.moviespreview.app.ui.sections.search.MultiSearchActivity
+import com.jpp.moviespreview.app.ui.sections.search.di.MultiSearchActivityComponent
 import com.jpp.moviespreview.app.ui.sections.splash.SplashActivity
 import com.jpp.moviespreview.app.ui.sections.splash.di.SplashActivityComponent
 import dagger.Binds
@@ -15,7 +17,9 @@ import dagger.multibindings.IntoMap
  *
  * Created by jpp on 2/14/18.
  */
-@Module(subcomponents = [(SplashActivityComponent::class), (MovieDetailActivityComponent::class)])
+@Module(subcomponents = [(SplashActivityComponent::class),
+    (MovieDetailActivityComponent::class),
+    (MultiSearchActivityComponent::class)])
 abstract class ActivityBindingModule {
 
     @Binds
@@ -27,5 +31,10 @@ abstract class ActivityBindingModule {
     @IntoMap
     @ActivityKey(MovieDetailActivity::class)
     abstract fun movieDetailActivityComponentBuilder(impl: MovieDetailActivityComponent.Builder): ActivityComponentBuilder<*, *>
+
+    @Binds
+    @IntoMap
+    @ActivityKey(MultiSearchActivity::class)
+    abstract fun multiSearchActivityComponentBuilder(impl: MultiSearchActivityComponent.Builder): ActivityComponentBuilder<*, *>
 
 }
