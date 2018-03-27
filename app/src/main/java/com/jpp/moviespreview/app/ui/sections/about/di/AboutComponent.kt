@@ -15,5 +15,4 @@ import dagger.Subcomponent
 interface AboutComponent {
 
     fun inject(aboutActivity: AboutActivity)
-    fun inject(licensesActivity: LicensesActivity)
 }

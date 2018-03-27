@@ -32,12 +32,4 @@ class AboutModule {
     @Provides
     fun providesAboutPresenter(aboutInteractor: AboutInteractor): AboutPresenter = AboutPresenterImpl(aboutInteractor)
 
-
-    @AboutScope
-    @Provides
-    fun providesLicencesPresenter(moviesContext: ApplicationMoviesContext,
-                                  useCase: UseCase<Any, Licenses>,
-                                  domainToUiDataMapper: DomainToUiDataMapper,
-                                  backgroundInteractor: BackgroundInteractor): LicensesPresenter = LicensesPresenterImpl(moviesContext, useCase, domainToUiDataMapper, backgroundInteractor)
-
 }
