@@ -1,5 +1,7 @@
 package com.jpp.moviespreview.app.di.activity
 
+import com.jpp.moviespreview.app.ui.sections.about.AboutActivity
+import com.jpp.moviespreview.app.ui.sections.about.di.AboutActivityComponent
 import com.jpp.moviespreview.app.ui.sections.about.licenses.LicensesActivity
 import com.jpp.moviespreview.app.ui.sections.about.licenses.di.LicensesActivityComponent
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailActivity
@@ -22,7 +24,8 @@ import dagger.multibindings.IntoMap
 @Module(subcomponents = [(SplashActivityComponent::class),
     (MovieDetailActivityComponent::class),
     (MultiSearchActivityComponent::class),
-    (LicensesActivityComponent::class)])
+    (LicensesActivityComponent::class),
+    (AboutActivityComponent::class)])
 abstract class ActivityBindingModule {
 
     @Binds
@@ -44,5 +47,10 @@ abstract class ActivityBindingModule {
     @IntoMap
     @ActivityKey(LicensesActivity::class)
     abstract fun licencesActivityComponentBuilder(impl: LicensesActivityComponent.Builder): ActivityComponentBuilder<*, *>
+
+    @Binds
+    @IntoMap
+    @ActivityKey(AboutActivity::class)
+    abstract fun aboutActivityComponent(impl: AboutActivityComponent.Builder): ActivityComponentBuilder<*, *>
 
 }

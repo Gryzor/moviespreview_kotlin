@@ -6,18 +6,26 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.customtabs.CustomTabsIntent
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import com.jpp.moviespreview.R
+import com.jpp.moviespreview.app.di.HasSubcomponentBuilders
+import com.jpp.moviespreview.app.di.activity.InjectedActivity
+import com.jpp.moviespreview.app.ui.sections.about.di.AboutActivityComponent
 import com.jpp.moviespreview.app.ui.sections.about.licenses.LicensesActivity
-import com.jpp.moviespreview.app.util.extentions.app
+import com.jpp.moviespreview.app.util.extentions.whenNotNull
 import kotlinx.android.synthetic.main.about_activity.*
 import javax.inject.Inject
 
 /**
  * Created by jpp on 1/17/18.
  */
-class AboutActivity : AppCompatActivity(), AboutView {
+class AboutActivity : InjectedActivity(), AboutView {
+
+
+    override fun injectMembers(hasSubcomponentBuilders: HasSubcomponentBuilders) {
+        (hasSubcomponentBuilders.getActivityComponentBuilder(AboutActivity::class.java) as AboutActivityComponent.Builder)
+                .activityModule(AboutActivityComponent.AboutActivityModule(this)).build().injectMembers(this)
+    }
 
 
     companion object {
@@ -27,8 +35,6 @@ class AboutActivity : AppCompatActivity(), AboutView {
         val API_TERM_OF_USE_URL = "https://www.themoviedb.org/documentation/api/terms-of-use?"
     }
 
-    private val component by lazy { app.aboutComponent() }
-
     @Inject
     lateinit var presenter: AboutPresenter
 
@@ -36,10 +42,10 @@ class AboutActivity : AppCompatActivity(), AboutView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.about_activity)
 
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.title = getString(R.string.about_menu_item)
-
-        component.inject(this)
+        whenNotNull(supportActionBar) {
+            it.setDisplayHomeAsUpEnabled(true)
+            it.title = getString(R.string.about_menu_item)
+        }
     }
 
     override fun onResume() {
