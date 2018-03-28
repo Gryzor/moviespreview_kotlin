@@ -10,7 +10,6 @@ import com.jpp.moviespreview.app.util.extentions.DelegatesExt
 interface LicensesView {
     fun showLicences(licences: List<License>)
     fun showErrorLoadingLicenses()
-    fun showLicenseDetail(license: License)
 }
 
 interface LicensesPresenter {
@@ -20,6 +19,10 @@ interface LicensesPresenter {
 
 interface LicensesPresenterInteractor {
     fun retrieveLicenses(licensesData: LicensesData)
+}
+
+interface LicencesFlowResolver {
+    fun showLicenseDetail(license: License)
 }
 
 /**

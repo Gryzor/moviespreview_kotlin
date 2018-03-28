@@ -12,6 +12,7 @@ import com.jpp.moviespreview.app.domain.genre.GenreDataMapper
 import com.jpp.moviespreview.app.domain.genre.RetrieveGenresCommand
 import com.jpp.moviespreview.app.domain.genre.RetrieveGenresUseCase
 import com.jpp.moviespreview.app.domain.licenses.LicensesDataMapper
+import com.jpp.moviespreview.app.domain.licenses.RetrieveLicensesCommand
 import com.jpp.moviespreview.app.domain.licenses.RetrieveLicensesUseCase
 import com.jpp.moviespreview.app.domain.movie.MovieDataMapper
 import com.jpp.moviespreview.app.domain.movie.RetrieveMoviesInTheaterCommand
@@ -102,5 +103,10 @@ class DomainModule {
     fun providesMultiSearchCommand(movieDataMapper: MovieDataMapper,
                                    api: MoviesPreviewApiWrapper)
             : Command<MultiSearchParam, MultiSearchPage> = MultiSearchCommand(MultiSearchDataMapper(movieDataMapper), api)
+
+    @Provides
+    @Singleton
+    fun providesLicencesCommand(assetLoader: AssetLoader)
+            : Command<Any, Licenses> = RetrieveLicensesCommand(assetLoader, LicensesDataMapper())
 
 }

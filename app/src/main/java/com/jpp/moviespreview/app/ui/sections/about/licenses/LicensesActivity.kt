@@ -18,7 +18,7 @@ import javax.inject.Inject
  *
  * Created by jpp on 1/20/18.
  */
-class LicensesActivity : InjectedActivity(), LicensesView {
+class LicensesActivity : InjectedActivity(), LicensesView, LicencesFlowResolver {
 
 
     override fun injectMembers(hasSubcomponentBuilders: HasSubcomponentBuilders) {

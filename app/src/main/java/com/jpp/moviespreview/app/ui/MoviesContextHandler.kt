@@ -55,6 +55,16 @@ interface MoviesContextHandler {
      * is returned.
      */
     fun getCreditsForMovie(movie: Movie): List<CreditPerson>?
+
+    /**
+     * Retrieves the list of [License]s that are stored in the context.
+     */
+    fun getLicenses(): List<License>?
+
+    /**
+     * Puts the list of [License] in the context.
+     */
+    fun addLicenses(licences: List<License>)
 }
 
 
@@ -84,6 +94,12 @@ class MoviesContextHandlerImpl(private val moviesContext: ApplicationMoviesConte
 
     override fun setSelectedMovie(movie: Movie) {
         moviesContext.selectedMovie = movie
+    }
+
+    override fun getLicenses(): List<License>? = moviesContext.licenses
+
+    override fun addLicenses(licences: List<License>) {
+        moviesContext.licenses = licences
     }
 }
 
