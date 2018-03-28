@@ -1,5 +1,9 @@
 package com.jpp.moviespreview.app.di.activity
 
+import com.jpp.moviespreview.app.ui.sections.about.AboutActivity
+import com.jpp.moviespreview.app.ui.sections.about.di.AboutActivityComponent
+import com.jpp.moviespreview.app.ui.sections.about.licenses.LicensesActivity
+import com.jpp.moviespreview.app.ui.sections.about.licenses.di.LicensesActivityComponent
 import com.jpp.moviespreview.app.ui.sections.detail.MovieDetailActivity
 import com.jpp.moviespreview.app.ui.sections.detail.di.MovieDetailActivityComponent
 import com.jpp.moviespreview.app.ui.sections.search.MultiSearchActivity
@@ -19,7 +23,9 @@ import dagger.multibindings.IntoMap
  */
 @Module(subcomponents = [(SplashActivityComponent::class),
     (MovieDetailActivityComponent::class),
-    (MultiSearchActivityComponent::class)])
+    (MultiSearchActivityComponent::class),
+    (LicensesActivityComponent::class),
+    (AboutActivityComponent::class)])
 abstract class ActivityBindingModule {
 
     @Binds
@@ -36,5 +42,15 @@ abstract class ActivityBindingModule {
     @IntoMap
     @ActivityKey(MultiSearchActivity::class)
     abstract fun multiSearchActivityComponentBuilder(impl: MultiSearchActivityComponent.Builder): ActivityComponentBuilder<*, *>
+
+    @Binds
+    @IntoMap
+    @ActivityKey(LicensesActivity::class)
+    abstract fun licencesActivityComponentBuilder(impl: LicensesActivityComponent.Builder): ActivityComponentBuilder<*, *>
+
+    @Binds
+    @IntoMap
+    @ActivityKey(AboutActivity::class)
+    abstract fun aboutActivityComponent(impl: AboutActivityComponent.Builder): ActivityComponentBuilder<*, *>
 
 }

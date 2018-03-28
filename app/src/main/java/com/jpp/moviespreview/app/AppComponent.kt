@@ -5,8 +5,6 @@ import com.jpp.moviespreview.app.di.activity.ActivityBindingModule
 import com.jpp.moviespreview.app.di.fragment.FragmentBindingModule
 import com.jpp.moviespreview.app.domain.DomainModule
 import com.jpp.moviespreview.app.ui.UiModule
-import com.jpp.moviespreview.app.ui.sections.about.di.AboutComponent
-import com.jpp.moviespreview.app.ui.sections.about.di.AboutModule
 import dagger.Component
 import javax.inject.Singleton
 
@@ -25,8 +23,5 @@ import javax.inject.Singleton
     (UiModule::class)
 ])
 interface AppComponent {
-
     fun inject(application: MoviesPreviewApp): MoviesPreviewApp
-
-    fun plus(about: AboutModule): AboutComponent
 }

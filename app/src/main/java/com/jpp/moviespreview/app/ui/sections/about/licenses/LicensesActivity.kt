@@ -1,13 +1,15 @@
 package com.jpp.moviespreview.app.ui.sections.about.licenses
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import com.jpp.moviespreview.R
+import com.jpp.moviespreview.app.di.HasSubcomponentBuilders
+import com.jpp.moviespreview.app.di.activity.InjectedActivity
 import com.jpp.moviespreview.app.ui.License
-import com.jpp.moviespreview.app.util.extentions.app
+import com.jpp.moviespreview.app.ui.sections.about.licenses.di.LicensesActivityComponent
 import com.jpp.moviespreview.app.util.extentions.showUnexpectedError
+import com.jpp.moviespreview.app.util.extentions.whenNotNull
 import kotlinx.android.synthetic.main.licences_activity.*
 import javax.inject.Inject
 
@@ -16,10 +18,14 @@ import javax.inject.Inject
  *
  * Created by jpp on 1/20/18.
  */
-class LicensesActivity : AppCompatActivity(), LicensesView {
+class LicensesActivity : InjectedActivity(), LicensesView, LicencesFlowResolver {
 
 
-    private val component by lazy { app.aboutComponent() }
+    override fun injectMembers(hasSubcomponentBuilders: HasSubcomponentBuilders) {
+        (hasSubcomponentBuilders.getActivityComponentBuilder(LicensesActivity::class.java) as LicensesActivityComponent.Builder)
+                .activityModule(LicensesActivityComponent.LicencesActivityModule(this)).build().injectMembers(this)
+    }
+
 
     @Inject
     lateinit var presenter: LicensesPresenter
@@ -29,10 +35,11 @@ class LicensesActivity : AppCompatActivity(), LicensesView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.licences_activity)
 
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.title = getString(R.string.open_source_action)
+        whenNotNull(supportActionBar) {
+            it.setDisplayHomeAsUpEnabled(true)
+            it.title = getString(R.string.open_source_action)
+        }
 
-        component.inject(this)
     }
 
     override fun onResume() {
