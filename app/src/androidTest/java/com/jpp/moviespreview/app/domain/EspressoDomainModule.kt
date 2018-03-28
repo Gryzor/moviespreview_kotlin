@@ -58,4 +58,8 @@ class EspressoDomainModule {
     @Provides
     @Singleton
     fun providesMultiSearchCommand(): Command<MultiSearchParam, MultiSearchPage> = mock()
+
+    @Provides
+    @Singleton
+    fun providesLicencesCommand(): Command<Any, Licenses> = mock()
 }
